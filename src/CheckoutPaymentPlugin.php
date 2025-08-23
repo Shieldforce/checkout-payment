@@ -42,7 +42,7 @@ class CheckoutPaymentPlugin implements Plugin
     }
 
     public function setTypeGateway(
-        $typeGateway = TypeGatewayEnum::mercado_pago
+        $typeGateway
     )
     {
         $this->typeGateway = $typeGateway;
