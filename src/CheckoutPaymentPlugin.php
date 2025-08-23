@@ -1,15 +1,15 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace Shieldforce\CheckoutPayment;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class SkeletonPlugin implements Plugin
+class CheckoutPaymentPlugin implements Plugin
 {
     public function getId(): string
     {
-        return 'skeleton';
+        return 'checkout-payment';
     }
 
     public function register(Panel $panel): void

@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Shieldforce\CheckoutPayment\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class CheckoutPaymentCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'checkout-payment';
 
     public $description = 'My command';
 
