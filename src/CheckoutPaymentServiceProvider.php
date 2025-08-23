@@ -23,7 +23,7 @@ class CheckoutPaymentServiceProvider extends PackageServiceProvider
 
     public static string $viewNamespace = 'checkout-payment';
 
-    public function panel(Panel $panel): Panel
+    /*public function panel(Panel $panel): Panel
     {
         return $panel
             ->id('checkout-payment')
@@ -43,7 +43,7 @@ class CheckoutPaymentServiceProvider extends PackageServiceProvider
             ->authMiddleware([
                 // ...
             ]);
-    }
+    }*/
 
     public function configurePackage(Package $package): void
     {

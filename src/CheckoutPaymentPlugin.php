@@ -14,7 +14,10 @@ class CheckoutPaymentPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        //
+        $panel
+            ->pages([
+                \Shieldforce\CheckoutPayment\Pages\CheckoutWizard::class,
+            ]);
     }
 
     public function boot(Panel $panel): void
