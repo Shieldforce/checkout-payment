@@ -20,6 +20,9 @@ class CheckoutPaymentPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel
+            ->pages([
+                \Shieldforce\CheckoutPayment\Pages\CheckoutWizard::class,
+            ])
             ->navigationItems([
                 NavigationItem::make('form_checkout_payment')
                     ->visible(function () {
@@ -28,11 +31,11 @@ class CheckoutPaymentPlugin implements Plugin
                     ->label('Tela de Pagemnto')
                     ->url(fn(): string => CheckoutWizard::getUrl(
                         parameters: [
-                            'checkoutId' => 1
+                            'checkoutId' => 1,
                         ]
                     ))
                     ->icon('heroicon-o-arrow-uturn-right')
-                    ->group("Checkout Payment"),
+                    ->group('Checkout Payment'),
             ]);
     }
 
