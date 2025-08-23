@@ -15,35 +15,11 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Shieldforce\CheckoutPayment\Commands\CheckoutPaymentCommand;
 use Shieldforce\CheckoutPayment\Testing\TestsCheckoutPayment;
-use Filament\Panel;
 
 class CheckoutPaymentServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'checkout-payment';
-
+    public static string $name          = 'checkout-payment';
     public static string $viewNamespace = 'checkout-payment';
-
-    /*public function panel(Panel $panel): Panel
-    {
-        return $panel
-            ->id('checkout-payment')
-            ->path('checkout-payment')
-            ->resources([
-                // ...
-            ])
-            ->pages([
-                \Shieldforce\CheckoutPayment\Pages\CheckoutWizard::class,
-            ])
-            ->widgets([
-                // ...
-            ])
-            ->middleware([
-                // ...
-            ])
-            ->authMiddleware([
-                // ...
-            ]);
-    }*/
 
     public function configurePackage(Package $package): void
     {

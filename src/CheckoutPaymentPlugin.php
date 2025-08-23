@@ -4,9 +4,12 @@ namespace Shieldforce\CheckoutPayment;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 
 class CheckoutPaymentPlugin implements Plugin
 {
+    public TypeGatewayEnum $typeGateway;
+
     public function getId(): string
     {
         return 'checkout-payment';
@@ -36,5 +39,13 @@ class CheckoutPaymentPlugin implements Plugin
         $plugin = filament(app(static::class)->getId());
 
         return $plugin;
+    }
+
+    public function setTypeGateway(
+        $typeGateway = TypeGatewayEnum::mercado_pago
+    )
+    {
+        $this->typeGateway = $typeGateway;
+        return $this;
     }
 }
