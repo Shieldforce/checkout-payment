@@ -49,25 +49,21 @@ class InternalCheckoutWizard extends Page implements HasForms
     public ?string           $state           = null;
     public ?string           $number          = null;
     public ?string           $complement      = null;
-    public int               $startOnStep     = 1;
     public ?CppCheckoutStep1 $step1           = null;
     public ?CppCheckoutStep2 $step2           = null;
     public ?CppCheckoutStep3 $step3           = null;
     public ?CppCheckoutStep4 $step4           = null;
+    public ?CppCheckout      $checkout        = null;
+    public ?TypeGatewayEnum  $typeGateway     = null;
+    public ?CppGateways      $cppGateways     = null;
     public array             $data            = [];
+    public array             $items           = [];
+    public int               $startOnStep     = 1;
     public                   $paymentMethods  = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
         MethodPaymentEnum::billet,
     ];
-
-    public array $items = [];
-
-    public ?CppCheckout $checkout = null;
-
-    public ?TypeGatewayEnum $typeGateway = null;
-
-    public ?CppGateways $cppGateways = null;
 
     public function mount(?CppCheckout $cppCheckout = null): void
     {
@@ -78,11 +74,12 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->topbar(false);
         }
 
-        $this->cppGateways    = CppGateways::where('active', true)->first();
-        $this->checkout       = $cppCheckout;
-        $this->typeGateway    = config()->get('checkout-payment.type_gateway');
+        $this->cppGateways = CppGateways::where('active', true)->first();
+        $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
-        if($this->checkout) {
+        if ($cppCheckout) {
+            $this->checkout    = $cppCheckout;
+
             $this->paymentMethods = $this?->checkout?->methods
                 ? json_decode($this->checkout->methods, true)
                 : $this->paymentMethods;
