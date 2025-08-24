@@ -16,6 +16,7 @@ class CppCheckout extends Model
         "referencable_id",
         "referencable_type",
         "methods",
+        "method_checked",
         "total_price",
         "status",
         "return_gateway",
