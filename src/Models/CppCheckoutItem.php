@@ -17,6 +17,7 @@ class CppCheckoutItem extends Model
         'price_2',
         'price_3',
         'description',
+        'img',
     ];
 
     protected $guarded = [];
