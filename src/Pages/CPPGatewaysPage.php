@@ -52,7 +52,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn(Action $action) => $action
+                fn (Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
@@ -93,8 +93,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending'   => 'Pending',
-                    'paid'      => 'Paid',
+                    'pending' => 'Pending',
+                    'paid' => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -123,144 +123,40 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                             ->live()
                             ->options(function () {
                                 return collect(TypeGatewayEnum::cases())
-                                    ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+                                    ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
                                     ->toArray();
                             })
                             ->required(),
                         TextInput::make('field_1')
                             ->label(function (Get $get, $state) {
-                                $label = "field_1";
-                                if ($state) {
-                                    $label = TypeGatewayEnum::from($state)
-                                        ->labelFields($label);
-                                }
-
-                                return $label;
+                                return isset($state) ? TypeGatewayEnum::from($state)
+                                    ->labelFields()['field_1'] : 'Campo 1';
                             })
                             ->reactive()
-                            ->required(function (Get $get, $state) {
-                                $label    = "field_1";
-                                $required = true;
-                                if ($state) {
-                                    $required = TypeGatewayEnum::from($state)
-                                        ->required($label);
-                                }
-
-                                return $required;
-                            }),
+                            ->required(),
                         TextInput::make('field_2')
-                            ->label(function (Get $get, $state) {
-                                $label = "field_2";
-                                if ($state) {
-                                    $label = TypeGatewayEnum::from($state)
-                                        ->labelFields($label);
-                                }
-
-                                return $label;
-                            })
                             ->reactive()
-                            ->required(function (Get $get, $state) {
-                                $label    = "field_2";
-                                $required = true;
-                                if ($state) {
-                                    $required = TypeGatewayEnum::from($state)
-                                        ->required($label);
-                                }
-
-                                return $required;
-                            }),
+                            ->required(),
 
                     ])->columns(3),
                     Grid::make()->schema([
 
                         TextInput::make('field_3')
-                            ->label(function (Get $get, $state) {
-                                $label = "field_3";
-                                if ($state) {
-                                    $label = TypeGatewayEnum::from($state)
-                                        ->labelFields($label);
-                                }
-
-                                return $label;
-                            })
                             ->reactive()
-                            ->required(function (Get $get, $state) {
-                                $label    = "field_3";
-                                $required = true;
-                                if ($state) {
-                                    $required = TypeGatewayEnum::from($state)
-                                        ->required($label);
-                                }
-
-                                return $required;
-                            }),
+                            ->required(),
                         TextInput::make('field_4')
-                            ->label(function (Get $get, $state) {
-                                $label = "field_4";
-                                if ($state) {
-                                    $label = TypeGatewayEnum::from($state)
-                                        ->labelFields($label);
-                                }
-
-                                return $label;
-                            })
                             ->reactive()
-                            ->required(function (Get $get, $state) {
-                                $label    = "field_4";
-                                $required = true;
-                                if ($state) {
-                                    $required = TypeGatewayEnum::from($state)
-                                        ->required($label);
-                                }
-
-                                return $required;
-                            }),
+                            ->required(),
                         TextInput::make('field_5')
-                            ->label(function (Get $get, $state) {
-                                $label = "field_5";
-                                if ($state) {
-                                    $label = TypeGatewayEnum::from($state)
-                                        ->labelFields($label);
-                                }
-
-                                return $label;
-                            })
                             ->reactive()
-                            ->required(function (Get $get, $state) {
-                                $label    = "field_5";
-                                $required = true;
-                                if ($state) {
-                                    $required = TypeGatewayEnum::from($state)
-                                        ->required($label);
-                                }
-
-                                return $required;
-                            }),
+                            ->required(),
 
                     ])->columns(3),
                     Grid::make()->schema([
 
                         TextInput::make('field_6')
-                            ->label(function (Get $get, $state) {
-                                $label = "field_6";
-                                if ($state) {
-                                    $label = TypeGatewayEnum::from($state)
-                                        ->labelFields($label);
-                                }
-
-                                return $label;
-                            })
                             ->reactive()
-                            ->required(function (Get $get, $state) {
-                                $label    = "field_6";
-                                $required = true;
-                                if ($state) {
-                                    $required = TypeGatewayEnum::from($state)
-                                        ->required($label);
-                                }
-
-                                return $required;
-                            }),
+                            ->required(),
 
                     ])->columns(3),
 

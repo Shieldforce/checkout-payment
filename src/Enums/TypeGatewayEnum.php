@@ -13,39 +13,47 @@ enum TypeGatewayEnum: int
         };
     }
 
-    public static function labelFields(?string $fieldName = null): string
+    public function labelFields(): array
     {
-        if (!isset($fieldName)) {
-            return 'Campo';
-        }
-
-        $return = [
-            'field_1' => 'TOKEN1',
-            'field_2' => 'TOKEN2',
-            'field_3' => 'TOKEN3',
-            'field_4' => 'TOKEN4',
-            'field_5' => 'TOKEN5',
-            'field_6' => 'TOKEN6',
-        ];
-
-        return $return[$fieldName] ?? $fieldName;
+        return match ($this) {
+            self::mercado_pago => [
+                'field_1' => 'TOKEN1',
+                'field_2' => 'TOKEN2',
+                'field_3' => 'TOKEN3',
+                'field_4' => 'TOKEN4',
+                'field_5' => 'TOKEN5',
+                'field_6' => 'TOKEN6',
+            ],
+            default => [
+                'field_1' => 'field_1',
+                'field_2' => 'field_2',
+                'field_3' => 'field_3',
+                'field_4' => 'field_4',
+                'field_5' => 'field_5',
+                'field_6' => 'field_6',
+            ],
+        };
     }
 
-    public static function required(?string $fieldName = null): string
+    public function required(): array
     {
-        if (!isset($fieldName)) {
-            return false;
-        }
-
-        $return = [
-            'field_1' => true,
-            'field_2' => true,
-            'field_3' => false,
-            'field_4' => false,
-            'field_5' => false,
-            'field_6' => false,
-        ];
-
-        return $return[$fieldName] ?? $fieldName;
+        return match ($this) {
+            self::mercado_pago => [
+                'field_1' => true,
+                'field_2' => true,
+                'field_3' => false,
+                'field_4' => false,
+                'field_5' => false,
+                'field_6' => false,
+            ],
+            default => [
+                'field_1' => false,
+                'field_2' => false,
+                'field_3' => false,
+                'field_4' => false,
+                'field_5' => false,
+                'field_6' => false,
+            ],
+        };
     }
 }
