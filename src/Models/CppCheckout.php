@@ -30,6 +30,9 @@ class CppCheckout extends Model
         "card_validate",
         "card_payer_name",
         "total_price",
+        "base_qrcode",
+        "url_qrcode",
+        "url_billet",
     ];
 
     protected $guarded = [];
