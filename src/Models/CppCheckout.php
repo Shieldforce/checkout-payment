@@ -58,7 +58,7 @@ class CppCheckout extends Model
         });
     }
 
-    public function setup1()
+    public function step1()
     {
         return $this->hasMany(
             CppCheckoutStep1::class,
@@ -67,7 +67,7 @@ class CppCheckout extends Model
         );
     }
 
-    public function setup2()
+    public function step2()
     {
         return $this->hasMany(
             CppCheckoutStep2::class,
@@ -76,7 +76,7 @@ class CppCheckout extends Model
         );
     }
 
-    public function setup3()
+    public function step3()
     {
         return $this->hasMany(
             CppCheckoutStep3::class,
@@ -85,7 +85,7 @@ class CppCheckout extends Model
         );
     }
 
-    public function setup4()
+    public function step4()
     {
         return $this->hasMany(
             CppCheckoutStep4::class,
