@@ -64,19 +64,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
     protected function getTableFilters(): array
     {
-        return [
-            SelectFilter::make('status')
-                ->options([
-                    'pending'   => 'Pending',
-                    'paid'      => 'Paid',
-                    'cancelled' => 'Cancelled',
-                ]),
-        ];
-    }
-
-    public function getTable(): \Filament\Tables\Table
-    {
-        return parent::getTable()
+        $g = parent::getTableFilters()
             ->filters(self::fieldsFilter(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
@@ -84,6 +72,17 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                     ->button()
                     ->label('Filtrar...'),
             );
+
+        $n = [
+            SelectFilter::make('status')
+                ->options([
+                    'pending'   => 'Pending',
+                    'paid'      => 'Paid',
+                    'cancelled' => 'Cancelled',
+                ]),
+        ];
+
+        return array_merge($n, $g);
     }
 
     protected function getTableActions(): array
