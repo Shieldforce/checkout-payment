@@ -14,7 +14,6 @@ class CheckoutWizard extends Page implements Forms\Contracts\HasForms
 
     protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
     protected static string  $view            = 'checkout-payment::pages.checkout-wizard';
-    protected static ?string $navigationGroup = 'Checkout Payment';
     protected static ?string $label           = "Página de Pagamento";
     protected static ?string $navigationLabel = "Página de Pagamento";
 
