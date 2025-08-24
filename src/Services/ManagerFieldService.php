@@ -24,6 +24,12 @@ class ManagerFieldService
 
                 return $name ? TypeGatewayEnum::from($name)
                     ->required()[$nameField] : false;
+            })
+            ->visible(function (Get $get, $state) use ($nameField) {
+                $name = $get('name');
+
+                return $name ? TypeGatewayEnum::from($name)
+                                   ->visible()[$nameField] : false;
             });
     }
 }

@@ -17,8 +17,8 @@ enum TypeGatewayEnum: int
     {
         return match ($this) {
             self::mercado_pago => [
-                'field_1' => 'TOKEN1',
-                'field_2' => 'TOKEN2',
+                'field_1' => 'MP_PUBLIC_KEY',
+                'field_2' => 'MP_ACCESS_TOKEN',
                 'field_3' => 'TOKEN3',
                 'field_4' => 'TOKEN4',
                 'field_5' => 'TOKEN5',
@@ -53,6 +53,28 @@ enum TypeGatewayEnum: int
                 'field_4' => false,
                 'field_5' => false,
                 'field_6' => false,
+            ],
+        };
+    }
+
+    public function visible(): array
+    {
+        return match ($this) {
+            self::mercado_pago => [
+                'field_1' => true,
+                'field_2' => true,
+                'field_3' => false,
+                'field_4' => false,
+                'field_5' => false,
+                'field_6' => false,
+            ],
+            default => [
+                'field_1' => true,
+                'field_2' => true,
+                'field_3' => true,
+                'field_4' => true,
+                'field_5' => true,
+                'field_6' => true,
             ],
         };
     }
