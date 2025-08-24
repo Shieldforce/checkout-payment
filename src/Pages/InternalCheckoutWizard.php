@@ -80,7 +80,9 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         if (!$this->cppGateways) {
             return [
-                View::make('checkout-payment::partials.no-gateway-message'),
+                View::make(
+                    'checkout-payment::partials.no-gateway-message'
+                ),
             ];
         }
 
