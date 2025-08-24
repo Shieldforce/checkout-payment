@@ -17,27 +17,34 @@ class InternalCheckoutWizard extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static string  $view            = 'checkout-payment::pages.internal-checkout-wizard';
-    protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
-    protected static ?string $navigationGroup = 'Pagamentos';
-    protected static ?string $label           = 'Checkout';
-    protected static ?string $navigationLabel = 'Checkout';
-    protected static ?string $title           = "Realizar Pagamento";
+    protected static string $view = 'checkout-payment::pages.internal-checkout-wizard';
 
-    public ?int             $checkoutId    = null;
-    public array            $data          = [];
-    public ?string          $name          = null;
-    public ?string          $email         = null;
-    public                  $paymentMethod = null;
-    public ?TypeGatewayEnum $typeGateway   = null;
-    public ?CppGateways     $cppGateways   = null;
+    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+
+    protected static ?string $navigationGroup = 'Pagamentos';
+
+    protected static ?string $label = 'Checkout';
+
+    protected static ?string $navigationLabel = 'Checkout';
+
+    protected static ?string $title = 'Realizar Pagamento';
+
+    public ?int $checkoutId = null;
+
+    public array $data = [];
+
+    public ?string $name = null;
+
+    public ?string $email = null;
+
+    public $paymentMethod = null;
+
+    public ?TypeGatewayEnum $typeGateway = null;
+
+    public ?CppGateways $cppGateways = null;
 
     public function mount(?int $checkoutId = null): void
     {
-        if(request()->query()) {
-            dd(request()->query());
-        }
-
         if (!Auth::check()) {
             filament()
                 ->getCurrentPanel()
@@ -45,7 +52,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->topbar(false);
         }
 
-        $this->cppGateways = CppGateways::where("active", true)->first();
+        $this->email       = request()->query('email') ?? null;
+        $this->name        = request()->query('first_name') ?? null;
+        $this->cppGateways = CppGateways::where('active', true)->first();
         $this->checkoutId  = $checkoutId;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
         $this->form->fill();
@@ -120,4 +129,3 @@ class InternalCheckoutWizard extends Page implements HasForms
         return config()->get('checkout-payment.sidebar_group');
     }
 }
-
