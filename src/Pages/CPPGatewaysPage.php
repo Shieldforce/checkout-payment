@@ -137,25 +137,130 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
                                 return $label;
                             })
-                            ->required(),
+                            ->reactive()
+                            ->required(function (Get $get, $state) {
+                                $label    = "field_1";
+                                $required = true;
+                                if ($state) {
+                                    $required = TypeGatewayEnum::from($state)
+                                        ->required($label);
+                                }
+
+                                return $required;
+                            }),
                         TextInput::make('field_2')
-                            ->required(),
+                            ->label(function (Get $get, $state) {
+                                $label = "field_2";
+                                if ($state) {
+                                    $label = TypeGatewayEnum::from($state)
+                                        ->labelFields($label);
+                                }
+
+                                return $label;
+                            })
+                            ->reactive()
+                            ->required(function (Get $get, $state) {
+                                $label    = "field_2";
+                                $required = true;
+                                if ($state) {
+                                    $required = TypeGatewayEnum::from($state)
+                                        ->required($label);
+                                }
+
+                                return $required;
+                            }),
 
                     ])->columns(3),
                     Grid::make()->schema([
 
                         TextInput::make('field_3')
-                            ->required(),
+                            ->label(function (Get $get, $state) {
+                                $label = "field_3";
+                                if ($state) {
+                                    $label = TypeGatewayEnum::from($state)
+                                        ->labelFields($label);
+                                }
+
+                                return $label;
+                            })
+                            ->reactive()
+                            ->required(function (Get $get, $state) {
+                                $label    = "field_3";
+                                $required = true;
+                                if ($state) {
+                                    $required = TypeGatewayEnum::from($state)
+                                        ->required($label);
+                                }
+
+                                return $required;
+                            }),
                         TextInput::make('field_4')
-                            ->required(),
+                            ->label(function (Get $get, $state) {
+                                $label = "field_4";
+                                if ($state) {
+                                    $label = TypeGatewayEnum::from($state)
+                                        ->labelFields($label);
+                                }
+
+                                return $label;
+                            })
+                            ->reactive()
+                            ->required(function (Get $get, $state) {
+                                $label    = "field_4";
+                                $required = true;
+                                if ($state) {
+                                    $required = TypeGatewayEnum::from($state)
+                                        ->required($label);
+                                }
+
+                                return $required;
+                            }),
                         TextInput::make('field_5')
-                            ->required(),
+                            ->label(function (Get $get, $state) {
+                                $label = "field_5";
+                                if ($state) {
+                                    $label = TypeGatewayEnum::from($state)
+                                        ->labelFields($label);
+                                }
+
+                                return $label;
+                            })
+                            ->reactive()
+                            ->required(function (Get $get, $state) {
+                                $label    = "field_5";
+                                $required = true;
+                                if ($state) {
+                                    $required = TypeGatewayEnum::from($state)
+                                        ->required($label);
+                                }
+
+                                return $required;
+                            }),
 
                     ])->columns(3),
                     Grid::make()->schema([
 
                         TextInput::make('field_6')
-                            ->required(),
+                            ->label(function (Get $get, $state) {
+                                $label = "field_6";
+                                if ($state) {
+                                    $label = TypeGatewayEnum::from($state)
+                                        ->labelFields($label);
+                                }
+
+                                return $label;
+                            })
+                            ->reactive()
+                            ->required(function (Get $get, $state) {
+                                $label    = "field_6";
+                                $required = true;
+                                if ($state) {
+                                    $required = TypeGatewayEnum::from($state)
+                                        ->required($label);
+                                }
+
+                                return $required;
+                            }),
 
                     ])->columns(3),
 
