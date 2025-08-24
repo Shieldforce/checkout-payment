@@ -53,7 +53,7 @@ class ManagerFieldService
                             ->send()
                     )
                     ->extraAttributes([
-                        'x-on:click.stop' => 'navigator.clipboard.writeText($refs.apiKeyInput.value)',
+                        'x-on:click.stop' => "navigator.clipboard.writeText(\$refs.apiKeyInput-{$nameField}.value)",
                     ])
             );
     }
