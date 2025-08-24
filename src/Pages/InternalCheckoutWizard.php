@@ -102,6 +102,8 @@ class InternalCheckoutWizard extends Page implements HasForms
             1 => $this?->step1?->checked ?? true,
         ])->first(fn ($checked) => $checked, 1);
 
+        dd($this->startOnStep);
+
         $this->form->fill();
     }
 
@@ -216,7 +218,8 @@ class InternalCheckoutWizard extends Page implements HasForms
         }
 
         return [
-            Wizard::make($this->fieldWinzard())->startOnStep($this->startOnStep),
+            Wizard::make($this->fieldWinzard())
+                ->startOnStep($this->startOnStep),
         ];
     }
 
