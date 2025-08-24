@@ -17,6 +17,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 
 class CPPGatewaysPage extends Page implements HasForms, HasTable
@@ -40,7 +41,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
     public function mount(?int $checkoutId = null): void
     {
-        $this->getTable()
+        $this->table
             ->filters(self::fieldsFilter(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
