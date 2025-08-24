@@ -38,30 +38,35 @@ class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
         return 'internal-checkout-payment/{checkoutId?}';
     }
 
+    public function fieldWinzard()
+    {
+        return [
+            Wizard\Step::make('Cliente')
+                ->schema([
+                    TextInput::make('name')->required()->label('Nome'),
+                    TextInput::make('email')->required()->email()->label('Email'),
+                ]),
+            Wizard\Step::make('Pagamento')
+                ->schema([
+                    Select::make('paymentMethod')
+                        ->options([
+                            'pix'         => 'PIX',
+                            'credit_card' => 'Cartão de Crédito',
+                            'boleto'      => 'Boleto'
+                        ])
+                        ->required(),
+                ]),
+            Wizard\Step::make('Confirmação')
+                ->schema([
+                    TextInput::make('review')->default('Revisar seus dados')->disabled(),
+                ]),
+        ];
+    }
+
     protected function getFormSchema(): array
     {
         return [
-            Wizard::make([
-                Wizard\Step::make('Cliente')
-                    ->schema([
-                        TextInput::make('name')->required()->label('Nome'),
-                        TextInput::make('email')->required()->email()->label('Email'),
-                    ]),
-                Wizard\Step::make('Pagamento')
-                    ->schema([
-                        Select::make('paymentMethod')
-                            ->options([
-                                'pix'         => 'PIX',
-                                'credit_card' => 'Cartão de Crédito',
-                                'boleto'      => 'Boleto'
-                            ])
-                            ->required(),
-                    ]),
-                Wizard\Step::make('Confirmação')
-                    ->schema([
-                        TextInput::make('review')->default('Revisar seus dados')->disabled(),
-                    ]),
-            ])
+            Wizard::make($this->fieldWinzard())
         ];
     }
 
