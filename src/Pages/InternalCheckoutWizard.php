@@ -15,6 +15,7 @@ use Filament\Forms\Set;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
@@ -65,7 +66,11 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public int $startOnStep = 1;
 
-    public $paymentMethod = null;
+    public $paymentMethods = [
+        MethodPaymentEnum::debit_card,
+        MethodPaymentEnum::pix,
+        MethodPaymentEnum::billet,
+    ];
 
     public array $items = [];
 
@@ -84,9 +89,12 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->topbar(false);
         }
 
-        $this->cppGateways = CppGateways::where('active', true)->first();
-        $this->checkout    = $cppCheckout;
-        $this->typeGateway = config()->get('checkout-payment.type_gateway');
+        $this->cppGateways    = CppGateways::where('active', true)->first();
+        $this->checkout       = $cppCheckout;
+        $this->typeGateway    = config()->get('checkout-payment.type_gateway');
+        $this->paymentMethods = $this?->checkout?->methods
+            ? json_decode($this->checkout->methods, true)
+            : $this->paymentMethods;
 
         // Step 1 --
         $this->step1 = $this?->checkout?->step1()?->first();
@@ -260,6 +268,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         TextInput::make('district')
                             ->default(fn($state, $get, $set, $livewire) => $livewire->district)
                             ->label('Bairro')
+                            ->required()
                             ->maxLength(255),
 
                         TextInput::make('city')
@@ -287,11 +296,17 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->visible($this->step4->visible ?? true)
                 ->schema([
                     Select::make('paymentMethod')
-                        ->options([
-                            'pix'         => 'PIX',
-                            'credit_card' => 'Cartão de Crédito',
-                            'boleto'      => 'Boleto',
-                        ])
+                        ->label("Escolha como quer pagar!")
+                        ->options(function () {
+                            $methods = $this->paymentMethods;
+                            $options = [];
+                            foreach ($methods as $method)
+                            {
+                                $options[$method] = MethodPaymentEnum::from($method)->label();
+                            }
+
+                            return $options;
+                        })
                         ->required(),
                 ]),
             Wizard\Step::make('Confirmação')
