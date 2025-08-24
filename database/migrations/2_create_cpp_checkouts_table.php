@@ -20,6 +20,8 @@ return new class extends Migration {
 
             $table->json('methods')->nullable();
 
+            $table->uuid('uuid');
+
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->nullable();

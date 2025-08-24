@@ -3,6 +3,7 @@
 namespace Shieldforce\CheckoutPayment\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Uuid;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 
 class CppCheckout extends Model
@@ -10,6 +11,7 @@ class CppCheckout extends Model
     protected $table = 'cpp_checkouts';
 
     protected $fillable = [
+        "uuid",
         "cpp_gateway_id",
         "referencable_id",
         "referencable_type",
@@ -62,6 +64,17 @@ class CppCheckout extends Model
     {
         static::creating(function (CppCheckout $checkout) {
             $checkout->initializeMethods();
+        });
+
+        static::created(function (CppCheckout $checkout) {
+            if (empty($checkout->uuid)) {
+                $checkout->uuid = Uuid::uuid3(
+                    Uuid::NAMESPACE_DNS,
+                    (string) $checkout->id
+                )->toString();
+
+                $checkout->save();
+            }
         });
     }
 
