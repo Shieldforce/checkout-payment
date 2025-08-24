@@ -40,7 +40,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
     public function mount(?int $checkoutId = null): void {}
 
-    public function table(Table $table): Table
+    /*public function table(Table $table): Table
     {
         return $table
             ->query($this->getTableQuery())
@@ -55,7 +55,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->bulkActions($this->getTableBulkActions())
             ->actions($this->getTableActions())
             ->headerActions($this->getHeaderActions());
-    }
+    }*/
 
     public static function getNavigationGroup(): ?string
     {
@@ -110,7 +110,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     public function getHeaderActions(): array
     {
         return [
-            /*\Filament\Actions\Action::make('create')
+            \Filament\Actions\Action::make('create')
                 ->label('Adicionar')
                 ->form([
                     TextInput::make('name')->required(),
@@ -124,7 +124,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ])
                 ->action(function (array $data) {
                     CppGateways::create($data);
-                }),*/
+                }),
         ];
     }
 
