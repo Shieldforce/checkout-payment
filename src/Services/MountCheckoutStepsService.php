@@ -116,7 +116,7 @@ class MountCheckoutStepsService
 
         if ($up) {
             $this->cppCheckout->update([
-                'startOnStep' => 1,
+                'startOnStep' => 2,
             ]);
         }
 
@@ -195,7 +195,7 @@ class MountCheckoutStepsService
 
         if ($up) {
             $this->cppCheckout->update([
-                'startOnStep' => 2,
+                'startOnStep' => 3,
             ]);
         }
 
@@ -278,7 +278,7 @@ class MountCheckoutStepsService
 
         if ($up) {
             $this->cppCheckout->update([
-                'startOnStep' => 3,
+                'startOnStep' => 4,
             ]);
         }
 
@@ -356,7 +356,7 @@ class MountCheckoutStepsService
 
         if ($up) {
             $this->cppCheckout->update([
-                'startOnStep' => 4,
+                'startOnStep' => 5,
             ]);
         }
 
