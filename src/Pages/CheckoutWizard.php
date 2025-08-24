@@ -24,14 +24,14 @@ class CheckoutWizard extends Page implements Forms\Contracts\HasForms
 
     public ?int $checkoutId = null;
 
-    public function mount(int $checkoutId): void
+    public function mount(?int $checkoutId = null): void
     {
         $this->checkoutId = $checkoutId;
     }
 
     public static function getSlug(): string
     {
-        return 'checkout-payment/{checkoutId}';
+        return 'checkout-payment/{checkoutId?}';
     }
 
     protected function getFormSchema(): array
