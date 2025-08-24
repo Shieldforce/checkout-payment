@@ -115,21 +115,25 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             \Filament\Actions\Action::make('create')
                 ->label('Adicionar')
                 ->form([
+                    Select::make('name')
+                        ->label('Gateway')
+                        ->live()
+                        ->options(function () {
+                            return collect(TypeGatewayEnum::cases())
+                                ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
+                                ->toArray();
+                        })
+                        ->columnSpanFull()
+                        ->required(),
+
                     Grid::make()->schema([
 
-                        Select::make('name')
-                            ->label('Gateway')
-                            ->live()
-                            ->options(function () {
-                                return collect(TypeGatewayEnum::cases())
-                                    ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
-                                    ->toArray();
-                            })
-                            ->required(),
-                        ManagerFieldService::TextInput('field_1'),
-                        ManagerFieldService::TextInput('field_2'),
+                        ManagerFieldService::TextInput('field_1')
+                            ->helperText('Os campos sensíveis são cryptografados!'),
+                        ManagerFieldService::TextInput('field_2')
+                            ->helperText('Os campos sensíveis são cryptografados!'),
 
-                    ])->columns(3),
+                    ])->columns(2),
                     Grid::make()->schema([
 
                         ManagerFieldService::TextInput('field_3'),
