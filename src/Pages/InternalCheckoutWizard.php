@@ -34,6 +34,10 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public function mount(?int $checkoutId = null): void
     {
+        if(request()->query('email')) {
+            dd(request()->query('email'));
+        }
+
         if (!Auth::check()) {
             filament()
                 ->getCurrentPanel()
@@ -49,7 +53,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public static function getSlug(): string
     {
-        return 'internal-checkout-payment/{checkoutId?}';
+        return 'internal-checkout-payment';
     }
 
     public static function fieldWinzard()
@@ -113,7 +117,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return config()->get('checkout-payment.sidebar_group');;
+        return config()->get('checkout-payment.sidebar_group');
     }
 }
 
