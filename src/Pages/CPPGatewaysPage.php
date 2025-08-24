@@ -4,7 +4,6 @@ namespace Shieldforce\CheckoutPayment\Pages;
 
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -145,6 +144,9 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                     ])->columns(3),
 
                     Toggle::make('active')
+                        ->label('Ativo')
+                        ->default(true)
+                        ->hint('Ao ativar esse gateway, os outro serão desativados.')
                         ->required(),
 
                 ])
