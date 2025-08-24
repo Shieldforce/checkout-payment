@@ -20,6 +20,11 @@ return new class extends Migration {
             $table->json('methods')->nullable();
             $table->uuid('uuid')->nullable();
             $table->decimal('total_price', 10, 2)->nullable();
+            $table->integer('status')
+                ->default(
+                    \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::criado->value
+                );
+            $table->json("return_gateway")->nullable();
 
             $table->timestamps();
         });

@@ -17,6 +17,8 @@ class CppCheckout extends Model
         "referencable_type",
         "methods",
         "total_price",
+        "status",
+        "return_gateway",
     ];
 
     protected $guarded = [];
