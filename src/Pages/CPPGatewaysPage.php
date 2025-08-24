@@ -110,19 +110,9 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ->modelLabel('Editar gateway')
                 ->form($this->fields())
                 ->action(function (array $data, $record) {
-                    $crypt = false;
 
-                    if (
-                        TypeGatewayEnum::from($data['name']) == TypeGatewayEnum::mercado_pago
-                    ) {
-                        $crypt = true;
-                    }
-
-                    if ($crypt && Crypt::decrypt($record->field_1) != $data['field_1']) {
+                    if (TypeGatewayEnum::from($data['name']) == TypeGatewayEnum::mercado_pago) {
                         $data['field_1'] = Crypt::encrypt($data['field_1']);
-                    }
-
-                    if ($crypt && Crypt::decrypt($record->field_2) != $data['field_2']) {
                         $data['field_2'] = Crypt::encrypt($data['field_2']);
                     }
 
