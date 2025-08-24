@@ -84,26 +84,11 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                     return TypeGatewayEnum::from($record->name)->label();
                 }),
 
-            TextColumn::make('field_2')
-                ->label('Campo 2')
-                ->limit(function ($state, $record) {
-                    return TypeGatewayEnum::from($record->name)->limit()["field_2"];
-                })
-                ->tooltip(function ($state, $record) {
-                    return TypeGatewayEnum::from($record->name)->tooltip()["field_2"];
-                })
-                ->description(function ($state, $record) {
-                    return TypeGatewayEnum::from($record->name)->description()["field_2"];
-                }),
-
-            TextColumn::make('field_3')
-                ->label('Campo 3'),
-            TextColumn::make('field_4')
-                ->label('Campo 4'),
-            TextColumn::make('field_5')
-                ->label('Campo 5'),
-            TextColumn::make('field_6')
-                ->label('Campo 6'),
+            ManagerFieldService::TextColumn("field_2","Campo 2"),
+            ManagerFieldService::TextColumn("field_3","Campo 3"),
+            ManagerFieldService::TextColumn("field_4","Campo 4"),
+            ManagerFieldService::TextColumn("field_5","Campo 5"),
+            ManagerFieldService::TextColumn("field_6","Campo 6"),
 
             ToggleColumn::make('active')
                 ->label('Ativo'),
