@@ -33,7 +33,9 @@ class CppCheckout extends Model
 
     protected $guarded = [];
 
-    protected $casts = [];
+    protected $casts = [
+        "methods" => "array",
+    ];
 
     public function ccpItems()
     {

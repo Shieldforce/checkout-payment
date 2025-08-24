@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::create('cpp_checkouts', function (Blueprint $table) {
@@ -19,10 +18,16 @@ return new class extends Migration
             $table->string('referencable_type')->nullable();
             $table->unsignedBigInteger('referencable_id')->nullable();
 
-            $table->integer('method')
+            $table->json('methods')
                 ->default(
-                    \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::billet->value
+                    json_encode([
+                        \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value,
+                        \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::debit_card->value,
+                        \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value,
+                        \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::billet->value,
+                    ])
                 );
+
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->nullable();
