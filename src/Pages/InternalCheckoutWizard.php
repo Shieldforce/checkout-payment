@@ -7,6 +7,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Auth;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 
 class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
@@ -38,6 +39,10 @@ class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
     public static function getNavigationGroup(): ?string
     {
         return config('checkout-payment.sidebar_group');
+    }
+
+    public static function canAccess(): bool {
+        return Auth::check();
     }
 
     public function mount(?int $checkoutId = null): void
