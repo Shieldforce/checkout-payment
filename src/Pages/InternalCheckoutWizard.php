@@ -36,11 +36,6 @@ class InternalCheckoutWizard extends Page implements HasForms
     protected static ?string $label           = 'Checkout';
     protected static ?string $navigationLabel = 'Checkout';
     protected static ?string $title           = 'Realizar Pagamento';
-    public array             $data            = [];
-    public ?CppCheckoutStep1 $step1           = null;
-    public ?CppCheckoutStep2 $step2           = null;
-    public ?CppCheckoutStep3 $step3           = null;
-    public ?CppCheckoutStep4 $step4           = null;
     public ?string           $people_type     = null;
     public ?string           $first_name      = null;
     public ?string           $last_name       = null;
@@ -55,16 +50,24 @@ class InternalCheckoutWizard extends Page implements HasForms
     public ?string           $number          = null;
     public ?string           $complement      = null;
     public int               $startOnStep     = 1;
-    public array             $items           = [];
-    public ?CppCheckout      $checkout        = null;
-    public ?TypeGatewayEnum  $typeGateway     = null;
-    public ?CppGateways      $cppGateways     = null;
+    public ?CppCheckoutStep1 $step1           = null;
+    public ?CppCheckoutStep2 $step2           = null;
+    public ?CppCheckoutStep3 $step3           = null;
+    public ?CppCheckoutStep4 $step4           = null;
+    public array             $data            = [];
     public                   $paymentMethods  = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
         MethodPaymentEnum::billet,
     ];
 
+    public array $items = [];
+
+    public ?CppCheckout $checkout = null;
+
+    public ?TypeGatewayEnum $typeGateway = null;
+
+    public ?CppGateways $cppGateways = null;
 
     public function mount(?CppCheckout $cppCheckout = null): void
     {
@@ -116,7 +119,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public static function getSlug(): string
     {
-        return 'checkout/{cppCheckout?}';
+        return 'internal-checkout-payment/{cppCheckout?}';
     }
 
     public function fieldWinzard()
