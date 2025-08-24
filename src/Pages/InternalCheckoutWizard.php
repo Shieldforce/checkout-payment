@@ -22,15 +22,19 @@ class InternalCheckoutWizard extends Page implements HasForms
     protected static ?string $label           = 'Checkout';
     protected static ?string $navigationLabel = 'Checkout';
 
-    public ?int $checkoutId = null;
-    public array $data = [];
-    public ?string $name = null;
-    public ?string $email = null;
-    public $paymentMethod = null;
-    public ?TypeGatewayEnum $typeGateway = null;
+    public ?int             $checkoutId    = null;
+    public array            $data          = [];
+    public ?string          $name          = null;
+    public ?string          $email         = null;
+    public                  $paymentMethod = null;
+    public ?TypeGatewayEnum $typeGateway   = null;
 
     public function mount(?int $checkoutId = null): void
     {
+        filament()
+            ->getCurrentPanel()
+            ->topNavigation();
+
         $this->checkoutId  = $checkoutId;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
         $this->form->fill();
@@ -78,20 +82,22 @@ class InternalCheckoutWizard extends Page implements HasForms
         dd($this->form->getState());
     }
 
-    // ✅ Método novo: decide qual layout usar
     public function getLayout(): string
     {
         if (request()->query('external') === '1') {
             return 'checkout-payment::layouts.external';
         }
 
-        return parent::getLayout(); // layout padrão do painel
+        return parent::getLayout();
     }
 
-    // ✅ Para esconder a navegação se for externa
     public static function shouldRegisterNavigation(): bool
     {
-        return request()->query('external') !== '1';
+        if (request()->query('external') === '1') {
+            return false;
+        }
+
+        return true;
     }
 }
 
