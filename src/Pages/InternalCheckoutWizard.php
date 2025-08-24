@@ -56,7 +56,6 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->checkoutId  = $checkoutId;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
-
         $this->email = request()->query('email') ?? null;
         $this->name  = request()->query('first_name') ?? null;
 

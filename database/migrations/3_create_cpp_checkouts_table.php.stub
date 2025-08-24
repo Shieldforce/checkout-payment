@@ -1,0 +1,46 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::create('cpp_checkouts', function (Blueprint $table) {
+            $table->id();
+
+            $table->unsignedBigInteger('cpp_gateway_id');
+            $table->foreign('cpp_gateway_id')
+                ->references('id')
+                ->on('cpp_gateways');
+
+            $table->string('referencable_type');
+            $table->unsignedBigInteger('referencable_id');
+
+            $table->text('first_name');
+            $table->text('last_name');
+            $table->text('email');
+            $table->text('phone_number');
+            $table->text('zip_code');
+            $table->text('street');
+            $table->text('district');
+            $table->text('city');
+            $table->text('state');
+            $table->text('number');
+            $table->text('complement')->nullable();
+            $table->text('document')->nullable();
+            $table->text('card_number')->nullable();
+            $table->text('card_validate')->nullable();
+            $table->text('card_payer_name')->nullable();
+
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('cpp_checkouts');
+    }
+};
