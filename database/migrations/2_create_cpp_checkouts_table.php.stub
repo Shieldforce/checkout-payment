@@ -19,16 +19,16 @@ return new class extends Migration
             $table->string('referencable_type');
             $table->unsignedBigInteger('referencable_id');
 
-            $table->text('first_name');
-            $table->text('last_name');
-            $table->text('email');
-            $table->text('phone_number');
-            $table->text('zip_code');
-            $table->text('street');
-            $table->text('district');
-            $table->text('city');
-            $table->text('state');
-            $table->text('number');
+            $table->text('first_name')->nullable();
+            $table->text('last_name')->nullable();
+            $table->text('email')->nullable();
+            $table->text('phone_number')->nullable();
+            $table->text('zip_code')->nullable();
+            $table->text('street')->nullable();
+            $table->text('district')->nullable();
+            $table->text('city')->nullable();
+            $table->text('state')->nullable();
+            $table->text('number')->nullable();
             $table->text('complement')->nullable();
             $table->text('document')->nullable();
             $table->text('card_number')->nullable();
