@@ -15,12 +15,12 @@ return new class extends Migration {
                     \Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum::mercado_pago->name
                 );
 
-            $table->string("field_1");
-            $table->string("field_2");
-            $table->string("field_3");
-            $table->string("field_4");
-            $table->string("field_5");
-            $table->string("field_6");
+            $table->text("field_1");
+            $table->text("field_2");
+            $table->text("field_3");
+            $table->text("field_4");
+            $table->text("field_5");
+            $table->text("field_6");
 
             $table->boolean("active");
 
