@@ -50,7 +50,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn (Action $action) => $action
+                fn(Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
@@ -91,8 +91,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending' => 'Pending',
-                    'paid' => 'Paid',
+                    'pending'   => 'Pending',
+                    'paid'      => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -114,20 +114,21 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             \Filament\Actions\Action::make('create')
                 ->label('Adicionar')
                 ->form([
-                    Section::make([
-                        Grid::make()->schema([
-                            TextInput::make('name')->required(),
-                            TextInput::make('field_1')->required(),
-                            TextInput::make('field_2')->required(),
-                        ]),
-                        Grid::make()->schema([
-                            TextInput::make('field_3')->required(),
-                            TextInput::make('field_4')->required(),
-                            TextInput::make('field_5')->required(),
-                            TextInput::make('field_6')->required(),
-                            Toggle::make('active')->required(),
-                        ])
-                    ])->columns(3)
+                    Grid::make()->schema([
+                        TextInput::make('name')->required(),
+                        TextInput::make('field_1')->required(),
+                        TextInput::make('field_2')->required(),
+                    ])->columns(3),
+                    Grid::make()->schema([
+                        TextInput::make('field_3')->required(),
+                        TextInput::make('field_4')->required(),
+                        TextInput::make('field_5')->required(),
+                    ])->columns(3),
+                    Grid::make()->schema([
+                        TextInput::make('field_6')->required(),
+                        Toggle::make('active')->required(),
+                    ])->columns(3),
+
                 ])
                 ->action(function (array $data) {
                     CppGateways::create($data);
