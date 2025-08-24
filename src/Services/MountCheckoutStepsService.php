@@ -42,7 +42,8 @@ class MountCheckoutStepsService
     }
 
     public function step1(
-        array $items
+        array $items,
+        bool $visible = true,
     )
     {
         $validator = Validator::make(
@@ -101,7 +102,7 @@ class MountCheckoutStepsService
             'cpp_checkout_id' => $this->cppCheckout->id,
         ], [
             'items'   => json_encode($items),
-            'visible' => true,
+            'visible' => $visible,
         ]);
 
         return $this;
