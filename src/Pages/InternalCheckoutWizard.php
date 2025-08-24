@@ -337,10 +337,10 @@ class InternalCheckoutWizard extends Page implements HasForms
         return parent::getLayout();
     }
 
-    /*public static function shouldRegisterNavigation(): bool
+    public static function shouldRegisterNavigation(): bool
     {
         return false;
-    }*/
+    }
 
     public static function getNavigationGroup(): ?string
     {
