@@ -41,7 +41,7 @@ class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
         return 'internal-checkout-payment/{checkoutId?}';
     }
 
-    public function fieldWinzard()
+    public static function fieldWinzard()
     {
         return [
             Wizard\Step::make('Cliente')

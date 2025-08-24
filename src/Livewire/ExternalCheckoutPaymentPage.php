@@ -5,7 +5,6 @@ namespace Shieldforce\CheckoutPayment\Livewire;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Form;
 use Filament\Pages\SimplePage;
-use Illuminate\Support\Facades\Config;
 use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
 
 class ExternalCheckoutPaymentPage extends SimplePage
@@ -32,9 +31,8 @@ class ExternalCheckoutPaymentPage extends SimplePage
 
     public function form(Form $form): Form
     {
-        $internal = new InternalCheckoutWizard();
         return $form->schema([
-            Wizard::make($internal->fieldWinzard())
+            Wizard::make(InternalCheckoutWizard::fieldWinzard())
         ])
             ->statePath('data');
     }
