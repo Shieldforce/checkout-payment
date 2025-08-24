@@ -45,12 +45,11 @@ class ExternalCheckoutPaymentPage extends Page implements HasForms
         return 'internal-checkout-payment/{checkoutId?}';
     }
 
-    public function form(Form $form): Form
+    public function getFormSchema()
     {
-        return $form->schema([
+        return [
             Wizard::make(InternalCheckoutWizard::fieldWinzard()),
-        ])
-            ->statePath('data');
+        ];
     }
 
     public function submit()
