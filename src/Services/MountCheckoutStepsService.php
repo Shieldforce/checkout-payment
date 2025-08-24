@@ -52,15 +52,15 @@ class MountCheckoutStepsService
                 ],
                 'items.*.price' => [
                     'required',
-                    'string',
+                    'float',
                 ],
                 'items.*.price_2' => [
                     'nullable',
-                    'string',
+                    'float',
                 ],
                 'items.*.price_3' => [
                     'nullable',
-                    'string',
+                    'float',
                 ],
                 'items.*.description' => [
                     'nullable',
@@ -68,7 +68,6 @@ class MountCheckoutStepsService
                 ],
                 'items.*.img' => [
                     'nullable',
-                    'string',
                     Rule::imageFile(),
                 ],
                 'items.*.quantity' => [
