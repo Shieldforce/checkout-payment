@@ -43,17 +43,13 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query($this->getTableQuery())
-            ->columns($this->getTableColumns())
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
                 fn (Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
-            )
-            ->bulkActions($this->getTableBulkActions())
-            ->actions($this->getTableActions());
+            );
     }
 
     public static function getNavigationGroup(): ?string
