@@ -2,6 +2,7 @@
 
 namespace Shieldforce\CheckoutPayment\Services;
 
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -48,19 +49,52 @@ class MountCheckoutStepsService
         $validator = Validator::make(
             ['items' => $items],
             [
-                "items.*.name"        => ['required','string'],
-                "items.*.price"       => ['required','string'],
-                "items.*.price_2"     => ['required','string'],
-                "items.*.price_3"     => ['required','string'],
-                "items.*.description" => ['required','string'],
-                "items.*.img"         => ['required','string', Rule::imageFile()],
-                "items.*.quantity"    => ['required','integer'],
+                "items.*.name"        => [
+                    'required',
+                    'string'
+                ],
+                "items.*.price"       => [
+                    'required',
+                    'string'
+                ],
+                "items.*.price_2"     => [
+                    'required',
+                    'string'
+                ],
+                "items.*.price_3"     => [
+                    'required',
+                    'string'
+                ],
+                "items.*.description" => [
+                    'required',
+                    'string'
+                ],
+                "items.*.img"         => [
+                    'required',
+                    'string',
+                    Rule::imageFile()
+                ],
+                "items.*.quantity"    => [
+                    'required',
+                    'integer'
+                ],
             ]
         );
 
         if ($validator->fails()) {
-            dd($validator->errors());
-            //throw new ValidationException($validator);
+            $errorsHtml = "<ul>";
+            foreach ($validator->errors()->all() as $error) {
+                dd($error);
+                //$errorsHtml .= "<li><strong>{$error}</strong></li>";
+            }
+            $errorsHtml .= "</ul>";
+
+            return Notification::make("errors")
+                ->persistent()
+                ->danger()
+                ->title("Campos faltando!")
+                ->body($errorsHtml)
+                ->send();
         }
 
         $this->cppCheckout->step1()->updateOrCreate([
