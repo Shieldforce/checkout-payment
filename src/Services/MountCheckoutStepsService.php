@@ -59,7 +59,7 @@ class MountCheckoutStepsService
         );
 
         if ($validator->fails()) {
-            dd($validator);
+            dd($validator->errors());
             //throw new ValidationException($validator);
         }
 
