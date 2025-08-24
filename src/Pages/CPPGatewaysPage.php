@@ -2,6 +2,8 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
@@ -10,10 +12,11 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
 use Shieldforce\CheckoutPayment\Models\Checkout;
 
-class CPPGatewaysPage extends Page implements HasForms
+class CPPGatewaysPage extends Page implements HasForms, HasTable
 {
     use InteractsWithForms;
     use InteractsWithTable;
@@ -74,6 +77,47 @@ class CPPGatewaysPage extends Page implements HasForms
             EditAction::make(),
             DeleteAction::make(),
         ];
+    }
+
+    protected function getFormSchema(): array
+    {
+        return [
+            TextInput::make('name')->required(),
+            TextInput::make('field_1')->required(),
+            TextInput::make('field_2')->required(),
+            TextInput::make('field_3')->required(),
+            TextInput::make('field_4')->required(),
+            TextInput::make('field_5')->required(),
+            TextInput::make('field_6')->required(),
+            Toggle::make('active')->required(),
+        ];
+    }
+
+    public function save()
+    {
+        $data = $this->form->getState();
+
+        if ($this->record) {
+            $this->record->update($data);
+        }
+        else {
+            $this->record = Checkout::create($data);
+        }
+
+        $this->notify('success', 'Gateway salvo com sucesso!');
+        $this->resetForm();
+    }
+
+    public function edit($recordId)
+    {
+        $this->record = Checkout::findOrFail($recordId);
+        $this->form->fill($this->record->toArray());
+    }
+
+    public function delete($recordId)
+    {
+        Checkout::findOrFail($recordId)->delete();
+        $this->notify('success', 'Gateway deletado!');
     }
 }
 
