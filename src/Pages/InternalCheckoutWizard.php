@@ -91,13 +91,13 @@ class InternalCheckoutWizard extends Page implements HasForms
         return parent::getLayout();
     }
 
-    public static function shouldRegisterNavigation(): bool
+    /*public static function shouldRegisterNavigation(): bool
     {
         if (request()->query('external') === '1') {
             return false;
         }
 
         return true;
-    }
+    }*/
 }
 
