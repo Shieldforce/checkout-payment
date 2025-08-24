@@ -1,3 +1,7 @@
-<div>
-    {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
-</div>
+<x-filament::page>
+    {{ $this->form }}
+
+    <x-filament::button wire:click="submit" class="mt-4">
+        Finalizar Pagamento
+    </x-filament::button>
+</x-filament::page>
