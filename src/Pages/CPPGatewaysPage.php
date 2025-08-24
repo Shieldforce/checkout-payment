@@ -2,6 +2,7 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
+use Filament\Actions;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -48,7 +49,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn(Action $action) => $action
+                fn (Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
@@ -90,8 +91,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending'   => 'Pending',
-                    'paid'      => 'Paid',
+                    'pending' => 'Pending',
+                    'paid' => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -110,7 +111,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     protected function getHeaderActions(): array
     {
         return [
-            Action::make("add")
+            Actions\CreateAction::make('add')
                 ->label('Adicionar')
                 ->form([
                     TextInput::make('name')->required(),
