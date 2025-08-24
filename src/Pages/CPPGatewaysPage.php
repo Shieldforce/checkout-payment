@@ -4,10 +4,12 @@ namespace Shieldforce\CheckoutPayment\Pages;
 
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Get;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteAction;
@@ -19,6 +21,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 
 class CPPGatewaysPage extends Page implements HasForms, HasTable
@@ -115,23 +118,51 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ->label('Adicionar')
                 ->form([
                     Grid::make()->schema([
-                        TextInput::make('name')->required(),
-                        TextInput::make('field_1')->required(),
-                        TextInput::make('field_2')->required(),
+
+                        Select::make('name')
+                            ->label('Gateway')
+                            ->live()
+                            ->options(function () {
+                                return collect(TypeGatewayEnum::cases())
+                                    ->mapWithKeys(fn($case) => [$case->name => $case->label()])
+                                    ->toArray();
+                            })
+                            ->required(),
+                        TextInput::make('field_1')
+                            ->label(function (Get $get, $state) {
+                                dd($state);
+                                return "da";
+                            })
+                            ->required(),
+                        TextInput::make('field_2')
+                            ->required(),
+
                     ])->columns(3),
                     Grid::make()->schema([
-                        TextInput::make('field_3')->required(),
-                        TextInput::make('field_4')->required(),
-                        TextInput::make('field_5')->required(),
+
+                        TextInput::make('field_3')
+                            ->required(),
+                        TextInput::make('field_4')
+                            ->required(),
+                        TextInput::make('field_5')
+                            ->required(),
+
                     ])->columns(3),
                     Grid::make()->schema([
-                        TextInput::make('field_6')->required(),
-                        Toggle::make('active')->required(),
+
+                        TextInput::make('field_6')
+                            ->required(),
+
                     ])->columns(3),
+
+                    Toggle::make('active')
+                        ->required(),
 
                 ])
                 ->action(function (array $data) {
-                    CppGateways::create($data);
+                    $active = $data['active'];
+                    unset($data["active"]);
+                    CppGateways::updateOrCreate($data, ["active" => $active]);
                 }),
         ];
     }

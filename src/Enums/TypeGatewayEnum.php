@@ -12,4 +12,13 @@ enum TypeGatewayEnum: int
             self::mercado_pago => 'Mercado Pago',
         };
     }
+
+    public function labelFields(): array
+    {
+        return match ($this) {
+            self::mercado_pago => [
+                "field_1" => "TOKEN"
+            ],
+        };
+    }
 }
