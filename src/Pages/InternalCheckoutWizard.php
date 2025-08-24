@@ -12,7 +12,6 @@ use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
-use Shieldforce\CheckoutPayment\Models\CppCheckoutStep1;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 
 class InternalCheckoutWizard extends Page implements HasForms
@@ -66,7 +65,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->email = request()->query('email') ?? null;
         $this->name  = request()->query('first_name') ?? null;
 
-        dd($this?->checkout?->step1()?->first());
+        dd($this?->checkout);
 
         $this->form->fill();
     }
