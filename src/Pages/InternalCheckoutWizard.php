@@ -15,32 +15,19 @@ class InternalCheckoutWizard extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
-
     protected static string $view = 'checkout-payment::pages.internal-checkout-wizard';
 
+    protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
     protected static ?string $navigationGroup = 'Pagamentos';
-
-    protected static ?string $label = 'Checkout';
-
+    protected static ?string $label           = 'Checkout';
     protected static ?string $navigationLabel = 'Checkout';
 
     public ?int $checkoutId = null;
-
     public array $data = [];
-
     public ?string $name = null;
-
     public ?string $email = null;
-
     public $paymentMethod = null;
-
     public ?TypeGatewayEnum $typeGateway = null;
-
-    public static function getNavigationGroup(): ?string
-    {
-        return config('checkout-payment.sidebar_group');
-    }
 
     public static function canAccess(): bool {
         return Auth::check();
@@ -94,4 +81,21 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         dd($this->form->getState());
     }
+
+    // ✅ Método novo: decide qual layout usar
+    public function getLayout(): string
+    {
+        if (request()->query('external') === '1') {
+            return 'checkout-payment::layouts.external';
+        }
+
+        return parent::getLayout(); // layout padrão do painel
+    }
+
+    // ✅ Para esconder a navegação se for externa
+    public static function shouldRegisterNavigation(): bool
+    {
+        return request()->query('external') !== '1';
+    }
 }
+

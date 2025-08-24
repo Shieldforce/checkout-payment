@@ -36,7 +36,6 @@ class ExternalCheckoutPaymentPage extends Page implements HasForms
         filament()
             ->getCurrentPanel()
             ->topNavigation()
-            ->navigationItems([])
             /*->topbar(false)*/;
         $this->checkoutId = $checkoutId;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
