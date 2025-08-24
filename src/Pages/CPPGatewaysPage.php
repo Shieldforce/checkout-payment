@@ -2,6 +2,7 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
+use Filament\Actions\CreateAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -79,45 +80,21 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         ];
     }
 
-    protected function getFormSchema(): array
+    protected function getHeaderActions(): array
     {
         return [
-            TextInput::make('name')->required(),
-            TextInput::make('field_1')->required(),
-            TextInput::make('field_2')->required(),
-            TextInput::make('field_3')->required(),
-            TextInput::make('field_4')->required(),
-            TextInput::make('field_5')->required(),
-            TextInput::make('field_6')->required(),
-            Toggle::make('active')->required(),
+            CreateAction::make()
+                ->form([
+                    TextInput::make('name')->required(),
+                    TextInput::make('field_1')->required(),
+                    TextInput::make('field_2')->required(),
+                    TextInput::make('field_3')->required(),
+                    TextInput::make('field_4')->required(),
+                    TextInput::make('field_5')->required(),
+                    TextInput::make('field_6')->required(),
+                    Toggle::make('active')->required(),
+                ]),
         ];
-    }
-
-    public function save()
-    {
-        $data = $this->form->getState();
-
-        if ($this->record) {
-            $this->record->update($data);
-        }
-        else {
-            $this->record = CppGateways::create($data);
-        }
-
-        $this->notify('success', 'Gateway salvo com sucesso!');
-        $this->resetForm();
-    }
-
-    public function edit($recordId)
-    {
-        $this->record = CppGateways::findOrFail($recordId);
-        $this->form->fill($this->record->toArray());
-    }
-
-    public function delete($recordId)
-    {
-        CppGateways::findOrFail($recordId)->delete();
-        $this->notify('success', 'Gateway deletado!');
     }
 }
 
