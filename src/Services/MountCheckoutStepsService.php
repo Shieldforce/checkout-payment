@@ -5,7 +5,9 @@ namespace Shieldforce\CheckoutPayment\Services;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
+use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Rules\CpfCnpjRule;
@@ -119,6 +121,7 @@ class MountCheckoutStepsService
         $data = $data->toArray();
 
         $required = [
+            'people_type'  => $data['people_type'],
             'first_name'   => $data['first_name'],
             'last_name'    => $data['last_name'],
             'email'        => $data['email'],
@@ -130,6 +133,10 @@ class MountCheckoutStepsService
         $validator = Validator::make(
             $required,
             [
+                'people_type'   => [
+                    'required',
+                    Rule::enum(TypePeopleEnum::class)
+                ],
                 'first_name'   => [
                     'required',
                     'string',

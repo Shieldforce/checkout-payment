@@ -17,6 +17,7 @@ return new class extends Migration
                 ->on('cpp_checkouts')
                 ->cascadeOnDelete();
 
+            $table->integer('people_type')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->nullable();
