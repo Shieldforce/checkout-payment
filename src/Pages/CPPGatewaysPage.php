@@ -37,7 +37,7 @@ class CPPGatewaysPage extends Page implements HasForms
 
     public $record;
 
-    protected function getTableQuery()
+    protected function getTableQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return Checkout::query();
     }
