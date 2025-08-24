@@ -3,6 +3,7 @@
 namespace Shieldforce\CheckoutPayment\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Shieldforce\CheckoutPayment\Observers\GatewayObserver;
 
 class CppGateways extends Model
 {
@@ -22,4 +23,11 @@ class CppGateways extends Model
     protected $guarded = [];
 
     protected $casts = [];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::observe(GatewayObserver::class);
+    }
 }
