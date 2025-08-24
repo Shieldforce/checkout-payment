@@ -2,16 +2,25 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
+use App\Services\ApiCpfCnpjService;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\View;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
+use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
+use Shieldforce\CheckoutPayment\Models\CppCheckoutStep1;
+use Shieldforce\CheckoutPayment\Models\CppCheckoutStep2;
+use Shieldforce\CheckoutPayment\Models\CppCheckoutStep3;
+use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 
 class InternalCheckoutWizard extends Page implements HasForms
@@ -32,9 +41,16 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public array $data = [];
 
-    public ?string $name = null;
+    public ?string $first_name   = null;
+    public ?string $last_name    = null;
+    public ?string $email        = null;
+    public ?string $phone_number = null;
+    public ?string $document     = null;
 
-    public ?string $email = null;
+    public ?CppCheckoutStep1 $step1 = null;
+    public ?CppCheckoutStep2 $step2 = null;
+    public ?CppCheckoutStep3 $step3 = null;
+    public ?CppCheckoutStep4 $step4 = null;
 
     public $paymentMethod = null;
 
@@ -59,10 +75,18 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->checkout    = $cppCheckout;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
-        $this->email = request()->query('email') ?? null;
-        $this->name  = request()->query('first_name') ?? null;
+        $this->step1 = $this?->checkout?->step1()?->first();
+        $this->step2 = $this?->checkout?->step2()?->first();
+        $this->step3 = $this?->checkout?->step3()?->first();
+        $this->step4 = $this?->checkout?->step4()?->first();
 
-        $this->items = $this?->checkout?->step1()?->first()?->items
+        $this->first_name   = request()->query('email') ?? null;
+        $this->last_name    = request()->query('first_name') ?? null;
+        $this->email        = request()->query('first_name') ?? null;
+        $this->phone_number = request()->query('first_name') ?? null;
+        $this->document     = request()->query('first_name') ?? null;
+
+        $this->items = $this->step1?->items
             ? json_decode($this?->checkout?->step1()?->first()?->items, true)
             : [];
 
@@ -74,30 +98,78 @@ class InternalCheckoutWizard extends Page implements HasForms
         return 'internal-checkout-payment/{cppCheckout?}';
     }
 
-    public static function fieldWinzard()
+    public function fieldWinzard()
     {
         return [
-            Wizard\Step::make('Produtos')
+            Wizard\Step::make('Produtos do Carrinho')
+                ->visible($this->step1->visible ?? true)
                 ->schema([
                     \Filament\Forms\Components\View::make(
                         'checkout-payment::checkout.cart-products'
                     ),
                 ]),
-            Wizard\Step::make('Cliente')
+            Wizard\Step::make('Dados Pessoais')
+                ->visible($this->step2->visible ?? true)
                 ->schema([
 
-                    TextInput::make('name')
+                    Select::make('people_type')
+                        ->label("Física/Jurídica")
+                        ->autofocus()
+                        ->live()
+                        ->default(1)
+                        ->options(
+                            collect(TypePeopleEnum::cases())
+                                ->mapWithKeys(fn(TypePeopleEnum $type) => [
+                                    $type->value => $type->label()
+                                ])->toArray()
+                        )
+                        ->required(),
+
+                    TextInput::make('document')
+                        ->unique(ignoreRecord: true)
+                        ->label("CPF/CNPJ")
+                        ->live()
+                        ->placeholder(function (Get $get) {
+                            $people_type = $get("people_type");
+                            return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
+                        })
+                        ->mask(function (Get $get) {
+                            $people_type = $get("people_type");
+                            return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
+                        })
+                        ->maxLength(50)
                         ->required()
-                        ->label('Nome')
-                        ->default(fn($state, $get, $set, $livewire) => $livewire->name),
+                        ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state)),
+
+                    TextInput::make('first_name')
+                        ->required()
+                        ->label('Primeiro Nome')
+                        ->default(fn($state, $get, $set, $livewire) => $livewire->first_name),
+
+                    TextInput::make('last_name')
+                        ->required()
+                        ->label('Sobrenome')
+                        ->default(fn($state, $get, $set, $livewire) => $livewire->last_name),
 
                     TextInput::make('email')
                         ->required()
+                        ->label('E-mail')
                         ->email()
-                        ->label('Email')
                         ->default(fn($state, $get, $set, $livewire) => $livewire->email),
+
+                    TextInput::make('phone_number')
+                        ->required()
+                        ->label('Telefone/Celular')
+                        ->default(fn($state, $get, $set, $livewire) => $livewire->phone_number),
+
+                ]),
+            Wizard\Step::make('Dados de Endereço')
+                ->visible($this->step3->visible ?? true)
+                ->schema([
+
                 ]),
             Wizard\Step::make('Pagamento')
+                ->visible($this->step4->visible ?? true)
                 ->schema([
                     Select::make('paymentMethod')
                         ->options([
