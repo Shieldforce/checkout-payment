@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
+use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep2;
 
 class MountCheckoutStepsService
 {
@@ -106,22 +107,17 @@ class MountCheckoutStepsService
         return $this;
     }
 
-    public function step2(
-        $first_name,
-        $last_name,
-        $email,
-        $phone_number,
-        $document,
-        $visible = true,
-    )
+    public function step2(DtoStep2 $data)
     {
+        $data = $data->toArray();
+
         $required = [
-            'first_name'   => $first_name,
-            'last_name'    => $last_name,
-            'email'        => $email,
-            'phone_number' => $phone_number,
-            'document'     => $document,
-            'visible'      => $visible,
+            'first_name'   => $data["first_name"],
+            'last_name'    => $data["last_name"],
+            'email'        => $data["email"],
+            'phone_number' => $data["phone_number"],
+            'document'     => $data["document"],
+            'visible'      => $data["visible"],
         ];
 
         $validator = Validator::make(
@@ -169,16 +165,9 @@ class MountCheckoutStepsService
                 ->send();
         }
 
-        $this->cppCheckout->step1()->updateOrCreate([
+        $this->cppCheckout->step2()->updateOrCreate([
             'cpp_checkout_id' => $this->cppCheckout->id,
-        ], [
-            'first_name'   => $first_name,
-            'last_name'    => $last_name,
-            'email'        => $email,
-            'phone_number' => $phone_number,
-            'document'     => $document,
-            'visible'      => $visible,
-        ]);
+        ], $required);
 
         // Step 3 -> Endereço do cliente ---
         /*$address = $model->order->client->addresses()->where("main", 1)->first();
