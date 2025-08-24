@@ -8,15 +8,15 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('gateways', function (Blueprint $table) {
+        Schema::create('cpp_checkout_payment', function (Blueprint $table) {
             $table->id();
-
-            $table->string("name")
-                ->default(
-                    \Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum::mercado_pago->name
-                );
 
             $table->timestamps();
         });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('cpp_checkout_payment');
     }
 };
