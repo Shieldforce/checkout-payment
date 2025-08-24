@@ -100,4 +100,70 @@ enum TypeGatewayEnum: int
             ],
         };
     }
+
+    public function limit(): array
+    {
+        return match ($this) {
+            self::mercado_pago => [
+                'field_1' => 30,
+                'field_2' => 15,
+                'field_3' => 15,
+                'field_4' => 30,
+                'field_5' => 30,
+                'field_6' => 30,
+            ],
+            default => [
+                'field_1' => 30,
+                'field_2' => 30,
+                'field_3' => 30,
+                'field_4' => 30,
+                'field_5' => 30,
+                'field_6' => 30,
+            ],
+        };
+    }
+
+    public function tooltip(): array
+    {
+        return match ($this) {
+            self::mercado_pago => [
+                'field_1' => "Gateway",
+                'field_2' => "Campo sensível",
+                'field_3' => "Campo sensível",
+                'field_4' => "-",
+                'field_5' => "-",
+                'field_6' => "-",
+            ],
+            default => [
+                'field_1' => "-",
+                'field_2' => "-",
+                'field_3' => "-",
+                'field_4' => "-",
+                'field_5' => "-",
+                'field_6' => "-",
+            ],
+        };
+    }
+
+    public function description(): array
+    {
+        return match ($this) {
+            self::mercado_pago => [
+                'field_1' => "-",
+                'field_2' => "Campo sensível",
+                'field_3' => "Campo sensível",
+                'field_4' => "-",
+                'field_5' => "-",
+                'field_6' => "-",
+            ],
+            default => [
+                'field_1' => "-",
+                'field_2' => "-",
+                'field_3' => "-",
+                'field_4' => "-",
+                'field_5' => "-",
+                'field_6' => "-",
+            ],
+        };
+    }
 }
