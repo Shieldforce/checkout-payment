@@ -31,4 +31,9 @@ class CppCheckoutItem extends Model
             'cpp_checkout_id',
         );
     }
+
+    public function referencable()
+    {
+        return $this->morphTo();
+    }
 }

@@ -42,4 +42,9 @@ class CppCheckout extends Model
             "id",
         );
     }
+
+    public function referencable()
+    {
+        return $this->morphTo();
+    }
 }
