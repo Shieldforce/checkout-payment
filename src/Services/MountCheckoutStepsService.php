@@ -11,6 +11,7 @@ use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep2;
 use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep3;
+use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep4;
 
 class MountCheckoutStepsService
 {
@@ -114,12 +115,12 @@ class MountCheckoutStepsService
         $data = $data->toArray();
 
         $required = [
-            'first_name'   => $data["first_name"],
-            'last_name'    => $data["last_name"],
-            'email'        => $data["email"],
-            'phone_number' => $data["phone_number"],
-            'document'     => $data["document"],
-            'visible'      => $data["visible"],
+            'first_name'   => $data['first_name'],
+            'last_name'    => $data['last_name'],
+            'email'        => $data['email'],
+            'phone_number' => $data['phone_number'],
+            'document'     => $data['document'],
+            'visible'      => $data['visible'],
         ];
 
         $validator = Validator::make(
@@ -179,14 +180,14 @@ class MountCheckoutStepsService
         $data = $data->toArray();
 
         $required = [
-            'zipcode'    => $data["zipcode"],
-            'street'     => $data["street"],
-            'district'   => $data["district"],
-            'city'       => $data["city"],
-            'state'      => $data["state"],
-            'number'     => $data["number"],
-            'complement' => $data["complement"],
-            'visible'    => $data["visible"],
+            'zipcode'    => $data['zipcode'],
+            'street'     => $data['street'],
+            'district'   => $data['district'],
+            'city'       => $data['city'],
+            'state'      => $data['state'],
+            'number'     => $data['number'],
+            'complement' => $data['complement'],
+            'visible'    => $data['visible'],
         ];
 
         $validator = Validator::make(
@@ -243,6 +244,76 @@ class MountCheckoutStepsService
         }
 
         $this->cppCheckout->step3()->updateOrCreate([
+            'cpp_checkout_id' => $this->cppCheckout->id,
+        ], $required);
+
+        return $this;
+    }
+
+    public function step4(DtoStep4 $data)
+    {
+        $data = $data->toArray();
+
+        $required = [
+            'card_number'     => $data['card_number'],
+            'card_validate'   => $data['card_validate'],
+            'card_payer_name' => $data['card_payer_name'],
+            'base_qrcode'     => $data['base_qrcode'],
+            'url_qrcode'      => $data['url_qrcode'],
+            'url_billet'      => $data['url_billet'],
+            'visible'         => $data['visible'],
+        ];
+
+        $validator = Validator::make(
+            $required,
+            [
+                'card_number'     => [
+                    'nullable',
+                    'string'
+                ],
+                'card_validate'   => [
+                    'nullable',
+                    'string'
+                ],
+                'card_payer_name' => [
+                    'nullable',
+                    'string'
+                ],
+                'base_qrcode'     => [
+                    'nullable',
+                    'string'
+                ],
+                'url_qrcode'      => [
+                    'nullable',
+                    'url'
+                ],
+                'url_billet'      => [
+                    'nullable',
+                    'url'
+                ],
+                'visible'         => [
+                    'nullable',
+                    'boolean',
+                ],
+            ]
+        );
+
+        if ($validator->fails()) {
+            $errorsHtml = '<ul>';
+            foreach ($validator->errors()->all() as $error) {
+                $errorsHtml .= "<li><strong>{$error}</strong></li>";
+            }
+            $errorsHtml .= '</ul>';
+
+            return Notification::make('errors')
+                ->persistent()
+                ->danger()
+                ->title('Erro ao gerar checkout!')
+                ->body($errorsHtml)
+                ->send();
+        }
+
+        $this->cppCheckout->step4()->updateOrCreate([
             'cpp_checkout_id' => $this->cppCheckout->id,
         ], $required);
 
