@@ -131,7 +131,6 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ->required(),
 
                         TextInput::make('document')
-                            ->unique(ignoreRecord: true)
                             ->label("CPF/CNPJ")
                             ->reactive()
                             ->placeholder(function (Get $get) {
@@ -143,8 +142,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
                             })
                             ->maxLength(50)
-                            ->required()
-                            ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state)),
+                            ->required(),
 
                         TextInput::make('phone_number')
                             ->required()
