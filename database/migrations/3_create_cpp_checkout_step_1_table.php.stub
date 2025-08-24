@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::create('cpp_checkout_step_1', function (Blueprint $table) {
@@ -14,7 +13,8 @@ return new class extends Migration
             $table->unsignedBigInteger('cpp_checkout_id');
             $table->foreign('cpp_checkout_id')
                 ->references('id')
-                ->on('cpp_checkouts');
+                ->on('cpp_checkouts')
+                ->cascadeOnDelete();
 
             $table->json('items');
 

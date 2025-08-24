@@ -14,7 +14,8 @@ return new class extends Migration
             $table->unsignedBigInteger('cpp_checkout_id');
             $table->foreign('cpp_checkout_id')
                 ->references('id')
-                ->on('cpp_checkouts');
+                ->on('cpp_checkouts')
+                ->cascadeOnDelete();
 
             $table->string('zipcode')->nullable();
             $table->text('street')->nullable();
