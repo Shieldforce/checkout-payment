@@ -39,7 +39,7 @@ class ManagerFieldService
                 return $name ? TypeGatewayEnum::from($name)
                     ->visible()[$nameField] : false;
             })
-            ->extraInputAttributes(['x-ref' => "apiKeyInput-{$nameField}"])
+            ->extraInputAttributes(['x-ref' => "apiKeyInput_{$nameField}"])
             ->formatStateUsing(fn ($state) => $state ? Crypt::decrypt($state) : null)
             ->suffixAction(
                 Action::make('copy')
@@ -53,7 +53,7 @@ class ManagerFieldService
                             ->send()
                     )
                     ->extraAttributes([
-                        'x-on:click.stop' => 'navigator.clipboard.writeText($refs.apiKeyInput-'.$nameField.'.value)',
+                        'x-on:click.stop' => "navigator.clipboard.writeText(\$refs.apiKeyInput_{$nameField}.value)",
                     ])
             );
     }
