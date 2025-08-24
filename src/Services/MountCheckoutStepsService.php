@@ -139,4 +139,96 @@ class MountCheckoutStepsService
 
         return $validator->validated();
     }
+
+    public function step2(
+        $first_name,
+        $last_name,
+        $email,
+        $phone_number,
+        $document,
+        $visible = true,
+    )
+    {
+        $required = [
+            'first_name'   => $first_name,
+            'last_name'    => $last_name,
+            'email'        => $email,
+            'phone_number' => $phone_number,
+            'document'     => $document,
+            'visible'      => $visible,
+        ];
+
+        $validator = Validator::make(
+            $required,
+            [
+                'first_name'   => [
+                    'required',
+                    'string',
+                ],
+                'last_name'    => [
+                    'required',
+                    'string',
+                ],
+                'email'        => [
+                    'required',
+                    'email',
+                ],
+                'phone_number' => [
+                    'required',
+                    'string',
+                ],
+                'document'     => [
+                    'required',
+                    'string',
+                ],
+                'visible'      => [
+                    'nullable',
+                    'boolean',
+                ],
+            ]
+        );
+
+        if ($validator->fails()) {
+            $errorsHtml = '<ul>';
+            foreach ($validator->errors()->all() as $error) {
+                $errorsHtml .= "<li><strong>{$error}</strong></li>";
+            }
+            $errorsHtml .= '</ul>';
+
+            return Notification::make('errors')
+                ->persistent()
+                ->danger()
+                ->title('Erro ao gerar checkout!')
+                ->body($errorsHtml)
+                ->send();
+        }
+
+        $this->cppCheckout->step1()->updateOrCreate([
+            'cpp_checkout_id' => $this->cppCheckout->id,
+        ], [
+            'first_name'   => $first_name,
+            'last_name'    => $last_name,
+            'email'        => $email,
+            'phone_number' => $phone_number,
+            'document'     => $document,
+            'visible'      => $visible,
+        ]);
+
+        // Step 3 -> Endereço do cliente ---
+        /*$address = $model->order->client->addresses()->where("main", 1)->first();
+        $cppCheckout->step3()->updateOrCreate([
+            "cpp_checkout_id" => $cppCheckout->id,
+        ], [
+            "zipcode"    => $address->zipcode,
+            "street"     => $address->street,
+            "district"   => $address->district,
+            "city"       => $address->city,
+            "state"      => $address->state,
+            "number"     => $address->number,
+            "complement" => $address->complement,
+            'visible'    => true,
+        ]);*/
+
+        return $validator->validated();
+    }
 }
