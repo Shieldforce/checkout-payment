@@ -3,7 +3,6 @@
 namespace Shieldforce\CheckoutPayment\Pages;
 
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -53,7 +52,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn(Action $action) => $action
+                fn (Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
@@ -94,8 +93,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending'   => 'Pending',
-                    'paid'      => 'Paid',
+                    'pending' => 'Pending',
+                    'paid' => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -124,13 +123,14 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                             ->live()
                             ->options(function () {
                                 return collect(TypeGatewayEnum::cases())
-                                    ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+                                    ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
                                     ->toArray();
                             })
                             ->required(),
                         TextInput::make('field_1')
                             ->label(function (Get $get, $state) {
-                                return TypeGatewayEnum::from($state)->labelFields("field_1");
+                                return TypeGatewayEnum::from($state)
+                                    ->labelFields('field_1');
                             })
                             ->required(),
                         TextInput::make('field_2')
@@ -160,8 +160,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ])
                 ->action(function (array $data) {
                     $active = $data['active'];
-                    unset($data["active"]);
-                    CppGateways::updateOrCreate($data, ["active" => $active]);
+                    unset($data['active']);
+                    CppGateways::updateOrCreate($data, ['active' => $active]);
                 }),
         ];
     }

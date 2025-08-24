@@ -13,10 +13,14 @@ enum TypeGatewayEnum: int
         };
     }
 
-    public static function labelFields($fieldName): string
+    public static function labelFields(?string $fieldName = null): string
     {
+        if(!isset($fieldName)) {
+            return 'Campo';
+        }
+
         $return = [
-            "field_1" => "TOKEN",
+            'field_1' => 'TOKEN',
         ];
 
         return $return[$fieldName] ?? $fieldName;
