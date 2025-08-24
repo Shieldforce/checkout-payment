@@ -4,9 +4,9 @@ namespace Shieldforce\CheckoutPayment\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Checkout extends Model
+class CppGateways extends Model
 {
-    protected $table = 'cpp_checkouts';
+    protected $table = 'cpp_gateways';
 
     protected $fillable = [
         "name",

@@ -14,7 +14,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
-use Shieldforce\CheckoutPayment\Models\Checkout;
+use Shieldforce\CheckoutPayment\Models\CppGateways;
 
 class CPPGatewaysPage extends Page implements HasForms, HasTable
 {
@@ -40,7 +40,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
     protected function getTableQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return Checkout::query();
+        return CppGateways::query();
     }
 
     protected function getTableColumns(): array
@@ -101,7 +101,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             $this->record->update($data);
         }
         else {
-            $this->record = Checkout::create($data);
+            $this->record = CppGateways::create($data);
         }
 
         $this->notify('success', 'Gateway salvo com sucesso!');
@@ -110,13 +110,13 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
     public function edit($recordId)
     {
-        $this->record = Checkout::findOrFail($recordId);
+        $this->record = CppGateways::findOrFail($recordId);
         $this->form->fill($this->record->toArray());
     }
 
     public function delete($recordId)
     {
-        Checkout::findOrFail($recordId)->delete();
+        CppGateways::findOrFail($recordId)->delete();
         $this->notify('success', 'Gateway deletado!');
     }
 }
