@@ -52,11 +52,14 @@ class MountCheckoutStepsService
             "quantity",
         ];
 
-        foreach ($fieldsRequired as $field) {
-            if (!array_key_exists($field, $items)) {
-                throw new InvalidArgumentException("O campo '{$field}' é obrigatório.");
-            }
-        }
+        $validated = validator(
+            ['items' => $items],
+            [
+                'items'         => 'required|array',
+                'items.*.name'  => 'required|string',
+                'items.*.email' => 'required|email',
+            ]
+        )->validate();
 
         $this->cppCheckout->step1()->updateOrCreate([
             "cpp_checkout_id" => $this->cppCheckout->id,
