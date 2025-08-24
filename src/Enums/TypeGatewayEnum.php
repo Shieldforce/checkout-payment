@@ -78,4 +78,26 @@ enum TypeGatewayEnum: int
             ],
         };
     }
+
+    public function password(): array
+    {
+        return match ($this) {
+            self::mercado_pago => [
+                'field_1' => true,
+                'field_2' => true,
+                'field_3' => false,
+                'field_4' => false,
+                'field_5' => false,
+                'field_6' => false,
+            ],
+            default => [
+                'field_1' => false,
+                'field_2' => false,
+                'field_3' => false,
+                'field_4' => false,
+                'field_5' => false,
+                'field_6' => false,
+            ],
+        };
+    }
 }

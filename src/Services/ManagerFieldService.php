@@ -18,6 +18,12 @@ class ManagerFieldService
                 return $name ? TypeGatewayEnum::from($name)
                     ->labelFields()[$nameField] : 'Campo 1';
             })
+            ->password(function (Get $get, $state) use ($nameField) {
+                $name = $get('name');
+
+                return $name ? TypeGatewayEnum::from($name)
+                                   ->password()[$nameField] : false;
+            })
             ->reactive()
             ->required(function (Get $get, $state) use ($nameField) {
                 $name = $get('name');
@@ -29,7 +35,7 @@ class ManagerFieldService
                 $name = $get('name');
 
                 return $name ? TypeGatewayEnum::from($name)
-                                   ->visible()[$nameField] : false;
+                                   ->visible()[$nameField] : true;
             });
     }
 }
