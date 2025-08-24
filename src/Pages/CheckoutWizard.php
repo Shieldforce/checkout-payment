@@ -7,6 +7,7 @@ use Filament\Forms;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Shieldforce\CheckoutPayment\CheckoutPaymentPlugin;
 
 class CheckoutWizard extends Page implements Forms\Contracts\HasForms
 {
@@ -14,6 +15,7 @@ class CheckoutWizard extends Page implements Forms\Contracts\HasForms
 
     protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
     protected static string  $view            = 'checkout-payment::pages.checkout-wizard';
+    protected static ?string $navigationGroup = 'Checkout';
     protected static ?string $label           = "Página de Pagamento";
     protected static ?string $navigationLabel = "Página de Pagamento";
 
@@ -24,11 +26,12 @@ class CheckoutWizard extends Page implements Forms\Contracts\HasForms
     public ?int $checkoutId = null;
 
     /**
-     * @param string|null $navigationGroup
+     * @return string|null
      */
-    public static function setNavigationGroup(): void
+    public static function getNavigationGroup(): ?string
     {
-        self::$navigationGroup = "teste";
+        $plugin = new CheckoutPaymentPlugin();
+        return $plugin->getLabelGroupSidebar();
     }
 
     public function mount(?int $checkoutId = null): void
