@@ -79,7 +79,9 @@ class InternalCheckoutWizard extends Page implements HasForms
         return [
             Wizard\Step::make('Produtos')
                 ->schema([
-                    \Filament\Forms\Components\View::make('checkout-payment::checkout.cart-products'),
+                    \Filament\Forms\Components\View::make(
+                        'checkout-payment::checkout.cart-products'
+                    ),
                 ]),
             Wizard\Step::make('Cliente')
                 ->schema([
