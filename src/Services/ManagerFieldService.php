@@ -52,9 +52,9 @@ class ManagerFieldService
             })
             ->description(function ($state, $record) use ($fieldName) {
                 return TypeGatewayEnum::from($record->name)->description()[$fieldName];
-            })
+            })/*
             ->visible(function ($state, $record) use ($fieldName) {
                 return TypeGatewayEnum::from($record->name)->visible()[$fieldName];
-            });
+            })*/;
     }
 }
