@@ -40,22 +40,10 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
     public function mount(?int $checkoutId = null): void {}
 
-    /*public function table(Table $table): Table
+    public function table(Table $table): Table
     {
-        return $table
-            ->query($this->getTableQuery())
-            ->columns($this->getTableColumns())
-            ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
-            ->filtersFormColumns(3)
-            ->filtersTriggerAction(
-                fn(Action $action) => $action
-                    ->button()
-                    ->label('Filtrar...'),
-            )
-            ->bulkActions($this->getTableBulkActions())
-            ->actions($this->getTableActions())
-            ->headerActions($this->getHeaderActions());
-    }*/
+        return $this->getTable();
+    }
 
     public static function getNavigationGroup(): ?string
     {
