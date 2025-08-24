@@ -18,7 +18,7 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
-use Filament\Actions\Action as ActionAction;
+use Filament\Tables\Actions\Action as TableAction;
 
 class CPPGatewaysPage extends Page implements HasForms, HasTable
 {
@@ -111,7 +111,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     protected function getHeaderActions(): array
     {
         return [
-            ActionAction::make("create")
+            TableAction::make('create')
                 ->label('Adicionar')
                 ->form([
                     TextInput::make('name')->required(),
@@ -123,7 +123,9 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                     TextInput::make('field_6')->required(),
                     Toggle::make('active')->required(),
                 ])
-                ->action(function () {}),
+                ->action(function (array $data) {
+                    CppGateways::create($data);
+                }),
         ];
     }
 
