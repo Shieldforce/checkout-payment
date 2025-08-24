@@ -6,7 +6,7 @@
                         "https://static.vecteezy.com/system/resources/previews/028/047/017/non_2x/3d-check-product-free-png.png" }}"
                 alt="{{ $item["name"] }}"
                 class="w-16 h-16 object-cover rounded-md"
-                style="margin-right: 20px;border-right: 1px dashed #cecece"
+                style="margin-right: 10px;border-right: 1px dashed #cecece;padding-right: 10px;"
             >
 
             <div class="flex flex-col">
