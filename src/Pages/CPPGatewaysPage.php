@@ -39,16 +39,23 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
     protected static ?string $title = 'Lista de Gateways';
 
-    public function mount(?int $checkoutId = null): void
+    public function mount(?int $checkoutId = null): void {}
+
+    public function table(Table $table): Table
     {
-        $this->table
-            ->filters(self::fieldsFilter(), layout: FiltersLayout::AboveContentCollapsible)
+        return $table
+            ->query($this->getTableQuery())
+            ->columns($this->getTableColumns())
+            ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn (Action $action) => $action
+                fn(Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
-            );
+            )
+            ->bulkActions($this->getTableBulkActions())
+            ->actions($this->getTableActions())
+            ->headerActions($this->getHeaderActions());
     }
 
     public static function getNavigationGroup(): ?string
@@ -84,8 +91,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending' => 'Pending',
-                    'paid' => 'Paid',
+                    'pending'   => 'Pending',
+                    'paid'      => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -116,5 +123,10 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                     Toggle::make('active')->required(),
                 ]),
         ];
+    }
+
+    protected function getTableBulkActions(): array
+    {
+        return [];
     }
 }
