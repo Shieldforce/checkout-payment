@@ -8,10 +8,10 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('checkout_payment_table', function (Blueprint $table) {
+        Schema::create('gateways', function (Blueprint $table) {
             $table->id();
 
-            // add fields
+            $table->string("")
 
             $table->timestamps();
         });

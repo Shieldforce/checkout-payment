@@ -145,7 +145,8 @@ class CheckoutPaymentServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_checkout-payment_table',
+            '1_create_gateways_table',
+            '2_create_checkout_payment_table',
         ];
     }
 
