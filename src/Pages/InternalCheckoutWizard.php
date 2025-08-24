@@ -2,7 +2,7 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
-use App\Services\ApiCpfCnpjService;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -23,6 +23,7 @@ use Shieldforce\CheckoutPayment\Models\CppCheckoutStep2;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep3;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
+use Shieldforce\CheckoutPayment\Services\BuscarViaCepService;
 
 class InternalCheckoutWizard extends Page implements HasForms
 {
@@ -42,6 +43,11 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public array $data = [];
 
+    public ?CppCheckoutStep1 $step1 = null;
+    public ?CppCheckoutStep2 $step2 = null;
+    public ?CppCheckoutStep3 $step3 = null;
+    public ?CppCheckoutStep4 $step4 = null;
+
     public ?string $people_type  = null;
     public ?string $first_name   = null;
     public ?string $last_name    = null;
@@ -49,10 +55,13 @@ class InternalCheckoutWizard extends Page implements HasForms
     public ?string $phone_number = null;
     public ?string $document     = null;
 
-    public ?CppCheckoutStep1 $step1 = null;
-    public ?CppCheckoutStep2 $step2 = null;
-    public ?CppCheckoutStep3 $step3 = null;
-    public ?CppCheckoutStep4 $step4 = null;
+    public ?string $zipcode    = null;
+    public ?string $street     = null;
+    public ?string $district   = null;
+    public ?string $city       = null;
+    public ?string $state      = null;
+    public ?string $number     = null;
+    public ?string $complement = null;
 
     public int $startOnStep = 1;
 
@@ -79,11 +88,13 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->checkout    = $cppCheckout;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
+        // Step 1 --
         $this->step1 = $this?->checkout?->step1()?->first();
         $this->items = $this->step1?->items
             ? json_decode($this?->checkout?->step1()?->first()?->items, true)
             : [];
 
+        // Step 2 ---
         $this->step2        = $this?->checkout?->step2()?->first();
         $this->people_type  = $this->step2->people_type ?? null;
         $this->first_name   = $this->step2->first_name ?? null;
@@ -92,7 +103,16 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->phone_number = $this->step2->phone_number ?? null;
         $this->document     = $this->step2->document ?? null;
 
-        $this->step3 = $this?->checkout?->step3()?->first();
+        // Step 3 ---
+        $this->step3      = $this?->checkout?->step3()?->first();
+        $this->zipcode    = $this->step3->zipcode;
+        $this->street     = $this->step3->street;
+        $this->district   = $this->step3->district;
+        $this->city       = $this->step3->city;
+        $this->state      = $this->step3->state;
+        $this->number     = $this->step3->number;
+        $this->complement = $this->step3->complement;
+
         $this->step4 = $this?->checkout?->step4()?->first();
 
         $this->startOnStep = $this->checkout->startOnStep;
@@ -132,6 +152,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                         $type->value => $type->label()
                                     ])->toArray()
                             )
+                            ->afterStateUpdated(fn(Set $set) => $set("document", null))
                             ->required(),
 
                         TextInput::make('document')
@@ -180,6 +201,79 @@ class InternalCheckoutWizard extends Page implements HasForms
             Wizard\Step::make('Dados de Endereço')
                 ->visible($this->step3->visible ?? true)
                 ->schema([
+
+                    Grid::make()->schema([
+
+                        TextInput::make('zipcode')
+                            ->label("CEP")
+                            ->suffixAction(
+                                Action::make('viaCep')
+                                    ->label("Buscar CEP")
+                                    ->icon('heroicon-m-map-pin')
+                                    //->requiresConfirmation()
+                                    ->action(function (Set $set, $state, Get $get, Component $livewire) {
+                                        $data = BuscarViaCepService::getData((string)$state);
+
+                                        if (isset($data["cep"])) {
+                                            $set('street', $data["logradouro"]);
+                                            $set('complement', $data["complemento"]);
+                                            $set('district', $data["bairro"]);
+                                            $set('city', $data["localidade"]);
+                                            $set('state', $data["uf"]);
+                                        }
+                                    })
+                            )
+                            ->hint("Busca de CEP")
+                            ->afterStateUpdated(function (Set $set, Get $get, Component $livewire) {
+                                $data = BuscarViaCepService::getData((string)$get("zipcode"));
+
+                                if (isset($data["cep"])) {
+                                    $set('street', $data["logradouro"]);
+                                    $set('complement', $data["complemento"]);
+                                    $set('district', $data["bairro"]);
+                                    $set('city', $data["localidade"]);
+                                    $set('state', $data["uf"]);
+                                }
+                            })
+                            ->mask(function (Get $get) {
+                                return "99999-999";
+                            })
+                            ->debounce(1000)
+                            ->required(),
+
+                        TextInput::make('street')
+                            ->label('Logradouro')
+                            ->required()
+                            ->maxLength(255),
+
+                    ]),
+
+                    Grid::make()->schema([
+
+                        TextInput::make('number')
+                            ->label('Número')
+                            ->maxLength(20),
+
+                        TextInput::make('district')
+                            ->label('Bairro')
+                            ->maxLength(255),
+
+                        TextInput::make('city')
+                            ->label('Cidade')
+                            ->required()
+                            ->maxLength(255),
+
+                        TextInput::make('state')
+                            ->label('UF')
+                            ->required()
+                            ->maxLength(2),
+
+                    ]),
+
+                    TextInput::make('complement')
+                        ->label('Complemento')
+                        ->maxLength(255)
+                        ->columnSpanFull(),
 
                 ]),
             Wizard\Step::make('Pagamento')
