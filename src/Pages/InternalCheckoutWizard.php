@@ -2,17 +2,18 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 
-class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
+class InternalCheckoutWizard extends Page implements HasForms
 {
-    use Forms\Concerns\InteractsWithForms;
+    use InteractsWithForms;
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 

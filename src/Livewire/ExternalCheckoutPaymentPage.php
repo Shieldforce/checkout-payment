@@ -3,13 +3,17 @@
 namespace Shieldforce\CheckoutPayment\Livewire;
 
 use Filament\Forms\Components\Wizard;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
 
-class ExternalCheckoutPaymentPage extends Page
+class ExternalCheckoutPaymentPage extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     protected static string $view = 'checkout-payment::livewire.external-checkout-payment-page';
 
     protected static ?string $label = 'Checkout';
