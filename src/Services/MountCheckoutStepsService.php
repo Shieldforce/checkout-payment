@@ -10,6 +10,7 @@ use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep2;
+use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep3;
 
 class MountCheckoutStepsService
 {
@@ -43,7 +44,7 @@ class MountCheckoutStepsService
 
     public function step1(
         array $items,
-        bool $visible = true,
+        bool  $visible = true,
     )
     {
         $validator = Validator::make(
@@ -170,20 +171,80 @@ class MountCheckoutStepsService
             'cpp_checkout_id' => $this->cppCheckout->id,
         ], $required);
 
-        // Step 3 -> Endereço do cliente ---
-        /*$address = $model->order->client->addresses()->where("main", 1)->first();
-        $cppCheckout->step3()->updateOrCreate([
-            "cpp_checkout_id" => $cppCheckout->id,
-        ], [
-            "zipcode"    => $address->zipcode,
-            "street"     => $address->street,
-            "district"   => $address->district,
-            "city"       => $address->city,
-            "state"      => $address->state,
-            "number"     => $address->number,
-            "complement" => $address->complement,
-            'visible'    => true,
-        ]);*/
+        return $this;
+    }
+
+    public function step3(DtoStep3 $data)
+    {
+        $data = $data->toArray();
+
+        $required = [
+            'zipcode'    => $data["zipcode"],
+            'street'     => $data["street"],
+            'district'   => $data["district"],
+            'city'       => $data["city"],
+            'state'      => $data["state"],
+            'number'     => $data["number"],
+            'complement' => $data["complement"],
+            'visible'    => $data["visible"],
+        ];
+
+        $validator = Validator::make(
+            $required,
+            [
+                'zipcode'    => [
+                    'required',
+                    'string',
+                ],
+                'street'     => [
+                    'required',
+                    'string',
+                ],
+                'district'   => [
+                    'required',
+                    'string',
+                ],
+                'city'       => [
+                    'required',
+                    'string',
+                ],
+                'state'      => [
+                    'required',
+                    'string',
+                ],
+                'number'     => [
+                    'nullable',
+                    'string',
+                ],
+                'complement' => [
+                    'nullable',
+                    'string',
+                ],
+                'visible'    => [
+                    'nullable',
+                    'boolean',
+                ],
+            ]
+        );
+
+        if ($validator->fails()) {
+            $errorsHtml = '<ul>';
+            foreach ($validator->errors()->all() as $error) {
+                $errorsHtml .= "<li><strong>{$error}</strong></li>";
+            }
+            $errorsHtml .= '</ul>';
+
+            return Notification::make('errors')
+                ->persistent()
+                ->danger()
+                ->title('Erro ao gerar checkout!')
+                ->body($errorsHtml)
+                ->send();
+        }
+
+        $this->cppCheckout->step3()->updateOrCreate([
+            'cpp_checkout_id' => $this->cppCheckout->id,
+        ], $required);
 
         return $this;
     }
