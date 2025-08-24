@@ -124,14 +124,13 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                             ->live()
                             ->options(function () {
                                 return collect(TypeGatewayEnum::cases())
-                                    ->mapWithKeys(fn($case) => [$case->name => $case->label()])
+                                    ->mapWithKeys(fn($case) => [$case->value => $case->label()])
                                     ->toArray();
                             })
                             ->required(),
                         TextInput::make('field_1')
                             ->label(function (Get $get, $state) {
-                                dd($state);
-                                return "da";
+                                return TypeGatewayEnum::from($state)->labelFields("field_1");
                             })
                             ->required(),
                         TextInput::make('field_2')
