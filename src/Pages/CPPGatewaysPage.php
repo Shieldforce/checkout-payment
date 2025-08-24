@@ -7,6 +7,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -46,8 +47,13 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->columns($this->getTableColumns())
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
+            /*->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filtrar...'),
+            )
             ->bulkActions($this->getTableBulkActions())
-            ->actions($this->getTableActions())
+            ->actions($this->getTableActions())*/
             ->headerActions($this->getHeaderActions());
     }
 
