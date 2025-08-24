@@ -145,7 +145,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ->label("Física/Jurídica")
                             ->autofocus()
                             ->live()
-                            ->default($this->step2->people_type ?? null)
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->people_type)
                             ->options(
                                 collect(TypePeopleEnum::cases())
                                     ->mapWithKeys(fn(TypePeopleEnum $type) => [
@@ -158,7 +158,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         TextInput::make('document')
                             ->label("CPF/CNPJ")
                             ->reactive()
-                            ->default($this->step2->document ?? null)
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->document)
                             ->placeholder(function (Get $get) {
                                 $people_type = $get("people_type");
                                 return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
@@ -243,11 +243,13 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ->required(),
 
                         TextInput::make('street')
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->street)
                             ->label('Logradouro')
                             ->required()
                             ->maxLength(255),
 
                         TextInput::make('number')
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->number)
                             ->label('Número')
                             ->maxLength(20),
 
@@ -256,15 +258,18 @@ class InternalCheckoutWizard extends Page implements HasForms
                     Grid::make()->schema([
 
                         TextInput::make('district')
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->district)
                             ->label('Bairro')
                             ->maxLength(255),
 
                         TextInput::make('city')
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->city)
                             ->label('Cidade')
                             ->required()
                             ->maxLength(255),
 
                         TextInput::make('state')
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->state)
                             ->label('UF')
                             ->required()
                             ->maxLength(2),
@@ -272,6 +277,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ])->columns(3),
 
                     TextInput::make('complement')
+                        ->default(fn($state, $get, $set, $livewire) => $livewire->complement)
                         ->label('Complemento')
                         ->maxLength(255)
                         ->columnSpanFull(),
