@@ -22,20 +22,6 @@ class CheckoutPaymentPlugin implements Plugin
         $panel
             ->pages([
                 \Shieldforce\CheckoutPayment\Pages\CheckoutWizard::class,
-            ])
-            ->navigationItems([
-                NavigationItem::make('form_checkout_payment')
-                    ->visible(function () {
-                        return true;
-                    })
-                    ->label('Tela de Pagemnto')
-                    ->url(fn(): string => CheckoutWizard::getUrl(
-                        parameters: [
-                            'checkoutId' => 1,
-                        ]
-                    ))
-                    ->icon('heroicon-o-arrow-uturn-right')
-                    ->group('Checkout Payment'),
             ]);
     }
 

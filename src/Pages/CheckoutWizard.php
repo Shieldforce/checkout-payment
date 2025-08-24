@@ -12,12 +12,27 @@ class CheckoutWizard extends Page implements Forms\Contracts\HasForms
 {
     use Forms\Concerns\InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
-    protected static string  $view           = 'checkout-payment::pages.checkout-wizard';
+    protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
+    protected static string  $view            = 'checkout-payment::pages.checkout-wizard';
+    protected static ?string $navigationGroup = 'Checkout Payment';
+    protected static ?string $label           = "Página de Pagamento";
+    protected static ?string $navigationLabel = "Página de Pagamento";
 
     public $name;
     public $email;
     public $paymentMethod;
+
+    public ?int $checkoutId = null;
+
+    public function mount(int $checkoutId): void
+    {
+        $this->checkoutId = $checkoutId;
+    }
+
+    public static function getSlug(): string
+    {
+        return 'checkout-payment/{checkoutId}';
+    }
 
     protected function getFormSchema(): array
     {
