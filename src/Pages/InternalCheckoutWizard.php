@@ -113,8 +113,6 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->number     = $this->step3->number;
         $this->complement = $this->step3->complement;
 
-        dd($this->step3);
-
         $this->step4 = $this?->checkout?->step4()?->first();
 
         $this->startOnStep = $this->checkout->startOnStep;
@@ -208,6 +206,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                         TextInput::make('zipcode')
                             ->label("CEP")
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->zipcode)
                             ->suffixAction(
                                 Action::make('viaCep')
                                     ->label("Buscar CEP")
