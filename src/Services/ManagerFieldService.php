@@ -36,7 +36,7 @@ class ManagerFieldService
                 $name = $get('name');
 
                 return $name ? TypeGatewayEnum::from($name)
-                    ->visible()[$nameField] : true;
+                    ->visible()[$nameField] : false;
             })
             ->suffixAction(
                 Action::make('copy')

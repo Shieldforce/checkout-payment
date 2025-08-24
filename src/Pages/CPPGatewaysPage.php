@@ -52,7 +52,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn (Action $action) => $action
+                fn(Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
@@ -94,8 +94,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending' => 'Pending',
-                    'paid' => 'Paid',
+                    'pending'   => 'Pending',
+                    'paid'      => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -106,7 +106,11 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     protected function getTableActions(): array
     {
         return [
-            EditAction::make(),
+            EditAction::make()
+                ->form($this->fields())
+                ->action(function ($record) {
+                    //
+                }),
             DeleteAction::make(),
         ];
     }
@@ -116,44 +120,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         return [
             \Filament\Actions\Action::make('create')
                 ->label('Adicionar')
-                ->form([
-                    Select::make('name')
-                        ->label('Gateway')
-                        ->live()
-                        ->options(function () {
-                            return collect(TypeGatewayEnum::cases())
-                                ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
-                                ->toArray();
-                        })
-                        ->columnSpanFull()
-                        ->required(),
-
-                    Grid::make()->schema([
-
-                        ManagerFieldService::TextInput('field_1'),
-                        ManagerFieldService::TextInput('field_2'),
-
-                    ])->columns(2),
-                    Grid::make()->schema([
-
-                        ManagerFieldService::TextInput('field_3'),
-                        ManagerFieldService::TextInput('field_4'),
-                        ManagerFieldService::TextInput('field_5'),
-
-                    ])->columns(3),
-                    Grid::make()->schema([
-
-                        ManagerFieldService::TextInput('field_6'),
-
-                    ])->columns(3),
-
-                    Toggle::make('active')
-                        ->label('Ativo')
-                        ->default(true)
-                        ->hint('Ao ativar esse gateway, os outro serão desativados.')
-                        ->required(),
-
-                ])
+                ->form($this->fields())
                 ->action(function (array $data) {
                     $active = $data['active'];
                     unset($data['active']);
@@ -165,6 +132,48 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
                     CppGateways::updateOrCreate($data, ['active' => $active]);
                 }),
+        ];
+    }
+
+    public function fields(): array
+    {
+        return [
+            Select::make('name')
+                ->label('Gateway')
+                ->live()
+                ->options(function () {
+                    return collect(TypeGatewayEnum::cases())
+                        ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+                        ->toArray();
+                })
+                ->columnSpanFull()
+                ->required(),
+
+            Grid::make()->schema([
+
+                ManagerFieldService::TextInput('field_1'),
+                ManagerFieldService::TextInput('field_2'),
+
+            ])->columns(2),
+            Grid::make()->schema([
+
+                ManagerFieldService::TextInput('field_3'),
+                ManagerFieldService::TextInput('field_4'),
+                ManagerFieldService::TextInput('field_5'),
+
+            ])->columns(3),
+            Grid::make()->schema([
+
+                ManagerFieldService::TextInput('field_6'),
+
+            ])->columns(3),
+
+            Toggle::make('active')
+                ->label('Ativo')
+                ->default(true)
+                ->hint('Ao ativar esse gateway, os outro serão desativados.')
+                ->required(),
+
         ];
     }
 
