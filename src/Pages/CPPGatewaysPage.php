@@ -123,12 +123,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
                     $record->update($data);
                 }),
-            DeleteAction::make()
-                ->modelLabel('Deletar gateway')
-                ->form($this->fields())
-                ->action(function (array $data, $record) {
-                    $record->delete();
-                }),
+            DeleteAction::make(),
         ];
     }
 
