@@ -18,6 +18,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
@@ -52,7 +53,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn(Action $action) => $action
+                fn (Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
@@ -65,8 +66,6 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         return config()->get('checkout-payment.sidebar_group');
     }
 
-    public $record;
-
     protected function getTableQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return CppGateways::query();
@@ -77,20 +76,20 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         return [
             TextColumn::make('id')->sortable(),
             TextColumn::make('name')
-                ->label("Gateway"),
+                ->label('Gateway'),
 
             TextColumn::make('field_1')
-                ->label(fn($record) => TypeGatewayEnum::from($record->name)->labelFields()["field_1"]),
+                ->label(fn (Model $record) => TypeGatewayEnum::from($record->name)->labelFields()['field_1']),
             TextColumn::make('field_2')
-                ->label("Campo 2"),
+                ->label('Campo 2'),
             TextColumn::make('field_3')
-                ->label("Campo 3"),
+                ->label('Campo 3'),
             TextColumn::make('field_4')
-                ->label("Campo 4"),
+                ->label('Campo 4'),
             TextColumn::make('field_5')
-                ->label("Campo 5"),
+                ->label('Campo 5'),
             TextColumn::make('field_6')
-                ->label("Campo 6"),
+                ->label('Campo 6'),
 
             ToggleColumn::make('active')
                 ->label('Ativo'),
@@ -104,8 +103,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending'   => 'Pending',
-                    'paid'      => 'Paid',
+                    'pending' => 'Pending',
+                    'paid' => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -132,7 +131,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                         ->live()
                         ->options(function () {
                             return collect(TypeGatewayEnum::cases())
-                                ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+                                ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
                                 ->toArray();
                         })
                         ->columnSpanFull()
