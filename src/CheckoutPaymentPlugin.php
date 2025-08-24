@@ -4,7 +4,9 @@ namespace Shieldforce\CheckoutPayment;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Illuminate\Support\Facades\Route;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
+use Shieldforce\CheckoutPayment\Livewire\ExternalCheckoutPaymentPage;
 
 class CheckoutPaymentPlugin implements Plugin
 {
@@ -19,8 +21,11 @@ class CheckoutPaymentPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel
+            ->routes(function () {
+                Route::get('/external-checkout-payment', ExternalCheckoutPaymentPage::class);
+            })
             ->pages([
-                \Shieldforce\CheckoutPayment\Pages\CheckoutWizard::class,
+                \Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard::class,
             ]);
     }
 

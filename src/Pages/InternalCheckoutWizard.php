@@ -7,17 +7,16 @@ use Filament\Forms;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
-use Shieldforce\CheckoutPayment\CheckoutPaymentPlugin;
 
-class CheckoutWizard extends Page implements Forms\Contracts\HasForms
+class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
 {
     use Forms\Concerns\InteractsWithForms;
 
     protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
-    protected static string  $view            = 'checkout-payment::pages.checkout-wizard';
-    protected static ?string $navigationGroup = 'Checkout';
-    protected static ?string $label           = "Página de Pagamento";
-    protected static ?string $navigationLabel = "Página de Pagamento";
+    protected static string  $view            = 'checkout-payment::pages.internal-checkout-wizard';
+    protected static ?string $navigationGroup = 'Pagamentos';
+    protected static ?string $label           = "Checkout";
+    protected static ?string $navigationLabel = "Checkout";
     public ?int              $checkoutId      = null;
     public string            $name;
     public string            $email;
@@ -36,7 +35,7 @@ class CheckoutWizard extends Page implements Forms\Contracts\HasForms
 
     public static function getSlug(): string
     {
-        return 'checkout-payment/{checkoutId?}';
+        return 'internal-checkout-payment/{checkoutId?}';
     }
 
     protected function getFormSchema(): array
