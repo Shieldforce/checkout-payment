@@ -12,16 +12,18 @@ class DtoStep1
         public ?float  $price_3 = null,
         public ?string $description = null,
         public ?string $img = null,
-    )
+    ) {}
+
+    public function toArray(): array
     {
         return [
-            'name'        => $name,
-            'price'       => $price,
-            'price_2'     => $price_2,
-            'price_3'     => $price_3,
-            'description' => $description,
-            'img'         => $img,
-            'quantity'    => $quantity,
+            'name'        => $this->name,
+            'price'       => $this->price,
+            'price_2'     => $this->price_2,
+            'price_3'     => $this->price_3,
+            'description' => $this->description,
+            'img'         => $this->img,
+            'quantity'    => $this->quantity,
         ];
     }
 }
