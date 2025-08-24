@@ -246,13 +246,13 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ->required()
                             ->maxLength(255),
 
-                    ]),
-
-                    Grid::make()->schema([
-
                         TextInput::make('number')
                             ->label('Número')
                             ->maxLength(20),
+
+                    ])->columns(3),
+
+                    Grid::make()->schema([
 
                         TextInput::make('district')
                             ->label('Bairro')
@@ -268,7 +268,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ->required()
                             ->maxLength(2),
 
-                    ]),
+                    ])->columns(3),
 
                     TextInput::make('complement')
                         ->label('Complemento')
