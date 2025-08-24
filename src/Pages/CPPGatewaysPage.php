@@ -110,7 +110,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     public function getHeaderActions(): array
     {
         return [
-            \Filament\Actions\Action::make('create')
+            /*\Filament\Actions\Action::make('create')
                 ->label('Adicionar')
                 ->form([
                     TextInput::make('name')->required(),
@@ -124,7 +124,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ])
                 ->action(function (array $data) {
                     CppGateways::create($data);
-                }),
+                }),*/
         ];
     }
 
