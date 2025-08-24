@@ -113,6 +113,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         return [
             EditAction::make()
                 ->modelLabel('Editar gateway')
+                ->modalSubmitActionLabel('Salvar')
                 ->form($this->fields())
                 ->action(function (array $data, $record) {
 
@@ -132,6 +133,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         return [
             \Filament\Actions\Action::make('create')
                 ->label('Adicionar')
+                ->modalSubmitActionLabel('Salvar')
                 ->form($this->fields())
                 ->action(function (array $data) {
                     $active = $data['active'];
