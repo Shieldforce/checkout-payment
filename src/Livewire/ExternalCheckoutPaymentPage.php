@@ -4,11 +4,11 @@ namespace Shieldforce\CheckoutPayment\Livewire;
 
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Form;
-use Filament\Pages\SimplePage;
+use Filament\Pages\Page;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
 
-class ExternalCheckoutPaymentPage extends SimplePage
+class ExternalCheckoutPaymentPage extends Page
 {
     protected static string $view = 'checkout-payment::livewire.external-checkout-payment-page';
 
