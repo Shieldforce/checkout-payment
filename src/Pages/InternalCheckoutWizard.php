@@ -4,12 +4,14 @@ namespace Shieldforce\CheckoutPayment\Pages;
 
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\View;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
+use Shieldforce\CheckoutPayment\Models\CppGateways;
 
 class InternalCheckoutWizard extends Page implements HasForms
 {
@@ -27,6 +29,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     public ?string          $email         = null;
     public                  $paymentMethod = null;
     public ?TypeGatewayEnum $typeGateway   = null;
+    public ?CppGateways     $cppGateways   = null;
 
     public function mount(?int $checkoutId = null): void
     {
@@ -37,6 +40,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->topbar(false);
         }
 
+        //$this->cppGateways = CppGateways::where("active", true)->first();
         $this->checkoutId  = $checkoutId;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
         $this->form->fill();
@@ -74,6 +78,12 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     protected function getFormSchema(): array
     {
+        if (!$this->cppGateways) {
+            return [
+                View::make('checkout-payment::partials.no-gateway-message'),
+            ];
+        }
+
         return [
             Wizard::make($this->fieldWinzard()),
         ];
