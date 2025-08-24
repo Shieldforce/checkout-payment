@@ -24,15 +24,31 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     use InteractsWithForms;
     use InteractsWithTable;
 
-    protected static string  $view            = 'checkout-payment::pages.cpp_gateways';
-    protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
-    protected static ?string $navigationGroup = 'Gateways';
-    protected static ?string $label           = 'Gateway';
-    protected static ?string $navigationLabel = 'Gateway';
-    protected static ?string $slug            = 'cpp-gateways';
-    protected static ?string $title           = "Lista de Gateways";
+    protected static string $view = 'checkout-payment::pages.cpp_gateways';
 
-    public function mount(?int $checkoutId = null): void {}
+    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+
+    protected static ?string $navigationGroup = 'Gateways';
+
+    protected static ?string $label = 'Gateway';
+
+    protected static ?string $navigationLabel = 'Gateway';
+
+    protected static ?string $slug = 'cpp-gateways';
+
+    protected static ?string $title = 'Lista de Gateways';
+
+    public function mount(?int $checkoutId = null): void
+    {
+        $this->getTable()
+            ->filters(self::fieldsFilter(), layout: FiltersLayout::AboveContentCollapsible)
+            ->filtersFormColumns(3)
+            ->filtersTriggerAction(
+                fn (Action $action) => $action
+                    ->button()
+                    ->label('Filtrar...'),
+            );
+    }
 
     public static function getNavigationGroup(): ?string
     {
@@ -64,25 +80,16 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
     protected function getTableFilters(): array
     {
-        $g = parent::getTableFilters()
-            ->filters(self::fieldsFilter(), layout: FiltersLayout::AboveContentCollapsible)
-            ->filtersFormColumns(3)
-            ->filtersTriggerAction(
-                fn(Action $action) => $action
-                    ->button()
-                    ->label('Filtrar...'),
-            );
-
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending'   => 'Pending',
-                    'paid'      => 'Paid',
+                    'pending' => 'Pending',
+                    'paid' => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
 
-        return array_merge($n, $g);
+        return $n;
     }
 
     protected function getTableActions(): array
@@ -110,4 +117,3 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         ];
     }
 }
-
