@@ -22,7 +22,7 @@ class CheckoutPaymentPlugin implements Plugin
     {
         $panel
             ->routes(function () {
-                Route::get('/checkout', InternalCheckoutWizard::class)
+                Route::get('/checkout/{cppCheckout?}', InternalCheckoutWizard::class)
                     ->name('checkout.external')
                     ->defaults('external', 1);
             })

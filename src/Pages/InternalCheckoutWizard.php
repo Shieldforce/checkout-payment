@@ -34,8 +34,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public function mount(?int $checkoutId = null): void
     {
-        if(request()->query('email')) {
-            dd(request()->query('email'));
+        if(request()->query()) {
+            dd(request()->query());
         }
 
         if (!Auth::check()) {
@@ -53,7 +53,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public static function getSlug(): string
     {
-        return 'internal-checkout-payment';
+        return 'internal-checkout-payment/{cppCheckout?}';
     }
 
     public static function fieldWinzard()
