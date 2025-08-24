@@ -2,27 +2,35 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
-use Filament\Pages\Page;
 use Filament\Forms;
-use Filament\Forms\Components\Wizard;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Wizard;
+use Filament\Pages\Page;
 
 class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
 {
     use Forms\Concerns\InteractsWithForms;
 
-    protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
-    protected static string  $view            = 'checkout-payment::pages.internal-checkout-wizard';
-    protected static ?string $navigationGroup = 'Pagamentos';
-    protected static ?string $label           = "Checkout";
-    protected static ?string $navigationLabel = "Checkout";
-    public ?int              $checkoutId      = null;
-    public array             $data            = [];
-    public string            $name;
-    public string            $email;
-    public                   $paymentMethod;
+    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
+    protected static string $view = 'checkout-payment::pages.internal-checkout-wizard';
+
+    protected static ?string $navigationGroup = 'Pagamentos';
+
+    protected static ?string $label = 'Checkout';
+
+    protected static ?string $navigationLabel = 'Checkout';
+
+    public ?int $checkoutId = null;
+
+    public array $data = [];
+
+    public string $name;
+
+    public string $email;
+
+    public $paymentMethod;
 
     public static function getNavigationGroup(): ?string
     {
@@ -31,7 +39,7 @@ class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
 
     public function mount(?int $checkoutId = null): void
     {
-        $this->checkoutId    = $checkoutId;
+        $this->checkoutId = $checkoutId;
         $this->paymentMethod = config()->get('checkout-payment.type_gateway');
         $this->form->fill();
     }
@@ -53,9 +61,9 @@ class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
                 ->schema([
                     Select::make('paymentMethod')
                         ->options([
-                            'pix'         => 'PIX',
+                            'pix' => 'PIX',
                             'credit_card' => 'Cartão de Crédito',
-                            'boleto'      => 'Boleto'
+                            'boleto' => 'Boleto',
                         ])
                         ->required(),
                 ]),
@@ -69,7 +77,7 @@ class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
     protected function getFormSchema(): array
     {
         return [
-            Wizard::make($this->fieldWinzard())
+            Wizard::make($this->fieldWinzard()),
         ];
     }
 

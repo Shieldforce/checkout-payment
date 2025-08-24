@@ -9,17 +9,23 @@ use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
 
 class ExternalCheckoutPaymentPage extends SimplePage
 {
-    protected static string  $view       = "checkout-payment::livewire.external-checkout-payment-page";
-    protected static ?string $label      = "Checkout";
-    public ?int              $checkoutId = null;
-    public array             $data       = [];
-    public string            $name;
-    public string            $email;
-    public                   $paymentMethod;
+    protected static string $view = 'checkout-payment::livewire.external-checkout-payment-page';
+
+    protected static ?string $label = 'Checkout';
+
+    public ?int $checkoutId = null;
+
+    public array $data = [];
+
+    public string $name;
+
+    public string $email;
+
+    public $paymentMethod;
 
     public function mount(?int $checkoutId = null): void
     {
-        $this->checkoutId    = $checkoutId;
+        $this->checkoutId = $checkoutId;
         $this->paymentMethod = config()->get('checkout-payment.type_gateway');
         $this->form->fill();
     }
@@ -32,7 +38,7 @@ class ExternalCheckoutPaymentPage extends SimplePage
     public function form(Form $form): Form
     {
         return $form->schema([
-            Wizard::make(InternalCheckoutWizard::fieldWinzard())
+            Wizard::make(InternalCheckoutWizard::fieldWinzard()),
         ])
             ->statePath('data');
     }
@@ -41,5 +47,4 @@ class ExternalCheckoutPaymentPage extends SimplePage
     {
         dd($this->form->getState());
     }
-
 }
