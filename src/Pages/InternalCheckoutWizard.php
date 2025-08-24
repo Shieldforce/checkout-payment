@@ -52,11 +52,14 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->topbar(false);
         }
 
-        $this->email       = request()->query('email') ?? null;
-        $this->name        = request()->query('first_name') ?? null;
         $this->cppGateways = CppGateways::where('active', true)->first();
         $this->checkoutId  = $checkoutId;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
+
+
+        $this->email = request()->query('email') ?? null;
+        $this->name  = request()->query('first_name') ?? null;
+
         $this->form->fill();
     }
 
@@ -70,8 +73,17 @@ class InternalCheckoutWizard extends Page implements HasForms
         return [
             Wizard\Step::make('Cliente')
                 ->schema([
-                    TextInput::make('name')->required()->label('Nome'),
-                    TextInput::make('email')->required()->email()->label('Email'),
+
+                    TextInput::make('name')
+                        ->required()
+                        ->label('Nome')
+                        ->default(fn($state, $get, $set, $livewire) => $livewire->name),
+
+                    TextInput::make('email')
+                        ->required()
+                        ->email()
+                        ->label('Email')
+                        ->default(fn($state, $get, $set, $livewire) => $livewire->email),
                 ]),
             Wizard\Step::make('Pagamento')
                 ->schema([
