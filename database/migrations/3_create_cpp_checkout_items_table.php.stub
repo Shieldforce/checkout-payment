@@ -16,8 +16,8 @@ return new class extends Migration
                 ->references('id')
                 ->on('cpp_checkouts');
 
-            $table->string('referencable_type');
-            $table->unsignedBigInteger('referencable_id');
+            $table->string('referencable_type')->nullable();
+            $table->unsignedBigInteger('referencable_id')->nullable();
 
             $table->string('name');
             $table->decimal('price', 12, 2);

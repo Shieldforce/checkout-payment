@@ -28,6 +28,7 @@ class CppCheckout extends Model
         "card_number",
         "card_validate",
         "card_payer_name",
+        "total_price",
     ];
 
     protected $guarded = [];
