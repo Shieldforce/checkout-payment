@@ -118,17 +118,15 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                         $crypt = true;
                     }
 
-                    dd(Crypt::decrypt($record->field_1) != $data['field_1']);
-
-                    /*if ($crypt && Crypt::decrypt($record->field_1) != $data['field_1']) {
+                    if ($crypt && Crypt::decrypt($record->field_1) != $data['field_1']) {
                         $data['field_1'] = Crypt::encrypt($data['field_1']);
                     }
 
                     if ($crypt && Crypt::decrypt($record->field_2) != $data['field_2']) {
                         $data['field_2'] = Crypt::encrypt($data['field_2']);
-                    }*/
+                    }
 
-                    //$record->update($data);
+                    $record->update($data);
                 }),
             DeleteAction::make(),
         ];
