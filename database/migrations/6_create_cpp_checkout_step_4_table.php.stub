@@ -25,6 +25,7 @@ return new class extends Migration
             $table->text('url_billet')->nullable();
 
             $table->boolean('visible')->default(true);
+            $table->boolean('checked')->default(false);
 
             $table->timestamps();
         });

@@ -17,6 +17,7 @@ class CppCheckoutStep2 extends Model
         "phone_number",
         "document",
         'visible',
+        'checked',
     ];
 
     protected $guarded = [];

@@ -12,6 +12,7 @@ class CppCheckoutStep1 extends Model
         'cpp_checkout_id',
         'items',
         'visible',
+        'checked',
     ];
 
     protected $guarded = [];

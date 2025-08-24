@@ -14,6 +14,7 @@ class DtoStep2
         public int            $phone_number,
         public int            $document,
         public ?bool          $visible = null,
+        public ?bool          $checked = null,
     ) {}
 
     public function toArray(): array
@@ -26,6 +27,7 @@ class DtoStep2
             'phone_number' => $this->phone_number,
             'document'     => $this->document,
             'visible'      => $this->visible,
+            'checked'      => $this->checked,
         ];
     }
 }

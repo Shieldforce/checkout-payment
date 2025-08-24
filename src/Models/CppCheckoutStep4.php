@@ -17,6 +17,7 @@ class CppCheckoutStep4 extends Model
         "url_qrcode",
         "url_billet",
         'visible',
+        'checked',
     ];
 
     protected $guarded = [];

@@ -54,6 +54,8 @@ class InternalCheckoutWizard extends Page implements HasForms
     public ?CppCheckoutStep3 $step3 = null;
     public ?CppCheckoutStep4 $step4 = null;
 
+    public int $startOnStep = 1;
+
     public $paymentMethod = null;
 
     public array $items = [];
@@ -82,7 +84,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             ? json_decode($this?->checkout?->step1()?->first()?->items, true)
             : [];
 
-        $this->step2 = $this?->checkout?->step2()?->first();
+        $this->step2        = $this?->checkout?->step2()?->first();
         $this->people_type  = $this->step2->people_type ?? null;
         $this->first_name   = $this->step2->first_name ?? null;
         $this->last_name    = $this->step2->last_name ?? null;
@@ -92,6 +94,13 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         $this->step3 = $this?->checkout?->step3()?->first();
         $this->step4 = $this?->checkout?->step4()?->first();
+
+        $this->startOnStep = collect([
+            4 => $this?->step4?->checked ?? false,
+            3 => $this?->step3?->checked ?? false,
+            2 => $this?->step2?->checked ?? false,
+            1 => $this?->step1?->checked ?? true,
+        ])->first(fn ($checked) => $checked, 1);
 
         $this->form->fill();
     }
@@ -133,6 +142,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         TextInput::make('document')
                             ->label("CPF/CNPJ")
                             ->reactive()
+                            ->default($this->step2->document ?? null)
                             ->placeholder(function (Get $get) {
                                 $people_type = $get("people_type");
                                 return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
@@ -206,7 +216,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         }
 
         return [
-            Wizard::make($this->fieldWinzard()),
+            Wizard::make($this->fieldWinzard())->startOnStep($this->startOnStep),
         ];
     }
 
