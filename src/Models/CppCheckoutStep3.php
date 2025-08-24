@@ -17,6 +17,7 @@ class CppCheckoutStep3 extends Model
         "state",
         "number",
         "complement",
+        'visible',
     ];
 
     protected $guarded = [];

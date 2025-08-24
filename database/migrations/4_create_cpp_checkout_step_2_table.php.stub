@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('document')->nullable();
 
+            $table->boolean('visible')->default(true);
+
             $table->timestamps();
         });
     }
