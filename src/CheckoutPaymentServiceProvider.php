@@ -148,4 +148,10 @@ class CheckoutPaymentServiceProvider extends PackageServiceProvider
             'create_checkout-payment_table',
         ];
     }
+
+    public function boot()
+    {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'checkout-payment');
+        return parent::boot();
+    }
 }
