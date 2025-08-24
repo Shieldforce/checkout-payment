@@ -3,6 +3,7 @@
 namespace Shieldforce\CheckoutPayment\Pages;
 
 use App\Services\ApiCpfCnpjService;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\View;
@@ -114,55 +115,63 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->visible($this->step2->visible ?? true)
                 ->schema([
 
-                    Select::make('people_type')
-                        ->label("Física/Jurídica")
-                        ->autofocus()
-                        ->live()
-                        ->default(1)
-                        ->options(
-                            collect(TypePeopleEnum::cases())
-                                ->mapWithKeys(fn(TypePeopleEnum $type) => [
-                                    $type->value => $type->label()
-                                ])->toArray()
-                        )
-                        ->required(),
+                    Grid::make()->schema([
 
-                    TextInput::make('document')
-                        ->unique(ignoreRecord: true)
-                        ->label("CPF/CNPJ")
-                        ->reactive()
-                        ->placeholder(function (Get $get) {
-                            $people_type = $get("people_type");
-                            return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
-                        })
-                        ->mask(function (Get $get) {
-                            $people_type = $get("people_type");
-                            return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
-                        })
-                        ->maxLength(50)
-                        ->required()
-                        ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state)),
+                        Select::make('people_type')
+                            ->label("Física/Jurídica")
+                            ->autofocus()
+                            ->live()
+                            ->default(1)
+                            ->options(
+                                collect(TypePeopleEnum::cases())
+                                    ->mapWithKeys(fn(TypePeopleEnum $type) => [
+                                        $type->value => $type->label()
+                                    ])->toArray()
+                            )
+                            ->required(),
 
-                    TextInput::make('first_name')
-                        ->required()
-                        ->label('Primeiro Nome')
-                        ->default(fn($state, $get, $set, $livewire) => $livewire->first_name),
+                        TextInput::make('document')
+                            ->unique(ignoreRecord: true)
+                            ->label("CPF/CNPJ")
+                            ->reactive()
+                            ->placeholder(function (Get $get) {
+                                $people_type = $get("people_type");
+                                return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
+                            })
+                            ->mask(function (Get $get) {
+                                $people_type = $get("people_type");
+                                return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
+                            })
+                            ->maxLength(50)
+                            ->required()
+                            ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state)),
 
-                    TextInput::make('last_name')
-                        ->required()
-                        ->label('Sobrenome')
-                        ->default(fn($state, $get, $set, $livewire) => $livewire->last_name),
+                        TextInput::make('phone_number')
+                            ->required()
+                            ->label('Telefone/Celular')
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->phone_number),
 
-                    TextInput::make('email')
-                        ->required()
-                        ->label('E-mail')
-                        ->email()
-                        ->default(fn($state, $get, $set, $livewire) => $livewire->email),
+                    ])->columns(3),
 
-                    TextInput::make('phone_number')
-                        ->required()
-                        ->label('Telefone/Celular')
-                        ->default(fn($state, $get, $set, $livewire) => $livewire->phone_number),
+                    Grid::make()->schema([
+
+                        TextInput::make('first_name')
+                            ->required()
+                            ->label('Primeiro Nome')
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->first_name),
+
+                        TextInput::make('last_name')
+                            ->required()
+                            ->label('Sobrenome')
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->last_name),
+
+                        TextInput::make('email')
+                            ->required()
+                            ->label('E-mail')
+                            ->email()
+                            ->default(fn($state, $get, $set, $livewire) => $livewire->email),
+
+                    ])->columns(3),
 
                 ]),
             Wizard\Step::make('Dados de Endereço')
