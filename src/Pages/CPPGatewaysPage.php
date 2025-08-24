@@ -128,29 +128,19 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                             })
                             ->required(),
                         ManagerFieldService::TextInput('field_1'),
-                        TextInput::make('field_2')
-                            ->reactive()
-                            ->required(),
+                        ManagerFieldService::TextInput('field_2'),
 
                     ])->columns(3),
                     Grid::make()->schema([
 
-                        TextInput::make('field_3')
-                            ->reactive()
-                            ->required(),
-                        TextInput::make('field_4')
-                            ->reactive()
-                            ->required(),
-                        TextInput::make('field_5')
-                            ->reactive()
-                            ->required(),
+                        ManagerFieldService::TextInput('field_3'),
+                        ManagerFieldService::TextInput('field_4'),
+                        ManagerFieldService::TextInput('field_5'),
 
                     ])->columns(3),
                     Grid::make()->schema([
 
-                        TextInput::make('field_6')
-                            ->reactive()
-                            ->required(),
+                        ManagerFieldService::TextInput('field_6'),
 
                     ])->columns(3),
 
