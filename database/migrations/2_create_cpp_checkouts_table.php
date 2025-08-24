@@ -33,7 +33,7 @@ return new class extends Migration {
             $table->string('state')->nullable();
             $table->string('number')->nullable();
             $table->text('complement')->nullable();
-            $table->integer('document')->nullable();
+            $table->string('document')->nullable();
             $table->string('card_number')->nullable();
             $table->string('card_validate')->nullable();
             $table->string('card_payer_name')->nullable();
