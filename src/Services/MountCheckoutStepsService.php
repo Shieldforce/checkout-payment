@@ -84,8 +84,7 @@ class MountCheckoutStepsService
         if ($validator->fails()) {
             $errorsHtml = "<ul>";
             foreach ($validator->errors()->all() as $error) {
-                dd($error);
-                //$errorsHtml .= "<li><strong>{$error}</strong></li>";
+                $errorsHtml .= "<li><strong>{$error}</strong></li>";
             }
             $errorsHtml .= "</ul>";
 
