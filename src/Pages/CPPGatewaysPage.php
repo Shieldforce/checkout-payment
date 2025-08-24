@@ -8,7 +8,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Get;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteAction;
@@ -22,6 +21,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
+use Shieldforce\CheckoutPayment\Services\ManagerFieldService;
 
 class CPPGatewaysPage extends Page implements HasForms, HasTable
 {
@@ -52,7 +52,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn(Action $action) => $action
+                fn (Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
@@ -93,8 +93,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending'   => 'Pending',
-                    'paid'      => 'Paid',
+                    'pending' => 'Pending',
+                    'paid' => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -123,18 +123,11 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                             ->live()
                             ->options(function () {
                                 return collect(TypeGatewayEnum::cases())
-                                    ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+                                    ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
                                     ->toArray();
                             })
                             ->required(),
-                        TextInput::make('field_1')
-                            ->label(function (Get $get, $state) {
-                                $name = $get("name");
-                                return $name ? TypeGatewayEnum::from($name)
-                                                   ->labelFields()['field_1'] : 'Campo 1';
-                            })
-                            ->reactive()
-                            ->required(),
+                        ManagerFieldService::TextInput('field_1'),
                         TextInput::make('field_2')
                             ->reactive()
                             ->required(),
