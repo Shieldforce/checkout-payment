@@ -47,13 +47,13 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->columns($this->getTableColumns())
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
-            /*->filtersTriggerAction(
+            ->filtersTriggerAction(
                 fn(Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
             ->bulkActions($this->getTableBulkActions())
-            ->actions($this->getTableActions())*/
+            ->actions($this->getTableActions())
             ->headerActions($this->getHeaderActions());
     }
 
@@ -102,8 +102,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     protected function getTableActions(): array
     {
         return [
-            EditAction::make(),
-            DeleteAction::make(),
+            /*EditAction::make(),
+            DeleteAction::make(),*/
         ];
     }
 
