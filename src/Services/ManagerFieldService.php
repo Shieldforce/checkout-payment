@@ -5,6 +5,7 @@ namespace Shieldforce\CheckoutPayment\Services;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Get;
+use Illuminate\Support\Facades\Crypt;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 
 class ManagerFieldService
@@ -39,6 +40,7 @@ class ManagerFieldService
                     ->visible()[$nameField] : false;
             })
             ->extraInputAttributes(['x-ref' => 'apiKeyInput'])
+            ->formatStateUsing(fn ($state) => $state ? Crypt::decrypt($state) : null)
             ->suffixAction(
                 Action::make('copy')
                     ->icon('heroicon-m-clipboard')
