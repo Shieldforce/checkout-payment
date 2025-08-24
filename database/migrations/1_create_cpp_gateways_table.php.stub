@@ -16,11 +16,11 @@ return new class extends Migration {
                 );
 
             $table->text("field_1");
-            $table->text("field_2");
-            $table->text("field_3");
-            $table->text("field_4");
-            $table->text("field_5");
-            $table->text("field_6");
+            $table->text("field_2")->nullable();
+            $table->text("field_3")->nullable();
+            $table->text("field_4")->nullable();
+            $table->text("field_5")->nullable();
+            $table->text("field_6")->nullable();
 
             $table->boolean("active");
 
