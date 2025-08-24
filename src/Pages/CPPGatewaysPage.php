@@ -2,6 +2,8 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -43,13 +45,17 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
+            ->query($this->getTableQuery())
+            ->columns($this->getTableColumns())
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
                 fn (Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
-            );
+            )
+            ->bulkActions($this->getTableBulkActions())
+            ->actions($this->getTableActions());
     }
 
     public static function getNavigationGroup(): ?string
@@ -108,14 +114,20 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             \Filament\Actions\Action::make('create')
                 ->label('Adicionar')
                 ->form([
-                    TextInput::make('name')->required(),
-                    TextInput::make('field_1')->required(),
-                    TextInput::make('field_2')->required(),
-                    TextInput::make('field_3')->required(),
-                    TextInput::make('field_4')->required(),
-                    TextInput::make('field_5')->required(),
-                    TextInput::make('field_6')->required(),
-                    Toggle::make('active')->required(),
+                    Section::make([
+                        Grid::make()->schema([
+                            TextInput::make('name')->required(),
+                            TextInput::make('field_1')->required(),
+                            TextInput::make('field_2')->required(),
+                        ]),
+                        Grid::make()->schema([
+                            TextInput::make('field_3')->required(),
+                            TextInput::make('field_4')->required(),
+                            TextInput::make('field_5')->required(),
+                            TextInput::make('field_6')->required(),
+                            Toggle::make('active')->required(),
+                        ])
+                    ])->columns(3)
                 ])
                 ->action(function (array $data) {
                     CppGateways::create($data);
