@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up()
     {
         Schema::create('cpp_gateways', function (Blueprint $table) {
@@ -15,6 +14,15 @@ return new class extends Migration
                 ->default(
                     \Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum::mercado_pago->name
                 );
+
+            $table->string("field_1");
+            $table->string("field_2");
+            $table->string("field_3");
+            $table->string("field_4");
+            $table->string("field_5");
+            $table->string("field_6");
+
+            $table->boolean("active");
 
             $table->timestamps();
         });

@@ -1,4 +1,4 @@
-# This is my package checkout-payment
+# Plugin para filament checkout-payment
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/shieldforce/checkout-payment.svg?style=flat-square)](https://packagist.org/packages/shieldforce/checkout-payment)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/shieldforce/checkout-payment/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/shieldforce/checkout-payment/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -7,39 +7,45 @@
 
 
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Este plugin implementa checkout de pagamento interno e externo para o filament!
 
-## Installation
+## Instalação
 
-You can install the package via composer:
+Instalar Via Composer:
 
 ```bash
 composer require shieldforce/checkout-payment
 ```
 
-You can publish and run the migrations with:
+Você precisa publicar as migrações:
 
 ```bash
 php artisan vendor:publish --tag="checkout-payment-migrations"
 php artisan migrate
 ```
 
-You can publish the config file with:
+Caso se arrependa:
+```bash
+ php artisan migrate:rollback --step=2
+```
+
+Você precisa publicar as configurações:
 
 ```bash
 php artisan vendor:publish --tag="checkout-payment-config"
 ```
 
-Optionally, you can publish the views using
+Opcionalmente você pode publicar as views:
 
 ```bash
 php artisan vendor:publish --tag="checkout-payment-views"
 ```
 
-This is the contents of the published config file:
+Conteúdo do arquivo de configuração ao publicar será parecido com este:
 
 ```php
 return [
+  "index" => "value"
 ];
 ```
 
