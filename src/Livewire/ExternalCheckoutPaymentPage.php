@@ -28,6 +28,7 @@ class ExternalCheckoutPaymentPage extends Page
 
     public function mount(?int $checkoutId = null): void
     {
+        filament()->getCurrentPanel()->topNavigation()->topbar(false);
         $this->checkoutId = $checkoutId;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
         $this->form->fill();
