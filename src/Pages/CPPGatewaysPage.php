@@ -111,7 +111,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make('add')
+            Actions\Action::make('add')
                 ->label('Adicionar')
                 ->form([
                     TextInput::make('name')->required(),
