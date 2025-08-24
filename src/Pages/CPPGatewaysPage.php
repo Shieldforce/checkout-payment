@@ -79,7 +79,10 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ->label('Gateway'),
 
             TextColumn::make('field_1')
-                ->label(fn (Model $record) => TypeGatewayEnum::from($record->name)->labelFields()['field_1']),
+                ->label(function ($data) {
+                    dd($data);
+                    return "fgd";
+                }),
             TextColumn::make('field_2')
                 ->label('Campo 2'),
             TextColumn::make('field_3')
