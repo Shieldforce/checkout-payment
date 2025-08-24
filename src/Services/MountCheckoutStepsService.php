@@ -133,25 +133,18 @@ class MountCheckoutStepsService
                 'first_name'   => [
                     'required',
                     'string',
-                    'min:3',
-                    'max:50',
                 ],
                 'last_name'    => [
                     'required',
                     'string',
-                    'min:3',
-                    'max:100',
                 ],
                 'email'        => [
                     'required',
                     'email',
-                    'max:100',
                 ],
                 'phone_number' => [
                     'required',
                     'numeric',
-                    'min:8',
-                    'max:13',
                 ],
                 'document'     => [
                     'required',
