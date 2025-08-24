@@ -82,7 +82,6 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->checkout       = $cppCheckout;
         $this->typeGateway    = config()->get('checkout-payment.type_gateway');
 
-
         if($this->checkout) {
             $this->paymentMethods = $this?->checkout?->methods
                 ? json_decode($this->checkout->methods, true)
@@ -338,10 +337,10 @@ class InternalCheckoutWizard extends Page implements HasForms
         return parent::getLayout();
     }
 
-    public static function shouldRegisterNavigation(): bool
+    /*public static function shouldRegisterNavigation(): bool
     {
         return false;
-    }
+    }*/
 
     public static function getNavigationGroup(): ?string
     {
