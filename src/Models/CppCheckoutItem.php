@@ -9,14 +9,14 @@ class CppCheckoutItem extends Model
     protected $table = 'cpp_checkout_items';
 
     protected $fillable = [
-        "cpp_checkout_id",
-        "referencable_type",
-        "referencable_id",
-        "name",
-        "price",
-        "price_2",
-        "price_3",
-        "description",
+        'cpp_checkout_id',
+        'referencable_type',
+        'referencable_id',
+        'name',
+        'price',
+        'price_2',
+        'price_3',
+        'description',
     ];
 
     protected $guarded = [];
@@ -27,8 +27,8 @@ class CppCheckoutItem extends Model
     {
         return $this->hasMany(
             CppCheckout::class,
-            "id",
-            "cpp_checkout_id",
+            'id',
+            'cpp_checkout_id',
         );
     }
 }

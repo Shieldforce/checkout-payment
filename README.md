@@ -24,9 +24,9 @@ php artisan vendor:publish --tag="checkout-payment-migrations"
 php artisan migrate
 ```
 
-Caso se arrependa:
+Caso se arrependa (CUIDADO, TENHA CERTEZA QUE OS MIGRATIONS DO CHECKOUT FORAM OS ÚLTIMOS A SEREM RODADOS):
 ```bash
- php artisan migrate:rollback --step=2
+ php artisan migrate:rollback --step=3
 ```
 
 Você precisa publicar as configurações:
@@ -45,7 +45,8 @@ Conteúdo do arquivo de configuração ao publicar será parecido com este:
 
 ```php
 return [
-  "index" => "value"
+    'sidebar_group' => 'Checkout Payment',
+    'type_gateway'  => \Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum::mercado_pago,
 ];
 ```
 
