@@ -3,6 +3,7 @@
 namespace Shieldforce\CheckoutPayment\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 
 class CppCheckout extends Model
 {
@@ -33,7 +34,33 @@ class CppCheckout extends Model
 
     protected $guarded = [];
 
-    protected $casts = [];
+    protected $casts = [
+        "methods" => "array",
+    ];
+
+    protected $attributes = [
+        'methods' => '',
+    ];
+
+    public function initializeMethods(): void
+    {
+        if (empty($this->attributes['methods'])) {
+            $this->attributes['methods'] = json_encode([
+                MethodPaymentEnum::credit_card->value,
+                MethodPaymentEnum::debit_card->value,
+                MethodPaymentEnum::pix->value,
+                MethodPaymentEnum::billet->value,
+            ]);
+        }
+    }
+
+    // hook de inicialização
+    protected static function booted()
+    {
+        static::creating(function (CppCheckout $checkout) {
+            $checkout->initializeMethods();
+        });
+    }
 
     public function ccpItems()
     {
