@@ -102,15 +102,15 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     protected function getTableActions(): array
     {
         return [
-            /*EditAction::make(),
-            DeleteAction::make(),*/
+            EditAction::make(),
+            DeleteAction::make(),
         ];
     }
 
     protected function getHeaderActions(): array
     {
         return [
-            /*\Filament\Actions\Action::make("add")
+            \Filament\Actions\Action::make("add")
                 ->label('Adicionar')
                 ->form([
                     TextInput::make('name')->required(),
@@ -121,7 +121,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                     TextInput::make('field_5')->required(),
                     TextInput::make('field_6')->required(),
                     Toggle::make('active')->required(),
-                ]),*/
+                ])
+                ->action(function () {}),
         ];
     }
 
