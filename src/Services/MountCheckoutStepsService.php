@@ -103,41 +103,7 @@ class MountCheckoutStepsService
             'visible' => true,
         ]);
 
-        // Step 2 -> Dados do cliente ---
-        /*$nameExplode = explode(" ", trim($model->order->client->name));
-        $firstName   = $nameExplode[0];
-        $lastName    = $nameExplode[1] ?? "-";
-        $contact     = $model->order->client->contacts()->first();
-        $prefix      = $contact->prefix ?? null;
-        $number      = $contact->number ?? null;
-        $phoneNumber = $prefix . $number;
-        $cppCheckout->step2()->updateOrCreate([
-            "cpp_checkout_id" => $cppCheckout->id,
-        ], [
-            "first_name"   => $firstName,
-            "last_name"    => $lastName,
-            "email"        => $model->order->client->email,
-            "phone_number" => $phoneNumber,
-            "document"     => $model->order->client->document,
-            'visible'      => true,
-        ]);*/
-
-        // Step 3 -> Endereço do cliente ---
-        /*$address = $model->order->client->addresses()->where("main", 1)->first();
-        $cppCheckout->step3()->updateOrCreate([
-            "cpp_checkout_id" => $cppCheckout->id,
-        ], [
-            "zipcode"    => $address->zipcode,
-            "street"     => $address->street,
-            "district"   => $address->district,
-            "city"       => $address->city,
-            "state"      => $address->state,
-            "number"     => $address->number,
-            "complement" => $address->complement,
-            'visible'    => true,
-        ]);*/
-
-        return $validator->validated();
+        return $this;
     }
 
     public function step2(
@@ -229,6 +195,6 @@ class MountCheckoutStepsService
             'visible'    => true,
         ]);*/
 
-        return $validator->validated();
+        return $this;
     }
 }
