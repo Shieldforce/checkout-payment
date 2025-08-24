@@ -6,8 +6,6 @@ use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
-use InvalidArgumentException;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
@@ -32,10 +30,10 @@ class MountCheckoutStepsService
         if (isset($cppGateway->id)) {
 
             $this->cppCheckout = CppCheckout::updateOrCreate([
-                "cpp_gateway_id"    => $cppGateway->id,
-                "referencable_id"   => $this->model->id,
-                "referencable_type" => $this->model::class,
-                "methods"           => json_encode($this->requiredMethods),
+                'cpp_gateway_id' => $cppGateway->id,
+                'referencable_id' => $this->model->id,
+                'referencable_type' => $this->model::class,
+                'methods' => json_encode($this->requiredMethods),
             ], []);
         }
 
@@ -44,62 +42,61 @@ class MountCheckoutStepsService
 
     public function step1(
         array $items
-    )
-    {
+    ) {
         $validator = Validator::make(
             ['items' => $items],
             [
-                "items.*.name"        => [
-                    'required',
-                    'string'
-                ],
-                "items.*.price"       => [
-                    'required',
-                    'string'
-                ],
-                "items.*.price_2"     => [
-                    'required',
-                    'string'
-                ],
-                "items.*.price_3"     => [
-                    'required',
-                    'string'
-                ],
-                "items.*.description" => [
-                    'required',
-                    'string'
-                ],
-                "items.*.img"         => [
+                'items.*.name' => [
                     'required',
                     'string',
-                    Rule::imageFile()
                 ],
-                "items.*.quantity"    => [
+                'items.*.price' => [
                     'required',
-                    'integer'
+                    'string',
+                ],
+                'items.*.price_2' => [
+                    'required',
+                    'string',
+                ],
+                'items.*.price_3' => [
+                    'required',
+                    'string',
+                ],
+                'items.*.description' => [
+                    'required',
+                    'string',
+                ],
+                'items.*.img' => [
+                    'required',
+                    'string',
+                    Rule::imageFile(),
+                ],
+                'items.*.quantity' => [
+                    'required',
+                    'integer',
                 ],
             ]
         );
 
         if ($validator->fails()) {
-            $errorsHtml = "<ul>";
+            $errorsHtml = '<ul>';
             foreach ($validator->errors()->all() as $error) {
                 $errorsHtml .= "<li><strong>{$error}</strong></li>";
             }
-            $errorsHtml .= "</ul>";
+            $errorsHtml .= '</ul>';
 
-            return Notification::make("errors")
+            return Notification::make('errors')
                 ->persistent()
                 ->danger()
-                ->title("Campos faltando!")
+                ->title('Erro ao gerar checkout!')
                 ->body($errorsHtml)
                 ->send();
         }
 
         $this->cppCheckout->step1()->updateOrCreate([
-            "cpp_checkout_id" => $this->cppCheckout->id,
+            'cpp_checkout_id' => $this->cppCheckout->id,
         ], [
-            'items'   => json_encode($items),
+            'items' => json_encode($items),
             'visible' => true,
         ]);
 
@@ -139,6 +136,4 @@ class MountCheckoutStepsService
 
         return $validator->validated();
     }
-
-
 }
