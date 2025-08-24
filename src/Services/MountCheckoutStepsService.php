@@ -92,12 +92,14 @@ class MountCheckoutStepsService
             }
             $errorsHtml .= '</ul>';
 
-            return Notification::make('errors')
+            Notification::make('errors')
                 ->persistent()
                 ->danger()
                 ->title('Erro ao gerar checkout!')
                 ->body($errorsHtml)
                 ->send();
+
+            return $this;
         }
 
         $this->cppCheckout->step1()->updateOrCreate([
@@ -160,12 +162,14 @@ class MountCheckoutStepsService
             }
             $errorsHtml .= '</ul>';
 
-            return Notification::make('errors')
+            Notification::make('errors')
                 ->persistent()
                 ->danger()
                 ->title('Erro ao gerar checkout!')
                 ->body($errorsHtml)
                 ->send();
+
+            return $this;
         }
 
         $this->cppCheckout->step2()->updateOrCreate([
@@ -235,12 +239,14 @@ class MountCheckoutStepsService
             }
             $errorsHtml .= '</ul>';
 
-            return Notification::make('errors')
+            Notification::make('errors')
                 ->persistent()
                 ->danger()
                 ->title('Erro ao gerar checkout!')
                 ->body($errorsHtml)
                 ->send();
+
+            return $this;
         }
 
         $this->cppCheckout->step3()->updateOrCreate([
@@ -305,12 +311,14 @@ class MountCheckoutStepsService
             }
             $errorsHtml .= '</ul>';
 
-            return Notification::make('errors')
+            Notification::make('errors')
                 ->persistent()
                 ->danger()
                 ->title('Erro ao gerar checkout!')
                 ->body($errorsHtml)
                 ->send();
+
+            return $this;
         }
 
         $this->cppCheckout->step4()->updateOrCreate([
