@@ -20,7 +20,7 @@ class CppCheckout extends Model
         "last_name",
         "email",
         "phone_number",
-        "zip_code",
+        "zipcode",
         "street",
         "district",
         "city",
