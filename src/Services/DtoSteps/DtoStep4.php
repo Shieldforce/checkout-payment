@@ -5,7 +5,7 @@ namespace Shieldforce\CheckoutPayment\Services\DtoSteps;
 class DtoStep4
 {
     public function __construct(
-        public ?string $card_number,
+        public ?int    $card_number,
         public ?string $card_validate,
         public ?string $card_payer_name,
         public ?string $base_qrcode,

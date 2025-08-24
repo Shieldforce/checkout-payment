@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
+use Shieldforce\CheckoutPayment\Rules\CpfCnpjRule;
 use Shieldforce\CheckoutPayment\Rules\ImageUrlRule;
 use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep2;
 use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep3;
@@ -33,10 +34,10 @@ class MountCheckoutStepsService
         if (isset($cppGateway->id)) {
 
             $this->cppCheckout = CppCheckout::updateOrCreate([
-                'cpp_gateway_id' => $cppGateway->id,
-                'referencable_id' => $this->model->id,
+                'cpp_gateway_id'    => $cppGateway->id,
+                'referencable_id'   => $this->model->id,
                 'referencable_type' => $this->model::class,
-                'methods' => json_encode($this->requiredMethods),
+                'methods'           => json_encode($this->requiredMethods),
             ], []);
         }
 
@@ -45,26 +46,27 @@ class MountCheckoutStepsService
 
     public function step1(
         array $items,
-        bool $visible = true,
-    ) {
+        bool  $visible = true,
+    )
+    {
         $validator = Validator::make(
             ['items' => $items],
             [
-                'items.*.name' => [
+                'items.*.name'        => [
                     'required',
                     'string',
                 ],
-                'items.*.price' => [
+                'items.*.price'       => [
                     'required',
                     'numeric',
                     'regex:/^\d+(\.\d{1,2})?$/',
                 ],
-                'items.*.price_2' => [
+                'items.*.price_2'     => [
                     'nullable',
                     'numeric',
                     'regex:/^\d+(\.\d{1,2})?$/',
                 ],
-                'items.*.price_3' => [
+                'items.*.price_3'     => [
                     'nullable',
                     'numeric',
                     'regex:/^\d+(\.\d{1,2})?$/',
@@ -73,12 +75,12 @@ class MountCheckoutStepsService
                     'nullable',
                     'string',
                 ],
-                'items.*.img' => [
+                'items.*.img'         => [
                     'nullable',
                     'url',
                     new ImageUrlRule,
                 ],
-                'items.*.quantity' => [
+                'items.*.quantity'    => [
                     'required',
                     'integer',
                 ],
@@ -105,7 +107,7 @@ class MountCheckoutStepsService
         $this->cppCheckout->step1()->updateOrCreate([
             'cpp_checkout_id' => $this->cppCheckout->id,
         ], [
-            'items' => json_encode($items),
+            'items'   => json_encode($items),
             'visible' => $visible,
         ]);
 
@@ -117,38 +119,46 @@ class MountCheckoutStepsService
         $data = $data->toArray();
 
         $required = [
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'email' => $data['email'],
+            'first_name'   => $data['first_name'],
+            'last_name'    => $data['last_name'],
+            'email'        => $data['email'],
             'phone_number' => $data['phone_number'],
-            'document' => $data['document'],
-            'visible' => $data['visible'],
+            'document'     => $data['document'],
+            'visible'      => $data['visible'],
         ];
 
         $validator = Validator::make(
             $required,
             [
-                'first_name' => [
+                'first_name'   => [
                     'required',
                     'string',
+                    'min:3',
+                    'max:50',
                 ],
-                'last_name' => [
+                'last_name'    => [
                     'required',
                     'string',
+                    'min:3',
+                    'max:100',
                 ],
-                'email' => [
+                'email'        => [
                     'required',
                     'email',
+                    'max:100',
                 ],
                 'phone_number' => [
                     'required',
-                    'string',
+                    'numeric',
+                    'min:8',
+                    'max:13',
                 ],
-                'document' => [
+                'document'     => [
                     'required',
-                    'string',
+                    'numeric',
+                    new CpfCnpjRule(),
                 ],
-                'visible' => [
+                'visible'      => [
                     'nullable',
                     'boolean',
                 ],
@@ -184,40 +194,40 @@ class MountCheckoutStepsService
         $data = $data->toArray();
 
         $required = [
-            'zipcode' => $data['zipcode'],
-            'street' => $data['street'],
-            'district' => $data['district'],
-            'city' => $data['city'],
-            'state' => $data['state'],
-            'number' => $data['number'],
+            'zipcode'    => $data['zipcode'],
+            'street'     => $data['street'],
+            'district'   => $data['district'],
+            'city'       => $data['city'],
+            'state'      => $data['state'],
+            'number'     => $data['number'],
             'complement' => $data['complement'],
-            'visible' => $data['visible'],
+            'visible'    => $data['visible'],
         ];
 
         $validator = Validator::make(
             $required,
             [
-                'zipcode' => [
+                'zipcode'    => [
+                    'required',
+                    'numeric',
+                ],
+                'street'     => [
                     'required',
                     'string',
                 ],
-                'street' => [
+                'district'   => [
                     'required',
                     'string',
                 ],
-                'district' => [
+                'city'       => [
                     'required',
                     'string',
                 ],
-                'city' => [
+                'state'      => [
                     'required',
                     'string',
                 ],
-                'state' => [
-                    'required',
-                    'string',
-                ],
-                'number' => [
+                'number'     => [
                     'nullable',
                     'string',
                 ],
@@ -225,7 +235,7 @@ class MountCheckoutStepsService
                     'nullable',
                     'string',
                 ],
-                'visible' => [
+                'visible'    => [
                     'nullable',
                     'boolean',
                 ],
@@ -261,23 +271,23 @@ class MountCheckoutStepsService
         $data = $data->toArray();
 
         $required = [
-            'card_number' => $data['card_number'],
-            'card_validate' => $data['card_validate'],
+            'card_number'     => $data['card_number'],
+            'card_validate'   => $data['card_validate'],
             'card_payer_name' => $data['card_payer_name'],
-            'base_qrcode' => $data['base_qrcode'],
-            'url_qrcode' => $data['url_qrcode'],
-            'url_billet' => $data['url_billet'],
-            'visible' => $data['visible'],
+            'base_qrcode'     => $data['base_qrcode'],
+            'url_qrcode'      => $data['url_qrcode'],
+            'url_billet'      => $data['url_billet'],
+            'visible'         => $data['visible'],
         ];
 
         $validator = Validator::make(
             $required,
             [
-                'card_number' => [
+                'card_number'     => [
                     'nullable',
-                    'string',
+                    'numeric',
                 ],
-                'card_validate' => [
+                'card_validate'   => [
                     'nullable',
                     'string',
                 ],
@@ -285,19 +295,19 @@ class MountCheckoutStepsService
                     'nullable',
                     'string',
                 ],
-                'base_qrcode' => [
+                'base_qrcode'     => [
                     'nullable',
                     'string',
                 ],
-                'url_qrcode' => [
+                'url_qrcode'      => [
                     'nullable',
                     'url',
                 ],
-                'url_billet' => [
+                'url_billet'      => [
                     'nullable',
                     'url',
                 ],
-                'visible' => [
+                'visible'         => [
                     'nullable',
                     'boolean',
                 ],

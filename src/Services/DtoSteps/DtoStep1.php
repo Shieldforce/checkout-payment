@@ -6,10 +6,10 @@ class DtoStep1
 {
     public function __construct(
         public string  $name,
-        public string  $price,
-        public string  $quantity,
-        public ?string $price_2 = null,
-        public ?string $price_3 = null,
+        public float   $price,
+        public int     $quantity,
+        public ?float  $price_2 = null,
+        public ?float  $price_3 = null,
         public ?string $description = null,
         public ?string $img = null,
     ) {}

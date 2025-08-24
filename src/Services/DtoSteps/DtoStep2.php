@@ -8,8 +8,8 @@ class DtoStep2
         public string $first_name,
         public string $last_name,
         public string $email,
-        public string $phone_number,
-        public string $document,
+        public int    $phone_number,
+        public int    $document,
         public ?bool  $visible = null,
     ) {}
 
