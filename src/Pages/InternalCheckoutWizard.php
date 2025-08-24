@@ -121,7 +121,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ->label("Física/Jurídica")
                             ->autofocus()
                             ->live()
-                            ->default(1)
+                            ->default($this->step2->people_type ?? null)
                             ->options(
                                 collect(TypePeopleEnum::cases())
                                     ->mapWithKeys(fn(TypePeopleEnum $type) => [
