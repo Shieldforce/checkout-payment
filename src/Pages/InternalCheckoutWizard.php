@@ -65,7 +65,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->email = request()->query('email') ?? null;
         $this->name  = request()->query('first_name') ?? null;
 
-        dd($this?->checkout);
+        dd($this->checkoutId);
 
         $this->form->fill();
     }
