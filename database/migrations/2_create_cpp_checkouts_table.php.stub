@@ -26,6 +26,7 @@ return new class extends Migration {
                     \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::criado->value
                 );
             $table->json("return_gateway")->nullable();
+            $table->integer("startOnStep")->default(1);
 
             $table->timestamps();
         });

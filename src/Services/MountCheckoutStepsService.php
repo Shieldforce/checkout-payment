@@ -112,7 +112,6 @@ class MountCheckoutStepsService
         ], [
             'items'   => json_encode($items),
             'visible' => $visible,
-            'checked' => $checked,
         ]);
 
         return $this;
@@ -130,7 +129,6 @@ class MountCheckoutStepsService
             'phone_number' => $data['phone_number'],
             'document'     => $data['document'],
             'visible'      => $data['visible'],
-            'checked'      => $data['checked'],
         ];
 
         $validator = Validator::make(
@@ -162,10 +160,6 @@ class MountCheckoutStepsService
                     new CpfCnpjRule(),
                 ],
                 'visible'      => [
-                    'nullable',
-                    'boolean',
-                ],
-                'checked'      => [
                     'nullable',
                     'boolean',
                 ],
@@ -209,7 +203,6 @@ class MountCheckoutStepsService
             'number'     => $data['number'],
             'complement' => $data['complement'],
             'visible'    => $data['visible'],
-            'checked'    => $data['checked'],
         ];
 
         $validator = Validator::make(
@@ -244,10 +237,6 @@ class MountCheckoutStepsService
                     'string',
                 ],
                 'visible'    => [
-                    'nullable',
-                    'boolean',
-                ],
-                'checked'    => [
                     'nullable',
                     'boolean',
                 ],
@@ -290,7 +279,6 @@ class MountCheckoutStepsService
             'url_qrcode'      => $data['url_qrcode'],
             'url_billet'      => $data['url_billet'],
             'visible'         => $data['visible'],
-            'checked'         => $data['checked'],
         ];
 
         $validator = Validator::make(
@@ -321,10 +309,6 @@ class MountCheckoutStepsService
                     'url',
                 ],
                 'visible'         => [
-                    'nullable',
-                    'boolean',
-                ],
-                'checked'         => [
                     'nullable',
                     'boolean',
                 ],

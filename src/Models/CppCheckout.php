@@ -20,6 +20,7 @@ class CppCheckout extends Model
         "total_price",
         "status",
         "return_gateway",
+        "startOnStep",
     ];
 
     protected $guarded = [];

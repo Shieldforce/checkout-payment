@@ -12,7 +12,6 @@ class DtoStep4
         public ?string $url_qrcode,
         public ?string $url_billet,
         public ?bool   $visible,
-        public ?bool   $checked = null,
     ) {}
 
     public function toArray(): array
@@ -25,7 +24,6 @@ class DtoStep4
             'url_qrcode'      => $this->url_qrcode,
             'url_billet'      => $this->url_billet,
             'visible'         => $this->visible,
-            'checked'         => $this->checked,
         ];
     }
 }

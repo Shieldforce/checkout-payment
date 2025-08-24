@@ -13,7 +13,6 @@ class DtoStep3
         public ?string $number = null,
         public ?string $complement = null,
         public ?bool   $visible = true,
-        public ?bool   $checked = null,
     ) {}
 
     public function toArray(): array
@@ -27,7 +26,6 @@ class DtoStep3
             'number'     => $this->number,
             'complement' => $this->complement,
             'visible'    => $this->visible,
-            'checked'    => $this->checked,
         ];
     }
 }

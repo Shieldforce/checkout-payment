@@ -95,14 +95,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->step3 = $this?->checkout?->step3()?->first();
         $this->step4 = $this?->checkout?->step4()?->first();
 
-        $this->startOnStep = collect([
-            4 => $this?->step4?->checked ?? false,
-            3 => $this?->step3?->checked ?? false,
-            2 => $this?->step2?->checked ?? false,
-            1 => $this?->step1?->checked ?? true,
-        ])->first(fn ($checked) => $checked, 1);
-
-        dd($this->startOnStep);
+        $this->startOnStep = $this->checkout->startOnStep;
 
         $this->form->fill();
     }
