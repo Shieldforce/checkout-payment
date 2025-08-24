@@ -71,10 +71,10 @@ enum TypeGatewayEnum: int
             default => [
                 'field_1' => true,
                 'field_2' => true,
-                'field_3' => true,
-                'field_4' => true,
-                'field_5' => true,
-                'field_6' => true,
+                'field_3' => false,
+                'field_4' => false,
+                'field_5' => false,
+                'field_6' => false,
             ],
         };
     }
