@@ -22,6 +22,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     protected static ?string $navigationGroup = 'Pagamentos';
     protected static ?string $label           = 'Checkout';
     protected static ?string $navigationLabel = 'Checkout';
+    protected static ?string $title           = "Realizar Pagamento";
 
     public ?int             $checkoutId    = null;
     public array            $data          = [];
