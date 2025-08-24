@@ -97,5 +97,10 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         return false;
     }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return config()->get('checkout-payment.sidebar_group');;
+    }
 }
 
