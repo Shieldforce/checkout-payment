@@ -26,7 +26,7 @@ class CheckoutPaymentPlugin implements Plugin
                 Route::get('/checkout/{checkoutId?}', InternalCheckoutWizard::class)
                     ->name('checkout.external')
                     ->defaults('external', 1);
-                Route::get('/external-checkout-payment', ExternalCheckoutPaymentPage::class);
+                //Route::get('/external-checkout-payment', ExternalCheckoutPaymentPage::class);
             })
             ->pages([
                 \Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard::class,

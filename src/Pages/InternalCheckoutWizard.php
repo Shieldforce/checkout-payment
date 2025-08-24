@@ -29,10 +29,6 @@ class InternalCheckoutWizard extends Page implements HasForms
     public $paymentMethod = null;
     public ?TypeGatewayEnum $typeGateway = null;
 
-   /* public static function canAccess(): bool {
-        return Auth::check();
-    }*/
-
     public function mount(?int $checkoutId = null): void
     {
         $this->checkoutId  = $checkoutId;
