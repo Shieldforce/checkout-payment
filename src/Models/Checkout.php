@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Checkout extends Model
 {
-    protected $table = 'checkouts';
+    protected $table = 'cpp_checkouts';
 
     protected $fillable = [
         "name",
