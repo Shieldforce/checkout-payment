@@ -81,45 +81,49 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->cppGateways    = CppGateways::where('active', true)->first();
         $this->checkout       = $cppCheckout;
         $this->typeGateway    = config()->get('checkout-payment.type_gateway');
-        $this->paymentMethods = $this?->checkout?->methods
-            ? json_decode($this->checkout->methods, true)
-            : $this->paymentMethods;
 
-        // Step 1 --
-        $this->step1 = $this?->checkout?->step1()?->first();
-        $this->items = $this->step1?->items
-            ? json_decode($this?->checkout?->step1()?->first()?->items, true)
-            : [];
 
-        // Step 2 ---
-        $this->step2        = $this?->checkout?->step2()?->first();
-        $this->people_type  = $this->step2->people_type ?? null;
-        $this->first_name   = $this->step2->first_name ?? null;
-        $this->last_name    = $this->step2->last_name ?? null;
-        $this->email        = $this->step2->email ?? null;
-        $this->phone_number = $this->step2->phone_number ?? null;
-        $this->document     = $this->step2->document ?? null;
+        if($this->checkout) {
+            $this->paymentMethods = $this?->checkout?->methods
+                ? json_decode($this->checkout->methods, true)
+                : $this->paymentMethods;
 
-        // Step 3 ---
-        $this->step3      = $this?->checkout?->step3()?->first();
-        $this->zipcode    = $this->step3->zipcode;
-        $this->street     = $this->step3->street;
-        $this->district   = $this->step3->district;
-        $this->city       = $this->step3->city;
-        $this->state      = $this->step3->state;
-        $this->number     = $this->step3->number;
-        $this->complement = $this->step3->complement;
+            // Step 1 --
+            $this->step1 = $this?->checkout?->step1()?->first();
+            $this->items = $this->step1?->items
+                ? json_decode($this?->checkout?->step1()?->first()?->items, true)
+                : [];
 
-        $this->step4 = $this?->checkout?->step4()?->first();
+            // Step 2 ---
+            $this->step2        = $this?->checkout?->step2()?->first();
+            $this->people_type  = $this->step2->people_type ?? null;
+            $this->first_name   = $this->step2->first_name ?? null;
+            $this->last_name    = $this->step2->last_name ?? null;
+            $this->email        = $this->step2->email ?? null;
+            $this->phone_number = $this->step2->phone_number ?? null;
+            $this->document     = $this->step2->document ?? null;
 
-        $this->startOnStep = $this->checkout->startOnStep;
+            // Step 3 ---
+            $this->step3      = $this?->checkout?->step3()?->first();
+            $this->zipcode    = $this->step3->zipcode;
+            $this->street     = $this->step3->street;
+            $this->district   = $this->step3->district;
+            $this->city       = $this->step3->city;
+            $this->state      = $this->step3->state;
+            $this->number     = $this->step3->number;
+            $this->complement = $this->step3->complement;
+
+            $this->step4 = $this?->checkout?->step4()?->first();
+
+            $this->startOnStep = $this->checkout->startOnStep;
+        }
 
         $this->form->fill();
     }
 
     public static function getSlug(): string
     {
-        return 'internal-checkout-payment/{cppCheckout?}';
+        return 'internal-checkout-payment';
     }
 
     public function fieldWinzard()
