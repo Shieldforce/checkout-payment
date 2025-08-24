@@ -25,13 +25,8 @@ class CheckoutWizard extends Page implements Forms\Contracts\HasForms
 
     public ?int $checkoutId = null;
 
-    /**
-     * @return string|null
-     */
-    public static function getNavigationGroup(): ?string
-    {
-        $plugin = new CheckoutPaymentPlugin();
-        return $plugin->getLabelGroupSidebar();
+    public function __construct(public CheckoutPaymentPlugin $plugin) {
+        self::$navigationGroup = $plugin->getLabelGroupSidebar();
     }
 
     public function mount(?int $checkoutId = null): void
