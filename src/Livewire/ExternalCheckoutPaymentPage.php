@@ -14,6 +14,8 @@ class ExternalCheckoutPaymentPage extends Page
 
     protected static ?string $label = 'Checkout';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public ?int $checkoutId = null;
 
     public array $data = [];
