@@ -8,7 +8,6 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
-use Illuminate\Support\Facades\Auth;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 
 class InternalCheckoutWizard extends Page implements HasForms
@@ -31,9 +30,12 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public function mount(?int $checkoutId = null): void
     {
-        filament()
-            ->getCurrentPanel()
-            ->topNavigation();
+        if (request()->query('external') === '1') {
+            filament()
+                ->getCurrentPanel()
+                ->topNavigation()
+                ->topbar(false);
+        }
 
         $this->checkoutId  = $checkoutId;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
@@ -91,13 +93,13 @@ class InternalCheckoutWizard extends Page implements HasForms
         return parent::getLayout();
     }
 
-    /*public static function shouldRegisterNavigation(): bool
+    public static function shouldRegisterNavigation(): bool
     {
         if (request()->query('external') === '1') {
             return false;
         }
 
         return true;
-    }*/
+    }
 }
 

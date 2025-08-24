@@ -26,7 +26,9 @@ class CheckoutPaymentPlugin implements Plugin
                     ->name('checkout.external')
                     ->defaults('external', 1);
             })
-            ->pages([]);
+            ->pages([
+                \Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard::class,
+            ]);
     }
 
     public function boot(Panel $panel): void
