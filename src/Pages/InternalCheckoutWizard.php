@@ -113,6 +113,8 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->number     = $this->step3->number;
         $this->complement = $this->step3->complement;
 
+        dd($this->step3);
+
         $this->step4 = $this?->checkout?->step4()?->first();
 
         $this->startOnStep = $this->checkout->startOnStep;
