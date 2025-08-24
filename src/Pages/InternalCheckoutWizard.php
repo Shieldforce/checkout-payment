@@ -18,6 +18,7 @@ class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
     protected static ?string $label           = "Checkout";
     protected static ?string $navigationLabel = "Checkout";
     public ?int              $checkoutId      = null;
+    public array             $data            = [];
     public string            $name;
     public string            $email;
     public                   $paymentMethod;
@@ -30,7 +31,9 @@ class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
 
     public function mount(?int $checkoutId = null): void
     {
-        $this->checkoutId = $checkoutId;
+        $this->checkoutId    = $checkoutId;
+        $this->paymentMethod = config()->get('checkout-payment.type_gateway');
+        $this->form->fill();
     }
 
     public static function getSlug(): string
@@ -72,11 +75,6 @@ class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
 
     public function submit()
     {
-        // Aqui você integra com API de pagamento
-        dd([
-            'name'          => $this->name,
-            'email'         => $this->email,
-            'paymentMethod' => $this->paymentMethod,
-        ]);
+        dd($this->form->getState());
     }
 }

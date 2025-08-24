@@ -2,10 +2,10 @@
 
 namespace Shieldforce\CheckoutPayment\Livewire;
 
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
+use Filament\Forms\Form;
 use Filament\Pages\SimplePage;
+use Illuminate\Support\Facades\Config;
 use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
 
 class ExternalCheckoutPaymentPage extends SimplePage
@@ -13,13 +13,16 @@ class ExternalCheckoutPaymentPage extends SimplePage
     protected static string  $view       = "checkout-payment::livewire.external-checkout-payment-page";
     protected static ?string $label      = "Checkout";
     public ?int              $checkoutId = null;
+    public array             $data       = [];
     public string            $name;
     public string            $email;
     public                   $paymentMethod;
 
     public function mount(?int $checkoutId = null): void
     {
-        $this->checkoutId = $checkoutId;
+        $this->checkoutId    = $checkoutId;
+        $this->paymentMethod = config()->get('checkout-payment.type_gateway');
+        $this->form->fill();
     }
 
     public static function getSlug(): string
@@ -27,21 +30,18 @@ class ExternalCheckoutPaymentPage extends SimplePage
         return 'internal-checkout-payment/{checkoutId?}';
     }
 
-    protected function getFormSchema(): array
+    protected function form(Form $form): Form
     {
         $internal = new InternalCheckoutWizard();
-        return [
+        return $form->schema([
             Wizard::make($internal->fieldWinzard())
-        ];
+        ])
+            ->statePath('data');
     }
 
     public function submit()
     {
-        dd([
-            'name'          => $this->name,
-            'email'         => $this->email,
-            'paymentMethod' => $this->paymentMethod,
-        ]);
+        dd($this->form->getState());
     }
 
 }
