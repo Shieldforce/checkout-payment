@@ -59,7 +59,8 @@ class MountCheckoutStepsService
         );
 
         if ($validator->fails()) {
-            throw new ValidationException($validator);
+            dd($validator);
+            //throw new ValidationException($validator);
         }
 
         $this->cppCheckout->step1()->updateOrCreate([
