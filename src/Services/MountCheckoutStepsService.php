@@ -3,6 +3,9 @@
 namespace Shieldforce\CheckoutPayment\Services;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
@@ -42,24 +45,22 @@ class MountCheckoutStepsService
         array $items
     )
     {
-        $fieldsRequired = [
-            "name",
-            "price",
-            "price_2",
-            "price_3",
-            "description",
-            "img",
-            "quantity",
-        ];
-
-        $validated = validator(
+        $validator = Validator::make(
             ['items' => $items],
             [
-                'items'         => 'required|array',
-                'items.*.name'  => 'required|string',
-                'items.*.email' => 'required|email',
+                "items.*.name"        => ['required','string'],
+                "items.*.price"       => ['required','string'],
+                "items.*.price_2"     => ['required','string'],
+                "items.*.price_3"     => ['required','string'],
+                "items.*.description" => ['required','string'],
+                "items.*.img"         => ['required','string', Rule::imageFile()],
+                "items.*.quantity"    => ['required','integer'],
             ]
-        )->validate();
+        );
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
 
         $this->cppCheckout->step1()->updateOrCreate([
             "cpp_checkout_id" => $this->cppCheckout->id,
@@ -101,6 +102,8 @@ class MountCheckoutStepsService
             "complement" => $address->complement,
             'visible'    => true,
         ]);*/
+
+        return $validator->validated();
     }
 
 
