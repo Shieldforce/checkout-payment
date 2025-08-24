@@ -107,12 +107,18 @@ class MountCheckoutStepsService
             return $this;
         }
 
-        $this->cppCheckout->step1()->updateOrCreate([
+        $up = $this->cppCheckout->step1()->updateOrCreate([
             'cpp_checkout_id' => $this->cppCheckout->id,
         ], [
             'items'   => json_encode($items),
             'visible' => $visible,
         ]);
+
+        if ($up) {
+            $this->cppCheckout->update([
+                'startOnStep' => 1,
+            ]);
+        }
 
         return $this;
     }
@@ -183,9 +189,15 @@ class MountCheckoutStepsService
             return $this;
         }
 
-        $this->cppCheckout->step2()->updateOrCreate([
+        $up = $this->cppCheckout->step2()->updateOrCreate([
             'cpp_checkout_id' => $this->cppCheckout->id,
         ], $required);
+
+        if ($up) {
+            $this->cppCheckout->update([
+                'startOnStep' => 2,
+            ]);
+        }
 
         return $this;
     }
@@ -260,9 +272,15 @@ class MountCheckoutStepsService
             return $this;
         }
 
-        $this->cppCheckout->step3()->updateOrCreate([
+        $up = $this->cppCheckout->step3()->updateOrCreate([
             'cpp_checkout_id' => $this->cppCheckout->id,
         ], $required);
+
+        if ($up) {
+            $this->cppCheckout->update([
+                'startOnStep' => 3,
+            ]);
+        }
 
         return $this;
     }
@@ -332,9 +350,15 @@ class MountCheckoutStepsService
             return $this;
         }
 
-        $this->cppCheckout->step4()->updateOrCreate([
+        $up = $this->cppCheckout->step4()->updateOrCreate([
             'cpp_checkout_id' => $this->cppCheckout->id,
         ], $required);
+
+        if ($up) {
+            $this->cppCheckout->update([
+                'startOnStep' => 4,
+            ]);
+        }
 
         return $this;
     }
