@@ -11,6 +11,8 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
+use Shieldforce\CheckoutPayment\Models\CppCheckout;
+use Shieldforce\CheckoutPayment\Models\CppCheckoutStep1;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 
 class InternalCheckoutWizard extends Page implements HasForms
@@ -39,6 +41,10 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public $paymentMethod = null;
 
+    public array $items = [];
+
+    public ?CppCheckout $checkout = null;
+
     public ?TypeGatewayEnum $typeGateway = null;
 
     public ?CppGateways $cppGateways = null;
@@ -54,10 +60,13 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         $this->cppGateways = CppGateways::where('active', true)->first();
         $this->checkoutId  = $checkoutId;
+        $this->checkout    = CppCheckout::find($this->checkoutId);
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
         $this->email = request()->query('email') ?? null;
         $this->name  = request()->query('first_name') ?? null;
+
+        $this->items = $this?->checkout?->step1()?->first()?->items;
 
         $this->form->fill();
     }
@@ -70,6 +79,10 @@ class InternalCheckoutWizard extends Page implements HasForms
     public static function fieldWinzard()
     {
         return [
+            Wizard\Step::make('Produtos')
+                ->schema([
+                    \Filament\Forms\Components\View::make('checkout-payment::checkout.cart-products'),
+                ]),
             Wizard\Step::make('Cliente')
                 ->schema([
 
