@@ -12,7 +12,7 @@ class CppCheckout extends Model
         "cpp_gateway_id",
         "referencable_id",
         "referencable_type",
-        "method",
+        "methods",
         "first_name",
         "last_name",
         "email",
