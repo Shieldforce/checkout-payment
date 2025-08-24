@@ -38,9 +38,11 @@ class ManagerFieldService
                 return $name ? TypeGatewayEnum::from($name)
                     ->visible()[$nameField] : false;
             })
+            ->extraInputAttributes(['x-ref' => 'apiKeyInput'])
             ->suffixAction(
                 Action::make('copy')
                     ->icon('heroicon-m-clipboard')
+                    ->tooltip('Copiar')
                     ->action(
                         fn ($state) => \Filament\Notifications\Notification::make()
                             ->title('Copiado!')
@@ -49,7 +51,7 @@ class ManagerFieldService
                             ->send()
                     )
                     ->extraAttributes([
-                        'x-on:click' => 'navigator.clipboard.writeText($el.closest("div").querySelector("input").value)',
+                        'x-on:click.stop' => 'navigator.clipboard.writeText($refs.apiKeyInput.value)',
                     ])
             );
     }
