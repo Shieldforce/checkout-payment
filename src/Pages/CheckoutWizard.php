@@ -24,6 +24,14 @@ class CheckoutWizard extends Page implements Forms\Contracts\HasForms
 
     public ?int $checkoutId = null;
 
+    /**
+     * @param string|null $navigationGroup
+     */
+    public static function setNavigationGroup(): void
+    {
+        self::$navigationGroup = "teste";
+    }
+
     public function mount(?int $checkoutId = null): void
     {
         $this->checkoutId = $checkoutId;
