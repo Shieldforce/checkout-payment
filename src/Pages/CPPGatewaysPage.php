@@ -18,6 +18,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Crypt;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\ManagerFieldService;
@@ -157,6 +158,12 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ->action(function (array $data) {
                     $active = $data['active'];
                     unset($data['active']);
+
+                    if (TypeGatewayEnum::from($data['name']) == TypeGatewayEnum::mercado_pago) {
+                        $data['field_1'] = Crypt::encrypt($data['field_1']);
+                        $data['field_2'] = Crypt::encrypt($data['field_2']);
+                    }
+
                     CppGateways::updateOrCreate($data, ['active' => $active]);
                 }),
         ];
