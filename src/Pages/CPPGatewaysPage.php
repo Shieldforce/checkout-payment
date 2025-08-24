@@ -8,12 +8,14 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 
@@ -70,6 +72,18 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                     'cancelled' => 'Cancelled',
                 ]),
         ];
+    }
+
+    public function getTable(): \Filament\Tables\Table
+    {
+        return parent::getTable()
+            ->filters(self::fieldsFilter(), layout: FiltersLayout::AboveContentCollapsible)
+            ->filtersFormColumns(3)
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filtrar...'),
+            );
     }
 
     protected function getTableActions(): array
