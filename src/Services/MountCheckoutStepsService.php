@@ -30,10 +30,10 @@ class MountCheckoutStepsService
         if (isset($cppGateway->id)) {
 
             $this->cppCheckout = CppCheckout::updateOrCreate([
-                'cpp_gateway_id' => $cppGateway->id,
-                'referencable_id' => $this->model->id,
+                'cpp_gateway_id'    => $cppGateway->id,
+                'referencable_id'   => $this->model->id,
                 'referencable_type' => $this->model::class,
-                'methods' => json_encode($this->requiredMethods),
+                'methods'           => json_encode($this->requiredMethods),
             ], []);
         }
 
@@ -42,35 +42,39 @@ class MountCheckoutStepsService
 
     public function step1(
         array $items
-    ) {
+    )
+    {
         $validator = Validator::make(
             ['items' => $items],
             [
-                'items.*.name' => [
+                'items.*.name'        => [
                     'required',
                     'string',
                 ],
-                'items.*.price' => [
+                'items.*.price'       => [
                     'required',
-                    'float',
+                    'numeric',
+                    'regex:/^\d+(\.\d{1,2})?$/',
                 ],
-                'items.*.price_2' => [
+                'items.*.price_2'     => [
                     'nullable',
-                    'float',
+                    'numeric',
+                    'regex:/^\d+(\.\d{1,2})?$/',
                 ],
-                'items.*.price_3' => [
+                'items.*.price_3'     => [
                     'nullable',
-                    'float',
+                    'numeric',
+                    'regex:/^\d+(\.\d{1,2})?$/',
                 ],
                 'items.*.description' => [
                     'nullable',
                     'string',
                 ],
-                'items.*.img' => [
+                'items.*.img'         => [
                     'nullable',
                     Rule::imageFile(),
                 ],
-                'items.*.quantity' => [
+                'items.*.quantity'    => [
                     'required',
                     'integer',
                 ],
@@ -95,7 +99,7 @@ class MountCheckoutStepsService
         $this->cppCheckout->step1()->updateOrCreate([
             'cpp_checkout_id' => $this->cppCheckout->id,
         ], [
-            'items' => json_encode($items),
+            'items'   => json_encode($items),
             'visible' => true,
         ]);
 
