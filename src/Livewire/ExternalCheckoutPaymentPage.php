@@ -5,7 +5,6 @@ namespace Shieldforce\CheckoutPayment\Livewire;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
@@ -34,7 +33,11 @@ class ExternalCheckoutPaymentPage extends Page implements HasForms
 
     public function mount(?int $checkoutId = null): void
     {
-        filament()->getCurrentPanel()->topNavigation()/*->topbar(false)*/;
+        filament()
+            ->getCurrentPanel()
+            ->topNavigation()
+            ->navigationItems([])
+            /*->topbar(false)*/;
         $this->checkoutId = $checkoutId;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
         $this->form->fill();
