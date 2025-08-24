@@ -52,7 +52,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn(Action $action) => $action
+                fn (Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
@@ -73,21 +73,14 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('id')->sortable(),
-            TextColumn::make('name')
-                ->label('Gateway'),
+            TextColumn::make('id')
+                ->sortable(),
 
-            TextColumn::make('field_1')
-                ->label('Campo 1')
+            TextColumn::make('name')
+                ->label('Gateway')
                 ->formatStateUsing(function ($state, $record) {
                     return TypeGatewayEnum::from($record->name)->label();
                 }),
-
-            ManagerFieldService::TextColumn("field_2","Campo 2"),
-            ManagerFieldService::TextColumn("field_3","Campo 3"),
-            ManagerFieldService::TextColumn("field_4","Campo 4"),
-            ManagerFieldService::TextColumn("field_5","Campo 5"),
-            ManagerFieldService::TextColumn("field_6","Campo 6"),
 
             ToggleColumn::make('active')
                 ->label('Ativo'),
@@ -101,8 +94,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending'   => 'Pending',
-                    'paid'      => 'Paid',
+                    'pending' => 'Pending',
+                    'paid' => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -129,7 +122,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                         ->live()
                         ->options(function () {
                             return collect(TypeGatewayEnum::cases())
-                                ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+                                ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
                                 ->toArray();
                         })
                         ->columnSpanFull()
@@ -137,10 +130,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
                     Grid::make()->schema([
 
-                        ManagerFieldService::TextInput('field_1')
-                            ->helperText('Os campos sensíveis são cryptografados!'),
-                        ManagerFieldService::TextInput('field_2')
-                            ->helperText('Os campos sensíveis são cryptografados!'),
+                        ManagerFieldService::TextInput('field_1'),
+                        ManagerFieldService::TextInput('field_2'),
 
                     ])->columns(2),
                     Grid::make()->schema([
