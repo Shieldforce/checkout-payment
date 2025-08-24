@@ -147,7 +147,10 @@ class CheckoutPaymentServiceProvider extends PackageServiceProvider
         return [
             '1_create_cpp_gateways_table',
             '2_create_cpp_checkouts_table',
-            '3_create_cpp_checkout_items_table',
+            '3_create_cpp_checkout_step_1_table',
+            '4_create_cpp_checkout_step_2_table',
+            '5_create_cpp_checkout_step_3_table',
+            '6_create_cpp_checkout_step_4_table',
         ];
     }
 

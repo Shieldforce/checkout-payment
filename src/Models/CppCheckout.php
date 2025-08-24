@@ -16,25 +16,7 @@ class CppCheckout extends Model
         "referencable_id",
         "referencable_type",
         "methods",
-        "first_name",
-        "last_name",
-        "email",
-        "phone_number",
-        "zipcode",
-        "street",
-        "district",
-        "city",
-        "state",
-        "number",
-        "complement",
-        "document",
-        "card_number",
-        "card_validate",
-        "card_payer_name",
         "total_price",
-        "base_qrcode",
-        "url_qrcode",
-        "url_billet",
     ];
 
     protected $guarded = [];
@@ -69,15 +51,42 @@ class CppCheckout extends Model
         static::created(function (CppCheckout $checkout) {
             $checkout->uuid = Uuid::uuid3(
                 Uuid::NAMESPACE_DNS,
-                (string) $checkout->id
+                (string)$checkout->id
             )->toString();
         });
     }
 
-    public function ccpItems()
+    public function setup1()
     {
         return $this->hasMany(
-            CppCheckoutItem::class,
+            CppCheckoutStep1::class,
+            "cpp_checkout_id",
+            "id",
+        );
+    }
+
+    public function setup2()
+    {
+        return $this->hasMany(
+            CppCheckoutStep2::class,
+            "cpp_checkout_id",
+            "id",
+        );
+    }
+
+    public function setup3()
+    {
+        return $this->hasMany(
+            CppCheckoutStep3::class,
+            "cpp_checkout_id",
+            "id",
+        );
+    }
+
+    public function setup4()
+    {
+        return $this->hasMany(
+            CppCheckoutStep4::class,
             "cpp_checkout_id",
             "id",
         );
