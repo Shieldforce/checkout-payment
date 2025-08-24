@@ -67,14 +67,10 @@ class CppCheckout extends Model
         });
 
         static::created(function (CppCheckout $checkout) {
-            if (empty($checkout->uuid)) {
-                $checkout->uuid = Uuid::uuid3(
-                    Uuid::NAMESPACE_DNS,
-                    (string) $checkout->id
-                )->toString();
-
-                $checkout->save();
-            }
+            $checkout->uuid = Uuid::uuid3(
+                Uuid::NAMESPACE_DNS,
+                (string) $checkout->id
+            )->toString();
         });
     }
 
