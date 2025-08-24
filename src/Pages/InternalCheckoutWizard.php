@@ -128,7 +128,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     public function fieldWinzard()
     {
         return [
-            /*Wizard\Step::make('Produtos do Carrinho')
+            Wizard\Step::make('Produtos do Carrinho')
                 ->visible($this->step1->visible ?? true)
                 ->schema([
                     \Filament\Forms\Components\View::make(
@@ -303,7 +303,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             Wizard\Step::make('Confirmação')
                 ->schema([
                     TextInput::make('review')->default('Revisar seus dados')->disabled(),
-                ]),*/
+                ]),
         ];
     }
 

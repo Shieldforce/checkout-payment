@@ -25,9 +25,16 @@ class CheckoutPaymentPlugin implements Plugin
                 /*Route::get('/checkout/{cppCheckout?}', InternalCheckoutWizard::class)
                     ->name('checkout.external')
                     ->defaults('external', 1);*/
+                // Externo (sem login, usa layout externo)
                 Route::get('/checkout/{cppCheckout?}', InternalCheckoutWizard::class)
                     ->name('checkout.external')
                     ->defaults('external', 1)
+                    ->defaults('cppCheckout', null);
+
+                // Interno (logado, painel do Filament)
+                Route::get('/internal-checkout-payment/{cppCheckout?}', InternalCheckoutWizard::class)
+                    ->name('checkout.internal')
+                    ->defaults('external', 0)
                     ->defaults('cppCheckout', null);
             })
             ->pages([
