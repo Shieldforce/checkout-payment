@@ -41,6 +41,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public array $data = [];
 
+    public ?string $people_type  = null;
     public ?string $first_name   = null;
     public ?string $last_name    = null;
     public ?string $email        = null;
@@ -76,19 +77,20 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
         $this->step1 = $this?->checkout?->step1()?->first();
-        $this->step2 = $this?->checkout?->step2()?->first();
-        $this->step3 = $this?->checkout?->step3()?->first();
-        $this->step4 = $this?->checkout?->step4()?->first();
-
-        $this->first_name   = request()->query('email') ?? null;
-        $this->last_name    = request()->query('first_name') ?? null;
-        $this->email        = request()->query('first_name') ?? null;
-        $this->phone_number = request()->query('first_name') ?? null;
-        $this->document     = request()->query('first_name') ?? null;
-
         $this->items = $this->step1?->items
             ? json_decode($this?->checkout?->step1()?->first()?->items, true)
             : [];
+
+        $this->step2 = $this?->checkout?->step2()?->first();
+        $this->people_type  = $this->step2->people_type ?? null;
+        $this->first_name   = $this->step2->first_name ?? null;
+        $this->last_name    = $this->step2->last_name ?? null;
+        $this->email        = $this->step2->email ?? null;
+        $this->phone_number = $this->step2->phone_number ?? null;
+        $this->document     = $this->step2->document ?? null;
+
+        $this->step3 = $this?->checkout?->step3()?->first();
+        $this->step4 = $this?->checkout?->step4()?->first();
 
         $this->form->fill();
     }
