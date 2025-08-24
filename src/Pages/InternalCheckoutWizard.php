@@ -30,55 +30,41 @@ class InternalCheckoutWizard extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static string $view = 'checkout-payment::pages.internal-checkout-wizard';
-
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
-
+    protected static string  $view            = 'checkout-payment::pages.internal-checkout-wizard';
+    protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
     protected static ?string $navigationGroup = 'Pagamentos';
-
-    protected static ?string $label = 'Checkout';
-
+    protected static ?string $label           = 'Checkout';
     protected static ?string $navigationLabel = 'Checkout';
-
-    protected static ?string $title = 'Realizar Pagamento';
-
-    public array $data = [];
-
-    public ?CppCheckoutStep1 $step1 = null;
-    public ?CppCheckoutStep2 $step2 = null;
-    public ?CppCheckoutStep3 $step3 = null;
-    public ?CppCheckoutStep4 $step4 = null;
-
-    public ?string $people_type  = null;
-    public ?string $first_name   = null;
-    public ?string $last_name    = null;
-    public ?string $email        = null;
-    public ?string $phone_number = null;
-    public ?string $document     = null;
-
-    public ?string $zipcode    = null;
-    public ?string $street     = null;
-    public ?string $district   = null;
-    public ?string $city       = null;
-    public ?string $state      = null;
-    public ?string $number     = null;
-    public ?string $complement = null;
-
-    public int $startOnStep = 1;
-
-    public $paymentMethods = [
+    protected static ?string $title           = 'Realizar Pagamento';
+    public array             $data            = [];
+    public ?CppCheckoutStep1 $step1           = null;
+    public ?CppCheckoutStep2 $step2           = null;
+    public ?CppCheckoutStep3 $step3           = null;
+    public ?CppCheckoutStep4 $step4           = null;
+    public ?string           $people_type     = null;
+    public ?string           $first_name      = null;
+    public ?string           $last_name       = null;
+    public ?string           $email           = null;
+    public ?string           $phone_number    = null;
+    public ?string           $document        = null;
+    public ?string           $zipcode         = null;
+    public ?string           $street          = null;
+    public ?string           $district        = null;
+    public ?string           $city            = null;
+    public ?string           $state           = null;
+    public ?string           $number          = null;
+    public ?string           $complement      = null;
+    public int               $startOnStep     = 1;
+    public array             $items           = [];
+    public ?CppCheckout      $checkout        = null;
+    public ?TypeGatewayEnum  $typeGateway     = null;
+    public ?CppGateways      $cppGateways     = null;
+    public                   $paymentMethods  = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
         MethodPaymentEnum::billet,
     ];
 
-    public array $items = [];
-
-    public ?CppCheckout $checkout = null;
-
-    public ?TypeGatewayEnum $typeGateway = null;
-
-    public ?CppGateways $cppGateways = null;
 
     public function mount(?CppCheckout $cppCheckout = null): void
     {
@@ -130,7 +116,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public static function getSlug(): string
     {
-        return 'internal-checkout-payment/{cppCheckout?}';
+        return 'checkout/{cppCheckout?}';
     }
 
     public function fieldWinzard()
@@ -300,8 +286,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         ->options(function () {
                             $methods = $this->paymentMethods;
                             $options = [];
-                            foreach ($methods as $method)
-                            {
+                            foreach ($methods as $method) {
                                 $options[$method] = MethodPaymentEnum::from($method)->label();
                             }
 
