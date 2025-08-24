@@ -55,19 +55,19 @@ class MountCheckoutStepsService
                     'string',
                 ],
                 'items.*.price_2' => [
-                    'required',
+                    'nullable',
                     'string',
                 ],
                 'items.*.price_3' => [
-                    'required',
+                    'nullable',
                     'string',
                 ],
                 'items.*.description' => [
-                    'required',
+                    'nullable',
                     'string',
                 ],
                 'items.*.img' => [
-                    'required',
+                    'nullable',
                     'string',
                     Rule::imageFile(),
                 ],

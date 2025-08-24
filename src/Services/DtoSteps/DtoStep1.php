@@ -5,13 +5,13 @@ namespace Shieldforce\CheckoutPayment\Services\DtoSteps;
 class DtoStep1
 {
     public function __construct(
-        public string $name,
-        public float  $price,
-        public float  $price_2,
-        public float  $price_3,
-        public string $description,
-        public string $img,
-        public string $quantity,
+        public string  $name,
+        public float   $price,
+        public string  $quantity,
+        public ?float  $price_2 = null,
+        public ?float  $price_3 = null,
+        public ?string $description = null,
+        public ?string $img = null,
     )
     {
         return [
