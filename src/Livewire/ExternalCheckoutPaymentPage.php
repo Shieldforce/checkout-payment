@@ -30,7 +30,7 @@ class ExternalCheckoutPaymentPage extends SimplePage
         return 'internal-checkout-payment/{checkoutId?}';
     }
 
-    protected function form(Form $form): Form
+    public function form(Form $form): Form
     {
         $internal = new InternalCheckoutWizard();
         return $form->schema([
