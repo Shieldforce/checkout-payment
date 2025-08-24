@@ -37,7 +37,7 @@ class InternalCheckoutWizard extends Page implements Forms\Contracts\HasForms
 
     public static function getNavigationGroup(): ?string
     {
-        return config('checkout-payment.type_gateway');
+        return config('checkout-payment.sidebar_group');
     }
 
     public function mount(?int $checkoutId = null): void
