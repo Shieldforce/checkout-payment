@@ -30,8 +30,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     protected static ?string $title = 'Realizar Pagamento';
 
-    public ?int $checkoutId = null;
-
     public array $data = [];
 
     public ?string $name = null;
@@ -48,7 +46,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public ?CppGateways $cppGateways = null;
 
-    public function mount(?int $checkoutId = null): void
+    public function mount(?CppCheckout $cppCheckout = null): void
     {
         if (!Auth::check()) {
             filament()
@@ -58,14 +56,13 @@ class InternalCheckoutWizard extends Page implements HasForms
         }
 
         $this->cppGateways = CppGateways::where('active', true)->first();
-        $this->checkoutId  = $checkoutId;
-        $this->checkout    = CppCheckout::find($this->checkoutId);
+        $this->checkout    = $cppCheckout;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
         $this->email = request()->query('email') ?? null;
         $this->name  = request()->query('first_name') ?? null;
 
-        dd($this->checkoutId);
+        dd($this->checkout);
 
         $this->form->fill();
     }
