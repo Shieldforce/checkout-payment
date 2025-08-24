@@ -8,14 +8,14 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Auth;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 
 class InternalCheckoutWizard extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static string $view = 'checkout-payment::pages.internal-checkout-wizard';
-
+    protected static string  $view            = 'checkout-payment::pages.internal-checkout-wizard';
     protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
     protected static ?string $navigationGroup = 'Pagamentos';
     protected static ?string $label           = 'Checkout';
@@ -30,7 +30,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public function mount(?int $checkoutId = null): void
     {
-        if (request()->query('external') === '1') {
+        if (!Auth::check()) {
             filament()
                 ->getCurrentPanel()
                 ->topNavigation()
@@ -95,11 +95,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public static function shouldRegisterNavigation(): bool
     {
-        if (request()->query('external') === '1') {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 }
 
