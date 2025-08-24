@@ -26,7 +26,8 @@ class CheckoutPaymentPlugin implements Plugin
 
     public function boot(Panel $panel): void
     {
-        //
+        config()->set('checkout-payment.sidebar_group', $this->labelGroupSidebar);
+        config()->set('checkout-payment.type_gateway', $this->typeGateway);
     }
 
     public static function make(): static
@@ -58,7 +59,8 @@ class CheckoutPaymentPlugin implements Plugin
         return $this;
     }
 
-    public function getLabelGroupSidebar() {
+    public function getLabelGroupSidebar()
+    {
         return $this->labelGroupSidebar;
     }
 }

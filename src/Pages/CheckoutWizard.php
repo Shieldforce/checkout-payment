@@ -18,15 +18,15 @@ class CheckoutWizard extends Page implements Forms\Contracts\HasForms
     protected static ?string $navigationGroup = 'Checkout';
     protected static ?string $label           = "Página de Pagamento";
     protected static ?string $navigationLabel = "Página de Pagamento";
+    public ?int              $checkoutId      = null;
+    public string            $name;
+    public string            $email;
+    public                   $paymentMethod;
 
-    public $name;
-    public $email;
-    public $paymentMethod;
 
-    public ?int $checkoutId = null;
-
-    public function __construct(public CheckoutPaymentPlugin $plugin) {
-        self::$navigationGroup = $plugin->getLabelGroupSidebar();
+    public static function getNavigationGroup(): ?string
+    {
+        return config('checkout-payment.sidebar_group') ?? 'Pagamentos';
     }
 
     public function mount(?int $checkoutId = null): void

@@ -1,6 +1,6 @@
 <?php
 
-// config for Shieldforce/CheckoutPayment
 return [
-
+    'sidebar_group' => 'Checkout Payment',
+    'type_gateway'  => \Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum::mercado_pago,
 ];
