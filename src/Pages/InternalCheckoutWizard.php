@@ -41,7 +41,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->topbar(false);
         }
 
-        //$this->cppGateways = CppGateways::where("active", true)->first();
+        $this->cppGateways = CppGateways::where("active", true)->first();
         $this->checkoutId  = $checkoutId;
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
         $this->form->fill();
