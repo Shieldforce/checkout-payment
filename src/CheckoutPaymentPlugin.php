@@ -22,12 +22,12 @@ class CheckoutPaymentPlugin implements Plugin
     {
         $panel
             ->routes(function () {
-                Route::get('/checkout-payment/wizard/{cppCheckout?}', InternalCheckoutWizard::class)
+                Route::get('/checkout-wizard/{cppCheckout?}', InternalCheckoutWizard::class)
                     ->name('checkout-payment.external')
                     ->defaults('external', 1);
             })
             ->pages([
-                \Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard::class,
+                //\Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard::class,
                 \Shieldforce\CheckoutPayment\Pages\CPPGatewaysPage::class,
             ]);
     }
