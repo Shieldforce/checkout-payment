@@ -9,28 +9,17 @@
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
-                /*const btn = document.querySelector('#btn-next-step');
-                if (btn) {
-                    btn.addEventListener('click', async (event) => {
-                        event.preventDefault();
-                        event.stopImmediatePropagation();
-                        console.log("Agora sim segurei!");
-                    }, true);
-                }*/
 
                 const btn = document.querySelector('#btn-next-step');
-
                 function bloquearAvanco(event) {
                     event.preventDefault();
                     event.stopImmediatePropagation();
-                    console.log("Controle manual do botão!");
+                    const currentStep = parseInt(document.querySelector('#form-checkout-wizard').dataset.currentStep);
+                    console.log(currentStep);
                 }
 
-                // Adiciona o listener que bloqueia
                 btn.addEventListener('click', bloquearAvanco);
-
-                // Depois, quando quiser voltar ao comportamento normal:
-                // btn.removeEventListener('click', bloquearAvanco);
+                //btn.removeEventListener('click', bloquearAvanco);
 
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                     locale: "pt-BR",
