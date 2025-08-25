@@ -21,6 +21,7 @@
            bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
            text-black dark:text-white
            p-5 select-none rounded-xl"
+    style="padding: 20px;border: 1px dashed #cecece;"
 >
     <!-- Header -->
     <div class="flex justify-between items-center">
@@ -45,7 +46,6 @@
                 class="uppercase tracking-wide text-sm font-semibold"
                  x-text="card_payer_name || 'NOME DO TITULAR'"
             >
-
             </div>
         </div>
         <div>
@@ -54,7 +54,6 @@
                 class="tracking-wide font-semibold"
                 x-text="card_validate || 'MM/AA'"
             >
-
             </div>
         </div>
     </div>
