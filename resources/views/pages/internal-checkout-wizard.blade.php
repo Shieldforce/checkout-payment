@@ -57,7 +57,7 @@
                                     console.log('Token gerado:', formData.token);
                                     // @this.call('processarPagamentoCartao', formData.token)
                                 },*/
-                                onBinChange: function (data) {
+                                /*onBinChange: function (data) {
                                     console.log("onBinChange:", data);
 
                                     // só muda se o BIN realmente for diferente
@@ -68,7 +68,7 @@
                                         // ignora, evita resetar o installments
                                         console.log("Ignorado, BIN não mudou de fato");
                                     }
-                                },
+                                },*/
                             },
                         });
 
