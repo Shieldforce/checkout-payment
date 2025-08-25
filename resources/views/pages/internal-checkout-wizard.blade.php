@@ -27,7 +27,7 @@
                 }
 
                 // Adiciona o listener que bloqueia
-                //btn.addEventListener('click', bloquearAvanco);
+                btn.addEventListener('click', bloquearAvanco);
 
                 // Depois, quando quiser voltar ao comportamento normal:
                 // btn.removeEventListener('click', bloquearAvanco);
