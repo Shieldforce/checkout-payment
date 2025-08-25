@@ -12,7 +12,7 @@
         }
     }"--}}
     x-data="{
-
+        card_number: @entangle('card_number').live,
         card_payer_name: @entangle('card_payer_name').live,
         card_validate: @entangle('card_validate').live,
         card_cvv: @entangle('card_cvv').live,
@@ -32,7 +32,7 @@
     <div class="mt-8 text-xl tracking-widest font-mono">
         <span
             {{--x-text="formatNumber(card_number)"--}}
-            {{--x-text="card_number || '0000 0000 0000 0000'"--}}
+            x-text="card_number || '0000 0000 0000 0000'"
         >
         </span>
     </div>
