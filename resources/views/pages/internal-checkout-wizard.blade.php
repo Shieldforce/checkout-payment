@@ -109,8 +109,10 @@
                 // Inicializa quando a aba de cartão for visível
                 document.getElementById("method_checked").addEventListener("change", function(event) {
                     console.log(event.target.value);
+                    const valueSelectMethodCheck = parseInt(event.target.value);
+                    const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}");
 
-                    if (event.target.value === {{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}) {
+                    if (valueSelectMethodCheck === creditCardEnum) {
                         if (!cardForm) {
                             cardForm = initCardForm();
                         }
