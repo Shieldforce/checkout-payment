@@ -54,6 +54,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     public ?string           $complement      = null;
     public ?int              $card_number     = null;
     public ?string           $card_validate   = null;
+    public ?string           $card_cvv        = null;
     public ?string           $card_payer_name = null;
     public ?string           $base_qrcode     = null;
     public ?string           $url_qrcode      = null;
