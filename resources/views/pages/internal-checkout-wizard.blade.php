@@ -78,7 +78,7 @@
                                 onInstallmentsReceived: function(data, error) {
                                     console.log("onInstallmentsReceived", data, error);
                                 },
-                                onBinChange: function (data) {
+                                /*onBinChange: function (data) {
                                     console.log("onBinChange:", data);
 
                                     // só muda se o BIN realmente for diferente
@@ -89,7 +89,7 @@
                                         // ignora, evita resetar o installments
                                         console.log("Ignorado, BIN não mudou de fato");
                                     }
-                                },
+                                },*/
                             },
                         });
 
