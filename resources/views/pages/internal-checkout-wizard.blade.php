@@ -26,7 +26,6 @@
                             cardNumber: {
                                 id: "cardNumber",
                                 placeholder: '0000 0000 0000 0000',
-                                autofocus: true,
                             },
                             expirationDate: {
                                 id: 'cardExpiration',
@@ -54,6 +53,14 @@
                             onFormMounted: error => {
                                 if (error) return console.warn("Form Mounted handling error: ", error);
                                 console.log("Form mounted");
+
+                                // força o autofocus
+                                setTimeout(() => {
+                                    const cardNumberInput = document.querySelector('#cardNumber iframe');
+                                    if (cardNumberInput) {
+                                        cardNumberInput.contentWindow.focus();
+                                    }
+                                }, 200);
                             },
                             onSubmit: function(event) {
                                 console.log("onSubmit:", event);
