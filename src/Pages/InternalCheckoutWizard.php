@@ -501,10 +501,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                         Grid::make()->schema([
 
-                            Action::make('generate_pix')
-                                ->color("info")
-                                ->label("Gerar PIX")
-
                         ])->columns(2)->columnSpan(1),
 
                         // Pix method ---
