@@ -406,9 +406,9 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                         Grid::make()->schema([
 
-                            Select::make('method_checked')
+                            Select::make('installments')
                                 ->extraAttributes(['id' => 'installments']),
-                            TextInput::make('number')
+                            TextInput::make('issuer')
                                 ->extraAttributes(['id' => 'issuer']),
 
                         ])->columns(2),
