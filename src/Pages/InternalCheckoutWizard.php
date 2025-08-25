@@ -391,6 +391,17 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
+                            })
+                            ->visible(function($state, $get, $set, $livewire) {
+                                return $get("method_checked")
+                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    : false;
+                            })
+                            ->disabled(function($state, $get, $set, $livewire) {
+                                return $get("method_checked")
+                                    && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    ? false
+                                    : true;
                             }),
                         TextInput::make('card_validate')
                             ->label("Validade do Cartão")
@@ -399,6 +410,17 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
+                            })
+                            ->visible(function($state, $get, $set, $livewire) {
+                                return $get("method_checked")
+                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    : false;
+                            })
+                            ->disabled(function($state, $get, $set, $livewire) {
+                                return $get("method_checked")
+                                && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    ? false
+                                    : true;
                             }),
                         TextInput::make('card_payer_name')
                             ->label("Nome impresso no Cartão")
@@ -407,6 +429,17 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
+                            })
+                            ->visible(function($state, $get, $set, $livewire) {
+                                return $get("method_checked")
+                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    : false;
+                            })
+                            ->disabled(function($state, $get, $set, $livewire) {
+                                return $get("method_checked")
+                                && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    ? false
+                                    : true;
                             }),
                         TextInput::make('card_cvv')
                             ->label("CVV do Cartão")
@@ -415,6 +448,17 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
+                            })
+                            ->visible(function($state, $get, $set, $livewire) {
+                                return $get("method_checked")
+                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    : false;
+                            })
+                            ->disabled(function($state, $get, $set, $livewire) {
+                                return $get("method_checked")
+                                && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    ? false
+                                    : true;
                             }),
 
                     ])->columns(2),
