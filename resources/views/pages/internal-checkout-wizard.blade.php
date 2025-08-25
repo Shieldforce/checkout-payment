@@ -67,12 +67,12 @@
 @endif--}}
 
 
-@if($this->cppGateways->field_2)
+@if($this->cppGateways->field_1)
     @push('scripts')
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
-                const mp = new window.MercadoPago("{{ $cppGateways->field_2 }}", { locale: "pt-BR" });
+                const mp = new window.MercadoPago("{{ $cppGateways->field_1 }}", { locale: "pt-BR" });
                 console.log("SDK Mercado Pago inicializado:", mp);
             });
         </script>
