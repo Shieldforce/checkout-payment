@@ -409,8 +409,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 ->reactive()->extraAttributes([
                                     'x-data' => "{}",
                                     'x-on:input' => "
-                                        let v = $el.value.replace(/\\D/g, '').substring(0,19);
-                                        $el.value = v.replace(/(\\d{4})(?=\\d)/g, '$1 ');
+                                        let v = \$el.value.replace(/\\D/g, '').substring(0,19);
+                                        \$el.value = v.replace(/(\\d{4})(?=\\d)/g, '$1 ');
                                     "
                                 ])
                                 ->reactive()
