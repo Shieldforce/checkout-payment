@@ -412,7 +412,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                             Select::make('installments')
                                 ->extraInputAttributes(['id' => 'installments']),
-                            TextInput::make('issuer')
+                            Select::make('issuer')
                                 ->extraInputAttributes(['id' => 'issuer']),
                             TextInput::make('email_card')
                                 ->extraInputAttributes(['id' => 'email_card']),
