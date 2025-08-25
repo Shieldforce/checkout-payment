@@ -24,7 +24,7 @@ class CppCheckoutStep3 extends Model
 
     public function ccpCheckout()
     {
-        return $this->hasMany(
+        return $this->hasOne(
             CppCheckout::class,
             'id',
             'cpp_checkout_id',
