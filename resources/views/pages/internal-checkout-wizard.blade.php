@@ -108,7 +108,7 @@
 
                 // Inicializa quando a aba de cartão for visível
                 document.getElementById("method_checked").addEventListener("change", function(data) {
-                    console.log(data);
+                    console.log(data.value);
                 })
                 Livewire.hook('commit', (message, component) => {
                     const methodChecked = component.get('method_checked');
