@@ -21,6 +21,7 @@
                         if (componentEl) {
                             const livewire = window.Livewire.find(componentEl.getAttribute('wire:id'));
                             if (livewire) {
+                                const token = "fdsf";
                                 // chama método do Livewire
                                 livewire.call('nextStep', token); // você pode passar o token como argumento
                             }
