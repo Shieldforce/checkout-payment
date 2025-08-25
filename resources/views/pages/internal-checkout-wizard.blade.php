@@ -56,10 +56,8 @@
 
                                 // força o autofocus
                                 setTimeout(() => {
-                                    const cardNumberInput = document.querySelector('#cardNumber iframe');
-                                    if (cardNumberInput) {
-                                        cardNumberInput.contentWindow.focus();
-                                    }
+                                    const cardNumber = document.getElementById('cardNumber');
+                                    cardNumber.focus();
                                 }, 200);
                             },
                             onSubmit: function(event) {
