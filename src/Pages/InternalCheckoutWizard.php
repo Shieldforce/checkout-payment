@@ -579,6 +579,28 @@ class InternalCheckoutWizard extends Page implements HasForms
         ];
     }
 
+    public function nextStep($token)
+    {
+        // aqui você pode salvar o token no step4 ou fazer o que precisar
+        /*$this->checkout->step4()->updateOrCreate(
+            ["cpp_checkout_id" => $this->checkout->id],
+            [
+                "card_token" => $token,
+                "card_number" => $this->card_number,
+                "card_validate" => $this->card_validate,
+                "card_payer_name" => $this->card_payer_name,
+            ]
+        );*/
+
+        // avança o Wizard para o próximo step
+        $this->form->getState()['wizard']->nextStep();
+
+        $this->dispatchBrowserEvent('filament-notification', [
+            'type' => 'success',
+            'message' => 'Token salvo e próximo passo liberado!'
+        ]);
+    }
+
     public function submit()
     {
         dd($this->form->getState());
