@@ -17,9 +17,13 @@
                         event.stopImmediatePropagation();
 
                         console.log("Agora sim segurei!");
-                        const component = document.querySelector('[wire\\:id]'); // pega o componente atual
-                        if (component && component.__livewire) {
-                            component.__livewire.call('nextStep'); // método do Wizard
+                        const componentEl = document.querySelector('[wire\\:id]');
+                        if (componentEl) {
+                            const livewire = window.Livewire.find(componentEl.getAttribute('wire:id'));
+                            if (livewire) {
+                                // chama método do Livewire
+                                livewire.call('nextStep', token); // você pode passar o token como argumento
+                            }
                         }
                     }, true);
                 }
