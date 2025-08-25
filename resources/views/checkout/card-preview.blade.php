@@ -68,6 +68,10 @@
             locale: "pt-BR",
         });
 
+        const paymentMethods = await mp.getPaymentMethods({ bin: "41111111" });
+
+        console.log(paymentMethods);
+
         const cardForm = mp.cardForm({
             amount: '100.00',
             autoMount: true,
