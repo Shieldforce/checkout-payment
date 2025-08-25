@@ -154,9 +154,9 @@ class CheckoutPaymentServiceProvider extends PackageServiceProvider
         ];
     }
 
-    /*public function boot()
+    public function boot()
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'checkout-payment');
         return parent::boot();
-    }*/
+    }
 }
