@@ -60,6 +60,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     public ?string           $base_qrcode     = null;
     public ?string           $url_qrcode      = null;
     public ?string           $url_billet      = null;
+    public ?string           $review          = null;
     public ?CppCheckoutStep1 $step1           = null;
     public ?CppCheckoutStep2 $step2           = null;
     public ?CppCheckoutStep3 $step3           = null;
