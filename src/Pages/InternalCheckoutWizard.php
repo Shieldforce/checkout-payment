@@ -314,7 +314,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         return [
             Wizard::make($this->fieldWinzard())
-                ->startOnStep($this->startOnStep),
+                ->startOnStep($this->startOnStep ?? 1),
         ];
     }
 
