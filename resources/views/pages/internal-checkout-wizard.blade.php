@@ -14,11 +14,11 @@
                 if (btn) {
                     btn.addEventListener('click', async (event) => {
                         event.preventDefault();
-                        event.stopImmediatePropagation(); // 🔑 bloqueia Livewire
+                        event.stopImmediatePropagation();
 
                         console.log("Agora sim segurei!");
                         // aqui você gera token e depois chama:
-                        // Livewire.find(btn.closest('[wire\\:id]').getAttribute('wire:id')).call('wizard.nextStep');
+                        Livewire.find(btn.closest('[wire\\:id]').getAttribute('wire:id')).call('wizard.nextStep');
                     }, true); // useCapture = true -> intercepta antes
                 }
 
