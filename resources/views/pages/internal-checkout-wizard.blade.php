@@ -38,7 +38,10 @@
                             autoMount: true,
                             form: {
                                 id: 'form-checkout-wizard',
-                                cardNumber: { id: 'cardNumber' },
+                                cardNumber: {
+                                    id: "cardNumber",
+                                    placeholder: "0000 0000 0000 0000",
+                                },
                                 expirationDate: { id: 'cardExpiration' },
                                 securityCode: { id: 'cardCVV' },
                                 cardholderName: { id: 'cardholderName' },
@@ -51,13 +54,13 @@
                                     if (error) return console.warn("Form Mounted handling error: ", error);
                                     console.log("Form mounted");
                                 },
-                                /*onSubmit: function(event) {
-                                    event.preventDefault();
+                                onSubmit: function(event) {
+                                    /*event.preventDefault();
                                     const formData = cardForm.getCardFormData();
-                                    console.log('Token gerado:', formData.token);
+                                    console.log('Token gerado:', formData.token);*/
                                     // @this.call('processarPagamentoCartao', formData.token)
-                                },*/
-                                /*onBinChange: function (data) {
+                                },
+                                onBinChange: function (data) {
                                     console.log("onBinChange:", data);
 
                                     // só muda se o BIN realmente for diferente
@@ -68,7 +71,7 @@
                                         // ignora, evita resetar o installments
                                         console.log("Ignorado, BIN não mudou de fato");
                                     }
-                                },*/
+                                },
                             },
                         });
 
