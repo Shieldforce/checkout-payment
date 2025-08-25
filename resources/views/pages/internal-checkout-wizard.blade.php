@@ -113,7 +113,7 @@
                     if (valueSelectMethodCheck === creditCardEnum) {
                         if (!cardForm) {
                             setTimeout(function() {
-                                //cardForm = initCardForm();
+                                cardForm = initCardForm();
                             }, 3000)
                         }
                     }
