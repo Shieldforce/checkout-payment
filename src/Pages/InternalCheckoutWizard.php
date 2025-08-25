@@ -394,87 +394,98 @@ class InternalCheckoutWizard extends Page implements HasForms
                         )
                         ->required(),
 
-                    Grid::make()->schema([
+                    Grid::make(2)->schema([
 
-                        // Card method ---
-                        TextInput::make('card_number')
-                            ->label("Número do Cartão")
-                            ->reactive()
-                            ->required(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    : false;
-                            })
-                            ->visible(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    : false;
-                            })
-                            ->disabled(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                && $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    ? false
-                                    : true;
-                            }),
-                        TextInput::make('card_validate')
-                            ->label("Validade do Cartão")
-                            ->reactive()
-                            ->required(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    : false;
-                            })
-                            ->visible(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    : false;
-                            })
-                            ->disabled(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                && $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    ? false
-                                    : true;
-                            }),
-                        TextInput::make('card_payer_name')
-                            ->label("Nome impresso no Cartão")
-                            ->reactive()
-                            ->required(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    : false;
-                            })
-                            ->visible(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    : false;
-                            })
-                            ->disabled(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                && $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    ? false
-                                    : true;
-                            }),
-                        TextInput::make('card_cvv')
-                            ->label("CVV do Cartão")
-                            ->reactive()
-                            ->required(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    : false;
-                            })
-                            ->visible(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                    ? $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    : false;
-                            })
-                            ->disabled(function ($state, $get, $set, $livewire) {
-                                return $get("method_checked")
-                                && $get("method_checked") == MethodPaymentEnum::credit_card->value
-                                    ? false
-                                    : true;
-                            }),
+                        // Preview do cartão
+                        View::make('checkout-payment::checkout.card-preview')
+                            ->visible(fn(Get $get) => $get("method_checked") === MethodPaymentEnum::credit_card->value)
+                            ->columnSpan(1),
 
-                    ])->columns(2),
+                        Grid::make()->schema([
+
+                            // Card method ---
+                            TextInput::make('card_number')
+                                ->label("Número do Cartão")
+                                ->reactive()
+                                ->required(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        : false;
+                                })
+                                ->visible(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        : false;
+                                })
+                                ->disabled(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                    && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        ? false
+                                        : true;
+                                }),
+                            TextInput::make('card_validate')
+                                ->label("Validade do Cartão")
+                                ->reactive()
+                                ->required(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        : false;
+                                })
+                                ->visible(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        : false;
+                                })
+                                ->disabled(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                    && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        ? false
+                                        : true;
+                                }),
+                            TextInput::make('card_payer_name')
+                                ->label("Nome impresso no Cartão")
+                                ->reactive()
+                                ->required(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        : false;
+                                })
+                                ->visible(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        : false;
+                                })
+                                ->disabled(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                    && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        ? false
+                                        : true;
+                                }),
+                            TextInput::make('card_cvv')
+                                ->label("CVV do Cartão")
+                                ->reactive()
+                                ->required(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        : false;
+                                })
+                                ->visible(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        : false;
+                                })
+                                ->disabled(function ($state, $get, $set, $livewire) {
+                                    return $get("method_checked")
+                                    && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                        ? false
+                                        : true;
+                                }),
+
+                        ])->columns(2)->columnSpan(1),
+
+                    ]),
+
+
 
                     // Pix method ---
                     TextInput::make('base_qrcode')
