@@ -141,7 +141,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->visible($this->step2->visible ?? true)
                 ->afterValidation(function (Get $get) {
 
-                    $step2Update = $this->step2->updateOrCreate(["ccp_checkout_id" => $this->checkout->id], [
+                    $step2Update = $this->checkout->step2()->updateOrCreate(["ccp_checkout_id" => $this->checkout->id], [
                         "people_type"  => $get("people_type"),
                         "document"     => $get("document"),
                         "phone_number" => $get("phone_number"),
