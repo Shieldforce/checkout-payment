@@ -291,11 +291,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                     Select::make('method_checked')
                         ->default(fn($state, $get, $set, $livewire) => $livewire->method)
                         ->label("Escolha como quer pagar!")
-                        ->options(collect($this->paymentMethods)
-                            ->mapWithKeys(fn(MethodPaymentEnum $method) => [
-                                $method->value => $method->label(),
-                            ])
-                            ->toArray())
+                        ->options(function () {
+                            return collect(MethodPaymentEnum::cases())
+                                ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+                                ->toArray();
+                        })
                         ->required(),
                 ]),
             Wizard\Step::make('Confirmação')
