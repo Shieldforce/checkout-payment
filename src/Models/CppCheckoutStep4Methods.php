@@ -17,6 +17,8 @@ class CppCheckoutStep4Methods extends Model
         "base_qrcode",
         "url_qrcode",
         "url_billet",
+        "request_data",
+        "response_data",
     ];
 
     protected $guarded = [];

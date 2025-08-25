@@ -4,6 +4,7 @@ namespace Shieldforce\CheckoutPayment\Pages;
 
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\View;
@@ -406,16 +407,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                             // Card method ---
                             TextInput::make('card_number')
                                 ->label("Número do Cartão")
-                                ->reactive()->extraAttributes([
-                                    'x-data' => "{}",
-                                    'x-on:input' => "
-                                        let v = \$el.value.replace(/\\D/g, '').substring(0,19);
-                                        \$el.value = v.replace(/(\\d{4})(?=\\d)/g, '$1 ');
-                                    "
-                                ])
                                 ->reactive()
-                                ->maxLength(23)
-                                ->rule('digits_between:13,19')
+                                ->mask(function ($state, $get, $set, $livewire) {
+                                    return '9999 9999 9999 9999';
+                                })
+                                ->maxLength(19)
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
                                         ? $get("method_checked") == MethodPaymentEnum::credit_card->value
@@ -495,12 +491,27 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                     ]),
 
+                    Grid::make(2)->schema([
 
-                    // Pix method ---
-                    TextInput::make('base_qrcode')
-                        ->visible(false),
-                    TextInput::make('url_qrcode')
-                        ->visible(false),
+                        // Preview do Pix
+                        View::make('checkout-payment::checkout.pix-preview')
+                            ->visible(fn ($get) => $get("method_checked") === MethodPaymentEnum::pix->value)
+                            ->columnSpan(1)
+                            ->extraFooterActions([
+                                Action::make('gerar_pix')
+                                    ->label('Gerar PIX')
+                                    ->button()
+                                    ->color('success')
+                                    ->action(function (array $data, $set) {
+                                        dd($data);
+                                    }),
+                            ]),
+
+                        // Pix method ---
+                        Hidden::make('base_qrcode'),
+                        Hidden::make('url_qrcode'),
+
+                    ]),
 
                     // Billet method ---
                     TextInput::make('url_billet')

@@ -24,6 +24,9 @@ return new class extends Migration
             $table->text('url_qrcode')->nullable();
             $table->text('url_billet')->nullable();
 
+            $table->json('request_data')->nullable();
+            $table->json('response_data')->nullable();
+
             $table->boolean('visible')->default(true);
 
             $table->timestamps();
