@@ -8,12 +8,23 @@
     @endif--}}
 </x-filament::page>
 
-@if($this->cppGateways->field_2)
+{{--@if($this->cppGateways->field_2)
     @push('scripts')
+
 
 
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
+            document.addEventListener('DOMContentLoaded', async () => {
+                const mp = new window.MercadoPago("{{ $cppGateways->field_2 }}", { locale: "pt-BR" });
+                console.log("SDK Mercado Pago inicializado:", mp);
+
+                const paymentMethods = await mp.getPaymentMethods({ bin: "411111" });
+                console.log("Payment Methods para bin 411111:", paymentMethods);
+            });
+
+
+
             document.addEventListener('DOMContentLoaded', async () => {
 
                 /*const mp = new MercadoPago("{{ $cppGateways->field_2 ?? null  }}")*/
@@ -50,6 +61,19 @@
                     },
                 })*/
 
+            });
+        </script>
+    @endpush
+@endif--}}
+
+
+@if($this->cppGateways->field_2)
+    @push('scripts')
+        <script src="https://sdk.mercadopago.com/js/v2"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', async () => {
+                const mp = new window.MercadoPago("{{ $cppGateways->field_2 }}", { locale: "pt-BR" });
+                console.log("SDK Mercado Pago inicializado:", mp);
             });
         </script>
     @endpush
