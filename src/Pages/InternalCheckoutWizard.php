@@ -410,16 +410,18 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                         Grid::make()->schema([
 
-                            Select::make('installments')
-                                ->extraInputAttributes(['id' => 'installments']),
-                            Select::make('issuer')
-                                ->extraInputAttributes(['id' => 'issuer']),
-                            TextInput::make('email_card')
-                                ->extraInputAttributes(['id' => 'email_card']),
+                            Grid::make()->schema([
 
-                        ])->columns(2),
+                                Select::make('installments')
+                                    ->extraInputAttributes(['id' => 'installments']),
+                                Select::make('issuer')
+                                    ->disabled()
+                                    ->dehydrated()
+                                    ->extraInputAttributes(['id' => 'issuer']),
+                                Hidden::make('email_card')
+                                    ->extraInputAttributes(['id' => 'email_card']),
 
-                        Grid::make()->schema([
+                            ])->columns(2),
 
                             // Card method ---
                             TextInput::make('card_number')
