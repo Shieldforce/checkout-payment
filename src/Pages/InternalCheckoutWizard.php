@@ -426,6 +426,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             // Card method ---
                             TextInput::make('card_number')
                                 ->label("Número do Cartão")
+                                ->autofocus()
                                 ->extraInputAttributes(['id' => 'cardNumber'])
                                 //->reactive()
                                 /*->mask(function ($state, $get, $set, $livewire) {
