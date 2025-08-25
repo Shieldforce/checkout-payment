@@ -78,7 +78,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
         if ($cppCheckoutId) {
-            $this->checkout = $this->checkout->find($cppCheckoutId);
+            $this->checkout = CppCheckout::find($cppCheckoutId);
 
             $this->paymentMethods = $this?->checkout?->methods
                 ? json_decode($this->checkout->methods, true)
