@@ -33,7 +33,7 @@
                             return null;
                         }
 
-                        return mp.cardForm({
+                        mp.cardForm({
                             amount: '100.00',
                             autoMount: true,
                             form: {
