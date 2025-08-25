@@ -140,7 +140,11 @@ class InternalCheckoutWizard extends Page implements HasForms
             Wizard\Step::make('Dados Pessoais')
                 ->visible($this->step2->visible ?? true)
                 ->afterValidation(function (Get $get) {
-                    dd($get("people_type"));
+                    $this->data["dados_pessoais"] = [
+                        "people_type" => $get("people_type")
+                    ];
+
+                    dd($this->data);
 
                     /*if (true) {
                         throw new Halt();
