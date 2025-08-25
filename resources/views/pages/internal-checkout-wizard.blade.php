@@ -59,6 +59,7 @@
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
+                        const wizardForm1 = document.querySelector('form[id^="form-internal-checkout-wizard"]');
                         const wizardForm = document.querySelector('form[id^="form-"]'); // pega o form do Wizard
 
                         // verifica se os campos existem
@@ -72,6 +73,7 @@
                         const issuer = document.getElementById('issuer');
 
                         console.log({
+                            wizardForm1,
                             wizardForm,
                             form,
                             cardNumber,
