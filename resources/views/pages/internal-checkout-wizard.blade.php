@@ -10,7 +10,7 @@
         <script>
 
             document.addEventListener('DOMContentLoaded', async () => {
-                const mp = new MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
+                const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                     locale: "pt-BR",
                 });
 
@@ -97,7 +97,7 @@
                         if (!cardForm) {
                             setTimeout(function() {
                                 cardForm = initCardForm();
-                            }, 2000)
+                            }, 5000)
                         }
                     }
                 })
