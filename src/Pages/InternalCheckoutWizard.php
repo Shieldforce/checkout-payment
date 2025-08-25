@@ -13,6 +13,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Pages\Page;
+use Filament\Support\Exceptions\Halt;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
@@ -138,6 +139,13 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ]),
             Wizard\Step::make('Dados Pessoais')
                 ->visible($this->step2->visible ?? true)
+                ->afterValidation(function ($data = null, $data2 = null) {
+                    dd($data, $data2);
+
+                    /*if (true) {
+                        throw new Halt();
+                    }*/
+                })
                 ->schema([
 
                     Grid::make()->schema([
