@@ -1,5 +1,5 @@
 <div
-    x-data="{
+    {{--x-data="{
         card_number: @entangle('card_number').live,
         card_payer_name: @entangle('card_payer_name').live,
         card_validate: @entangle('card_validate').live,
@@ -10,7 +10,7 @@
                 .replace(/(\d{4})(?=\d)/g, '$1 ')
                 .trim()
         }
-    }"
+    }"--}}
     class="relative w-80 h-48 rounded-xl shadow-lg
            bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
            text-black dark:text-white
@@ -41,3 +41,54 @@
         </div>
     </div>
 </div>
+
+@php
+    use Shieldforce\CheckoutPayment\Models\CppGateways;
+    use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
+    $cppGateways = CppGateways::where("name", TypeGatewayEnum::mercado_pago->value)
+            ->where("active", true)
+            ->first();
+@endphp
+
+@if($cppGateways->field_2)
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <script>
+
+        const mp = new MercadoPago("{{ $cppGateways->field_2 ?? null  }}")
+
+        const cardForm = mp.cardForm({
+            amount: '100.00',
+            autoMount: true,
+            form: {
+                cardNumber: { id: 'cardNumber' },
+                expirationDate: { id: 'cardExpiration' },
+                securityCode: { id: 'cardCVV' },
+                cardholderName: { id: 'cardholderName' },
+                email: { id: 'email' },
+            },
+            callbacks: {
+                /*onSubmit: async (event) => {
+                    event.preventDefault()
+                    const token = await mp.createCardToken({
+                        cardNumber: document.getElementById('cardNumber').value,
+                        expirationMonth: ...,
+                        expirationYear: ...,
+                        securityCode: ...,
+                        cardholderName: ...,
+                    })
+                    // enviar token para o backend
+                },*/
+                onSubmit: function(event) {
+                    event.preventDefault()
+
+                    // Mercado Pago já retorna token do cartão
+                    const { token } = cardForm.getCardFormData();
+
+                    // joga no Livewire / Filament
+                    @this.call('processarPagamentoCartao', token);
+                },
+            },
+        })
+
+    </script>
+@endif

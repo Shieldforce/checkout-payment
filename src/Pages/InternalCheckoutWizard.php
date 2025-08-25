@@ -407,6 +407,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             // Card method ---
                             TextInput::make('card_number')
                                 ->label("Número do Cartão")
+                                ->extraAttributes(['id' => 'cardNumber'])
                                 ->reactive()
                                 ->mask(function ($state, $get, $set, $livewire) {
                                     return '9999 9999 9999 9999';
@@ -430,6 +431,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 }),
                             TextInput::make('card_validate')
                                 ->label("Validade do Cartão")
+                                ->extraAttributes(['id' => 'cardExpiration'])
                                 ->reactive()
                                 ->mask('99/99')
                                 ->required(function ($state, $get, $set, $livewire) {
@@ -450,6 +452,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 }),
                             TextInput::make('card_payer_name')
                                 ->label("Nome impresso no Cartão")
+                                ->extraAttributes(['id' => 'cardCVV'])
                                 ->reactive()
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
@@ -469,6 +472,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 }),
                             TextInput::make('card_cvv')
                                 ->label("CVV do Cartão")
+                                ->extraAttributes(['id' => 'cardholderName'])
                                 ->reactive()
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
