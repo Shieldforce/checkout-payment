@@ -132,6 +132,11 @@ class InternalCheckoutWizard extends Page implements HasForms
         return [
             Wizard\Step::make('Carrinho')
                 ->visible($this->step1->visible ?? true)
+                ->afterValidation(function (Get $get) {
+                    $this->checkout->update([
+                        "startOnStep" => 2
+                    ]);
+                })
                 ->schema([
                     \Filament\Forms\Components\View::make(
                         'checkout-payment::checkout.cart-products'
@@ -152,6 +157,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                             "email"        => $get("email"),
                         ]
                     );
+
+                    if ($step2Update) {
+                        $this->checkout->update(["startOnStep" => 3]);
+                    }
 
                     if (!$step2Update) {
                         throw new Halt();
@@ -221,6 +230,30 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ]),
             Wizard\Step::make('Dados de Endereço')
                 ->visible($this->step3->visible ?? true)
+                ->afterValidation(function (Get $get) {
+
+                    $step3Update = $this->checkout->step3()->updateOrCreate(
+                        ["cpp_checkout_id" => $this->checkout->id],
+                        [
+                            "zipcode"    => $get("zipcode"),
+                            "street"     => $get("street"),
+                            "number"     => $get("number"),
+                            "district"   => $get("district"),
+                            "city"       => $get("city"),
+                            "state"      => $get("state"),
+                            "complement" => $get("complement"),
+                        ]
+                    );
+
+                    if ($step3Update) {
+                        $this->checkout->update(["startOnStep" => 4]);
+                    }
+
+                    if (!$step3Update) {
+                        throw new Halt();
+                    }
+
+                })
                 ->schema([
 
                     Grid::make()->schema([
@@ -307,6 +340,30 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ]),
             Wizard\Step::make('Pagamento')
                 ->visible($this->step4->visible ?? true)
+                ->afterValidation(function (Get $get) {
+
+                    $step4Update = $this->checkout->step4()->updateOrCreate(
+                        ["cpp_checkout_id" => $this->checkout->id],
+                        [
+                            "cpp_checkout_id" => $get("cpp_checkout_id"),
+                            "card_number"     => $get("card_number"),
+                            "card_validate"   => $get("card_validate"),
+                            "card_payer_name" => $get("card_payer_name"),
+                            "base_qrcode"     => $get("base_qrcode"),
+                            "url_qrcode"      => $get("url_qrcode"),
+                            "url_billet"      => $get("url_billet"),
+                        ]
+                    );
+
+                    if ($step4Update) {
+                        $this->checkout->update(["startOnStep" => 5]);
+                    }
+
+                    if (!$step4Update) {
+                        throw new Halt();
+                    }
+
+                })
                 ->schema([
                     Select::make('method_checked')
                         ->default(fn($state, $get, $set, $livewire) => $livewire->method_checked)
