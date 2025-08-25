@@ -16,6 +16,12 @@
         card_payer_name: @entangle('card_payer_name').live,
         card_validate: @entangle('card_validate').live,
         card_cvv: @entangle('card_cvv').live,
+        formatNumber(num) {
+            if (!num) return '0000 0000 0000 0000'
+            return num.replace(/\D/g, '')
+                .replace(/(\d{4})(?=\d)/g, '$1 ')
+                .trim()
+        }
     }"
     class="relative w-80 h-48 rounded-xl shadow-lg
            bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
@@ -43,8 +49,7 @@
     <!-- Número do cartão -->
     <div class="mt-8 text-xl tracking-widest font-mono">
         <span
-            {{--x-text="formatNumber(card_number)"--}}
-            x-text="card_number || '0000 0000 0000 0000'"
+            x-text="formatNumber(card_number)"
         >
         </span>
     </div>
