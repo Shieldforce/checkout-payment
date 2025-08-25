@@ -347,7 +347,6 @@ class InternalCheckoutWizard extends Page implements HasForms
                     $step4Update = $this->checkout->step4()->updateOrCreate(
                         ["cpp_checkout_id" => $this->checkout->id],
                         [
-                            "cpp_checkout_id" => $get("cpp_checkout_id"),
                             "card_number"     => $get("card_number"),
                             "card_validate"   => $get("card_validate"),
                             "card_payer_name" => $get("card_payer_name"),
@@ -358,7 +357,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                     );
 
                     if ($step4Update) {
-                        $this->checkout->update(["startOnStep" => 5]);
+                        $this->checkout->update([
+                            "startOnStep"    => 5,
+                            "method_checked" => $get("method_checked")
+                        ]);
                     }
 
                     if (!$step4Update) {
@@ -370,6 +372,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     Select::make('method_checked')
                         ->default(fn($state, $get, $set, $livewire) => $livewire->method_checked)
                         ->label("Escolha como quer pagar!")
+                        ->live()
                         ->options(collect($this->paymentMethods)
                             ->mapWithKeys(fn(MethodPaymentEnum $method) => [
                                 $method->value => $method->label(),
@@ -377,6 +380,20 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ->toArray()
                         )
                         ->required(),
+
+                    // Card method ---
+                    TextInput::make('card_number'),
+                    TextInput::make('card_validate'),
+                    TextInput::make('card_payer_name'),
+                    TextInput::make('card_cvv'),
+
+                    // Pix method ---
+                    TextInput::make('base_qrcode'),
+                    TextInput::make('url_qrcode'),
+
+                    // Billet method ---
+                    TextInput::make('url_billet'),
+
                 ]),
             Wizard\Step::make('Confirmação')
                 ->schema([
@@ -405,7 +422,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                     >
                         Finalizar Checkout
                     </x-filament::button>
-                BLADE)))
+                BLADE
+                )))
                 ->startOnStep($this->startOnStep),
         ];
     }
