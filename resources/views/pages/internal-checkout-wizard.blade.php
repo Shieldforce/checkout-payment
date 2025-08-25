@@ -18,74 +18,60 @@
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
-
-
-                        return mp.cardForm({
-                            amount: '100.00',
-                            autoMount: true,
-                            form: {
-                                id: 'form-checkout-wizard',
-                                cardNumber: {
-                                    id: "cardNumber",
-                                    placeholder: '0000 0000 0000 0000',
-                                },
-                                expirationDate: {
-                                    id: 'cardExpiration',
-                                    placeholder: 'mm/YY',
-                                },
-                                securityCode: {
-                                    id: 'cardCVV',
-                                    placeholder: '345'
-                                },
-                                cardholderName: {
-                                    id: 'cardholderName',
-                                    placeholder: 'Fulano da Silva'
-                                },
-                                email: { id: 'email' },
-                                installments: {
-                                    id: 'installments',
-                                    placeholder: 'Quantidade de parcelas'
-                                },
-                                issuer: {
-                                    id: 'issuer',
-                                    placeholder: 'Tipo de cartão'
-                                },
+                    return mp.cardForm({
+                        amount: '100.00',
+                        autoMount: true,
+                        form: {
+                            id: 'form-checkout-wizard',
+                            cardNumber: {
+                                id: "cardNumber",
+                                placeholder: '0000 0000 0000 0000',
                             },
-                            callbacks: {
-                                onFormMounted: error => {
-                                    if (error) return console.warn("Form Mounted handling error: ", error);
-                                    console.log("Form mounted");
-                                },
-                                /*onSubmit: function(event) {
-                                    /!*event.preventDefault();
-                                    const formData = cardForm.getCardFormData();
-                                    console.log('Token gerado:', formData.token);*!/
-                                    // @this.call('processarPagamentoCartao', formData.token)
-                                },
-                                onInstallmentsReceived: function(error, data) {
-                                    console.log("onInstallmentsReceived", data);
-                                },
-                                onIssuersReceived: function(error, data) {
-                                    console.log("onIssuersReceived", data);
-                                },*/
-                                /*onBinChange: function (data) {
-                                    console.log("onBinChange:", data);
-
-                                    // só muda se o BIN realmente for diferente
-                                    if (data && data.bin && data.bin !== lastBin) {
-                                        lastBin = data.bin;
-                                        console.log("Novo BIN detectado:", data.bin);
-                                    } else {
-                                        // ignora, evita resetar o installments
-                                        console.log("Ignorado, BIN não mudou de fato");
-                                    }
-                                },*/
-                                onError: function(error) {
-                                    console.log("error:", error);
-                                }
+                            expirationDate: {
+                                id: 'cardExpiration',
+                                placeholder: 'mm/YY',
                             },
-                        });
-
+                            securityCode: {
+                                id: 'cardCVV',
+                                placeholder: '345'
+                            },
+                            cardholderName: {
+                                id: 'cardholderName',
+                                placeholder: 'Fulano da Silva'
+                            },
+                            email: { id: 'email' },
+                            installments: {
+                                id: 'installments',
+                                placeholder: 'Quantidade de parcelas'
+                            },
+                            issuer: {
+                                id: 'issuer',
+                                placeholder: 'Tipo de cartão'
+                            },
+                        },
+                        callbacks: {
+                            onFormMounted: error => {
+                                if (error) return console.warn("Form Mounted handling error: ", error);
+                                console.log("Form mounted");
+                            },
+                            /*onSubmit: function(event) {
+                                /!*event.preventDefault();
+                                const formData = cardForm.getCardFormData();
+                                console.log('Token gerado:', formData.token);*!/
+                                // @this.call('processarPagamentoCartao', formData.token)
+                            },
+                            onInstallmentsReceived: function(error, data) {
+                                console.log("onInstallmentsReceived", data);
+                            },
+                            onIssuersReceived: function(error, data) {
+                                console.log("onIssuersReceived", data);
+                            },*/
+                            onBinChange: false,
+                            onError: function(error) {
+                                console.log("error:", error);
+                            }
+                        },
+                    });
 
                 };
 
