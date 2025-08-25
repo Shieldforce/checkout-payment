@@ -407,7 +407,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             TextInput::make('card_number')
                                 ->label("Número do Cartão")
                                 ->reactive()
-                                ->mask('0000 0000 0000 0000')
+                                ->mask('9999 9999 9999 9999')
                                 ->maxLength(19)
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
