@@ -90,8 +90,9 @@
                                 issuer: { id: 'issuer' },
                             },
                             callbacks: {
-                                onFormMounted: function() {
-                                    console.log('CardForm montado');
+                                onFormMounted: error => {
+                                    if (error) return console.warn("Form Mounted handling error: ", error);
+                                    console.log("Form mounted");
                                 },
                                 onBinChange: function(data) {
                                     console.log('onBinChange', data);
