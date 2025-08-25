@@ -325,14 +325,14 @@ class InternalCheckoutWizard extends Page implements HasForms
         dd($this->form->getState());
     }
 
-    /*public function getLayout(): string
+    public function getLayout(): string
     {
         if (request()->query('external') === '1') {
             return 'checkout-payment::layouts.external';
         }
 
         return parent::getLayout();
-    }*/
+    }
 
     public static function shouldRegisterNavigation(): bool
     {
