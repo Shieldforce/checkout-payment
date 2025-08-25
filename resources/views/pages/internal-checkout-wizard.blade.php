@@ -104,18 +104,8 @@
                     });
                 };
 
-                let cardForm = null;
+                cardForm = initCardForm();
 
-                // Inicializa quando a aba de cartão for visível
-                Livewire.hook('commit', (message, component) => {
-                    const methodChecked = component.get('method_checked');
-                    console.log(methodChecked);
-                    if (methodChecked === {{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}) {
-                        if (!cardForm) {
-                            cardForm = initCardForm();
-                        }
-                    }
-                });
             });
         </script>
     @endpush
