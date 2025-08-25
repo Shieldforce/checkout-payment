@@ -20,17 +20,17 @@
 
                 const btn = document.querySelector('#btn-next-step');
 
-                // Bloquear avanço normal
-                btn.type = 'button'; // agora não submete nem passa para o próximo step
-                btn.addEventListener('click', async (event) => {
+                function bloquearAvanco(event) {
                     event.preventDefault();
                     event.stopImmediatePropagation();
-
                     console.log("Controle manual do botão!");
+                }
 
-                    // Em algum momento, quando quiser liberar o comportamento padrão:
-                    btn.type = 'submit'; // ou remove event.preventDefault no listener
-                });
+                // Adiciona o listener que bloqueia
+                //btn.addEventListener('click', bloquearAvanco);
+
+                // Depois, quando quiser voltar ao comportamento normal:
+                // btn.removeEventListener('click', bloquearAvanco);
 
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                     locale: "pt-BR",
