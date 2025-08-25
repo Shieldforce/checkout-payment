@@ -30,7 +30,11 @@
 
     <!-- Número do cartão -->
     <div class="mt-8 text-xl tracking-widest font-mono">
-        <span x-text="formatNumber(card_number)"></span>
+        <span
+            {{--x-text="formatNumber(card_number)"--}}
+            x-text="card_number || '0000 0000 0000 0000'"
+        >
+        </span>
     </div>
 
     <!-- Rodapé -->
