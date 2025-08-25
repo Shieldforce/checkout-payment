@@ -59,7 +59,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     public array             $data            = [];
     public array             $items           = [];
     public int               $startOnStep     = 1;
-    public                   $paymentMethods  = [
+    public array             $paymentMethods  = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
         MethodPaymentEnum::billet,
@@ -67,7 +67,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public function mount(?CppCheckout $cppCheckout = null): void
     {
-        if (!Auth::check()) {
+        /*if (!Auth::check()) {
             filament()
                 ->getCurrentPanel()
                 ->topNavigation()
@@ -78,7 +78,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
         if ($cppCheckout) {
-            $this->checkout    = $cppCheckout;
+            $this->checkout = $cppCheckout;
 
             $this->paymentMethods = $this?->checkout?->methods
                 ? json_decode($this->checkout->methods, true)
@@ -112,7 +112,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             $this->step4 = $this?->checkout?->step4()?->first();
 
             $this->startOnStep = $this->checkout->startOnStep;
-        }
+        }*/
 
         $this->form->fill();
     }
