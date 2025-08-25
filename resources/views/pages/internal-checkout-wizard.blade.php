@@ -69,6 +69,17 @@
                     const installments = document.getElementById('installments');
                     const issuer = document.getElementById('issuer');
 
+                    console.log({
+                        form,
+                        cardNumber,
+                        expiration,
+                        cvv,
+                        holder,
+                        email,
+                        installments,
+                        issuer,
+                    });
+
                     if (!form || !cardNumber || !expiration || !cvv || !holder || !email || !installments || !issuer) {
                         console.log('Campos do cartão ainda não renderizados');
                         return null;

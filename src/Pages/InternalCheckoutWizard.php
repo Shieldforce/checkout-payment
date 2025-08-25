@@ -44,6 +44,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     public ?string           $first_name      = null;
     public ?string           $last_name       = null;
     public ?string           $email           = null;
+    public ?string           $email_card      = null;
     public ?string           $phone_number    = null;
     public ?string           $document        = null;
     public ?string           $zipcode         = null;
