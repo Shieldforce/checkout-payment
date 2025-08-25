@@ -52,7 +52,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     public ?string           $state           = null;
     public ?string           $number          = null;
     public ?string           $complement      = null;
-    public ?int              $card_number     = null;
+    public ?string           $card_number     = null;
     public ?string           $card_validate   = null;
     public ?string           $card_cvv        = null;
     public ?string           $card_payer_name = null;
@@ -407,6 +407,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                             TextInput::make('card_number')
                                 ->label("Número do Cartão")
                                 ->reactive()
+                                ->mask('0000 0000 0000 0000')
+                                ->maxLength(19)
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
                                         ? $get("method_checked") == MethodPaymentEnum::credit_card->value
@@ -484,7 +486,6 @@ class InternalCheckoutWizard extends Page implements HasForms
                         ])->columns(2)->columnSpan(1),
 
                     ]),
-
 
 
                     // Pix method ---
