@@ -97,7 +97,7 @@
                         if (!cardForm) {
                             setTimeout(function() {
                                 cardForm = initCardForm();
-                            }, 5000)
+                            }, 2000)
                         }
                     }
                 })
