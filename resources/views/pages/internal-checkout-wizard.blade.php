@@ -93,6 +93,9 @@
                                         console.log("Ignorado, BIN não mudou de fato");
                                     }
                                 },*/
+                                onError: function(error) {
+                                    console.log("error:", error);
+                                }
                             },
                         });
 
