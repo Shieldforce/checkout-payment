@@ -54,19 +54,33 @@
                                 if (error) return console.warn("Form Mounted handling error: ", error);
                                 console.log("Form mounted");
                             },
-                            /*onSubmit: function(event) {
-                                /!*event.preventDefault();
+                            onSubmit: function(event) {
+                                console.log("onSubmit:", event);
+
+                                /*event.preventDefault();
                                 const formData = cardForm.getCardFormData();
-                                console.log('Token gerado:', formData.token);*!/
+                                console.log('Token gerado:', formData.token);*/
                                 // @this.call('processarPagamentoCartao', formData.token)
                             },
+                            onIdentificationTypesReceived: function(error, data) {
+                                console.log("onIdentificationTypesReceived:", error, data);
+                            },
+                            onPaymentMethodsReceived: function(error, data) {
+                                console.log("onPaymentMethodsReceived:", error, data);
+                            },
+                            onFetching: function(error, data) {
+                                console.log("onFetching:", error, data);
+                            },
+                            onValidityChange: function(error, data) {
+                                console.log("onValidityChange:", error, data);
+                            },
                             onInstallmentsReceived: function(error, data) {
-                                console.log("onInstallmentsReceived", data);
+                                console.log("onInstallmentsReceived:", error, data);
                             },
                             onIssuersReceived: function(error, data) {
-                                console.log("onIssuersReceived", data);
-                            },*/
-                            /*onBinChange: function (data) {
+                                console.log("onIssuersReceived:", error, data);
+                            },
+                            onBinChange: function (data) {
                                 console.log("onBinChange:", data);
 
                                 // só muda se o BIN realmente for diferente
@@ -77,7 +91,10 @@
                                     // ignora, evita resetar o installments
                                     console.log("Ignorado, BIN não mudou de fato");
                                 }
-                            },*/
+                            },
+                            onCardTokenReceived: function(error, data) {
+                                console.log("onCardTokenReceived:", error, data);
+                            },
                             onError: function(error) {
                                 console.log("error:", error);
                             }
