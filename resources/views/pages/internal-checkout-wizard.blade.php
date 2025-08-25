@@ -97,9 +97,9 @@
                                     console.log('onBinChange', data);
                                 },
                                 onSubmit: function(event) {
-                                    event.preventDefault();
+                                    /*event.preventDefault();
                                     const formData = cardForm.getCardFormData();
-                                    console.log('Token gerado:', formData.token);
+                                    console.log('Token gerado:', formData.token);*/
                                     // @this.call('processarPagamentoCartao', formData.token)
                                 },
                             },
