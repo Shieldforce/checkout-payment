@@ -17,7 +17,7 @@
                         event.stopImmediatePropagation();
 
                         console.log("Agora sim segurei!");
-                        event.click();
+                        Livewire.emit('nextStep');
                     }, true);
                 }
 
