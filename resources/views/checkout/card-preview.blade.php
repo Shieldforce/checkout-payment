@@ -50,17 +50,11 @@
     </div>
 </div>
 
-@php
-    use Shieldforce\CheckoutPayment\Models\CppGateways;
-    use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
-    $cppGateways = CppGateways::where("name", TypeGatewayEnum::mercado_pago->value)
-            ->where("active", true)
-            ->first();
-@endphp
-
-@if($cppGateways->field_2)
+@if($this->cppGateways->field_2)
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script>
+
+        console.log("ffsdfsdf");
 
         /*const mp = new MercadoPago("{{ $cppGateways->field_2 ?? null  }}")*/
 
