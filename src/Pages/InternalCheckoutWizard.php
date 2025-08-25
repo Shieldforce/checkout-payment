@@ -15,6 +15,8 @@ use Filament\Forms\Set;
 use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 use Livewire\Component;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
@@ -395,6 +397,14 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         return [
             Wizard::make($this->fieldWinzard())
+                ->submitAction(new HtmlString(Blade::render(<<<BLADE
+                    <x-filament::button
+                        type="submit"
+                        size="sm"
+                    >
+                        Finalizar Checkout
+                    </x-filament::button>
+                BLADE)))
                 ->startOnStep($this->startOnStep),
         ];
     }
