@@ -65,7 +65,37 @@
                                 },
                             },
                             callbacks: {
+                                onFormMounted: error => {
+                                    if (error) return console.warn("Form Mounted handling error: ", error);
+                                    console.log("Form mounted");
+                                },
+                                /*onSubmit: function(event) {
+                                    /!*event.preventDefault();
+                                    const formData = cardForm.getCardFormData();
+                                    console.log('Token gerado:', formData.token);*!/
+                                    // @this.call('processarPagamentoCartao', formData.token)
+                                },
+                                onInstallmentsReceived: function(error, data) {
+                                    console.log("onInstallmentsReceived", data);
+                                },
+                                onIssuersReceived: function(error, data) {
+                                    console.log("onIssuersReceived", data);
+                                },*/
+                                /*onBinChange: function (data) {
+                                    console.log("onBinChange:", data);
 
+                                    // só muda se o BIN realmente for diferente
+                                    if (data && data.bin && data.bin !== lastBin) {
+                                        lastBin = data.bin;
+                                        console.log("Novo BIN detectado:", data.bin);
+                                    } else {
+                                        // ignora, evita resetar o installments
+                                        console.log("Ignorado, BIN não mudou de fato");
+                                    }
+                                },*/
+                                onError: function(error) {
+                                    console.log("error:", error);
+                                }
                             },
                         });
 
