@@ -59,6 +59,8 @@
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
+                        const wizardForm = document.querySelector('form[id^="form-"]'); // pega o form do Wizard
+
                         // verifica se os campos existem
                         const form = document.getElementById('form-checkout-wizard');
                         const cardNumber = document.getElementById('cardNumber');
@@ -70,6 +72,7 @@
                         const issuer = document.getElementById('issuer');
 
                         console.log({
+                            wizardForm,
                             form,
                             cardNumber,
                             expiration,
@@ -129,7 +132,7 @@
                         if (!cardForm) {
                             setTimeout(function() {
                                 cardForm = initCardForm();
-                            }, 3000)
+                            }, 2000)
                         }
                     }
                 })
