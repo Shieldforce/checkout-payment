@@ -238,6 +238,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                         TextInput::make('email')
                             ->required()
+                            ->extraAttributes(['id' => 'email'])
                             ->label('E-mail')
                             ->email()
                             ->default(fn($state, $get, $set, $livewire) => $livewire->email),
@@ -405,6 +406,15 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                         Grid::make()->schema([
 
+                            Select::make('method_checked')
+                                ->extraAttributes(['id' => 'installments']),
+                            TextInput::make('number')
+                                ->extraAttributes(['id' => 'issuer']),
+
+                        ])->columns(2),
+
+                        Grid::make()->schema([
+
                             // Card method ---
                             TextInput::make('card_number')
                                 ->label("Número do Cartão")
@@ -548,7 +558,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     </x-filament::button>
                 BLADE
                 )))
-                ->extraAttributes(['id' => 'checkoutForm'])
+                ->extraAttributes(['id' => 'form-checkout'])
                 ->startOnStep($this->startOnStep),
         ];
     }
