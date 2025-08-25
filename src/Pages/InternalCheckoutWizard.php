@@ -139,8 +139,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ]),
             Wizard\Step::make('Dados Pessoais')
                 ->visible($this->step2->visible ?? true)
-                ->afterValidation(function ($data = null, $data2 = null) {
-                    dd($data, $data2);
+                ->afterValidation(function () {
+                    dd($this->form->getState());
 
                     /*if (true) {
                         throw new Halt();
