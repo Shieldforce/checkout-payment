@@ -78,7 +78,7 @@
                                 imgBrandCard.src = data[0].thumbnail ?? "https://storage.googleapis.com/star-lab/blog/OGs/image-not-found.png";
 
                                 const issuerNameCard = document.getElementById("issuer-name-card");
-                                issuerNameCard.html = data[0].issuer.name ?? "Meu Cartão";
+                                issuerNameCard.textContent = data[0].issuer.name ?? "Meu Cartão";
                             },
                             onFetching: function(error, data) {
                                 console.log("onFetching:", error, data);
