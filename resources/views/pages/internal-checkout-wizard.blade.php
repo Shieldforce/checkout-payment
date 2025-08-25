@@ -107,18 +107,15 @@
                 let cardForm = null;
 
                 // Inicializa quando a aba de cartão for visível
-                document.getElementById("method_checked").addEventListener("change", function(data) {
-                    console.log(data.value);
-                })
-                Livewire.hook('commit', (message, component) => {
-                    const methodChecked = component.get('method_checked');
-                    console.log(methodChecked);
-                    if (methodChecked === {{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}) {
+                document.getElementById("method_checked").addEventListener("change", function(event) {
+                    console.log(event.target.value);
+
+                    if (event.target.value === {{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}) {
                         if (!cardForm) {
                             cardForm = initCardForm();
                         }
                     }
-                });
+                })
             });
         </script>
     @endpush
