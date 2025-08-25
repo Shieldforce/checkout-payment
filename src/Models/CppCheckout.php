@@ -33,26 +33,9 @@ class CppCheckout extends Model
         'methods' => '',
     ];
 
-    public function initializeMethods(): void
-    {
-        if (empty($this->attributes['methods'])) {
-            $this->attributes['methods'] = json_encode([
-                MethodPaymentEnum::credit_card->value,
-                MethodPaymentEnum::debit_card->value,
-                MethodPaymentEnum::pix->value,
-                MethodPaymentEnum::billet->value,
-            ]);
-        }
-    }
-
     protected static function boot()
     {
-        static::creating(function (CppCheckout $checkout) {
-            $checkout->initializeMethods();
-        });
-
         static::created(function (CppCheckout $checkout) {
-            dd($checkout);
             $checkout->uuid = Uuid::uuid3(
                 Uuid::NAMESPACE_DNS,
                 (string)$checkout->id
