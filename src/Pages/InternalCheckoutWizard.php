@@ -72,6 +72,8 @@ class InternalCheckoutWizard extends Page implements HasForms
     public array             $items           = [];
     public int               $startOnStep     = 1;
     public ?int              $method_checked  = null;
+    public                   $installments;
+    public                   $issuer;
     public array             $paymentMethods  = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
