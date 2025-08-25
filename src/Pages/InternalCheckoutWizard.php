@@ -472,7 +472,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             TextInput::make('card_payer_name')
                                 ->label("Nome impresso no Cartão")
                                 ->extraInputAttributes(['id' => 'cardholderName'])
-                                ->reactive()
+                                //->reactive()
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
                                         ? $get("method_checked") == MethodPaymentEnum::credit_card->value
@@ -492,7 +492,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             TextInput::make('card_cvv')
                                 ->label("CVV do Cartão")
                                 ->extraInputAttributes(['id' => 'cardCVV'])
-                                ->reactive()
+                                //->reactive()
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
                                         ? $get("method_checked") == MethodPaymentEnum::credit_card->value
