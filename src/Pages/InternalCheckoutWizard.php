@@ -65,7 +65,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         MethodPaymentEnum::billet,
     ];
 
-    public function mount(?int $cppCheckoutId = null): void
+    public function mount(?CppCheckout $cppCheckout = null): void
     {
         if (!Auth::check()) {
             filament()
@@ -77,13 +77,13 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->cppGateways = CppGateways::where('active', true)->first();
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
-        if ($cppCheckoutId) {
-            $this->checkout = CppCheckout::find($cppCheckoutId);
+        if (isset($cppCheckout->id)) {
+            $this->checkout = $cppCheckout;
 
             $this->paymentMethods = $this?->checkout?->methods
                 ? array_map(function ($method) {
                     return MethodPaymentEnum::from($method);
-                    }, json_decode($this->checkout->methods, true))
+                }, json_decode($this->checkout->methods, true))
                 : $this->paymentMethods;
 
             // Step 1 --
@@ -121,13 +121,13 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public static function getSlug(): string
     {
-        return 'internal-checkout-payment/{cppCheckoutId?}';
+        return 'internal-checkout-payment/{cppCheckout?}';
     }
 
     public function fieldWinzard()
     {
         return [
-            Wizard\Step::make('Produtos do Carrinho')
+            Wizard\Step::make('Carrinho')
                 ->visible($this->step1->visible ?? true)
                 ->schema([
                     \Filament\Forms\Components\View::make(
@@ -314,7 +314,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         return [
             Wizard::make($this->fieldWinzard())
-                ->startOnStep($this->startOnStep ?? 1),
+                ->startOnStep($this->startOnStep),
         ];
     }
 
