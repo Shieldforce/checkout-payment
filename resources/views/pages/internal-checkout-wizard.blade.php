@@ -59,10 +59,8 @@
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
-                    setTimeout(function() {
-
                         // verifica se os campos existem
-                        const form = document.getElementById('form-checkout');
+                        const form = document.getElementById('form-checkout-wizard');
                         const cardNumber = document.getElementById('cardNumber');
                         const expiration = document.getElementById('cardExpiration');
                         const cvv = document.getElementById('cardCVV');
@@ -91,7 +89,7 @@
                             amount: '100.00',
                             autoMount: true,
                             form: {
-                                id: 'form-checkout',
+                                id: 'form-checkout-wizard',
                                 cardNumber: { id: 'cardNumber' },
                                 expirationDate: { id: 'cardExpiration' },
                                 securityCode: { id: 'cardCVV' },
@@ -116,7 +114,7 @@
                             },
                         });
 
-                    }, 2000)
+
                 };
 
                 let cardForm = null;
@@ -129,7 +127,9 @@
 
                     if (valueSelectMethodCheck === creditCardEnum) {
                         if (!cardForm) {
-                            cardForm = initCardForm();
+                            setTimeout(function() {
+                                cardForm = initCardForm();
+                            }, 3000)
                         }
                     }
                 })
