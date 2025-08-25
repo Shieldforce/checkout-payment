@@ -51,8 +51,8 @@
 </div>
 
 @if($this->cppGateways->field_2)
-    @dd("fdfds")
-    @scripts
+    @push('scripts')
+
 
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script>
@@ -112,6 +112,5 @@
 
         });
     </script>
-
-    @endscripts
+    @endpush
 @endif
