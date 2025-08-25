@@ -26,7 +26,18 @@
     <!-- Header -->
     <div class="flex justify-between items-center">
         <span class="text-sm font-semibold">Meu Cartão</span>
-        <span class="text-xs font-bold">VISA</span>
+        <span class="text-xs font-bold">
+
+            <img
+                id="img-brand-card"
+                width="70"
+                height="50"
+                src="https://storage.googleapis.com/star-lab/blog/OGs/image-not-found.png"
+                title=""
+                alt=""
+            />
+
+        </span>
     </div>
 
     <!-- Número do cartão -->

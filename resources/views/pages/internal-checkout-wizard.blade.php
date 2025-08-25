@@ -67,6 +67,9 @@
                             },
                             onPaymentMethodsReceived: function(error, data) {
                                 console.log("onPaymentMethodsReceived:", error, data);
+
+                                const imgBrandCard = document.getElementById("img-brand-card");
+                                imgBrandCard.src = data.thumbnail;
                             },
                             onFetching: function(error, data) {
                                 console.log("onFetching:", error, data);
