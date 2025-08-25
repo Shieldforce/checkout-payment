@@ -430,9 +430,6 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 ->label("Número do Cartão")
                                 ->extraInputAttributes(['id' => 'cardNumber'])
                                 ->reactive()
-                                /*->mask(function ($state, $get, $set, $livewire) {
-                                    return '9999 9999 9999 9999';
-                                })*/
                                 ->maxLength(19)
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
