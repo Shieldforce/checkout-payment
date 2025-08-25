@@ -11,6 +11,12 @@
                 .trim()
         }
     }"--}}
+    x-data="{
+        card_number: @entangle('card_number').live,
+        card_payer_name: @entangle('card_payer_name').live,
+        card_validate: @entangle('card_validate').live,
+        card_cvv: @entangle('card_cvv').live,
+    }"
     class="relative w-80 h-48 rounded-xl shadow-lg
            bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
            text-black dark:text-white
