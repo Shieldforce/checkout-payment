@@ -49,14 +49,24 @@
                                     if (error) return console.warn("Form Mounted handling error: ", error);
                                     console.log("Form mounted");
                                 },
-                                onBinChange: function(data) {
-                                    console.log('onBinChange', data);
-                                },
                                 onSubmit: function(event) {
                                     /*event.preventDefault();
                                     const formData = cardForm.getCardFormData();
                                     console.log('Token gerado:', formData.token);*/
                                     // @this.call('processarPagamentoCartao', formData.token)
+                                },
+                                onBinChange: function (data) {
+                                    console.log("onBinChange", data);
+
+                                    if (data?.bin?.length === 6 && data.paymentMethodId) {
+                                        console.log("BIN válido:", data.bin, data.paymentMethodId);
+
+                                        // Mantém installments só quando método de pagamento for reconhecido
+                                        return;
+                                    }
+
+                                    // Caso contrário, não limpa installments à toa
+                                    console.log("BIN incompleto ou inválido, não mexendo em installments");
                                 },
                             },
                         });
