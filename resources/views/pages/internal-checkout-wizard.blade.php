@@ -9,6 +9,18 @@
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
+                const btn = document.querySelector('#btn-next-step');
+
+                if (btn) {
+                    btn.addEventListener('click', async (event) => {
+                        event.preventDefault(); // impede o avanço automático
+
+                        console.log("aqui");
+                    });
+                }
+
+
+
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                     locale: "pt-BR",
                 });

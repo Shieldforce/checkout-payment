@@ -567,6 +567,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                     </x-filament::button>
                 BLADE
                 )))
+                ->nextAction(
+                    fn (Action $action) => $action
+                        ->label('Próximo')
+                        ->extraAttributes(['id' => 'btn-next-step'])
+                )
                 ->startOnStep($this->startOnStep),
         ];
     }
