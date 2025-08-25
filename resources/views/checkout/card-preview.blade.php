@@ -11,12 +11,15 @@
                 .trim()
         }
     }"
-    class="relative w-80 h-48 rounded-xl shadow-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white p-5 select-none"
+    class="relative w-80 h-48 rounded-xl shadow-lg
+           bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+           text-black dark:text-white
+           p-5 select-none rounded-xl"
 >
     <!-- Header -->
     <div class="flex justify-between items-center">
-        <span class="text-sm">Meu Cartão</span>
-        <span class="text-xs">VISA</span>
+        <span class="text-sm font-semibold">Meu Cartão</span>
+        <span class="text-xs font-bold">VISA</span>
     </div>
 
     <!-- Número do cartão -->
@@ -27,12 +30,14 @@
     <!-- Rodapé -->
     <div class="flex justify-between items-center mt-6">
         <div>
-            <div class="text-xs">Nome</div>
-            <div class="uppercase tracking-wide text-sm" x-text="card_payer_name || 'NOME DO TITULAR'"></div>
+            <div class="text-xs opacity-80">Nome</div>
+            <div class="uppercase tracking-wide text-sm font-semibold"
+                 x-text="card_payer_name || 'NOME DO TITULAR'"></div>
         </div>
         <div>
-            <div class="text-xs">Validade</div>
-            <div class="tracking-wide" x-text="card_validate || 'MM/AA'"></div>
+            <div class="text-xs opacity-80">Validade</div>
+            <div class="tracking-wide font-semibold"
+                 x-text="card_validate || 'MM/AA'"></div>
         </div>
     </div>
 </div>
