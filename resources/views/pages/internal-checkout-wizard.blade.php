@@ -75,6 +75,9 @@
                                     console.log('Token gerado:', formData.token);*/
                                     // @this.call('processarPagamentoCartao', formData.token)
                                 },
+                                onInstallmentsReceived: function(data, error) {
+                                    console.log("onInstallmentsReceived", data, error);
+                                },
                                 onBinChange: function (data) {
                                     console.log("onBinChange:", data);
 
