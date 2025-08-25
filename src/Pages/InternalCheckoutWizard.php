@@ -387,36 +387,36 @@ class InternalCheckoutWizard extends Page implements HasForms
                         TextInput::make('card_number')
                             ->label("Número do Cartão")
                             ->reactive()
-                            ->required(function($state, $get, $set, $livewire) {
+                            ->required(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
                             })
-                            ->visible(function($state, $get, $set, $livewire) {
+                            ->visible(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
                             })
-                            ->disabled(function($state, $get, $set, $livewire) {
+                            ->disabled(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
-                                    && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                && $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     ? false
                                     : true;
                             }),
                         TextInput::make('card_validate')
                             ->label("Validade do Cartão")
                             ->reactive()
-                            ->required(function($state, $get, $set, $livewire) {
+                            ->required(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
                             })
-                            ->visible(function($state, $get, $set, $livewire) {
+                            ->visible(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
                             })
-                            ->disabled(function($state, $get, $set, $livewire) {
+                            ->disabled(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
                                 && $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     ? false
@@ -425,17 +425,17 @@ class InternalCheckoutWizard extends Page implements HasForms
                         TextInput::make('card_payer_name')
                             ->label("Nome impresso no Cartão")
                             ->reactive()
-                            ->required(function($state, $get, $set, $livewire) {
+                            ->required(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
                             })
-                            ->visible(function($state, $get, $set, $livewire) {
+                            ->visible(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
                             })
-                            ->disabled(function($state, $get, $set, $livewire) {
+                            ->disabled(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
                                 && $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     ? false
@@ -444,17 +444,17 @@ class InternalCheckoutWizard extends Page implements HasForms
                         TextInput::make('card_cvv')
                             ->label("CVV do Cartão")
                             ->reactive()
-                            ->required(function($state, $get, $set, $livewire) {
+                            ->required(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
                             })
-                            ->visible(function($state, $get, $set, $livewire) {
+                            ->visible(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
                                     ? $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     : false;
                             })
-                            ->disabled(function($state, $get, $set, $livewire) {
+                            ->disabled(function ($state, $get, $set, $livewire) {
                                 return $get("method_checked")
                                 && $get("method_checked") == MethodPaymentEnum::credit_card->value
                                     ? false
@@ -464,11 +464,14 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ])->columns(2),
 
                     // Pix method ---
-                    TextInput::make('base_qrcode'),
-                    TextInput::make('url_qrcode'),
+                    TextInput::make('base_qrcode')
+                        ->visible(false),
+                    TextInput::make('url_qrcode')
+                        ->visible(false),
 
                     // Billet method ---
-                    TextInput::make('url_billet'),
+                    TextInput::make('url_billet')
+                        ->visible(false),
 
                 ]),
             Wizard\Step::make('Confirmação')
