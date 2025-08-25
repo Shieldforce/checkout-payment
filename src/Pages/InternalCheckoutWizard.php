@@ -406,9 +406,16 @@ class InternalCheckoutWizard extends Page implements HasForms
                             // Card method ---
                             TextInput::make('card_number')
                                 ->label("Número do Cartão")
+                                ->reactive()->extraAttributes([
+                                    'x-data' => "{}",
+                                    'x-on:input' => "
+                                        let v = $el.value.replace(/\\D/g, '').substring(0,19);
+                                        $el.value = v.replace(/(\\d{4})(?=\\d)/g, '$1 ');
+                                    "
+                                ])
                                 ->reactive()
-                                ->mask('9999 9999 9999 9999')
-                                ->maxLength(19)
+                                ->maxLength(23)
+                                ->rule('digits_between:13,19')
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
                                         ? $get("method_checked") == MethodPaymentEnum::credit_card->value
@@ -428,6 +435,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             TextInput::make('card_validate')
                                 ->label("Validade do Cartão")
                                 ->reactive()
+                                ->mask('99/99')
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
                                         ? $get("method_checked") == MethodPaymentEnum::credit_card->value
