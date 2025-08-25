@@ -418,7 +418,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                                     ->disabled()
                                     ->dehydrated()
                                     ->extraInputAttributes(['id' => 'issuer']),
-                                Hidden::make('email_card')
+                                TextInput::make('email_card')
+                                    ->disabled()
+                                    ->dehydrated()
+                                    ->visible(false)
                                     ->extraInputAttributes(['id' => 'email_card']),
 
                             ])->columns(2),
