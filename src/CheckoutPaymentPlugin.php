@@ -27,7 +27,7 @@ class CheckoutPaymentPlugin implements Plugin
                     ->defaults('external', 1);
             })
             ->pages([
-                //\Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard::class,
+                \Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard::class,
                 \Shieldforce\CheckoutPayment\Pages\CPPGatewaysPage::class,
             ]);
     }

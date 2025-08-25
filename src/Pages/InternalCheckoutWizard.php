@@ -119,7 +119,11 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public static function getSlug(): string
     {
-        return 'internal-checkout-wizard';
+        return 'checkout';
+    }
+
+    public static function getRoutePath(): string {
+        return 'checkout/{cppCheckout?}';
     }
 
     public function fieldWinzard()
