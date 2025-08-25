@@ -52,6 +52,7 @@ class CppCheckout extends Model
         });
 
         static::created(function (CppCheckout $checkout) {
+            dd($checkout);
             $checkout->uuid = Uuid::uuid3(
                 Uuid::NAMESPACE_DNS,
                 (string)$checkout->id
