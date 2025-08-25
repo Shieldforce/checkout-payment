@@ -45,8 +45,7 @@ class CppCheckout extends Model
         }
     }
 
-    // hook de inicialização
-    protected static function booted()
+    protected static function boot()
     {
         static::creating(function (CppCheckout $checkout) {
             $checkout->initializeMethods();
