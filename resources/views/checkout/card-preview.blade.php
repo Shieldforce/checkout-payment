@@ -1,16 +1,4 @@
 <div
-    {{--x-data="{
-        card_number: @entangle('card_number').live,
-        card_payer_name: @entangle('card_payer_name').live,
-        card_validate: @entangle('card_validate').live,
-        card_cvv: @entangle('card_cvv').live,
-        formatNumber(num) {
-            if (!num) return '0000 0000 0000 0000'
-            return num.replace(/\D/g, '')
-                .replace(/(\d{4})(?=\d)/g, '$1 ')
-                .trim()
-        }
-    }"--}}
     x-data="{
         card_number: @entangle('card_number').live,
         card_payer_name: @entangle('card_payer_name').live,
