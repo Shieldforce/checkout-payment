@@ -14,8 +14,8 @@
                 function bloquearAvanco(event) {
                     event.preventDefault();
                     event.stopImmediatePropagation();
-                    //const currentStep = parseInt(document.querySelector('#form-checkout-wizard').dataset.currentStep);
-                    console.log(document.querySelector('#form-checkout-wizard').dataset);
+                    const step4Container = document.querySelector('[data-step="4"]');
+                    console.log(step4Container);
                 }
 
                 btn.addEventListener('click', bloquearAvanco);
