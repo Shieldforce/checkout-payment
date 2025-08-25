@@ -86,14 +86,24 @@
                     })
                     // enviar token para o backend
                 },*/
+                onCardBinChange: function(data) {
+                    // aqui já tenho info logo após 6 dígitos
+                    console.log('BIN detectado:', data.bin)
+                    console.log('Bandeira:', data.paymentMethod?.id) // ex: visa, master
+                    console.log('Tipo:', data.paymentMethod?.payment_type_id) // credit_card / debit_card
+                    console.log('Issuer:', data.issuer) // banco emissor
+
+                    // se quiser, pode jogar pro Livewire
+                    //@this.set('card_brand', data.paymentMethod?.id)
+                },
+
                 onSubmit: function(event) {
                     event.preventDefault()
 
-                    // Mercado Pago já retorna token do cartão
-                    const { token } = cardForm.getCardFormData();
+                    const formData = cardForm.getCardFormData()
+                    console.log('Token gerado:', formData.token)
 
-                    // joga no Livewire / Filament
-                    @this.call('processarPagamentoCartao', token);
+                    //@this.call('processarPagamentoCartao', formData.token)
                 },
             },
         })
