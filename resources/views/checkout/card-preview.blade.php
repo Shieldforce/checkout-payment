@@ -24,20 +24,28 @@
 
     <!-- Número do cartão -->
     <div class="mt-8 text-xl tracking-widest font-mono">
-        <span x-text="formatNumber(card_number)"></span>
+        {{--<span x-text="formatNumber(card_number)"></span>--}}
     </div>
 
     <!-- Rodapé -->
     <div class="flex justify-between items-center mt-6">
         <div>
             <div class="text-xs opacity-80">Nome</div>
-            <div class="uppercase tracking-wide text-sm font-semibold"
-                 x-text="card_payer_name || 'NOME DO TITULAR'"></div>
+            <div
+                class="uppercase tracking-wide text-sm font-semibold"
+                 {{--x-text="card_payer_name || 'NOME DO TITULAR'"--}}
+            >
+
+            </div>
         </div>
         <div>
             <div class="text-xs opacity-80">Validade</div>
-            <div class="tracking-wide font-semibold"
-                 x-text="card_validate || 'MM/AA'"></div>
+            <div
+                class="tracking-wide font-semibold"
+                {{--x-text="card_validate || 'MM/AA'"--}}
+            >
+
+            </div>
         </div>
     </div>
 </div>
