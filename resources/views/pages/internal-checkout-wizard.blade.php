@@ -16,6 +16,7 @@
                         event.preventDefault(); // impede o avanço automático
 
                         console.log("aqui");
+                        return;
                     });
                 }
 
