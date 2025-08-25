@@ -397,6 +397,15 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         return [
             Wizard::make($this->fieldWinzard())
+                ->submitAction(new HtmlString(Blade::render(<<<BLADE
+                    <x-filament::button
+                        wire:click="submit"
+                        type="submit"
+                        size="sm"
+                    >
+                        Finalizar Checkout
+                    </x-filament::button>
+                BLADE)))
                 ->startOnStep($this->startOnStep),
         ];
     }

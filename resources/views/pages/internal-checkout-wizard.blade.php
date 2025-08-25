@@ -1,9 +1,9 @@
 <x-filament::page>
     {{ $this->form }}
 
-    @if($this->cppGateways)
+    {{--@if($this->cppGateways)
         <x-filament::button wire:click="submit" class="mt-4">
             Finalizar Pagamento
         </x-filament::button>
-    @endif
+    @endif--}}
 </x-filament::page>
