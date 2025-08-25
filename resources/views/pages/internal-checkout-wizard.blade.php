@@ -31,6 +31,7 @@
                         issuer: { id: 'issuer' },
                     },
                     callbacks: {
+                        onFormMounted: function(data) {},
                         onBinChange: function(data) {
                             console.log(data)
 
