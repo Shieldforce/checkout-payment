@@ -413,8 +413,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                             Grid::make()->schema([
 
                                 Select::make('installments')
+                                    ->label("Quantidade de parcelas")
                                     ->extraInputAttributes(['id' => 'installments']),
                                 Select::make('issuer')
+                                    ->label("Tipo de cartão")
                                     ->disabled()
                                     ->dehydrated()
                                     ->extraInputAttributes(['id' => 'issuer']),

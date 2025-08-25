@@ -40,14 +40,29 @@
                                 id: 'form-checkout-wizard',
                                 cardNumber: {
                                     id: "cardNumber",
-                                    placeholder: "0000 0000 0000 0000",
+                                    placeholder: '0000 0000 0000 0000',
                                 },
-                                expirationDate: { id: 'cardExpiration' },
-                                securityCode: { id: 'cardCVV' },
-                                cardholderName: { id: 'cardholderName' },
+                                expirationDate: {
+                                    id: 'cardExpiration',
+                                    placeholder: 'mm/YY',
+                                },
+                                securityCode: {
+                                    id: 'cardCVV',
+                                    placeholder: '345'
+                                },
+                                cardholderName: {
+                                    id: 'cardholderName',
+                                    placeholder: 'Fulano da Silva'
+                                },
                                 email: { id: 'email' },
-                                installments: { id: 'installments' },
-                                issuer: { id: 'issuer' },
+                                installments: {
+                                    id: 'installments',
+                                    placeholder: 'Quantidade de parcelas'
+                                },
+                                issuer: {
+                                    id: 'issuer',
+                                    placeholder: 'Tipo de cartão'
+                                },
                             },
                             callbacks: {
                                 onFormMounted: error => {
