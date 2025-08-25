@@ -65,7 +65,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         MethodPaymentEnum::billet,
     ];
 
-    public function mount(?CppCheckout $cppCheckout = null): void
+    public function mount(?int $cppCheckoutId = null): void
     {
         if (!Auth::check()) {
             filament()
@@ -77,8 +77,8 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->cppGateways = CppGateways::where('active', true)->first();
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
-        if ($cppCheckout) {
-            $this->checkout = $cppCheckout;
+        if ($cppCheckoutId) {
+            $this->checkout = $this->checkout->find($cppCheckoutId);
 
             $this->paymentMethods = $this?->checkout?->methods
                 ? json_decode($this->checkout->methods, true)
