@@ -36,10 +36,12 @@ class CppCheckout extends Model
     protected static function boot()
     {
         static::created(function (CppCheckout $checkout) {
-            $checkout->uuid = Uuid::uuid3(
-                Uuid::NAMESPACE_DNS,
-                (string)$checkout->id
-            )->toString();
+            $checkout->update([
+                "uuid" => Uuid::uuid3(
+                    Uuid::NAMESPACE_DNS,
+                    (string) $checkout->id
+                )->toString(),
+            ]);
         });
     }
 
