@@ -18,20 +18,7 @@
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
-                        // verifica se os campos existem
-                        const form = document.getElementById('form-checkout-wizard');
-                        const cardNumber = document.getElementById('cardNumber');
-                        const expiration = document.getElementById('cardExpiration');
-                        const cvv = document.getElementById('cardCVV');
-                        const holder = document.getElementById('cardholderName');
-                        const email = document.getElementById('email');
-                        const installments = document.getElementById('installments');
-                        const issuer = document.getElementById('issuer');
 
-                        if (!form || !cardNumber || !expiration || !cvv || !holder || !email || !installments || !issuer) {
-                            console.log('Campos do cartão ainda não renderizados');
-                            return null;
-                        }
 
                         return mp.cardForm({
                             amount: '100.00',
@@ -106,7 +93,6 @@
 
                 // Inicializa quando a aba de cartão for visível
                 document.getElementById("method_checked").addEventListener("change", function(event) {
-                    console.log(event.target.value);
                     const valueSelectMethodCheck = parseInt(event.target.value);
                     const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}");
 
@@ -114,7 +100,7 @@
                         if (!cardForm) {
                             setTimeout(function() {
                                 cardForm = initCardForm();
-                            }, 3000)
+                            }, 2000)
                         }
                     }
                 })
