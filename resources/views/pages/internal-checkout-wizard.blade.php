@@ -16,17 +16,7 @@
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
 
-                console.log("ffsdfsdf");
-
-                /*const mp = new MercadoPago("{{ $cppGateways->field_2 ?? null  }}")*/
-
-                const mp = new window.MercadoPago("{{ $cppGateways->field_2 ?? null  }}", {
-                    locale: "pt-BR",
-                });
-
-                const paymentMethods = await mp.getPaymentMethods({ bin: "41111111" });
-
-                console.log(paymentMethods);
+                const mp = new MercadoPago("{{ $cppGateways->field_2 ?? null  }}")
 
                 const cardForm = mp.cardForm({
                     amount: '100.00',
