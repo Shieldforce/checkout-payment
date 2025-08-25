@@ -9,7 +9,7 @@
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
 
-            setTimeout(function() {
+            document.addEventListener('DOMContentLoaded', async () => {
 
                 // verifica se os campos existem
                 const form = document.getElementById('form-checkout-wizard');
@@ -92,7 +92,7 @@
                     },
                 });
 
-            }, 3000)
+            })
 
             /*document.addEventListener('DOMContentLoaded', async () => {
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
