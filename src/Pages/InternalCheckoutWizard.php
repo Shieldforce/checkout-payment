@@ -34,48 +34,89 @@ class InternalCheckoutWizard extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static string  $view            = 'checkout-payment::pages.internal-checkout-wizard';
-    protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
+    protected static string $view = 'checkout-payment::pages.internal-checkout-wizard';
+
+    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+
     protected static ?string $navigationGroup = 'Pagamentos';
-    protected static ?string $label           = 'Checkout';
+
+    protected static ?string $label = 'Checkout';
+
     protected static ?string $navigationLabel = 'Checkout';
-    protected static ?string $title           = 'Realizar Pagamento';
-    public ?string           $people_type     = null;
-    public ?string           $first_name      = null;
-    public ?string           $last_name       = null;
-    public ?string           $email           = null;
-    public ?string           $email_card      = null;
-    public ?string           $phone_number    = null;
-    public ?string           $document        = null;
-    public ?string           $zipcode         = null;
-    public ?string           $street          = null;
-    public ?string           $district        = null;
-    public ?string           $city            = null;
-    public ?string           $state           = null;
-    public ?string           $number          = null;
-    public ?string           $complement      = null;
-    public ?string           $card_number     = null;
-    public ?string           $card_validate   = null;
-    public ?string           $card_cvv        = null;
-    public ?string           $card_payer_name = null;
-    public ?string           $base_qrcode     = null;
-    public ?string           $url_qrcode      = null;
-    public ?string           $url_billet      = null;
-    public ?string           $review          = null;
-    public ?CppCheckoutStep1 $step1           = null;
-    public ?CppCheckoutStep2 $step2           = null;
-    public ?CppCheckoutStep3 $step3           = null;
-    public ?CppCheckoutStep4 $step4           = null;
-    public ?CppCheckout      $checkout        = null;
-    public ?TypeGatewayEnum  $typeGateway     = null;
-    public ?CppGateways      $cppGateways     = null;
-    public array             $data            = [];
-    public array             $items           = [];
-    public int               $startOnStep     = 1;
-    public ?int              $method_checked  = null;
-    public                   $installments;
-    public                   $issuer;
-    public array             $paymentMethods  = [
+
+    protected static ?string $title = 'Realizar Pagamento';
+
+    public ?string $people_type = null;
+
+    public ?string $first_name = null;
+
+    public ?string $last_name = null;
+
+    public ?string $email = null;
+
+    public ?string $email_card = null;
+
+    public ?string $phone_number = null;
+
+    public ?string $document = null;
+
+    public ?string $zipcode = null;
+
+    public ?string $street = null;
+
+    public ?string $district = null;
+
+    public ?string $city = null;
+
+    public ?string $state = null;
+
+    public ?string $number = null;
+
+    public ?string $complement = null;
+
+    public ?string $card_number = null;
+
+    public ?string $card_validate = null;
+
+    public ?string $card_cvv = null;
+
+    public ?string $card_payer_name = null;
+
+    public ?string $base_qrcode = null;
+
+    public ?string $url_qrcode = null;
+
+    public ?string $url_billet = null;
+
+    public ?string $review = null;
+
+    public ?CppCheckoutStep1 $step1 = null;
+
+    public ?CppCheckoutStep2 $step2 = null;
+
+    public ?CppCheckoutStep3 $step3 = null;
+
+    public ?CppCheckoutStep4 $step4 = null;
+
+    public ?CppCheckout $checkout = null;
+
+    public ?TypeGatewayEnum $typeGateway = null;
+
+    public ?CppGateways $cppGateways = null;
+
+    public array $data = [];
+
+    public array $items = [];
+
+    public int $startOnStep = 1;
+
+    public ?int $method_checked = null;
+
+    public $installments;
+
+    public $issuer;
+
+    public array $paymentMethods = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
         MethodPaymentEnum::billet,
@@ -83,7 +124,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public function mount(?string $cppCheckoutUuid = null): void
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             filament()
                 ->getCurrentPanel()
                 ->topNavigation()
@@ -94,7 +135,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
 
         if ($cppCheckoutUuid) {
-            $this->checkout = CppCheckout::where("uuid", $cppCheckoutUuid)->first();
+            $this->checkout = CppCheckout::where('uuid', $cppCheckoutUuid)->first();
 
             $this->method_checked = $this->checkout->method_checked;
             $this->paymentMethods = $this?->checkout?->methods
@@ -110,31 +151,31 @@ class InternalCheckoutWizard extends Page implements HasForms
                 : [];
 
             // Step 2 ---
-            $this->step2        = $this?->checkout?->step2()?->first();
-            $this->people_type  = $this->step2->people_type ?? null;
-            $this->first_name   = $this->step2->first_name ?? null;
-            $this->last_name    = $this->step2->last_name ?? null;
-            $this->email        = $this->step2->email ?? null;
+            $this->step2 = $this?->checkout?->step2()?->first();
+            $this->people_type = $this->step2->people_type ?? null;
+            $this->first_name = $this->step2->first_name ?? null;
+            $this->last_name = $this->step2->last_name ?? null;
+            $this->email = $this->step2->email ?? null;
             $this->phone_number = $this->step2->phone_number ?? null;
-            $this->document     = $this->step2->document ?? null;
+            $this->document = $this->step2->document ?? null;
 
             // Step 3 ---
-            $this->step3      = $this?->checkout?->step3()?->first();
-            $this->zipcode    = $this->step3->zipcode ?? null;
-            $this->street     = $this->step3->street ?? null;
-            $this->district   = $this->step3->district ?? null;
-            $this->city       = $this->step3->city ?? null;
-            $this->state      = $this->step3->state ?? null;
-            $this->number     = $this->step3->number ?? null;
+            $this->step3 = $this?->checkout?->step3()?->first();
+            $this->zipcode = $this->step3->zipcode ?? null;
+            $this->street = $this->step3->street ?? null;
+            $this->district = $this->step3->district ?? null;
+            $this->city = $this->step3->city ?? null;
+            $this->state = $this->step3->state ?? null;
+            $this->number = $this->step3->number ?? null;
             $this->complement = $this->step3->complement ?? null;
 
-            $this->step4           = $this?->checkout?->step4()?->first();
-            $this->card_number     = $this->step4->card_number ?? null;
-            $this->card_validate   = $this->step4->card_validate ?? null;
+            $this->step4 = $this?->checkout?->step4()?->first();
+            $this->card_number = $this->step4->card_number ?? null;
+            $this->card_validate = $this->step4->card_validate ?? null;
             $this->card_payer_name = $this->step4->card_payer_name ?? null;
-            $this->base_qrcode     = $this->step4->base_qrcode ?? null;
-            $this->url_qrcode      = $this->step4->url_qrcode ?? null;
-            $this->url_billet      = $this->step4->url_billet ?? null;
+            $this->base_qrcode = $this->step4->base_qrcode ?? null;
+            $this->url_qrcode = $this->step4->url_qrcode ?? null;
+            $this->url_billet = $this->step4->url_billet ?? null;
 
             $this->startOnStep = $this->checkout->startOnStep ?? null;
         }
@@ -154,7 +195,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->visible($this->step1->visible ?? true)
                 ->afterValidation(function (Get $get) {
                     $this->checkout->update([
-                        "startOnStep" => 2
+                        'startOnStep' => 2,
                     ]);
                 })
                 ->schema([
@@ -167,23 +208,23 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->afterValidation(function (Get $get) {
 
                     $step2Update = $this->checkout->step2()->updateOrCreate(
-                        ["cpp_checkout_id" => $this->checkout->id],
+                        ['cpp_checkout_id' => $this->checkout->id],
                         [
-                            "people_type"  => $get("people_type"),
-                            "document"     => $get("document"),
-                            "phone_number" => $get("phone_number"),
-                            "first_name"   => $get("first_name"),
-                            "last_name"    => $get("last_name"),
-                            "email"        => $get("email"),
+                            'people_type' => $get('people_type'),
+                            'document' => $get('document'),
+                            'phone_number' => $get('phone_number'),
+                            'first_name' => $get('first_name'),
+                            'last_name' => $get('last_name'),
+                            'email' => $get('email'),
                         ]
                     );
 
                     if ($step2Update) {
-                        $this->checkout->update(["startOnStep" => 3]);
+                        $this->checkout->update(['startOnStep' => 3]);
                     }
 
-                    if (!$step2Update) {
-                        throw new Halt();
+                    if (! $step2Update) {
+                        throw new Halt;
                     }
 
                 })
@@ -192,30 +233,32 @@ class InternalCheckoutWizard extends Page implements HasForms
                     Grid::make()->schema([
 
                         Select::make('people_type')
-                            ->label("Física/Jurídica")
+                            ->label('Física/Jurídica')
                             ->autofocus()
                             ->live()
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->people_type)
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->people_type)
                             ->options(
                                 collect(TypePeopleEnum::cases())
-                                    ->mapWithKeys(fn(TypePeopleEnum $type) => [
-                                        $type->value => $type->label()
+                                    ->mapWithKeys(fn (TypePeopleEnum $type) => [
+                                        $type->value => $type->label(),
                                     ])->toArray()
                             )
-                            ->afterStateUpdated(fn(Set $set) => $set("document", null))
+                            ->afterStateUpdated(fn (Set $set) => $set('document', null))
                             ->required(),
 
                         TextInput::make('document')
-                            ->label("CPF/CNPJ")
+                            ->label('CPF/CNPJ')
                             ->reactive()
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->document)
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->document)
                             ->placeholder(function (Get $get) {
-                                $people_type = $get("people_type");
-                                return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
+                                $people_type = $get('people_type');
+
+                                return $people_type == 2 ? '99.999.999/9999-99' : '999.999.999-99';
                             })
                             ->mask(function (Get $get) {
-                                $people_type = $get("people_type");
-                                return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
+                                $people_type = $get('people_type');
+
+                                return $people_type == 2 ? '99.999.999/9999-99' : '999.999.999-99';
                             })
                             ->maxLength(50)
                             ->required(),
@@ -223,7 +266,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         TextInput::make('phone_number')
                             ->required()
                             ->label('Telefone/Celular')
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->phone_number),
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->phone_number),
 
                     ])->columns(3),
 
@@ -232,19 +275,19 @@ class InternalCheckoutWizard extends Page implements HasForms
                         TextInput::make('first_name')
                             ->required()
                             ->label('Primeiro Nome')
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->first_name),
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->first_name),
 
                         TextInput::make('last_name')
                             ->required()
                             ->label('Sobrenome')
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->last_name),
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->last_name),
 
                         TextInput::make('email')
                             ->required()
                             ->extraInputAttributes(['id' => 'email'])
                             ->label('E-mail')
                             ->email()
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->email),
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->email),
 
                     ])->columns(3),
 
@@ -254,24 +297,24 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->afterValidation(function (Get $get) {
 
                     $step3Update = $this->checkout->step3()->updateOrCreate(
-                        ["cpp_checkout_id" => $this->checkout->id],
+                        ['cpp_checkout_id' => $this->checkout->id],
                         [
-                            "zipcode"    => $get("zipcode"),
-                            "street"     => $get("street"),
-                            "number"     => $get("number"),
-                            "district"   => $get("district"),
-                            "city"       => $get("city"),
-                            "state"      => $get("state"),
-                            "complement" => $get("complement"),
+                            'zipcode' => $get('zipcode'),
+                            'street' => $get('street'),
+                            'number' => $get('number'),
+                            'district' => $get('district'),
+                            'city' => $get('city'),
+                            'state' => $get('state'),
+                            'complement' => $get('complement'),
                         ]
                     );
 
                     if ($step3Update) {
-                        $this->checkout->update(["startOnStep" => 4]);
+                        $this->checkout->update(['startOnStep' => 4]);
                     }
 
-                    if (!$step3Update) {
-                        throw new Halt();
+                    if (! $step3Update) {
+                        throw new Halt;
                     }
 
                 })
@@ -280,51 +323,51 @@ class InternalCheckoutWizard extends Page implements HasForms
                     Grid::make()->schema([
 
                         TextInput::make('zipcode')
-                            ->label("CEP")
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->zipcode)
+                            ->label('CEP')
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->zipcode)
                             ->suffixAction(
                                 Action::make('viaCep')
-                                    ->label("Buscar CEP")
+                                    ->label('Buscar CEP')
                                     ->icon('heroicon-m-map-pin')
-                                    //->requiresConfirmation()
+                                    // ->requiresConfirmation()
                                     ->action(function (Set $set, $state, Get $get, Component $livewire) {
-                                        $data = BuscarViaCepService::getData((string)$state);
+                                        $data = BuscarViaCepService::getData((string) $state);
 
-                                        if (isset($data["cep"])) {
-                                            $set('street', $data["logradouro"]);
-                                            $set('complement', $data["complemento"]);
-                                            $set('district', $data["bairro"]);
-                                            $set('city', $data["localidade"]);
-                                            $set('state', $data["uf"]);
+                                        if (isset($data['cep'])) {
+                                            $set('street', $data['logradouro']);
+                                            $set('complement', $data['complemento']);
+                                            $set('district', $data['bairro']);
+                                            $set('city', $data['localidade']);
+                                            $set('state', $data['uf']);
                                         }
                                     })
                             )
-                            ->hint("Busca de CEP")
+                            ->hint('Busca de CEP')
                             ->afterStateUpdated(function (Set $set, Get $get, Component $livewire) {
-                                $data = BuscarViaCepService::getData((string)$get("zipcode"));
+                                $data = BuscarViaCepService::getData((string) $get('zipcode'));
 
-                                if (isset($data["cep"])) {
-                                    $set('street', $data["logradouro"]);
-                                    $set('complement', $data["complemento"]);
-                                    $set('district', $data["bairro"]);
-                                    $set('city', $data["localidade"]);
-                                    $set('state', $data["uf"]);
+                                if (isset($data['cep'])) {
+                                    $set('street', $data['logradouro']);
+                                    $set('complement', $data['complemento']);
+                                    $set('district', $data['bairro']);
+                                    $set('city', $data['localidade']);
+                                    $set('state', $data['uf']);
                                 }
                             })
                             ->mask(function (Get $get) {
-                                return "99999-999";
+                                return '99999-999';
                             })
                             ->debounce(1000)
                             ->required(),
 
                         TextInput::make('street')
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->street)
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->street)
                             ->label('Logradouro')
                             ->required()
                             ->maxLength(255),
 
                         TextInput::make('number')
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->number)
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->number)
                             ->label('Número')
                             ->maxLength(20),
 
@@ -333,19 +376,19 @@ class InternalCheckoutWizard extends Page implements HasForms
                     Grid::make()->schema([
 
                         TextInput::make('district')
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->district)
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->district)
                             ->label('Bairro')
                             ->required()
                             ->maxLength(255),
 
                         TextInput::make('city')
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->city)
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->city)
                             ->label('Cidade')
                             ->required()
                             ->maxLength(255),
 
                         TextInput::make('state')
-                            ->default(fn($state, $get, $set, $livewire) => $livewire->state)
+                            ->default(fn ($state, $get, $set, $livewire) => $livewire->state)
                             ->label('UF')
                             ->required()
                             ->maxLength(2),
@@ -353,7 +396,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ])->columns(3),
 
                     TextInput::make('complement')
-                        ->default(fn($state, $get, $set, $livewire) => $livewire->complement)
+                        ->default(fn ($state, $get, $set, $livewire) => $livewire->complement)
                         ->label('Complemento')
                         ->maxLength(255)
                         ->columnSpanFull(),
@@ -364,40 +407,41 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->afterValidation(function (Get $get) {
 
                     $step4Update = $this->checkout->step4()->updateOrCreate(
-                        ["cpp_checkout_id" => $this->checkout->id],
+                        ['cpp_checkout_id' => $this->checkout->id],
                         [
-                            "card_number"     => $get("card_number"),
-                            "card_validate"   => $get("card_validate"),
-                            "card_payer_name" => $get("card_payer_name"),
-                            "base_qrcode"     => $get("base_qrcode"),
-                            "url_qrcode"      => $get("url_qrcode"),
-                            "url_billet"      => $get("url_billet"),
+                            'card_number' => $get('card_number'),
+                            'card_validate' => $get('card_validate'),
+                            'card_payer_name' => $get('card_payer_name'),
+                            'base_qrcode' => $get('base_qrcode'),
+                            'url_qrcode' => $get('url_qrcode'),
+                            'url_billet' => $get('url_billet'),
                         ]
                     );
 
                     if ($step4Update) {
                         $this->checkout->update([
-                            "startOnStep"    => 5,
-                            "method_checked" => $get("method_checked")
+                            'startOnStep' => 5,
+                            'method_checked' => $get('method_checked'),
                         ]);
                     }
 
-                    if (!$step4Update) {
-                        throw new Halt();
+                    if (! $step4Update) {
+                        throw new Halt;
                     }
 
                 })
                 ->schema([
                     Select::make('method_checked')
-                        ->default(fn($state, $get, $set, $livewire) => $livewire->method_checked)
+                        ->default(fn ($state, $get, $set, $livewire) => $livewire->method_checked)
                         ->extraAttributes(['id' => 'method_checked'])
-                        ->label("Escolha como quer pagar!")
+                        ->label('Escolha como quer pagar!')
                         ->live()
-                        ->options(collect($this->paymentMethods)
-                            ->mapWithKeys(fn(MethodPaymentEnum $method) => [
-                                $method->value => $method->label(),
-                            ])
-                            ->toArray()
+                        ->options(
+                            collect($this->paymentMethods)
+                                ->mapWithKeys(fn (MethodPaymentEnum $method) => [
+                                    $method->value => $method->label(),
+                                ])
+                                ->toArray()
                         )
                         ->required(),
 
@@ -405,7 +449,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                         // Preview do cartão
                         View::make('checkout-payment::checkout.card-preview')
-                            ->visible(fn(Get $get) => $get("method_checked") === MethodPaymentEnum::credit_card->value)
+                            ->visible(fn (Get $get) => $get('method_checked') === MethodPaymentEnum::credit_card->value)
                             ->columnSpan(1),
 
                         Grid::make()->schema([
@@ -413,10 +457,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                             Grid::make()->schema([
 
                                 Select::make('installments')
-                                    ->label("Quantidade de parcelas")
+                                    ->label('Quantidade de parcelas')
                                     ->extraInputAttributes(['id' => 'installments']),
                                 Select::make('issuer')
-                                    ->label("Tipo de cartão")
+                                    ->label('Tipo de cartão')
                                     ->disabled()
                                     ->dehydrated()
                                     ->extraInputAttributes(['id' => 'issuer']),
@@ -425,101 +469,103 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                             // Card method ---
                             TextInput::make('card_number')
-                                ->label("Número do Cartão")
-                                ->extraInputAttributes(['id' => 'cardNumber', 'class' => 'cc_number'])
-                                //->reactive()
+                                ->label('Número do Cartão')
+                                ->extraInputAttributes([
+                                    'id' => 'cardNumber',
+                                    'class' => 'cc_number',
+                                ])
+                                // ->reactive()
                                 ->mask(function ($state, $get, $set, $livewire) {
                                     return '9999 9999 9999 99999999';
                                 })
                                 ->maxLength(19)
                                 ->required(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                        ? $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         : false;
                                 })
                                 ->visible(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                        ? $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         : false;
                                 })
                                 ->disabled(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                    && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                    && $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         ? false
                                         : true;
                                 }),
                             TextInput::make('card_validate')
-                                ->label("Validade do Cartão")
+                                ->label('Validade do Cartão')
                                 ->extraInputAttributes(['id' => 'cardExpiration'])
-                                //->reactive()
-                                //->mask('99/99')
+                                // ->reactive()
+                                // ->mask('99/99')
                                 ->required(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                        ? $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         : false;
                                 })
                                 ->visible(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                        ? $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         : false;
                                 })
                                 ->disabled(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                    && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                    && $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         ? false
                                         : true;
                                 }),
                             TextInput::make('card_payer_name')
-                                ->label("Nome impresso no Cartão")
+                                ->label('Nome impresso no Cartão')
                                 ->extraInputAttributes(['id' => 'cardholderName'])
-                                //->reactive()
+                                // ->reactive()
                                 ->required(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                        ? $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         : false;
                                 })
                                 ->visible(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                        ? $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         : false;
                                 })
                                 ->disabled(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                    && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                    && $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         ? false
                                         : true;
                                 }),
                             TextInput::make('card_cvv')
-                                ->label("CVV do Cartão")
+                                ->label('CVV do Cartão')
                                 ->extraInputAttributes(['id' => 'cardCVV'])
-                                //->reactive()
+                                // ->reactive()
                                 ->required(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                        ? $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         : false;
                                 })
                                 ->visible(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                        ? $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                        ? $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         : false;
                                 })
                                 ->disabled(function ($state, $get, $set, $livewire) {
-                                    return $get("method_checked")
-                                    && $get("method_checked") == MethodPaymentEnum::credit_card->value
+                                    return $get('method_checked')
+                                    && $get('method_checked') == MethodPaymentEnum::credit_card->value
                                         ? false
                                         : true;
                                 }),
 
                         ])->columns(2)->columnSpan(1),
 
-                    ])->visible(fn(Get $get) => $get("method_checked") === MethodPaymentEnum::credit_card->value),
-
+                    ])->visible(fn (Get $get) => $get('method_checked') === MethodPaymentEnum::credit_card->value),
 
                     Grid::make(2)->schema([
 
                         // Preview do Pix
                         View::make('checkout-payment::checkout.pix-preview')
-                            ->visible(fn(Get $get) => $get("method_checked") === MethodPaymentEnum::pix->value)
+                            ->visible(fn (Get $get) => $get('method_checked') === MethodPaymentEnum::pix->value)
                             ->columnSpan(1),
 
                         Grid::make()->schema([
@@ -530,7 +576,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         Hidden::make('base_qrcode'),
                         Hidden::make('url_qrcode'),
 
-                    ])->visible(fn(Get $get) => $get("method_checked") === MethodPaymentEnum::pix->value),
+                    ])->visible(fn (Get $get) => $get('method_checked') === MethodPaymentEnum::pix->value),
 
                     // Billet method ---
                     TextInput::make('url_billet')
@@ -546,7 +592,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     protected function getFormSchema(): array
     {
-        if (!$this->cppGateways) {
+        if (! $this->cppGateways) {
             return [
                 View::make(
                     'checkout-payment::partials.no-gateway-message'
@@ -556,8 +602,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         return [
             Wizard::make($this->fieldWinzard())
-                //->extraAttributes(['id' => 'form-checkout-wizard'])
-                ->submitAction(new HtmlString(Blade::render(<<<BLADE
+                ->submitAction(new HtmlString(Blade::render(
+                    <<<'BLADE'
                     <x-filament::button
                         wire:click="submit"
                         type="submit"
@@ -567,38 +613,16 @@ class InternalCheckoutWizard extends Page implements HasForms
                     </x-filament::button>
                 BLADE
                 )))
-                ->nextAction(
+                /*->nextAction(
                     fn (Action $action) => $action
                         ->label('Próximo')
                         ->extraAttributes([
                             'id' => 'btn-next-step',
                             'type' => 'button',
                         ])
-                )
+                )*/
                 ->startOnStep($this->startOnStep),
         ];
-    }
-
-    public function nextStep($token)
-    {
-        // aqui você pode salvar o token no step4 ou fazer o que precisar
-        /*$this->checkout->step4()->updateOrCreate(
-            ["cpp_checkout_id" => $this->checkout->id],
-            [
-                "card_token" => $token,
-                "card_number" => $this->card_number,
-                "card_validate" => $this->card_validate,
-                "card_payer_name" => $this->card_payer_name,
-            ]
-        );*/
-
-        // avança o Wizard para o próximo step
-        $this->form->getState()['wizard']->nextStep();
-
-        $this->dispatchBrowserEvent('filament-notification', [
-            'type' => 'success',
-            'message' => 'Token salvo e próximo passo liberado!'
-        ]);
     }
 
     public function submit()

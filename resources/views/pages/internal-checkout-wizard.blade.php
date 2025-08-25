@@ -9,27 +9,14 @@
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
-                const btn = document.querySelector('#btn-next-step');
-
+                /*const btn = document.querySelector('#btn-next-step');
                 if (btn) {
                     btn.addEventListener('click', async (event) => {
                         event.preventDefault();
                         event.stopImmediatePropagation();
-
                         console.log("Agora sim segurei!");
-                        const componentEl = document.querySelector('[wire\\:id]');
-                        if (componentEl) {
-                            const livewire = window.Livewire.find(componentEl.getAttribute('wire:id'));
-                            if (livewire) {
-                                const token = "fdsf";
-                                // chama método do Livewire
-                                livewire.call('nextStep', token); // você pode passar o token como argumento
-                            }
-                        }
                     }, true);
-                }
-
-
+                }*/
 
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                     locale: "pt-BR",
