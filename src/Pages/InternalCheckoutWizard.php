@@ -81,7 +81,9 @@ class InternalCheckoutWizard extends Page implements HasForms
             $this->checkout = CppCheckout::find($cppCheckoutId);
 
             $this->paymentMethods = $this?->checkout?->methods
-                ? json_decode($this->checkout->methods, true)
+                ? array_map(function ($method) {
+                    return MethodPaymentEnum::from($method);
+                    }, json_decode($this->checkout->methods, true))
                 : $this->paymentMethods;
 
             // Step 1 --
@@ -286,15 +288,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->schema([
                     Select::make('paymentMethod')
                         ->label("Escolha como quer pagar!")
-                        ->options(function () {
-                            $methods = $this->paymentMethods;
-                            $options = [];
-                            foreach ($methods as $method) {
-                                $options[$method] = MethodPaymentEnum::from($method)->label();
-                            }
-
-                            return $options;
-                        })
+                        ->options(collect($this->paymentMethods)
+                            ->mapWithKeys(fn(MethodPaymentEnum $method) => [
+                                $method->value => $method->label(),
+                            ])
+                            ->toArray())
                         ->required(),
                 ]),
             Wizard\Step::make('Confirmação')
