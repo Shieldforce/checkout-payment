@@ -10,15 +10,14 @@
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
 
-                const btn = document.querySelector('#btn-next-step');
+                /*const btn = document.querySelector('#btn-next-step');
                 function bloquearAvanco(event) {
                     event.preventDefault();
                     event.stopImmediatePropagation();
                     const step4Container = document.querySelector('[data-step="4"]');
                     console.log(step4Container);
                 }
-
-                btn.addEventListener('click', bloquearAvanco);
+                btn.addEventListener('click', bloquearAvanco);*/
                 //btn.removeEventListener('click', bloquearAvanco);
 
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {

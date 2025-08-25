@@ -582,6 +582,22 @@ class InternalCheckoutWizard extends Page implements HasForms
                     TextInput::make('url_billet')
                         ->visible(false),
 
+                ])
+
+                ->actions([
+                    // Botão de pagamento
+                    Action::make('pagar')
+                        ->label('Pagar e Avançar')
+                        ->button()
+                        ->color('primary')
+                        ->extraAttributes(['id' => 'btn-pagar'])
+                        ->action(function (Get $get, Set $set) {
+                            dd("teste");
+                        }),
+                    // Mantém o botão Next padrão
+                    Action::make('next')
+                        ->label('Próximo 2')
+                        ->button(),
                 ]),
             Wizard\Step::make('Confirmação')
                 ->schema([
@@ -613,14 +629,14 @@ class InternalCheckoutWizard extends Page implements HasForms
                     </x-filament::button>
                 BLADE
                 )))
-                ->nextAction(
+                /*->nextAction(
                     fn(Action $action) => $action
                         ->label('Próximo')
                         ->extraAttributes([
                             'id'   => 'btn-next-step',
                             'type' => 'button',
                         ])
-                )
+                )*/
                 ->startOnStep($this->startOnStep),
         ];
     }
