@@ -344,7 +344,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->visible($this->step4->visible ?? true)
                 ->afterValidation(function (Get $get) {
 
-                    $step4Update = $this->checkout->step4()->updateOrCreate(
+                    /*$step4Update = $this->checkout->step4()->updateOrCreate(
                         ["cpp_checkout_id" => $this->checkout->id],
                         [
                             "card_number"     => $get("card_number"),
@@ -365,7 +365,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                     if (!$step4Update) {
                         throw new Halt();
-                    }
+                    }*/
 
                 })
                 ->schema([
