@@ -489,29 +489,29 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                         ])->columns(2)->columnSpan(1),
 
-                    ]),
+                    ])->visible(fn(Get $get) => $get("method_checked") === MethodPaymentEnum::credit_card->value),
+
 
                     Grid::make(2)->schema([
 
                         // Preview do Pix
                         View::make('checkout-payment::checkout.pix-preview')
-                            ->visible(fn ($get) => $get("method_checked") === MethodPaymentEnum::pix->value)
-                            ->columnSpan(1)
-                            ->extraFooterActions([
-                                Action::make('gerar_pix')
-                                    ->label('Gerar PIX')
-                                    ->button()
-                                    ->color('success')
-                                    ->action(function (array $data, $set) {
-                                        dd($data);
-                                    }),
-                            ]),
+                            ->visible(fn(Get $get) => $get("method_checked") === MethodPaymentEnum::pix->value)
+                            ->columnSpan(1),
+
+                        Grid::make()->schema([
+
+                            Action::make('generate_pix')
+                                ->color("info")
+                                ->label("Gerar PIX")
+
+                        ])->columns(2)->columnSpan(1),
 
                         // Pix method ---
                         Hidden::make('base_qrcode'),
                         Hidden::make('url_qrcode'),
 
-                    ]),
+                    ])->visible(fn(Get $get) => $get("method_checked") === MethodPaymentEnum::pix->value),
 
                     // Billet method ---
                     TextInput::make('url_billet')
