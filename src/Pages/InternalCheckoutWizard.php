@@ -404,9 +404,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                     Grid::make(2)->schema([
 
                         // Preview do cartão
-                        /*View::make('checkout-payment::checkout.card-preview')
+                        View::make('checkout-payment::checkout.card-preview')
                             ->visible(fn(Get $get) => $get("method_checked") === MethodPaymentEnum::credit_card->value)
-                            ->columnSpan(1),*/
+                            ->columnSpan(1),
 
                         Grid::make()->schema([
 
@@ -427,7 +427,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             TextInput::make('card_number')
                                 ->label("Número do Cartão")
                                 ->extraInputAttributes(['id' => 'cardNumber'])
-                                /*->reactive()
+                                //->reactive()
                                 ->mask(function ($state, $get, $set, $livewire) {
                                     return '9999 9999 9999 9999';
                                 })
@@ -447,11 +447,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                                     && $get("method_checked") == MethodPaymentEnum::credit_card->value
                                         ? false
                                         : true;
-                                })*/,
+                                }),
                             TextInput::make('card_validate')
                                 ->label("Validade do Cartão")
                                 ->extraInputAttributes(['id' => 'cardExpiration'])
-                                ->reactive()
+                                //->reactive()
                                 ->mask('99/99')
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
