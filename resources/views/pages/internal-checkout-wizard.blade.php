@@ -16,9 +16,13 @@
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
 
-                const mp = new MercadoPago("{{ $cppGateways->field_2 ?? null  }}")
+                /*const mp = new MercadoPago("{{ $cppGateways->field_2 ?? null  }}")*/
 
-                const cardForm = mp.cardForm({
+                const mp = new window.MercadoPago("{{ $cppGateways->field_2 ?? null  }}", {
+                    locale: "pt-BR",
+                });
+
+                /*const cardForm = mp.cardForm({
                     amount: '100.00',
                     autoMount: true,
                     form: {
@@ -29,24 +33,12 @@
                         email: { id: 'email' },
                     },
                     callbacks: {
-                        /*onSubmit: async (event) => {
-                            event.preventDefault()
-                            const token = await mp.createCardToken({
-                                cardNumber: document.getElementById('cardNumber').value,
-                                expirationMonth: ...,
-                                expirationYear: ...,
-                                securityCode: ...,
-                                cardholderName: ...,
-                            })
-                            // enviar token para o backend
-                        },*/
                         onBinChange: function(data) {
                             console.log(data)
 
                             // se quiser, pode jogar pro Livewire
                             //@this.set('card_brand', data.paymentMethod?.id)
                         },
-
                         onSubmit: function(event) {
                             event.preventDefault()
 
@@ -56,7 +48,7 @@
                             //@this.call('processarPagamentoCartao', formData.token)
                         },
                     },
-                })
+                })*/
 
             });
         </script>
