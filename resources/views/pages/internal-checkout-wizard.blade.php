@@ -69,7 +69,10 @@
                                 console.log("onPaymentMethodsReceived:", error, data);
 
                                 const imgBrandCard = document.getElementById("img-brand-card");
-                                imgBrandCard.src = data[0].thumbnail;
+                                imgBrandCard.src = data[0].thumbnail ?? "https://storage.googleapis.com/star-lab/blog/OGs/image-not-found.png";
+
+                                const issuerNameCard = document.getElementById("issuer-name-card");
+                                issuerNameCard.src = data[0].issuer.name ?? "Meu Cartão";
                             },
                             onFetching: function(error, data) {
                                 console.log("onFetching:", error, data);

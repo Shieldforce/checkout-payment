@@ -25,7 +25,7 @@
 >
     <!-- Header -->
     <div class="flex justify-between items-center">
-        <span class="text-sm font-semibold">Meu Cartão</span>
+        <span class="text-sm font-semibold" id="issuer-name-card">Meu Cartão</span>
         <span class="text-xs font-bold">
 
             <img
