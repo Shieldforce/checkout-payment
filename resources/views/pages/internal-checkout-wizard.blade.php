@@ -92,7 +92,7 @@
                     },
                 });
 
-            })
+            }, 3000)
 
             /*document.addEventListener('DOMContentLoaded', async () => {
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
