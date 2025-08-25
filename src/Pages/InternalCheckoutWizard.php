@@ -59,6 +59,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     public array             $data            = [];
     public array             $items           = [];
     public int               $startOnStep     = 1;
+    public ?int              $method_checked  = null;
     public array             $paymentMethods  = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
@@ -80,6 +81,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         if ($cppCheckoutUuid) {
             $this->checkout = CppCheckout::where("uuid", $cppCheckoutUuid)->first();
 
+            $this->method_checked = $this->checkout->method_checked;
             $this->paymentMethods = $this?->checkout?->methods
                 ? array_map(function ($method) {
                     return MethodPaymentEnum::from($method);
@@ -286,7 +288,8 @@ class InternalCheckoutWizard extends Page implements HasForms
             Wizard\Step::make('Pagamento')
                 ->visible($this->step4->visible ?? true)
                 ->schema([
-                    Select::make('paymentMethod')
+                    Select::make('method_checked')
+                        ->default(fn($state, $get, $set, $livewire) => $livewire->method)
                         ->label("Escolha como quer pagar!")
                         ->options(collect($this->paymentMethods)
                             ->mapWithKeys(fn(MethodPaymentEnum $method) => [
