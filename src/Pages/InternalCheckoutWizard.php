@@ -453,7 +453,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 }),
                             TextInput::make('card_payer_name')
                                 ->label("Nome impresso no Cartão")
-                                ->extraAttributes(['id' => 'cardCVV'])
+                                ->extraAttributes(['id' => 'cardholderName'])
                                 ->reactive()
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
@@ -473,7 +473,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 }),
                             TextInput::make('card_cvv')
                                 ->label("CVV do Cartão")
-                                ->extraAttributes(['id' => 'cardholderName'])
+                                ->extraAttributes(['id' => 'cardCVV'])
                                 ->reactive()
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
@@ -548,6 +548,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     </x-filament::button>
                 BLADE
                 )))
+                ->extraAttributes(['id' => 'checkoutForm'])
                 ->startOnStep($this->startOnStep),
         ];
     }

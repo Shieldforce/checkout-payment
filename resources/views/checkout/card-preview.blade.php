@@ -62,7 +62,11 @@
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script>
 
-        const mp = new MercadoPago("{{ $cppGateways->field_2 ?? null  }}")
+        /*const mp = new MercadoPago("{{ $cppGateways->field_2 ?? null  }}")*/
+
+        const mp = new window.MercadoPago("{{ $cppGateways->field_2 ?? null  }}", {
+            locale: "pt-BR",
+        });
 
         const cardForm = mp.cardForm({
             amount: '100.00',
@@ -86,12 +90,8 @@
                     })
                     // enviar token para o backend
                 },*/
-                onCardBinChange: function(data) {
-                    // aqui já tenho info logo após 6 dígitos
-                    console.log('BIN detectado:', data.bin)
-                    console.log('Bandeira:', data.paymentMethod?.id) // ex: visa, master
-                    console.log('Tipo:', data.paymentMethod?.payment_type_id) // credit_card / debit_card
-                    console.log('Issuer:', data.issuer) // banco emissor
+                onBinChange: function(data) {
+                    console.log(data)
 
                     // se quiser, pode jogar pro Livewire
                     //@this.set('card_brand', data.paymentMethod?.id)
