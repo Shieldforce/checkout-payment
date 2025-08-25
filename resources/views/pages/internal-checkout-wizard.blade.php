@@ -8,7 +8,6 @@
     @push('scripts')
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
-
             document.addEventListener('DOMContentLoaded', async () => {
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                     locale: "pt-BR",
