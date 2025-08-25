@@ -14,6 +14,8 @@
                     locale: "pt-BR",
                 });
 
+                let lastBin = null;
+
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
                         // verifica se os campos existem
@@ -49,24 +51,23 @@
                                     if (error) return console.warn("Form Mounted handling error: ", error);
                                     console.log("Form mounted");
                                 },
-                                onSubmit: function(event) {
-                                    /*event.preventDefault();
+                                /*onSubmit: function(event) {
+                                    event.preventDefault();
                                     const formData = cardForm.getCardFormData();
-                                    console.log('Token gerado:', formData.token);*/
+                                    console.log('Token gerado:', formData.token);
                                     // @this.call('processarPagamentoCartao', formData.token)
-                                },
+                                },*/
                                 onBinChange: function (data) {
-                                    console.log("onBinChange", data);
+                                    console.log("onBinChange:", data);
 
-                                    if (data?.bin?.length === 6 && data.paymentMethodId) {
-                                        console.log("BIN válido:", data.bin, data.paymentMethodId);
-
-                                        // Mantém installments só quando método de pagamento for reconhecido
-                                        return;
+                                    // só muda se o BIN realmente for diferente
+                                    if (data && data.bin && data.bin !== lastBin) {
+                                        lastBin = data.bin;
+                                        console.log("Novo BIN detectado:", data.bin);
+                                    } else {
+                                        // ignora, evita resetar o installments
+                                        console.log("Ignorado, BIN não mudou de fato");
                                     }
-
-                                    // Caso contrário, não limpa installments à toa
-                                    console.log("BIN incompleto ou inválido, não mexendo em installments");
                                 },
                             },
                         });
