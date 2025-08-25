@@ -67,7 +67,7 @@
                         const expiration = document.getElementById('cardExpiration');
                         const cvv = document.getElementById('cardCVV');
                         const holder = document.getElementById('cardholderName');
-                        const email = document.getElementById('email_card');
+                        const email = document.getElementById('email');
                         const installments = document.getElementById('installments');
                         const issuer = document.getElementById('issuer');
 
@@ -85,7 +85,7 @@
                                 expirationDate: { id: 'cardExpiration' },
                                 securityCode: { id: 'cardCVV' },
                                 cardholderName: { id: 'cardholderName' },
-                                email: { id: 'email_card' },
+                                email: { id: 'email' },
                                 installments: { id: 'installments' },
                                 issuer: { id: 'issuer' },
                             },

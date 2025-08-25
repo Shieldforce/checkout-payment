@@ -241,7 +241,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                         TextInput::make('email')
                             ->required()
-                            ->extraAttributes(['id' => 'email'])
+                            ->extraInputAttributes(['id' => 'email'])
                             ->label('E-mail')
                             ->email()
                             ->default(fn($state, $get, $set, $livewire) => $livewire->email),
@@ -418,10 +418,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                                     ->disabled()
                                     ->dehydrated()
                                     ->extraInputAttributes(['id' => 'issuer']),
-                                TextInput::make('email_card')
+                                /*TextInput::make('email_card')
                                     ->disabled()
                                     ->dehydrated()
-                                    ->extraInputAttributes(['id' => 'email_card']),
+                                    ->extraInputAttributes(['id' => 'email_card']),*/
 
                             ])->columns(2),
 
