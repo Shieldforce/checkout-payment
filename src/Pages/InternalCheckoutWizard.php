@@ -106,17 +106,17 @@ class InternalCheckoutWizard extends Page implements HasForms
 
             // Step 3 ---
             $this->step3      = $this?->checkout?->step3()?->first();
-            $this->zipcode    = $this->step3->zipcode;
-            $this->street     = $this->step3->street;
-            $this->district   = $this->step3->district;
-            $this->city       = $this->step3->city;
-            $this->state      = $this->step3->state;
-            $this->number     = $this->step3->number;
-            $this->complement = $this->step3->complement;
+            $this->zipcode    = $this->step3->zipcode ?? null;
+            $this->street     = $this->step3->street ?? null;
+            $this->district   = $this->step3->district ?? null;
+            $this->city       = $this->step3->city ?? null;
+            $this->state      = $this->step3->state ?? null;
+            $this->number     = $this->step3->number ?? null;
+            $this->complement = $this->step3->complement ?? null;
 
             $this->step4 = $this?->checkout?->step4()?->first();
 
-            $this->startOnStep = $this->checkout->startOnStep;
+            $this->startOnStep = $this->checkout->startOnStep ?? null;
         }
 
         $this->form->fill();
