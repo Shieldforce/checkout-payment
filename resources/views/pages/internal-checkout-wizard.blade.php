@@ -26,6 +26,7 @@
                             cardNumber: {
                                 id: "cardNumber",
                                 placeholder: '0000 0000 0000 0000',
+                                autofocus: true,
                             },
                             expirationDate: {
                                 id: 'cardExpiration',
