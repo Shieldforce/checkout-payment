@@ -17,7 +17,10 @@
                         event.stopImmediatePropagation();
 
                         console.log("Agora sim segurei!");
-                        Livewire.emit('nextStep');
+                        const component = document.querySelector('[wire\\:id]'); // pega o componente atual
+                        if (component && component.__livewire) {
+                            component.__livewire.call('nextStep'); // método do Wizard
+                        }
                     }, true);
                 }
 
