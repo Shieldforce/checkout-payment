@@ -30,8 +30,8 @@
 
             <img
                 id="img-brand-card"
-                width="70"
-                height="50"
+                width="40"
+                height="25"
                 src="https://storage.googleapis.com/star-lab/blog/OGs/image-not-found.png"
                 title=""
                 alt=""
