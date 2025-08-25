@@ -9,7 +9,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\View;
 use Filament\Forms\Components\Wizard;
-use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Get;
@@ -614,9 +613,14 @@ class InternalCheckoutWizard extends Page implements HasForms
                     </x-filament::button>
                 BLADE
                 )))
-                ->steps(function (Step $step) {
-                    dd($step);
-                })
+                ->nextAction(
+                    fn(Action $action) => $action
+                        ->label('Próximo')
+                        ->extraAttributes([
+                            'id'   => 'btn-next-step',
+                            'type' => 'button',
+                        ])
+                )
                 ->startOnStep($this->startOnStep),
         ];
     }
