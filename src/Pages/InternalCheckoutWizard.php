@@ -469,7 +469,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 }),
                             TextInput::make('card_payer_name')
                                 ->label("Nome impresso no Cartão")
-                                ->extraAttributes(['id' => 'cardholderName'])
+                                //->extraAttributes(['id' => 'cardholderName'])
+                                ->extraInputAttributes(['id' => 'cardholderName'])
                                 ->reactive()
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get("method_checked")
@@ -554,7 +555,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         return [
             Wizard::make($this->fieldWinzard())
-                ->extraAttributes(['id' => 'form-checkout-wizard'])
+                //->extraAttributes(['id' => 'form-checkout-wizard'])
                 ->submitAction(new HtmlString(Blade::render(<<<BLADE
                     <x-filament::button
                         wire:click="submit"
