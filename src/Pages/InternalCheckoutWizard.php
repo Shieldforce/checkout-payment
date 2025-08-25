@@ -137,10 +137,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                         'checkout-payment::checkout.cart-products'
                     ),
                 ]),
-            Wizard\Step::make('Dados Pessoais')
+            Wizard\Step::make('dados_pessoais')
+                ->label('Dados Pessoais')
                 ->visible($this->step2->visible ?? true)
-                ->afterValidation(function () {
-                    dd($this->data);
+                ->afterValidation(function (Get $get) {
+                    dd($get("dados_pessoais"));
 
                     /*if (true) {
                         throw new Halt();
