@@ -8,32 +8,16 @@
     @endif--}}
 </x-filament::page>
 
-{{--@if($this->cppGateways->field_2)
+@if($this->cppGateways->field_1)
     @push('scripts')
-
-
-
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
-                const mp = new window.MercadoPago("{{ $cppGateways->field_2 }}", { locale: "pt-BR" });
-                console.log("SDK Mercado Pago inicializado:", mp);
-
-                const paymentMethods = await mp.getPaymentMethods({ bin: "411111" });
-                console.log("Payment Methods para bin 411111:", paymentMethods);
-            });
-
-
-
-            document.addEventListener('DOMContentLoaded', async () => {
-
-                /*const mp = new MercadoPago("{{ $cppGateways->field_2 ?? null  }}")*/
-
-                const mp = new window.MercadoPago("{{ $cppGateways->field_2 ?? null  }}", {
+                const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1)  }}", {
                     locale: "pt-BR",
                 });
 
-                /*const cardForm = mp.cardForm({
+                const cardForm = mp.cardForm({
                     amount: '100.00',
                     autoMount: true,
                     form: {
@@ -59,21 +43,8 @@
                             //@this.call('processarPagamentoCartao', formData.token)
                         },
                     },
-                })*/
+                })
 
-            });
-        </script>
-    @endpush
-@endif--}}
-
-
-@if($this->cppGateways->field_1)
-    @push('scripts')
-        <script src="https://sdk.mercadopago.com/js/v2"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', async () => {
-                const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", { locale: "pt-BR" });
-                console.log("SDK Mercado Pago inicializado:", mp);
             });
         </script>
     @endpush
