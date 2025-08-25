@@ -59,60 +59,64 @@
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
-                    // verifica se os campos existem
-                    const form = document.getElementById('form-checkout');
-                    const cardNumber = document.getElementById('cardNumber');
-                    const expiration = document.getElementById('cardExpiration');
-                    const cvv = document.getElementById('cardCVV');
-                    const holder = document.getElementById('cardholderName');
-                    const email = document.getElementById('email_card');
-                    const installments = document.getElementById('installments');
-                    const issuer = document.getElementById('issuer');
+                    setTimeout(function() {
 
-                    console.log({
-                        form,
-                        cardNumber,
-                        expiration,
-                        cvv,
-                        holder,
-                        email,
-                        installments,
-                        issuer,
-                    });
+                        // verifica se os campos existem
+                        const form = document.getElementById('form-checkout');
+                        const cardNumber = document.getElementById('cardNumber');
+                        const expiration = document.getElementById('cardExpiration');
+                        const cvv = document.getElementById('cardCVV');
+                        const holder = document.getElementById('cardholderName');
+                        const email = document.getElementById('email_card');
+                        const installments = document.getElementById('installments');
+                        const issuer = document.getElementById('issuer');
 
-                    if (!form || !cardNumber || !expiration || !cvv || !holder || !email || !installments || !issuer) {
-                        console.log('Campos do cartão ainda não renderizados');
-                        return null;
-                    }
+                        console.log({
+                            form,
+                            cardNumber,
+                            expiration,
+                            cvv,
+                            holder,
+                            email,
+                            installments,
+                            issuer,
+                        });
 
-                    return mp.cardForm({
-                        amount: '100.00',
-                        autoMount: true,
-                        form: {
-                            id: 'form-checkout',
-                            cardNumber: { id: 'cardNumber' },
-                            expirationDate: { id: 'cardExpiration' },
-                            securityCode: { id: 'cardCVV' },
-                            cardholderName: { id: 'cardholderName' },
-                            email: { id: 'email_card' },
-                            installments: { id: 'installments' },
-                            issuer: { id: 'issuer' },
-                        },
-                        callbacks: {
-                            onFormMounted: function() {
-                                console.log('CardForm montado');
+                        if (!form || !cardNumber || !expiration || !cvv || !holder || !email || !installments || !issuer) {
+                            console.log('Campos do cartão ainda não renderizados');
+                            return null;
+                        }
+
+                        return mp.cardForm({
+                            amount: '100.00',
+                            autoMount: true,
+                            form: {
+                                id: 'form-checkout',
+                                cardNumber: { id: 'cardNumber' },
+                                expirationDate: { id: 'cardExpiration' },
+                                securityCode: { id: 'cardCVV' },
+                                cardholderName: { id: 'cardholderName' },
+                                email: { id: 'email_card' },
+                                installments: { id: 'installments' },
+                                issuer: { id: 'issuer' },
                             },
-                            onBinChange: function(data) {
-                                console.log('onBinChange', data);
+                            callbacks: {
+                                onFormMounted: function() {
+                                    console.log('CardForm montado');
+                                },
+                                onBinChange: function(data) {
+                                    console.log('onBinChange', data);
+                                },
+                                onSubmit: function(event) {
+                                    event.preventDefault();
+                                    const formData = cardForm.getCardFormData();
+                                    console.log('Token gerado:', formData.token);
+                                    // @this.call('processarPagamentoCartao', formData.token)
+                                },
                             },
-                            onSubmit: function(event) {
-                                event.preventDefault();
-                                const formData = cardForm.getCardFormData();
-                                console.log('Token gerado:', formData.token);
-                                // @this.call('processarPagamentoCartao', formData.token)
-                            },
-                        },
-                    });
+                        });
+
+                    }, 2000)
                 };
 
                 let cardForm = null;
