@@ -21,11 +21,14 @@
                     amount: '100.00',
                     autoMount: true,
                     form: {
+                        id: 'form-checkout',
                         cardNumber: { id: 'cardNumber' },
                         expirationDate: { id: 'cardExpiration' },
                         securityCode: { id: 'cardCVV' },
                         cardholderName: { id: 'cardholderName' },
                         email: { id: 'email' },
+                        installments: { id: 'installments' }, // <select id="installments">
+                        issuer: { id: 'issuer' },
                     },
                     callbacks: {
                         onBinChange: function(data) {
