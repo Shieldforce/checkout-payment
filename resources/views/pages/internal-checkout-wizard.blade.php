@@ -27,10 +27,10 @@
                     event.stopImmediatePropagation();
 
                     console.log("Controle manual do botão!");
-                });
 
-                // Em algum momento, quando quiser liberar o comportamento padrão:
-                btn.type = 'submit'; // ou remove event.preventDefault no listener
+                    // Em algum momento, quando quiser liberar o comportamento padrão:
+                    btn.type = 'submit'; // ou remove event.preventDefault no listener
+                });
 
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                     locale: "pt-BR",
