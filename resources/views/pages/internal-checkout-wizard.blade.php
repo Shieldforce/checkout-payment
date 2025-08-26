@@ -18,17 +18,6 @@
                 btn.classList.add('opacity-50', 'cursor-not-allowed')
                 btn.classList.add('disabled')
 
-                {{--@if($this->checkout->startOnStep == 5)
-                    function updateStatusCheckout(){
-                        setInterval(function() {
-
-                            window.Livewire.dispatch('refresh-status-checkout', {});
-
-                        }, 30000)
-                    }
-                    updateStatusCheckout();
-                @endif--}}
-
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
                     const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
@@ -109,7 +98,7 @@
                                     window.Livewire.dispatch('show-notification', {
                                         title: 'Oba, deu certo!',
                                         body: msg,
-                                        status: 'success',
+                                        status: 'warning',
                                     })
 
                                     installments = document.getElementById("installments").value

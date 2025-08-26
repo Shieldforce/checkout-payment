@@ -710,7 +710,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         \Filament\Notifications\Notification::make()
             ->title($title ?? 'titulo')
             ->body($body ?? 'corpo')
-            ->seconds(320)
+            ->seconds(60)
             ->{$status ?? 'success'}()
             ->send();
     }

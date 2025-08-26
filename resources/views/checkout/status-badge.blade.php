@@ -1,3 +1,18 @@
+{{--
+<div>
+    <span id="statusLabel" class="px-3 py-1 rounded bg-gray-200">
+        {{ $this->statusCheckout }}
+    </span>
+
+    @if($this->checkout->startOnStep == 5)
+        --}}
+{{-- Atualiza sozinho a cada 30s --}}{{--
+
+        <div wire:poll.30s="refreshStatusCheckout"></div>
+    @endif
+</div>
+--}}
+
 <div class="flex flex-col items-center justify-center min-h-[70vh] space-y-6">
 
     {{-- Resumo da compra --}}
@@ -40,8 +55,7 @@
     {{-- Atualização automática só se estiver no step 5 e ainda não aprovado --}}
     @if(
         isset($this->checkout->startOnStep) &&
-        $this->checkout->startOnStep == 5 &&
-        $this->refreshStatusCheckout != \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
+        $this->checkout->startOnStep == 5
     )
         <div wire:poll.30s="refreshStatusCheckout"></div>
     @endif
