@@ -453,14 +453,15 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ->visible(fn(Get $get) => $get('method_checked') === MethodPaymentEnum::credit_card->value)
                             ->columnSpan(1),
 
+                        TextInput::make("card_token")
+                            ->label("Liberação do cartão!")
+                            ->disabled()
+                            ->dehydrated()
+                            ->extraInputAttributes(['id' => 'cardToken']),
+
                         Grid::make()->schema([
 
                             Grid::make()->schema([
-
-                                TextInput::make("card_token")
-                                    ->disabled()
-                                    ->dehydrated()
-                                    ->extraInputAttributes(['id' => 'cardToken']),
 
                                 Select::make('installments')
                                     ->label('Quantidade de parcelas')
@@ -471,7 +472,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                     ->dehydrated()
                                     ->extraInputAttributes(['id' => 'issuer']),
 
-                            ])->columns(3),
+                            ])->columns(2),
 
                             // Card method ---
                             TextInput::make('card_number')
