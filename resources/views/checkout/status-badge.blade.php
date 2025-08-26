@@ -103,7 +103,7 @@
             <span
                 style="{{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
                             ? 'color: green;'
-                            : 'color: yellow;' }}"
+                            : 'color: orange;' }}"
                 id="statusLabel"
                   class="px-5 py-2 rounded-full text-sm font-semibold">
                 {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
