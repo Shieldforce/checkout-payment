@@ -220,11 +220,10 @@
                                     event.preventDefault()
                                     event.stopImmediatePropagation()
                                     document.getElementById('form-checkout-wizard').requestSubmit()
-                                    console.log('chegou')
                                 }
 
                                 btn.addEventListener('click', bloquearAvanco)
-                            }, 1000)
+                            }, 500)
                         }
                     }
                 })
