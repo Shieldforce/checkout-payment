@@ -2,8 +2,8 @@
     x-data="{
         base_qrcode: @entangle('base_qrcode').live,
         url_qrcode: @entangle('url_qrcode').live,
-        first_name: @entangle('first_name').live
-        last_name: @entangle('last_name').live
+        first_name: @entangle('first_name').live,
+        last_name: @entangle('last_name').live,
     }"
     class="relative w-80 h-48 rounded-xl shadow-lg
            bg-gradient-to-r from-green-400 via-green-500 to-green-600
