@@ -651,6 +651,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     type="button"
                     size="sm"
                     color="{{ $color }}"
+                    icon="heroicon-s-check"
                 >
                     {{ $text }}
                 </x-filament::button>
