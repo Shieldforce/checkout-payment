@@ -165,7 +165,7 @@
                                     if (field) {
                                         // acha o input no DOM
 
-                                        const input = document.getElementById(`[name="${field}"]`);
+                                        const input = document.getElementById(field);
                                         if (input) {
                                             // remove erros antigos se houver
                                             let errorEl = input.parentNode.querySelector('.mp-error');
