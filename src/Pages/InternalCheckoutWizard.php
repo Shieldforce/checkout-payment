@@ -174,6 +174,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
             $this->step4           = $this?->checkout?->step4()?->first();
             $this->card_number     = $this->step4->card_number ?? null;
+            $this->card_token      = $this->step4->card_token ?? null;
             $this->card_validate   = $this->step4->card_validate ?? null;
             $this->card_payer_name = $this->step4->card_payer_name ?? null;
             $this->base_qrcode     = $this->step4->base_qrcode ?? null;
@@ -409,6 +410,16 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->visible($this->step4->visible ?? true)
                 ->afterValidation(function (Get $get) {
 
+                    dd([
+                        'card_number'     => $get('card_number'),
+                        'card_validate'   => $get('card_validate'),
+                        'card_payer_name' => $get('card_payer_name'),
+                        'card_token'      => $get('card_token'),
+                        'base_qrcode'     => $get('base_qrcode'),
+                        'url_qrcode'      => $get('url_qrcode'),
+                        'url_billet'      => $get('url_billet'),
+                    ]);
+
                     try {
                         $step4Update = $this->checkout->step4()->updateOrCreate(
                             ['cpp_checkout_id' => $this->checkout->id],
@@ -460,8 +471,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                             TextInput::make("card_token")
                                 ->label("Liberação do cartão!")
-                                /*->disabled()
-                                ->dehydrated()*/
+                                ->disabled()
+                                ->dehydrated()
                                 ->columnSpanFull()
                                 ->extraInputAttributes(['id' => 'cardToken']),
 
