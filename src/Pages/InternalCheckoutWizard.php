@@ -677,6 +677,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     protected $listeners = [
         'showNotification' => 'showNotification',
         'goToStep'         => 'goToStep',
+        'updateCardToken'  => 'updateCardToken',
     ];
 
     #[On('show-notification')]
@@ -701,6 +702,16 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         if ($step) {
             $this->startOnStep = $step;
+        }
+    }
+
+    #[On('update-card-token')]
+    public function updateCardToken(
+        $cardToken,
+    ): void
+    {
+        if ($cardToken) {
+            $this->card_token = $cardToken ?? null;
         }
     }
 }

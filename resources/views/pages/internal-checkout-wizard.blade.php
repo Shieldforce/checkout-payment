@@ -120,6 +120,7 @@
                             onCardTokenReceived: function(error, data) {
                                 if(data.token) {
                                     document.getElementById("cardToken").value = data.token;
+                                    window.Livewire.dispatch('update-card-token', { token: data.token });
                                 }
                             },
                             onError: function(errors) {
