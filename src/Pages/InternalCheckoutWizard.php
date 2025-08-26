@@ -635,7 +635,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ]),
             Wizard\Step::make('Confirmação')
                 ->schema([
-                    TextInput::make('review')->default('Revisar seus dados')->disabled(),
+                    /*TextInput::make('review')->default('Revisar seus dados')->disabled(),*/
 
                     View::make('checkout-payment::checkout.status-badge')
 
