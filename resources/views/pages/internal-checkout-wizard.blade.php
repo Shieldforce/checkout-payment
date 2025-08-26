@@ -148,14 +148,14 @@
                                     email: 'email',
                                 };
 
+                                const camposComErro = new Set(); // <- guarda quais já receberam erro
+
                                 errors.forEach(err => {
                                     let field = null;
 
-                                    // tenta mapear pelo campo vindo do MP
                                     if (err.field && fieldMap[err.field]) {
                                         field = fieldMap[err.field];
                                     } else {
-                                        // tenta deduzir pelo texto da mensagem
                                         if (err.message.includes('cardNumber')) field = 'cardNumber';
                                         if (err.message.includes('expirationMonth') || err.message.includes('expirationYear')) field = 'cardExpiration';
                                         if (err.message.includes('securityCode')) field = 'cardCVV';
@@ -163,46 +163,44 @@
                                         if (err.message.includes('email')) field = 'email';
                                     }
 
-                                    if (field) {
-                                        // acha o input no DOM
+                                    if (field && !camposComErro.has(field)) {
+                                        camposComErro.add(field); // marca que já tratamos esse campo
 
                                         const input = document.getElementById(field);
                                         if (input) {
-                                            // remove erros antigos se houver
+                                            // remove erro antigo se houver
                                             let errorEl = input.closest('.filament-forms-field-wrapper')?.querySelector('.mp-error');
                                             if (errorEl) errorEl.remove();
 
-                                            // cria o span de erro
+                                            // cria novo span
                                             errorEl = document.createElement('span');
                                             errorEl.classList.add('mp-error');
                                             errorEl.style.color = 'red';
                                             errorEl.style.fontSize = '12px';
                                             errorEl.style.display = 'block';
                                             errorEl.style.marginTop = '4px';
-                                            errorEl.textContent = traduzMensagem(err.message);
+                                            errorEl.textContent = traduzMensagem(err.message, field);
 
-                                            // insere logo abaixo do container do campo
                                             input.insertAdjacentElement('afterend', errorEl);
                                         }
                                     }
                                 });
 
-                                function traduzMensagem(msg) {
+                                function traduzMensagem(msg, field) {
                                     const traducoes = {
-                                        "Invalid parameter: cardNumber": "Número do cartão inválido.",
-                                        "Invalid parameter: expirationMonth": "Mês de validade inválido.",
-                                        "Invalid parameter: expirationYear": "Ano de validade inválido.",
-                                        "Invalid parameter: cardExpiration": "Data de validade inválida.",
-                                        "Invalid parameter: securityCode": "Código de segurança inválido.",
-                                        "Invalid parameter: cardholderName": "Nome do titular inválido.",
-                                        "Invalid parameter: identificationNumber": "Documento inválido.",
+                                        "cardNumber": "Número do cartão inválido.",
+                                        "expirationMonth": "Mês de validade inválido.",
+                                        "expirationYear": "Ano de validade inválido.",
+                                        "cardExpiration": "Data de validade inválida.",
+                                        "securityCode": "Código de segurança inválido.",
+                                        "cardholderName": "Nome do titular inválido.",
+                                        "identificationNumber": "Documento inválido.",
                                     };
 
-                                    return traducoes[msg] || "Erro ao validar os dados.";
-
+                                    return traducoes[field] || "Erro ao validar os dados.";
                                 }
-
                             },
+
                         },
                     })
 
