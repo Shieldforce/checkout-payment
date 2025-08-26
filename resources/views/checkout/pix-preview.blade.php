@@ -26,12 +26,12 @@
         </template>
         <template x-if="!base_qrcode">
             <div
-                class="w-full h-full max-h-[180px] bg-gray-200 dark:bg-gray-700 flex items-center justify-center rounded-lg border border-gray-300 dark:border-white/30 shadow-md"
+                class="w-full h-full max-h-[200px] bg-gray-200 dark:bg-gray-700 flex items-center justify-center rounded-lg border border-gray-300 dark:border-white/30 shadow-md"
             >
                 <img
                     src="https://img.icons8.com/fluent/512/pix.png"
                     alt="PIX Logo"
-                    class="max-w-[120px] max-h-[120px] object-contain"
+                    class="max-w-[200px] max-h-[200px] object-contain"
                     width="200"
                     height="200"
                 />
