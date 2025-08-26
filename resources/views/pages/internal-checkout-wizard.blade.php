@@ -18,6 +18,15 @@
                 btn.classList.add('opacity-50', 'cursor-not-allowed')
                 btn.classList.add('disabled')
 
+                function updateStatusCheckout(){
+                    setInterval(function() {
+
+                        window.Livewire.dispatch('refresh-status-checkout', {});
+
+                    }, 30000)
+                }
+                updateStatusCheckout();
+
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
                     const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
@@ -110,12 +119,6 @@
                                     if(paymentMethodId) {
                                         window.Livewire.dispatch('payment-method-id', { paymentMethodId: paymentMethodId });
                                     }
-
-                                    setInterval(function() {
-
-                                        window.Livewire.dispatch('refresh-status-checkout', {});
-
-                                    }, 30000)
 
                                     return
                                 }
@@ -212,6 +215,7 @@
 
                                     return traducoes[field] || 'Erro ao validar os dados.'
                                 }
+
                             },
 
                         },
