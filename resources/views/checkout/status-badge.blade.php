@@ -47,7 +47,7 @@
     {{-- Loading GIF enquanto espera --}}
     @if($this->statusCheckout != \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value)
         <div class="flex flex-col items-center space-y-2">
-            <img src="{{ asset('images/payment-loading.gif') }}" alt="Aguardando pagamento" class="w-32 h-32">
+            <img src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw" alt="Aguardando pagamento" class="w-32 h-32">
             <p class="text-gray-500">Estamos aguardando a confirmação do seu pagamento...</p>
         </div>
     @endif
