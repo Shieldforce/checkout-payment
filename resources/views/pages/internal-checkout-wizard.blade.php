@@ -73,8 +73,12 @@
                                 console.log('onSubmit:', event)
                                 event.preventDefault();
                                 event.stopImmediatePropagation();
+
                                 btn.textContent = 'Próximo'
                                 btn.type = 'button'
+                                btn.disabled = false;
+                                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                                btn.classList.remove('disabled');
                             },
                             onPaymentMethodsReceived: function(error, data) {
                                 console.log('onPaymentMethodsReceived:', error, data)
