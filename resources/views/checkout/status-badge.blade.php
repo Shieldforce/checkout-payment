@@ -1,7 +1,3 @@
-@php
-    $enumStatus = \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
-@endphp
-
 <div class="flex flex-col items-center justify-center min-h-[70vh] space-y-6">
 
     {{-- Resumo da compra --}}
