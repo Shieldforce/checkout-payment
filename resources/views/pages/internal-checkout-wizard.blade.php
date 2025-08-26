@@ -162,6 +162,8 @@
                                         if (err.message.includes('email')) field = 'email';
                                     }
 
+                                    console.log(field);
+
                                     if (field) {
                                         // acha o input no DOM
                                         const input = document.querySelector(`[name="${field}"]`);
