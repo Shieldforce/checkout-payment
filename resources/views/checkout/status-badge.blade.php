@@ -1,23 +1,8 @@
-{{--
-<div>
-    <span id="statusLabel" class="px-3 py-1 rounded bg-gray-200">
-        {{ $this->statusCheckout }}
-    </span>
-
-    @if($this->checkout->startOnStep == 5)
-        --}}
-{{-- Atualiza sozinho a cada 30s --}}{{--
-
-        <div wire:poll.30s="refreshStatusCheckout"></div>
-    @endif
-</div>
---}}
-
 <div class="flex flex-col items-center justify-center min-h-[70vh] space-y-6">
 
     {{-- Resumo da compra --}}
     <div class="bg-white shadow rounded-xl p-6 w-full max-w-md text-center">
-        <h2 class="text-xl font-bold mb-4">Resumo do Pedido {{ $this->statusCheckout ?? "" }}</h2>
+        <h2 class="text-xl font-bold mb-4">Resumo do Pedido</h2>
 
         <div class="space-y-2 text-gray-700">
             <p><strong>Cliente:</strong> {{ $this->step2->first_name ?? "" }} {{ $this->step2->last_name ?? ""  }}</p>
@@ -49,6 +34,12 @@
         <div class="flex flex-col items-center space-y-2">
             <img src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw" alt="Aguardando pagamento" class="w-32 h-32">
             <p class="text-gray-500">Estamos aguardando a confirmação do seu pagamento...</p>
+        </div>
+    @endif
+
+    @if($this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value)
+        <div class="flex flex-col items-center space-y-2">
+            <img src="https://cdn3d.iconscout.com/3d/premium/thumb/aprovado-3d-icon-png-download-11933264.png" alt="Aguardando pagamento" class="w-32 h-32">
         </div>
     @endif
 

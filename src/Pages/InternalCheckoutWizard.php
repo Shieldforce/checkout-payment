@@ -124,6 +124,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public $statusCheckout;
 
+    public $total_price;
+
     public array $paymentMethods = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
@@ -187,6 +189,16 @@ class InternalCheckoutWizard extends Page implements HasForms
             $this->base_qrcode       = $this->step4->base_qrcode ?? null;
             $this->url_qrcode        = $this->step4->url_qrcode ?? null;
             $this->url_billet        = $this->step4->url_billet ?? null;
+
+            if (isset($this->step1->id) && isset($this->step1->items)) {
+                $items = json_decode($this->step1->items, true);
+                $sum   = 0;
+                foreach ($items as $item) {
+                    $sum += $item['price'] * $item['quantity'];
+                }
+            }
+
+            $this->total_price = $sum ?? 0;
 
             $this->startOnStep = $this->checkout->startOnStep ?? null;
         }
