@@ -791,7 +791,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         $mp = new MercadoPagoService();
         $return = $mp->gerarPagamentoPix(
-            value: "0.20",
+            value: 0.01,
             description: "fsdfd",
             external_id: "5345455345",
             payer_email: "alexandrefn7@gmail.com",
