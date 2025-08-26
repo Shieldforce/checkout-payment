@@ -32,6 +32,7 @@ use Shieldforce\CheckoutPayment\Models\CppCheckoutStep3;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\BuscarViaCepService;
+use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 
 class InternalCheckoutWizard extends Page implements HasForms
 {
@@ -129,6 +130,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public ?bool $qrcode_yes;
 
+    public MercadoPagoService $mp;
+
     public array $paymentMethods = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
@@ -146,6 +149,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         $this->cppGateways = CppGateways::where('active', true)->first();
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
+        $this->mp          = new MercadoPagoService();
 
         if ($cppCheckoutUuid) {
             $this->checkout = CppCheckout::where('uuid', $cppCheckoutUuid)->first();
@@ -794,11 +798,20 @@ class InternalCheckoutWizard extends Page implements HasForms
         ]);
 
         if ($this->checkout->method_checked == MethodPaymentEnum::pix->value) {
+
             $this->checkout = $this?->step4?->ccpCheckout;
+            $step1          = $this->checkout?->step1()?->first();
             $step2          = $this->checkout?->step2()?->first();
 
+            if (isset($step1->id) && isset($step1->items)) {
+                $items = json_decode($step1->items, true);
+                foreach ($items as $item) {
+                    $this->total_price += $item['price'] * $item['quantity'];
+                }
+            }
+
             $return = $this->mp->gerarPagamentoPix(
-                value: $this->sum,
+                value: $this->total_price,
                 description: "Pagamento via pix",
                 external_id: $this->checkout->id,
                 payer_email: $step2->email,
@@ -808,6 +821,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             logger($return);
 
             if (isset($return["qr_code_base64"])) {
+
                 $this->checkout->step4()->updateOrCreate([
                     "ccp_checkout_id" => $this->checkout->id,
                 ], [
