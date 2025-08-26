@@ -5,8 +5,9 @@
 
     @if($this->checkout->startOnStep == 4)
         <x-filament::button
+            type="button"
             {{--wire:click="submit" --}}
-            onclick="document.getElementById('form-checkout-wizard').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));"
+            {{--onclick="document.getElementById('form-checkout-wizard').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));"--}}
             class="mt-4"
         >
             Finalizar Pagamento
@@ -82,16 +83,6 @@
                             },
                             onSubmit: function(event) {
                                 console.log("onSubmit:", event);
-
-                                event.preventDefault();
-
-                                const formData = cardForm.getCardFormData();
-                                console.log('Token gerado:', formData.token);
-
-                                if (formData.token) {
-                                    // Chama método Livewire passando o token
-                                    Livewire.dispatch('processarPagamentoCartao', { token: formData.token });
-                                }
 
                                 /*event.preventDefault();
                                 const formData = cardForm.getCardFormData();
