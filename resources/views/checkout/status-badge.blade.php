@@ -74,11 +74,8 @@
             </div>
         @else
             <div class="flex flex-col items-center space-y-4">
-                <img width="200" height="200" src="https://cdn3d.iconscout.com/3d/premium/thumb/aprovado-3d-icon-png-download-11933264.png"
+                <img width="150" height="150" src="https://cdn3d.iconscout.com/3d/premium/thumb/aprovado-3d-icon-png-download-11933264.png"
                      alt="Pagamento aprovado" class="w-40 h-40 object-contain">
-                <p class="text-green-600 font-semibold text-lg text-center">
-                    Pagamento aprovado com sucesso!
-                </p>
             </div>
         @endif
     </div>
@@ -86,7 +83,10 @@
     {{-- Coluna da direita (resumo) --}}
     <div class="flex flex-col justify-left w-full md:w-1/2 p-8" style="border-left: 1px dashed #cecece; padding-left: 30px;">
 
-        <h2 class="text-2xl font-bold mb-6 text-center md:text-left">Resumo do Pedido</h2>
+        <h2 class="text-2xl font-bold mb-6 text-left md:text-left">Resumo do Pedido</h2>
+
+        <hr>
+        <br>
 
         <div class="space-y-3 text-gray-700 text-base">
             <p><strong>Cliente:</strong> {{ $this->step2->first_name ?? "" }} {{ $this->step2->last_name ?? ""  }}</p>
