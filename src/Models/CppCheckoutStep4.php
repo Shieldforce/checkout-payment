@@ -11,6 +11,7 @@ class CppCheckoutStep4 extends Model
     protected $fillable = [
         'cpp_checkout_id',
         "card_number",
+        "card_token",
         "card_validate",
         "card_payer_name",
         "base_qrcode",

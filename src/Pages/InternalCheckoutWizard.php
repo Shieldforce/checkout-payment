@@ -665,7 +665,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     protected $listeners = [
         'showNotification' => 'showNotification',
-        'goToStep' => 'goToStep',
+        'goToStep'         => 'goToStep',
     ];
 
     #[On('show-notification')]
