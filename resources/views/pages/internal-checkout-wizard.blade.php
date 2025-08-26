@@ -87,7 +87,7 @@
 
                                 // Aqui você pode emitir um evento para o Livewire
                                 // dispara notificação pelo Livewire v3
-                                window.Livewire.dispatch('showNotification', {
+                                window.Livewire.dispatch('show-notification', {
                                     title: 'Sucesso!',
                                     body: 'Pagamento validado com sucesso.',
                                     status: 'success'
