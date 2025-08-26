@@ -9,10 +9,11 @@
 
         <script src="https://sdk.mercadopago.com/js/v2"></script>
 
-        {{--Regra para cartão de crétido do mercado pago--}}
         <script>
+            /*Key mp*/
             const accessKey = "{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}";
 
+            {{--Regra para cartao de credito do mercado pago--------------------------------------}}
             document.addEventListener('DOMContentLoaded', async () => {
 
                 const btn = document.querySelector('#btn-next-step')
@@ -255,10 +256,9 @@
                     }
                 })
             })
-        </script>
 
-        {{--Regra para pix do mercado pago--}}
-        <script>
+
+            {{--Regra para pix do mercado pago--------------------------------------}}
             document.addEventListener('DOMContentLoaded', async () => {
 
                 const btn = document.querySelector('#btn-next-step')

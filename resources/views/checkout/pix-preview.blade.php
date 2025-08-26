@@ -52,7 +52,7 @@
                 "
             >
                 <img
-                    src="https://img.icons8.com/fluent/512/pix.png"
+                    src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
                     alt="PIX Logo"
                     width="250"
                     height="250"
