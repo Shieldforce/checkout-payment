@@ -28,7 +28,9 @@
                 const btn = document.querySelector('#btn-next-step')
                 btn.type = 'button'
                 btn.textContent = 'Confirmar Pagamento'
-                btn.disabled = true
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.classList.add('disabled');
 
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                     locale: 'pt-BR',
@@ -152,7 +154,9 @@
                             setTimeout(function() {
                                 cardForm = initCardForm()
 
-                                btn.disabled = false
+                                btn.disabled = false;
+                                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                                btn.classList.remove('disabled');
 
                                 function bloquearAvanco(event) {
                                     event.preventDefault()
