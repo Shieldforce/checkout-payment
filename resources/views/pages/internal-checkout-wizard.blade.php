@@ -10,15 +10,6 @@
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
-                console.log(window.href);
-
-                /*setInterval(function() {
-
-                    window.Livewire.dispatch('refresh-status-checkout', {});
-
-                }, 30000)*/
-
-
 
                 const btn = document.querySelector('#btn-next-step')
                 btn.type = 'button'
@@ -119,6 +110,12 @@
                                     if(paymentMethodId) {
                                         window.Livewire.dispatch('payment-method-id', { paymentMethodId: paymentMethodId });
                                     }
+
+                                    setInterval(function() {
+
+                                        window.Livewire.dispatch('refresh-status-checkout', {});
+
+                                    }, 30000)
 
                                     return
                                 }

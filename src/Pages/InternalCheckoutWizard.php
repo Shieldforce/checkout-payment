@@ -623,8 +623,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->schema([
                     TextInput::make('review')->default('Revisar seus dados')->disabled(),
 
-                    View::make('checkout-payment::checkout.status-badge')
-                        ->visible(fn(Get $get) => $this->checkout?->status !== null)
+                    /*View::make('checkout-payment::checkout.status-badge')
+                        ->visible(fn(Get $get) => $this->checkout?->status !== null)*/
+
+                    TextInput::make('statusCheckout')
 
                 ]),
         ];
@@ -755,6 +757,6 @@ class InternalCheckoutWizard extends Page implements HasForms
     #[On('refresh-status-checkout')]
     public function refreshStatusCheckout(): void
     {
-        $this->statusCheckout = $this->checkout->status ?? null;
+        $this->statusCheckout = $this->statusCheckout + 1;
     }
 }
