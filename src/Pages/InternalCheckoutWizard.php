@@ -825,7 +825,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ]);
 
                     $this->checkout->update([
-                        "total_price"    => $this->sum,
+                        "total_price"    => $this->total_price,
                         "status"         => StatusCheckoutEnum::pendente->value,
                         "startOnStep"    => 5,
                         "method_checked" => $method,
