@@ -130,8 +130,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public ?bool $qrcode_yes;
 
-    public MercadoPagoService $mp;
-
     public array $paymentMethods = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
@@ -149,7 +147,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         $this->cppGateways = CppGateways::where('active', true)->first();
         $this->typeGateway = config()->get('checkout-payment.type_gateway');
-        $this->mp          = new MercadoPagoService();
 
         if ($cppCheckoutUuid) {
             $this->checkout = CppCheckout::where('uuid', $cppCheckoutUuid)->first();
@@ -793,13 +790,14 @@ class InternalCheckoutWizard extends Page implements HasForms
     #[On('method-checked-change')]
     public function methodCheckedChange($method): void
     {
-        /*$checkout = CppCheckout::where("id", $this->checkout->id)->first();
+        $checkout = CppCheckout::where("id", $this->checkout->id)->first();
 
         $checkout->update([
             "method_checked" => $method,
         ]);
 
         if ($checkout->method_checked == MethodPaymentEnum::pix->value) {
+            $mp = new MercadoPagoService();
 
             $this->checkout = $this?->step4?->ccpCheckout;
             $step1          = $this->checkout?->step1()?->first();
@@ -812,7 +810,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 }
             }
 
-            $return = $this->mp->gerarPagamentoPix(
+            $return = $mp->gerarPagamentoPix(
                 value: $this->total_price,
                 description: "Pagamento via pix",
                 external_id: $this->checkout->id,
@@ -844,6 +842,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         if ($this->checkout->method_checked == MethodPaymentEnum::billet->value) {
             dd("nada");
-        }*/
+        }
     }
 }
