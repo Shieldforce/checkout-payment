@@ -26,7 +26,7 @@
                     locale: 'pt-BR',
                 })
 
-                let lastBin = null
+                let submitOff = true
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
@@ -80,22 +80,19 @@
                             },
                             onSubmit: function(event) {
                                 console.log('onSubmit:', event)
-                                event.preventDefault();
-                                event.stopImmediatePropagation();
+
+                                if(submitOff) {
+                                    submitOff = false;
+                                    event.preventDefault();
+                                    event.stopImmediatePropagation();
+                                }
 
                                 btn.textContent = 'Próximo'
-                                btn.type = 'button'
+                                btn.type = 'submit'
                                 btn.disabled = false;
                                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
                                 btn.classList.remove('disabled');
 
-                                // remove onSubmit do cardForm
-                                if (cardForm && cardForm.form) {
-                                    cardForm.form.onsubmit = null;
-                                }
-
-                                // Aqui você pode emitir um evento para o Livewire
-                                // dispara notificação pelo Livewire v3
                                 var msg = 'Agora só esperar que avisaremos quando o pagamento for aprovado! ';
                                 msg += 'Pode ser por e-mail, whatsapp ou sms, fique ligado(a). ';
                                 msg += 'Agora só clicar em próximo para finalizar o checkout!';
