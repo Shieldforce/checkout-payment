@@ -651,14 +651,19 @@ class InternalCheckoutWizard extends Page implements HasForms
         }
 
         $submitAction = new HtmlString(
-            "<x-filament::button
-                        wire:click='submit'
-                        type='button'
-                        size='sm',
-                        color='{$this->checkout->color_button_submit}'
-                    >
-                        {$this->checkout->text_button_submit}
-                    </x-filament::button>"
+            Blade::render('
+                <x-filament::button
+                    wire:click="submit"
+                    type="button"
+                    size="sm"
+                    color="{{ $color }}"
+                >
+                    {{ $text }}
+                </x-filament::button>
+            ', [
+                'color' => $this->checkout->color_button_submit,
+                'text'  => $this->checkout->text_button_submit,
+            ])
         );
 
         if(!isset($this->checkout->url)) {
