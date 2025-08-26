@@ -449,15 +449,20 @@ class InternalCheckoutWizard extends Page implements HasForms
                     Grid::make(2)->schema([
 
                         // Preview do cartão
-                        View::make('checkout-payment::checkout.card-preview')
-                            ->visible(fn(Get $get) => $get('method_checked') === MethodPaymentEnum::credit_card->value)
-                            ->columnSpan(1),
+                        Grid::make()->schema([
 
-                        TextInput::make("card_token")
-                            ->label("Liberação do cartão!")
-                            ->disabled()
-                            ->dehydrated()
-                            ->extraInputAttributes(['id' => 'cardToken']),
+                            View::make('checkout-payment::checkout.card-preview')
+                                ->visible(fn(Get $get) => $get('method_checked') === MethodPaymentEnum::credit_card->value)
+                                ->columnSpanFull(),
+
+                            TextInput::make("card_token")
+                                ->label("Liberação do cartão!")
+                                ->disabled()
+                                ->dehydrated()
+                                ->columnSpanFull()
+                                ->extraInputAttributes(['id' => 'cardToken']),
+
+                        ])->columnSpan(1),
 
                         Grid::make()->schema([
 
