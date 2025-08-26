@@ -33,6 +33,7 @@ use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\BuscarViaCepService;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
+use Throwable;
 
 class InternalCheckoutWizard extends Page implements HasForms
 {
@@ -844,7 +845,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             if ($this->checkout->method_checked == MethodPaymentEnum::billet->value) {
                 dd("nada");
             }
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             logger($e->getMessage());
 
             $this->checkout->update([
