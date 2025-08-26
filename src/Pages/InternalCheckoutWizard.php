@@ -460,8 +460,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                             TextInput::make("card_token")
                                 ->label("Liberação do cartão!")
-                                ->disabled()
-                                ->dehydrated()
+                                /*->disabled()
+                                ->dehydrated()*/
                                 ->columnSpanFull()
                                 ->extraInputAttributes(['id' => 'cardToken']),
 
