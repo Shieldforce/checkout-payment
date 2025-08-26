@@ -818,7 +818,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 if (isset($return["qr_code_base64"])) {
 
                     $this->checkout->step4()->updateOrCreate([
-                        "ccp_checkout_id" => $this->checkout->id,
+                        "cpp_checkout_id" => $this->checkout->id,
                     ], [
                         "base_qrcode" => $return["qr_code_base64"],
                         "url_qrcode"  => $return["qr_code"],
