@@ -18,10 +18,12 @@ use Filament\Support\Exceptions\Halt;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
+use Shieldforce\CheckoutPayment\Jobs\ProcessBillingCreditCardJob;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep1;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep2;
@@ -29,7 +31,6 @@ use Shieldforce\CheckoutPayment\Models\CppCheckoutStep3;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\BuscarViaCepService;
-use Livewire\Attributes\On;
 
 class InternalCheckoutWizard extends Page implements HasForms
 {
@@ -418,7 +419,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         $step4Update = $this->checkout->step4()->updateOrCreate(
                             ['cpp_checkout_id' => $this->checkout->id],
                             [
-                                'card_number'       => $get('card_number'),
+                                'card_number'       => str_replace(' ', '', $get('card_number')),
                                 'card_validate'     => $get('card_validate'),
                                 'card_payer_name'   => $get('card_payer_name'),
                                 'card_token'        => $get('card_token'),
@@ -435,6 +436,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 'startOnStep'    => 5,
                                 'method_checked' => $get('method_checked'),
                             ]);
+
+                            if($this->checkout->step4->first()) {
+                                ProcessBillingCreditCardJob::dispatch($step4Update);
+                            }
                         }
                     } catch (Halt $exception) {
                         throw $exception;
@@ -472,10 +477,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 ->columnSpanFull()
                                 ->extraInputAttributes(['id' => 'cardToken']),*/
 
-                            Hidden::make("card_token")
+                            Hidden::make('card_token')
                                 ->id('cardToken'),
 
-                            Hidden::make("payment_method_id")
+                            Hidden::make('payment_method_id')
                                 ->id('paymentMethodId'),
 
                         ])->columnSpan(1),
@@ -507,7 +512,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 ->mask(function ($state, $get, $set, $livewire) {
                                     return '9999 9999 9999 9999 99';
                                 })
-                                //->maxLength(19)
+                                // ->maxLength(19)
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get('method_checked')
                                         ? $get('method_checked') == MethodPaymentEnum::credit_card->value
@@ -695,7 +700,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         \Filament\Notifications\Notification::make()
             ->title($title ?? 'titulo')
             ->body($body ?? 'corpo')
-            ->seconds(60)
+            ->seconds(320)
             ->{$status ?? 'success'}()
             ->send();
     }

@@ -97,9 +97,9 @@
                                     btn.type = 'submit'
                                     btn.id = null
 
-                                    var msg = 'Agora só esperar que avisaremos quando o pagamento for aprovado! '
-                                    msg += 'Pode ser por e-mail, whatsapp ou sms, fique ligado(a). '
-                                    msg += 'Agora só clicar em próximo para finalizar o checkout!'
+                                    var msg = 'Agora só esperar, que avisaremos quando o pagamento for aprovado! '
+                                    msg += 'Pode ser por e-mail, whatsapp, sms ou até mesmo na próxima tela, fique ligado(a). '
+                                    msg += 'Agora só clicar em próximo para finalizar o checkout e confirmar todas as informações!'
                                     window.Livewire.dispatch('show-notification', {
                                         title: 'Oba, deu certo!',
                                         body: msg,
