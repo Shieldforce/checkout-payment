@@ -2,14 +2,13 @@
 
 namespace Shieldforce\CheckoutPayment\Services\MercadoPago;
 
-use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\Exceptions\MPApiException;
 use MercadoPago\MercadoPagoConfig;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 
-class MercadoPagoPixService
+class MercadoPagoService
 {
     public function __construct()
     {
@@ -83,14 +82,12 @@ class MercadoPagoPixService
                 "transaction_amount" => $value,
                 "description"        => $description,
                 "payment_method_id"  => "bolbradesco",
-                // boleto Bradesco
                 "external_reference" => $external_id,
                 "payer"              => [
                     "email"      => $payer_email,
                     "first_name" => $payer_first_name
                 ],
                 "date_of_expiration" => $due_date,
-                // obrigatório
             ]);
 
             return [
