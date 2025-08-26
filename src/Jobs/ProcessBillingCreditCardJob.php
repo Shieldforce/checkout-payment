@@ -7,7 +7,9 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Shieldforce\CheckoutPayment\Errors\ProcessBillingCreditCardJobException;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
+use Shieldforce\CheckoutPayment\Notifications\CheckoutStatusUpdated;
 
 class ProcessBillingCreditCardJob implements ShouldQueue
 {
@@ -20,6 +22,28 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
     public function handle(): void
     {
+        $checkout = $this?->step4?->checkout;
+        $step1    = $checkout?->step1()?->first();
+
+        if (isset($step1->id) && isset($step1->items)) {
+            $items = json_decode($step1->items, true);
+            foreach ($items as $item) {
+                $sum += $item['price'] * $item['quantity'];
+            }
+        }
+
+        if (!isset($sum)) {
+            throw new ProcessBillingCreditCardJobException(
+                "Não existem itens a serem cobrados ou o preço final não foi gerado"
+            );
+        }
+
         logger($this->step4->toArray());
+
+        $checkout->notify(new CheckoutStatusUpdated(
+            status: "processing",
+            message: "Estamos processando seu pagamento",
+            corporateName: env("APP_NAME") ?? "Empresa",
+        ));
     }
 }
