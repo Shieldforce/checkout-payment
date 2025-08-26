@@ -25,21 +25,6 @@
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
 
-                var formSubmit = null;
-
-                const btn = document.querySelector('#btn-next-step');
-                btn.type = 'button';
-                btn.textContent = "test";
-
-                function bloquearAvanco(event) {
-                    event.preventDefault();
-                    event.stopImmediatePropagation();
-                    document.getElementById('form-checkout-wizard').requestSubmit()
-                    console.log("chegou");
-                }
-                btn.addEventListener('click', bloquearAvanco);
-                //btn.removeEventListener('click', bloquearAvanco);
-
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                     locale: "pt-BR",
                 });
@@ -48,7 +33,7 @@
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
-                    formSubmit = mp.cardForm({
+                    return mp.cardForm({
                         amount: '100.00',
                         autoMount: true,
                         form: {
@@ -159,6 +144,21 @@
                         if (!cardForm) {
                             setTimeout(function() {
                                 cardForm = initCardForm();
+
+                                var formSubmit = null;
+
+                                const btn = document.querySelector('#btn-next-step');
+                                btn.type = 'button';
+                                btn.textContent = "test";
+
+                                function bloquearAvanco(event) {
+                                    event.preventDefault();
+                                    event.stopImmediatePropagation();
+                                    document.getElementById('form-checkout-wizard').requestSubmit()
+                                    console.log("chegou");
+                                }
+                                btn.addEventListener('click', bloquearAvanco);
+                                //btn.removeEventListener('click', bloquearAvanco);
                             }, 2000)
                         }
                     }
