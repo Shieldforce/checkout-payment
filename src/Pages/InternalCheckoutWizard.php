@@ -805,6 +805,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                 payer_first_name: $step2->first_name . " " . $step2->last_name,
             );
 
+            logger($return);
+
             if (isset($return["qr_code_base64"])) {
                 $this->checkout->step4()->updateOrCreate([
                     "ccp_checkout_id" => $this->checkout->id,
