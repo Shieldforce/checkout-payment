@@ -829,7 +829,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     "url_qrcode"  => $return["qr_code"],
                 ]);
 
-                $this->checkout->update([
+                CppCheckout::where("id", $this->checkout)->update([
                     "total_price" => $this->sum,
                     "status"      => StatusCheckoutEnum::pendente->value,
                     "startOnStep" => 5,
