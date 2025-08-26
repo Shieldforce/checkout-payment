@@ -91,7 +91,12 @@
         <div class="space-y-3 text-gray-700 text-base">
             <p><strong>Cliente:</strong> {{ $this->step2->first_name ?? "" }} {{ $this->step2->last_name ?? ""  }}</p>
             <p><strong>Email:</strong> {{ $this->step2->email ?? "" }}</p>
-            <p><strong>Valor:</strong> R$ {{ number_format($this->checkout->total_price ?? 0, 2, ',', '.') }}</p>
+            <p>
+                <strong>Valor:</strong>
+                R$ {{ isset($this->checkout->total_price)
+                    ? number_format($this->checkout->total_price ?? 0, 2, ',', '.')
+                    : "..." }}
+            </p>
             <p>
                 <strong>Forma de Pagamento:</strong>
                 {{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::from($this->checkout->method_checked ?? 1)->label() }}

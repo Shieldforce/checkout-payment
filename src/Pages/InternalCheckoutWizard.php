@@ -196,9 +196,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                 foreach ($items as $item) {
                     $sum += $item['price'] * $item['quantity'];
                 }
-            }
 
-            $this->total_price = $sum ?? 0;
+                $this->total_price = $sum;
+            }
 
             $this->startOnStep = $this->checkout->startOnStep ?? null;
 
@@ -635,12 +635,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ]),
             Wizard\Step::make('Confirmação')
                 ->schema([
-                    /*TextInput::make('review')->default('Revisar seus dados')->disabled(),*/
-
                     View::make('checkout-payment::checkout.status-badge')
-
-                    /*TextInput::make('statusCheckout')*/
-
                 ]),
         ];
     }
