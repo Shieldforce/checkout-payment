@@ -3,6 +3,8 @@
         {{ $this->statusCheckout }}
     </span>
 
-    {{-- Atualiza sozinho a cada 30s --}}
-    <div wire:poll.30s="refreshStatusCheckout"></div>
+    @if($this->checkout->startOnStep == 5)
+        {{-- Atualiza sozinho a cada 30s --}}
+        <div wire:poll.30s="refreshStatusCheckout"></div>
+    @endif
 </div>
