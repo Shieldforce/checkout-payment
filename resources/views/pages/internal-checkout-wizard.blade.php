@@ -164,10 +164,11 @@
 
                 // Inicializa quando a aba de cartão for visível
                 document.getElementById('method_checked').addEventListener('change', function(event) {
+
                     btn.textContent = 'Confirmar Pagamento'
-                    btn.disabled = true;
-                    btn.classList.add('opacity-50', 'cursor-not-allowed');
-                    btn.classList.add('disabled');
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btn.classList.remove('disabled');
 
                     const valueSelectMethodCheck = parseInt(event.target.value)
                     const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
@@ -176,11 +177,6 @@
                         if (!cardForm) {
                             setTimeout(function() {
                                 cardForm = initCardForm()
-
-                                btn.textContent = 'Confirmar Pagamento'
-                                btn.disabled = false;
-                                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                                btn.classList.remove('disabled');
 
                                 function bloquearAvanco(event) {
                                     event.preventDefault()
