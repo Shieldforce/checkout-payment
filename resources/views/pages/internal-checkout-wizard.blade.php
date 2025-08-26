@@ -85,22 +85,29 @@
                                     submitOff = false;
                                     event.preventDefault();
                                     event.stopImmediatePropagation();
+
+                                    btn.textContent = 'Próximo'
+                                    btn.type = 'submit'
+                                    btn.disabled = false;
+                                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                                    btn.classList.remove('disabled');
+
+                                    var msg = 'Agora só esperar que avisaremos quando o pagamento for aprovado! ';
+                                    msg += 'Pode ser por e-mail, whatsapp ou sms, fique ligado(a). ';
+                                    msg += 'Agora só clicar em próximo para finalizar o checkout!';
+                                    window.Livewire.dispatch('show-notification', {
+                                        title: 'Oba, deu certo!',
+                                        body: msg,
+                                        status: 'success'
+                                    });
                                 }
 
-                                btn.textContent = 'Próximo'
-                                btn.type = 'submit'
-                                btn.disabled = false;
-                                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                                btn.classList.remove('disabled');
-
-                                var msg = 'Agora só esperar que avisaremos quando o pagamento for aprovado! ';
-                                msg += 'Pode ser por e-mail, whatsapp ou sms, fique ligado(a). ';
-                                msg += 'Agora só clicar em próximo para finalizar o checkout!';
-                                window.Livewire.dispatch('show-notification', {
-                                    title: 'Oba, deu certo!',
-                                    body: msg,
-                                    status: 'success'
-                                });
+                                if(submitOff === false) {
+                                    document.getElementById('form-checkout-wizard')
+                                        .dispatchEvent(new Event('submit', {
+                                            cancelable: true, bubbles: true
+                                        }));
+                                }
                             },
                             onPaymentMethodsReceived: function(error, data) {
                                 console.log('onPaymentMethodsReceived:', error, data)
