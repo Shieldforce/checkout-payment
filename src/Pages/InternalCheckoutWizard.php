@@ -818,7 +818,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 payer_first_name: $step2->first_name . " " . $step2->last_name,
             );
 
-            logger($return);
+            /*logger($return);
 
             if (isset($return["qr_code_base64"])) {
 
@@ -839,7 +839,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                 $this->base_qrcode = $return["qr_code_base64"];
                 $this->url_qrcode  = $return["qr_code"];
-            }
+            }*/
         }
 
         if ($this->checkout->method_checked == MethodPaymentEnum::billet->value) {
