@@ -651,19 +651,21 @@ class InternalCheckoutWizard extends Page implements HasForms
         }
 
         $submitAction = new HtmlString(Blade::render(
-            <<<'BLADE'
+            <<<"BLADE"
                     <x-filament::button
-                        wire:click="submit"
-                        type="button"
-                        size="sm",
-                        color="success"
+                        wire:click='submit'
+                        type='button'
+                        size='sm',
+                        color='{$this->checkout->color_button_submit}'
                     >
-                        Finalizar Checkout
+                        {$this->checkout->text_button_submit}
                     </x-filament::button>
                 BLADE
         ));
 
-        $submitAction = view('submit-button-hidden');
+        if(!isset($this->checkout->url)) {
+            $submitAction = view('submit-button-hidden');
+        }
 
         return [
             Wizard::make($this->fieldWinzard())
@@ -681,7 +683,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public function submit()
     {
-        dd($this->form->getState());
+        //dd($this->form->getState());
+        return redirect($this->checkout->url);
     }
 
     public function getLayout(): string
