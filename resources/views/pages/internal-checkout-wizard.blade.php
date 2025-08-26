@@ -63,6 +63,11 @@
                                 if (error) return console.warn('Form Mounted handling error: ', error)
                                 console.log('Form mounted')
 
+                                btn.textContent = 'Confirmar Pagamento'
+                                btn.disabled = false;
+                                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                                btn.classList.remove('disabled');
+
                                 // força o autofocus
                                 setTimeout(() => {
                                     const cardNumber = document.getElementById('cardNumber')
