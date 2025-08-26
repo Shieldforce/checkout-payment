@@ -27,12 +27,13 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
         if (isset($step1->id) && isset($step1->items)) {
             $items = json_decode($step1->items, true);
+            $sum = 0;
             foreach ($items as $item) {
                 $sum += $item['price'] * $item['quantity'];
             }
         }
 
-        if (!isset($sum)) {
+        if (!isset($sum) && $sum == 0) {
             throw new ProcessBillingCreditCardJobException(
                 "Não existem itens a serem cobrados ou o preço final não foi gerado"
             );
