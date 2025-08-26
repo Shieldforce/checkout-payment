@@ -7,7 +7,7 @@
     }"
     class="relative w-full h-[300px] rounded-xl shadow-lg p-4 select-none flex flex-col justify-between
            bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
-    style="padding-left: 30%;padding-right: 30%;padding-top: 50px; padding-bottom: 50px;"
+    style="padding-left: 40%;padding-right: 40%;padding-top: 50px; padding-bottom: 50px;"
 >
     <!-- Header -->
     <div class="flex justify-between items-center w-full mb-2">
