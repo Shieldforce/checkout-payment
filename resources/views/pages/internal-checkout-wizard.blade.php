@@ -14,7 +14,6 @@
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
-                var mp = null;
 
                 const btn = document.querySelector('#btn-next-step')
                 btn.type = 'button'
@@ -26,7 +25,7 @@
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
-                    mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
+                    const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                         locale: 'pt-BR',
                     })
 
@@ -198,7 +197,6 @@
 
                 // Inicializa quando a aba de cartão for visível
                 document.getElementById('method_checked').addEventListener('change', function(event) {
-                    mp = null;
 
                     btn.textContent = 'Confirmar Pagamento'
                     btn.disabled = false;
@@ -209,23 +207,34 @@
                     const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
 
                     if (valueSelectMethodCheck === creditCardEnum) {
-                        if (!cardForm) {
-                            setTimeout(function() {
-                                cardForm = initCardForm()
 
-                                btn.textContent = 'Confirmar Pagamento'
-                                btn.disabled = false;
-                                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                                btn.classList.remove('disabled');
+                        if (cardForm) {
+                            cardForm.unmount?.()
+                            cardForm = null
+                        }
 
-                                function bloquearAvanco(event) {
-                                    event.preventDefault()
-                                    event.stopImmediatePropagation()
-                                    document.getElementById('form-checkout-wizard').requestSubmit()
-                                }
+                        setTimeout(function() {
+                            cardForm = initCardForm()
 
-                                btn.addEventListener('click', bloquearAvanco)
-                            }, 500)
+                            btn.textContent = 'Confirmar Pagamento'
+                            btn.disabled = false;
+                            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                            btn.classList.remove('disabled');
+
+                            function bloquearAvanco(event) {
+                                event.preventDefault()
+                                event.stopImmediatePropagation()
+                                document.getElementById('form-checkout-wizard').requestSubmit()
+                            }
+
+                            btn.addEventListener('click', bloquearAvanco)
+                        }, 500)
+
+                    } else {
+
+                        if (cardForm) {
+                            cardForm.unmount?.()
+                            cardForm = null
                         }
                     }
                 })
