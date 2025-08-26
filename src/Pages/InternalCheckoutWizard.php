@@ -437,7 +437,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 'method_checked' => $get('method_checked'),
                             ]);
 
-                            if($this->checkout->step4->first()) {
+                            if ($this->checkout->step4->first()) {
                                 ProcessBillingCreditCardJob::dispatch($step4Update);
                             }
                         }
@@ -620,6 +620,10 @@ class InternalCheckoutWizard extends Page implements HasForms
             Wizard\Step::make('Confirmação')
                 ->schema([
                     TextInput::make('review')->default('Revisar seus dados')->disabled(),
+
+                    View::make('checkout-payment::checkout.status-badge')
+                        ->visible(fn(Get $get) => $this->checkout?->status !== null)
+
                 ]),
         ];
     }
@@ -690,6 +694,18 @@ class InternalCheckoutWizard extends Page implements HasForms
         'goInstallments'   => 'goInstallments',
     ];
 
+    public function getListeners(): array
+    {
+        $dynamicListeners = [];
+
+        if ($this->checkout && $this->checkout->id) {
+            $dynamicListeners["echo:private-checkout.{$this->checkout->id},CheckoutStatusUpdated"]
+                = 'handleCheckoutStatusUpdate';
+        }
+
+        return array_merge($this->listeners, $dynamicListeners);
+    }
+
     #[On('show-notification')]
     public function showNotification(
         string $title = 'Aviso',
@@ -743,5 +759,19 @@ class InternalCheckoutWizard extends Page implements HasForms
         if ($installments) {
             $this->installments = $installments ?? null;
         }
+    }
+
+    public function handleCheckoutStatusUpdate($payload)
+    {
+        // Atualiza o status local
+        $this->checkout->status = $payload['status'] ?? $this->checkout->status;
+
+        // Dispara notificação para o usuário
+        $this->emit('showNotification', 'Atualização de Pagamento', $payload['message'] ?? 'Status atualizado!', 'success');
+
+        // Preenche o formulário caso queira mostrar status em algum campo
+        $this->form->fill([
+            'status' => $payload['status'] ?? $this->checkout->status,
+        ]);
     }
 }

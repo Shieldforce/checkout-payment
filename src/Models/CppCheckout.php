@@ -3,11 +3,14 @@
 namespace Shieldforce\CheckoutPayment\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Ramsey\Uuid\Uuid;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 
 class CppCheckout extends Model
 {
+    use Notifiable;
+
     protected $table = 'cpp_checkouts';
 
     protected $fillable = [
