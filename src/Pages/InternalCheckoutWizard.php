@@ -794,52 +794,60 @@ class InternalCheckoutWizard extends Page implements HasForms
             "method_checked" => $method,
         ]);
 
-        if ($this->checkout->method_checked == MethodPaymentEnum::pix->value) {
-            $mp = new MercadoPagoService();
+        try {
+            if ($this->checkout->method_checked == MethodPaymentEnum::pix->value) {
+                $mp = new MercadoPagoService();
 
-            $this->checkout = $this?->step4?->ccpCheckout;
-            $step1          = $this->checkout?->step1()?->first();
-            $step2          = $this->checkout?->step2()?->first();
+                $this->checkout = $this?->step4?->ccpCheckout;
+                $step1          = $this->checkout?->step1()?->first();
+                $step2          = $this->checkout?->step2()?->first();
 
-            if (isset($step1->id) && isset($step1->items)) {
-                $items = json_decode($step1->items, true);
-                foreach ($items as $item) {
-                    $this->total_price += $item['price'] * $item['quantity'];
+                if (isset($step1->id) && isset($step1->items)) {
+                    $items = json_decode($step1->items, true);
+                    foreach ($items as $item) {
+                        $this->total_price += $item['price'] * $item['quantity'];
+                    }
+                }
+
+                $return = $mp->gerarPagamentoPix(
+                    value: $this->total_price,
+                    description: "Pagamento via pix",
+                    external_id: $this->checkout->id,
+                    payer_email: $step2->email,
+                    payer_first_name: $step2->first_name . " " . $step2->last_name,
+                );
+
+                logger($return);
+
+                if (isset($return["qr_code_base64"])) {
+
+                    $this->checkout->step4()->updateOrCreate([
+                        "ccp_checkout_id" => $this->checkout->id,
+                    ], [
+                        "base_qrcode" => $return["qr_code_base64"],
+                        "url_qrcode"  => $return["qr_code"],
+                    ]);
+
+                    $this->checkout->update([
+                        "total_price" => $this->sum,
+                        "status"      => StatusCheckoutEnum::pendente->value,
+                        "startOnStep" => 5,
+                    ]);
+
+                    $this->base_qrcode = $return["qr_code_base64"];
+                    $this->url_qrcode  = $return["qr_code"];
                 }
             }
 
-            $return = $mp->gerarPagamentoPix(
-                value: $this->total_price,
-                description: "Pagamento via pix",
-                external_id: $this->checkout->id,
-                payer_email: $step2->email,
-                payer_first_name: $step2->first_name . " " . $step2->last_name,
-            );
-
-            logger($return);
-
-            if (isset($return["qr_code_base64"])) {
-
-                $this->checkout->step4()->updateOrCreate([
-                    "ccp_checkout_id" => $this->checkout->id,
-                ], [
-                    "base_qrcode" => $return["qr_code_base64"],
-                    "url_qrcode"  => $return["qr_code"],
-                ]);
-
-                $this->checkout->update([
-                    "total_price" => $this->sum,
-                    "status"      => StatusCheckoutEnum::pendente->value,
-                    "startOnStep" => 5,
-                ]);
-
-                $this->base_qrcode = $return["qr_code_base64"];
-                $this->url_qrcode  = $return["qr_code"];
+            if ($this->checkout->method_checked == MethodPaymentEnum::billet->value) {
+                dd("nada");
             }
-        }
+        } catch (\Exception $e) {
+            logger($e->getMessage());
 
-        if ($this->checkout->method_checked == MethodPaymentEnum::billet->value) {
-            dd("nada");
+            $this->checkout->update([
+                "method_checked" => null,
+            ]);
         }
     }
 }
