@@ -12,7 +12,7 @@ class CheckoutStatusUpdated extends Notification
     use Queueable;
 
     public function __construct(
-        public int    $status,
+        public string $status,
         public string $message,
         public string $corporateName,
     )
