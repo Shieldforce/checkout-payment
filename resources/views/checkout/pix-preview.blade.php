@@ -58,6 +58,7 @@
                     height="250"
                     class="w-[120px] h-[120px] object-contain"
                 />
+                Aguardando para gerar pix ...
             </div>
         </template>
     </div>
