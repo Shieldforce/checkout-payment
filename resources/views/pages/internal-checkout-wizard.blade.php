@@ -142,12 +142,12 @@
                                     window.Livewire.dispatch('update-card-token', { cardToken: data.token })
                                 }
                             },
-                            onInstallmentsReceived: function(error, data) {
+                            /*onInstallmentsReceived: function(error, data) {
                                 console.log("onInstallmentsReceived", error, data);
                             },
                             onBinChange: function(error, data) {
                                 console.log("onBinChange", error, data);
-                            },
+                            },*/
                             onError: function(errors) {
                                 console.log('Erro do MP:', errors)
 
