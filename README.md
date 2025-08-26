@@ -83,6 +83,12 @@ echo $checkoutPayment->echoPhrase('Hello, Shieldforce!');
     );
 
     $mountCheckout->handle()
+        // Configurando botão que finaliza o wizard ---
+        ->configureButtonSubmit(
+                text: "Dashboard",
+                color: "info",
+                urlRedirect: route("filament.admin.pages.dashboard"),
+        )
         // Cadastrando step 1 ---
         ->step1(
             items: array_map(callback: function ($product) {
@@ -144,6 +150,12 @@ echo $checkoutPayment->echoPhrase('Hello, Shieldforce!');
     );
 
     $mountCheckout->handle()
+        // Configurando botão que finaliza o wizard ---
+        ->configureButtonSubmit(
+                text: "Dashboard",
+                color: "info",
+                urlRedirect: route("filament.admin.pages.dashboard"),
+        )
         // Cadastrando step 1 ---
         ->step1(
             items: array_map(callback: function ($product) {
