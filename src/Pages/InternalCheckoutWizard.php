@@ -672,6 +672,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     fn(Action $action) => $action
                         ->label('Próximo')
                         ->icon('heroicon-s-arrow-right')
+                        ->disabled(fn() => $this->checkout->startOnStep == 5)
                         ->extraAttributes([
                             'id' => 'btn-next-step',
                         ])
@@ -679,6 +680,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->previousAction(
                     fn(Action $action) => $action
                         ->label('Voltar')
+                        ->disabled(fn() => $this->checkout->startOnStep == 5)
                         ->icon('heroicon-s-arrow-left')
                 )
                 ->startOnStep($this->startOnStep),
