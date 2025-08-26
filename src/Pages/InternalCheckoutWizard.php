@@ -440,7 +440,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ]);
 
                             if ($this->checkout->step4->first()) {
-                                ProcessBillingCreditCardJob::dispatch($step4Update);
+                                ProcessBillingCreditCardJob::dispatch($step4Update)->delay(60);
                             }
                         }
                     } catch (Halt $exception) {
@@ -756,6 +756,6 @@ class InternalCheckoutWizard extends Page implements HasForms
     #[On('refresh-status-checkout')]
     public function refreshStatusCheckout(): void
     {
-        $this->statusCheckout = $this->statusCheckout + 1;
+        $this->statusCheckout = $this->checkout->status;
     }
 }

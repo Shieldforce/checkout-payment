@@ -7,6 +7,7 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Errors\ProcessBillingCreditCardJobException;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Notifications\CheckoutStatusUpdated;
@@ -27,7 +28,7 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
         if (isset($step1->id) && isset($step1->items)) {
             $items = json_decode($step1->items, true);
-            $sum = 0;
+            $sum   = 0;
             foreach ($items as $item) {
                 $sum += $item['price'] * $item['quantity'];
             }
@@ -39,12 +40,17 @@ class ProcessBillingCreditCardJob implements ShouldQueue
             );
         }
 
-        logger($this->step4->toArray());
+        $checkout->update([
+            "total_price" => $sum,
+            "status"      => StatusCheckoutEnum::finalizado->value,
+        ]);
 
-        $checkout->notify(new CheckoutStatusUpdated(
+        //logger($this->step4->toArray());
+
+        /*$checkout->notify(new CheckoutStatusUpdated(
             status: "processing",
             message: "Estamos processando seu pagamento",
             corporateName: env("APP_NAME") ?? "Empresa",
-        ));
+        ));*/
     }
 }
