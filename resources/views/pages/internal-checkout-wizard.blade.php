@@ -137,26 +137,25 @@
                             onError: function(errors) {
                                 console.log('Erro do MP:', errors);
 
-                                // Mapeamento SDK → Livewire/Filament
                                 const fieldMap = {
                                     cardNumber: 'card_number',
                                     cardholderName: 'card_payer_name',
                                     securityCode: 'card_cvv',
-                                    expirationMonth: 'card_validate', // você provavelmente tem um único campo 'MM/YY'
-                                    expirationYear: 'card_validate',
+                                    expirationMonth: 'cardExpiration',
+                                    expirationYear: 'cardExpiration',
                                     email: 'email',
                                 };
 
                                 errors.forEach(err => {
                                     let field = null;
 
-                                    // tenta encontrar no map
+                                    // tenta mapear pelo campo
                                     if (err.field && fieldMap[err.field]) {
                                         field = fieldMap[err.field];
                                     } else {
-                                        // se não vier o field, tenta adivinhar pelo message
+                                        // deduz pelo message
                                         if (err.message.includes('cardNumber')) field = 'card_number';
-                                        if (err.message.includes('expirationMonth') || err.message.includes('expirationYear')) field = 'card_validate';
+                                        if (err.message.includes('expirationMonth') || err.message.includes('expirationYear')) field = 'cardExpiration';
                                         if (err.message.includes('securityCode')) field = 'card_cvv';
                                         if (err.message.includes('cardholderName')) field = 'card_payer_name';
                                         if (err.message.includes('email')) field = 'email';
