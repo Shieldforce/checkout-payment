@@ -2,6 +2,10 @@
     <form id="form-checkout-wizard">
         {{ $this->form }}
     </form>
+
+    {{--type="submit"--}} {{--wire:click="submit"--}}
+    {{--onclick="document.getElementById('form-checkout-wizard').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));"--}}
+    <!--onclick="document.getElementById('form-checkout-wizard').requestSubmit()"-->
 </x-filament::page>
 
 @if($this->cppGateways->field_1)
@@ -80,10 +84,15 @@
                                 event.stopImmediatePropagation();
 
                                 btn.textContent = 'Próximo'
-                                btn.type = 'submit'
+                                btn.type = 'button'
                                 btn.disabled = false;
                                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
                                 btn.classList.remove('disabled');
+
+                                // remove onSubmit do cardForm
+                                if (cardForm && cardForm.form) {
+                                    cardForm.form.onsubmit = null;
+                                }
 
                                 // Aqui você pode emitir um evento para o Livewire
                                 // dispara notificação pelo Livewire v3
