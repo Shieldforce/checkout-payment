@@ -458,7 +458,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                             Grid::make()->schema([
 
                                 TextInput::make("card_token")
-                                    ->visible(false)
+                                    ->disabled()
+                                    ->dehydrated()
                                     ->extraInputAttributes(['id' => 'cardToken']),
 
                                 Select::make('installments')
