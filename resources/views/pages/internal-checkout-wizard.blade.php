@@ -86,10 +86,11 @@
                                 btn.classList.remove('disabled');
 
                                 // Aqui você pode emitir um evento para o Livewire
-                                Livewire.emit('showNotification', {
+                                // dispara notificação pelo Livewire v3
+                                window.Livewire.dispatch('showNotification', {
                                     title: 'Sucesso!',
                                     body: 'Pagamento validado com sucesso.',
-                                    status: 'success',
+                                    status: 'success'
                                 });
                             },
                             onPaymentMethodsReceived: function(error, data) {

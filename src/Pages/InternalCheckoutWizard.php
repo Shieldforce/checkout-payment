@@ -76,6 +76,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public ?string $card_number = null;
 
+    public ?string $card_token = null;
+
     public ?string $card_validate = null;
 
     public ?string $card_cvv = null;
