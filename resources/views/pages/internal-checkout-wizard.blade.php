@@ -91,6 +91,7 @@
                                     btn.classList.remove('opacity-50', 'cursor-not-allowed');
                                     btn.classList.remove('disabled');
                                     btn.type = 'submit'
+                                    btn.id = null
 
                                     var msg = 'Agora só esperar que avisaremos quando o pagamento for aprovado! ';
                                     msg += 'Pode ser por e-mail, whatsapp ou sms, fique ligado(a). ';
