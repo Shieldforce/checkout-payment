@@ -29,7 +29,6 @@ return new class extends Migration {
             $table->text("url")->nullable();
             $table->text("text_button_submit")->nullable();
             $table->text("color_button_submit")->nullable();
-            $table->json("return_gateway")->nullable();
             $table->integer("startOnStep")->default(1);
 
             $table->timestamps();
