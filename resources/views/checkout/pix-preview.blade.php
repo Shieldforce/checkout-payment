@@ -5,47 +5,42 @@
         first_name: @entangle('first_name').live,
         last_name: @entangle('last_name').live,
     }"
-    class="relative w-80 h-48 rounded-xl shadow-lg
+    class="relative w-full max-w-md h-[300px] rounded-xl shadow-2xl
            bg-gradient-to-r from-green-400 via-green-500 to-green-600
-           text-black dark:text-white
-           p-5 select-none flex flex-col justify-between items-center"
+           text-white p-6 select-none flex flex-col justify-between items-center"
 >
     <!-- Header -->
-    <div class="flex justify-between items-center w-full">
-        <span class="text-sm font-semibold">PIX</span>
+    <div class="flex justify-between items-center w-full mb-2">
+        <span class="text-sm font-semibold uppercase tracking-wide">PIX</span>
         <span class="text-xs font-bold">QR Code</span>
     </div>
 
-    <!-- QR Code -->
-    <div class="flex-1 flex items-center justify-center mt-2 mb-2">
+    <!-- QR Code centralizado -->
+    <div class="flex-1 flex items-center justify-center w-full">
         <template x-if="base_qrcode">
             <img
                 :src="base_qrcode" alt="QR Code PIX"
-                class="w-24 h-24 object-contain rounded-md border border-white/30 shadow"
+                class="w-40 h-40 sm:w-48 sm:h-48 object-contain rounded-lg border border-white/30 shadow-lg"
             />
         </template>
         <template x-if="!base_qrcode">
-            <div class="w-24 h-24 bg-white/20 flex items-center justify-center text-xs text-white/70 rounded-md">
+            <div class="w-40 h-40 sm:w-48 sm:h-48 bg-white/20 flex items-center justify-center rounded-lg border border-white/30 shadow-lg">
                 <img
-                    src="https://img.icons8.com/fluent/512/pix.png" alt="QR Code PIX"
-                    class="w-24 h-24 object-contain rounded-md border border-white/30 shadow"
+                    src="https://img.icons8.com/fluent/512/pix.png" alt="PIX Logo"
+                    class="w-24 h-24 object-contain"
                 />
             </div>
         </template>
     </div>
 
     <!-- Rodapé -->
-    <div class="w-full flex justify-between items-center text-xs">
-        <div>
-            <div class="opacity-80">Nome do Pagador</div>
-            <div
-                class="font-semibold truncate max-w-[100px]"
-                x-text="first_name || 'Primeiro Nome'"
-                x-text="last_name || 'Sobrenome'"
-            ></div>
+    <div class="w-full flex justify-between items-center text-xs mt-4">
+        <div class="truncate max-w-[120px]">
+            <div class="opacity-80 text-[10px]">Nome do Pagador</div>
+            <div class="font-semibold truncate" x-text="(first_name || 'Primeiro Nome') + ' ' + (last_name || 'Sobrenome')"></div>
         </div>
         <div>
-            <a :href="url_qrcode" target="_blank" class="text-xs font-bold underline">
+            <a :href="url_qrcode" target="_blank" class="text-xs font-bold underline hover:text-white/90 transition-colors">
                 Abrir PIX
             </a>
         </div>
