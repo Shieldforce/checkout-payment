@@ -469,13 +469,16 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 ->visible(fn(Get $get) => $get('method_checked') === MethodPaymentEnum::credit_card->value)
                                 ->columnSpanFull(),
 
-                            TextInput::make("card_token")
+                            /*TextInput::make("card_token")
                                 ->label("Liberação do cartão!")
                                 ->disabled()
                                 ->dehydrated()
-                                ->hidden()
                                 ->columnSpanFull()
-                                ->extraInputAttributes(['id' => 'cardToken']),
+                                ->extraInputAttributes(['id' => 'cardToken']),*/
+
+                            Hidden::make("card_token")
+                                ->label("Liberação do cartão!")
+                                ->id('cardToken'),
 
                         ])->columnSpan(1),
 
