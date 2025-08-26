@@ -647,4 +647,18 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         return config()->get('checkout-payment.sidebar_group');
     }
+
+    protected function getListeners(): array
+    {
+        return [
+            'setCardError',
+        ];
+    }
+
+    public function setCardError($field, $message)
+    {
+        $this->form->getState(); // opcional, força state atualizado
+        $this->form->fill();     // opcional
+        $this->form->addError($field, $message);
+    }
 }

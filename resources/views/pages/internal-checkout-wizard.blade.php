@@ -162,7 +162,8 @@
                                     }
 
                                     if (field) {
-                                    @this.setError(field, err.message);
+                                        // aqui emitimos para o Livewire
+                                        Livewire.emit('setCardError', field, err.message);
                                     }
                                 });
                             },
