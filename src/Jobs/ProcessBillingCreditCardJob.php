@@ -43,6 +43,7 @@ class ProcessBillingCreditCardJob implements ShouldQueue
         $checkout->update([
             "total_price" => $sum,
             "status"      => StatusCheckoutEnum::finalizado->value,
+            "startOnStep" => 5,
         ]);
 
         //logger($this->step4->toArray());
