@@ -471,7 +471,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                     ->dehydrated()
                                     ->extraInputAttributes(['id' => 'issuer']),
 
-                            ])->columns(2),
+                            ])->columns(3),
 
                             // Card method ---
                             TextInput::make('card_number')
