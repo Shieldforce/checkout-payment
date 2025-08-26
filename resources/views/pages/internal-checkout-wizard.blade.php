@@ -41,6 +41,7 @@
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
+
                     return mp.cardForm({
                         amount: '100.00',
                         autoMount: true,
@@ -168,7 +169,7 @@
                                         const input = document.getElementById(field);
                                         if (input) {
                                             // remove erros antigos se houver
-                                            let errorEl = input.parentNode.querySelector('.mp-error');
+                                            let errorEl = input.closest('.filament-forms-field-wrapper')?.querySelector('.mp-error');
                                             if (errorEl) errorEl.remove();
 
                                             // cria o span de erro
@@ -176,14 +177,31 @@
                                             errorEl.classList.add('mp-error');
                                             errorEl.style.color = 'red';
                                             errorEl.style.fontSize = '12px';
-                                            errorEl.textContent = err.message;
+                                            errorEl.style.display = 'block';
+                                            errorEl.style.marginTop = '4px';
+                                            errorEl.textContent = traduzMensagem(err.message);
 
-                                            // insere logo abaixo do input
-                                            input.insertAdjacentElement('afterend', errorEl);
+                                            // insere logo abaixo do container do campo
+                                            input.closest('.filament-forms-field-wrapper')
+                                                ?.appendChild(errorEl);
                                         }
                                     }
                                 });
-                            },
+
+                                function traduzMensagem(msg) {
+                                    const traducoes = {
+                                        "Invalid parameter: cardNumber": "Número do cartão inválido.",
+                                        "Invalid parameter: expirationMonth": "Mês de validade inválido.",
+                                        "Invalid parameter: expirationYear": "Ano de validade inválido.",
+                                        "Invalid parameter: cardExpiration": "Data de validade inválida.",
+                                        "Invalid parameter: securityCode": "Código de segurança inválido.",
+                                        "Invalid parameter: cardholderName": "Nome do titular inválido.",
+                                        "Invalid parameter: identificationNumber": "Documento inválido.",
+                                    };
+
+                                    return traducoes[msg] || "Erro ao validar os dados.";
+
+                                }
                         },
                     })
 
