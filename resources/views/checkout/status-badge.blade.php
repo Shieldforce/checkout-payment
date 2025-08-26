@@ -100,11 +100,12 @@
 
         {{-- Status atual --}}
         <div class="mt-8 text-left md:text-left">
-            <span id="statusLabel"
-                  class="px-5 py-2 rounded-full text-sm font-semibold
-                         {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
-                            ? 'bg-green-200 text-green-800'
-                            : 'bg-yellow-200 text-yellow-800' }}">
+            <span
+                style="{{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
+                            ? 'color: green;'
+                            : 'color: yellow;' }}"
+                id="statusLabel"
+                  class="px-5 py-2 rounded-full text-sm font-semibold">
                 {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
                     ? 'Pagamento Aprovado'
                     : 'Aguardando Pagamento...' }}

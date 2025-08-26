@@ -201,6 +201,8 @@ class InternalCheckoutWizard extends Page implements HasForms
             $this->total_price = $sum ?? 0;
 
             $this->startOnStep = $this->checkout->startOnStep ?? null;
+
+            $this->statusCheckout = $this->checkout->status ?? null;
         }
 
         $this->form->fill();
