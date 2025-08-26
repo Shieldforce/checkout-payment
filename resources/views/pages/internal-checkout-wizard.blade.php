@@ -1,18 +1,20 @@
 <x-filament::page>
     <form id="form-checkout-wizard">
         {{ $this->form }}
+
+        @if($this->checkout->startOnStep == 4)
+            <x-filament::button
+                type="submit"
+                {{--wire:click="submit" --}}
+                {{--onclick="document.getElementById('form-checkout-wizard').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));"--}}
+                class="mt-4"
+            >
+                Finalizar Pagamento
+            </x-filament::button>
+        @endif
     </form>
 
-    @if($this->checkout->startOnStep == 4)
-        <x-filament::button
-            type="button"
-            {{--wire:click="submit" --}}
-            {{--onclick="document.getElementById('form-checkout-wizard').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));"--}}
-            class="mt-4"
-        >
-            Finalizar Pagamento
-        </x-filament::button>
-    @endif
+
 </x-filament::page>
 
 @if($this->cppGateways->field_1)
