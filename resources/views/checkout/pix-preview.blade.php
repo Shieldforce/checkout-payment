@@ -11,52 +11,52 @@
     <!-- QR Code centralizado -->
     <div class="flex-1 flex items-center justify-center w-full">
         @if($this->base_qrcode)
-            <template>
-                <img
-                    :src="{{ $this->base_qrcode }}"
-                    alt="QR Code PIX"
-                    class="
-                        w-full
-                        max-w-[200px]
-                        h-auto
-                        object-contain
-                        rounded-lg
-                        border
-                        border-gray-300
-                        dark:border-white/30
-                        shadow-md
-                    "
-                />
-            </template>
+
+            <img
+                :src="{{ $this->base_qrcode }}"
+                alt="QR Code PIX"
+                class="
+                    w-full
+                    max-w-[200px]
+                    h-auto
+                    object-contain
+                    rounded-lg
+                    border
+                    border-gray-300
+                    dark:border-white/30
+                    shadow-md
+                "
+            />
+
         @else
-            <template>
-                <div
-                    class="
-                        w-full
-                        max-w-[200px]
-                        h-[200px]
-                        bg-gray-200
-                        dark:bg-gray-700
-                        flex
-                        items-center
-                        justify-center
-                        rounded-lg
-                        border
-                        border-gray-300
-                        dark:border-white/30
-                        shadow-md
-                    "
-                >
-                    <img
-                        src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
-                        alt="PIX Logo"
-                        width="250"
-                        height="250"
-                        class="w-[120px] h-[120px] object-contain"
-                    />
-                    Aguardando para gerar pix ...
-                </div>
-            </template>
+
+            <div
+                class="
+                    w-full
+                    max-w-[200px]
+                    h-[200px]
+                    bg-gray-200
+                    dark:bg-gray-700
+                    flex
+                    items-center
+                    justify-center
+                    rounded-lg
+                    border
+                    border-gray-300
+                    dark:border-white/30
+                    shadow-md
+                "
+            >
+                <img
+                    src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
+                    alt="PIX Logo"
+                    width="250"
+                    height="250"
+                    class="w-[120px] h-[120px] object-contain"
+                />
+                Aguardando para gerar pix ...
+            </div>
+
         @endif
     </div>
 
