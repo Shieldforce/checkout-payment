@@ -1,10 +1,4 @@
 <div
-    x-data="{
-        base_qrcode: @entangle('base_qrcode').live,
-        url_qrcode: @entangle('url_qrcode').live,
-        first_name: @entangle('first_name').live,
-        last_name: @entangle('last_name').live
-    }"
     class="relative w-full max-w-md mx-auto h-[300px] rounded-xl shadow-lg p-4 sm:p-6 select-none flex flex-col justify-between
            bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
 >
@@ -16,51 +10,54 @@
 
     <!-- QR Code centralizado -->
     <div class="flex-1 flex items-center justify-center w-full">
-        <template x-if="base_qrcode">
-            <img
-                :src="base_qrcode"
-                alt="QR Code PIX"
-                class="
-                    w-full
-                    max-w-[200px]
-                    h-auto
-                    object-contain
-                    rounded-lg
-                    border
-                    border-gray-300
-                    dark:border-white/30
-                    shadow-md
-                "
-            />
-        </template>
-        <template x-if="!base_qrcode">
-            <div
-                class="
-                    w-full
-                    max-w-[200px]
-                    h-[200px]
-                    bg-gray-200
-                    dark:bg-gray-700
-                    flex
-                    items-center
-                    justify-center
-                    rounded-lg
-                    border
-                    border-gray-300
-                    dark:border-white/30
-                    shadow-md
-                "
-            >
+        @if($this->base_qrcode)
+            <template>
                 <img
-                    src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
-                    alt="PIX Logo"
-                    width="250"
-                    height="250"
-                    class="w-[120px] h-[120px] object-contain"
+                    :src="{{ $this->base_qrcode }}"
+                    alt="QR Code PIX"
+                    class="
+                        w-full
+                        max-w-[200px]
+                        h-auto
+                        object-contain
+                        rounded-lg
+                        border
+                        border-gray-300
+                        dark:border-white/30
+                        shadow-md
+                    "
                 />
-                Aguardando para gerar pix ...
-            </div>
-        </template>
+            </template>
+        @else
+            <template>
+                <div
+                    class="
+                        w-full
+                        max-w-[200px]
+                        h-[200px]
+                        bg-gray-200
+                        dark:bg-gray-700
+                        flex
+                        items-center
+                        justify-center
+                        rounded-lg
+                        border
+                        border-gray-300
+                        dark:border-white/30
+                        shadow-md
+                    "
+                >
+                    <img
+                        src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
+                        alt="PIX Logo"
+                        width="250"
+                        height="250"
+                        class="w-[120px] h-[120px] object-contain"
+                    />
+                    Aguardando para gerar pix ...
+                </div>
+            </template>
+        @endif
     </div>
 
     <!-- Rodapé -->
