@@ -3,20 +3,20 @@
         {{ $this->form }}
     </form>
 
-    @if($this->checkout->startOnStep == 4)
+    {{--@if($this->checkout->startOnStep == 4)
         <x-filament::button
-            {{--type="submit"--}}
-            {{--wire:click="submit"--}}
-            {{--onclick="document.getElementById('form-checkout-wizard').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));"--}}
-            {{--onclick="formSubmit.submit()"--}}
-            {{--onclick="formSubmit.requestSubmit()"--}}
+            --}}{{--type="submit"--}}{{--
+            --}}{{--wire:click="submit"--}}{{--
+            --}}{{--onclick="document.getElementById('form-checkout-wizard').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));"--}}{{--
+            --}}{{--onclick="formSubmit.submit()"--}}{{--
+            --}}{{--onclick="formSubmit.requestSubmit()"--}}{{--
             type="button"
             onclick="document.getElementById('form-checkout-wizard').requestSubmit()"
             class="mt-4"
         >
             Finalizar Pagamento
         </x-filament::button>
-    @endif
+    @endif--}}
 </x-filament::page>
 
 @if($this->cppGateways->field_1)
@@ -29,7 +29,7 @@
 
                 const btn = document.querySelector('#btn-next-step');
                 btn.type = 'button';
-
+                btn.textContent = "test";
 
                 function bloquearAvanco(event) {
                     event.preventDefault();

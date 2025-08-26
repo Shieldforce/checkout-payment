@@ -617,8 +617,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     fn(Action $action) => $action
                         ->label('Próximo')
                         ->extraAttributes([
-                            'id'   => 'btn-next-step',
-                            /*'type' => 'button',*/
+                            'id' => 'btn-next-step',
                         ])
                 )
                 ->startOnStep($this->startOnStep),
