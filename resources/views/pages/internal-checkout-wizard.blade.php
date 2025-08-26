@@ -25,11 +25,16 @@
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
 
-                const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
-                    locale: "pt-BR",
-                });
+                const btn = document.querySelector('#btn-next-step')
+                btn.type = 'button'
+                btn.textContent = 'Confirmar Pagamento'
+                btn.disabled = true
 
-                let lastBin = null;
+                const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
+                    locale: 'pt-BR',
+                })
+
+                let lastBin = null
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
@@ -39,7 +44,7 @@
                         form: {
                             id: 'form-checkout-wizard',
                             cardNumber: {
-                                id: "cardNumber",
+                                id: 'cardNumber',
                                 placeholder: '0000 0000 0000 0000',
                             },
                             expirationDate: {
@@ -48,38 +53,38 @@
                             },
                             securityCode: {
                                 id: 'cardCVV',
-                                placeholder: '345'
+                                placeholder: '345',
                             },
                             cardholderName: {
                                 id: 'cardholderName',
-                                placeholder: 'Fulano da Silva'
+                                placeholder: 'Fulano da Silva',
                             },
                             email: { id: 'email' },
                             installments: {
                                 id: 'installments',
-                                placeholder: 'Quantidade de parcelas'
+                                placeholder: 'Quantidade de parcelas',
                             },
                             issuer: {
                                 id: 'issuer',
-                                placeholder: 'Tipo de cartão'
+                                placeholder: 'Tipo de cartão',
                             },
                         },
                         callbacks: {
                             onFormMounted: error => {
-                                if (error) return console.warn("Form Mounted handling error: ", error);
-                                console.log("Form mounted");
+                                if (error) return console.warn('Form Mounted handling error: ', error)
+                                console.log('Form mounted')
 
                                 // força o autofocus
                                 setTimeout(() => {
-                                    const cardNumber = document.getElementById('cardNumber');
-                                    cardNumber.focus();
-                                }, 200);
+                                    const cardNumber = document.getElementById('cardNumber')
+                                    cardNumber.focus()
+                                }, 200)
                             },
                             onSubmit: function(event) {
-                                console.log("onSubmit:", event);
+                                console.log('onSubmit:', event)
 
-                                event.preventDefault();
-                                event.stopImmediatePropagation();
+                                event.preventDefault()
+                                event.stopImmediatePropagation()
 
                                 /*event.preventDefault();
                                 const formData = cardForm.getCardFormData();
@@ -87,83 +92,81 @@
                                 // @this.call('processarPagamentoCartao', formData.token)
                             },
                             onIdentificationTypesReceived: function(error, data) {
-                                console.log("onIdentificationTypesReceived:", error, data);
+                                console.log('onIdentificationTypesReceived:', error, data)
                             },
                             onPaymentMethodsReceived: function(error, data) {
-                                console.log("onPaymentMethodsReceived:", error, data);
+                                console.log('onPaymentMethodsReceived:', error, data)
 
-                                const imgBrandCard = document.getElementById("img-brand-card");
-                                imgBrandCard.src = data[0].thumbnail ?? "https://storage.googleapis.com/star-lab/blog/OGs/image-not-found.png";
+                                const imgBrandCard = document.getElementById('img-brand-card')
+                                imgBrandCard.src = data[0].thumbnail ?? 'https://storage.googleapis.com/star-lab/blog/OGs/image-not-found.png'
 
-                                const issuerNameCard = document.getElementById("issuer-name-card");
-                                issuerNameCard.textContent = data[0].issuer.name ?? "Meu Cartão";
+                                const issuerNameCard = document.getElementById('issuer-name-card')
+                                issuerNameCard.textContent = data[0].issuer.name ?? 'Meu Cartão'
                             },
                             onFetching: function(error, data) {
-                                console.log("onFetching:", error, data);
+                                console.log('onFetching:', error, data)
                             },
                             onValidityChange: function(error, data) {
-                                console.log("onValidityChange:", error, data);
+                                if (data === 'securityCode') {
+                                    console.log('deu certo')
+                                }
                             },
                             onInstallmentsReceived: function(error, data) {
-                                console.log("onInstallmentsReceived:", error, data);
+                                console.log('onInstallmentsReceived:', error, data)
                             },
                             onIssuersReceived: function(error, data) {
-                                console.log("onIssuersReceived:", error, data);
+                                console.log('onIssuersReceived:', error, data)
                             },
-                            onBinChange: function (data) {
-                                console.log("onBinChange:", data);
+                            onBinChange: function(data) {
+                                console.log('onBinChange:', data)
 
                                 // só muda se o BIN realmente for diferente
                                 if (data && data.bin && data.bin !== lastBin) {
-                                    lastBin = data.bin;
-                                    console.log("Novo BIN detectado:", data.bin);
+                                    lastBin = data.bin
+                                    console.log('Novo BIN detectado:', data.bin)
                                 } else {
                                     // ignora, evita resetar o installments
-                                    console.log("Ignorado, BIN não mudou de fato");
+                                    console.log('Ignorado, BIN não mudou de fato')
                                 }
                             },
                             onCardTokenReceived: function(error, data) {
-                                console.log("onCardTokenReceived:", error, data);
+                                console.log('onCardTokenReceived:', error, data)
                             },
                             onError: function(error) {
-                                console.log("error:", error);
-                            }
+                                console.log('error:', error)
+                            },
                         },
-                    });
+                    })
 
-                };
+                }
 
-                let cardForm = null;
+                let cardForm = null
 
                 // Inicializa quando a aba de cartão for visível
-                document.getElementById("method_checked").addEventListener("change", function(event) {
-                    const valueSelectMethodCheck = parseInt(event.target.value);
-                    const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}");
+                document.getElementById('method_checked').addEventListener('change', function(event) {
+                    const valueSelectMethodCheck = parseInt(event.target.value)
+                    const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
 
                     if (valueSelectMethodCheck === creditCardEnum) {
                         if (!cardForm) {
                             setTimeout(function() {
-                                cardForm = initCardForm();
+                                cardForm = initCardForm()
 
-                                var formSubmit = null;
-
-                                const btn = document.querySelector('#btn-next-step');
-                                btn.type = 'button';
-                                btn.textContent = "test";
+                                btn.disabled = false
 
                                 function bloquearAvanco(event) {
-                                    event.preventDefault();
-                                    event.stopImmediatePropagation();
+                                    event.preventDefault()
+                                    event.stopImmediatePropagation()
                                     document.getElementById('form-checkout-wizard').requestSubmit()
-                                    console.log("chegou");
+                                    console.log('chegou')
                                 }
-                                btn.addEventListener('click', bloquearAvanco);
-                                //btn.removeEventListener('click', bloquearAvanco);
+
+                                btn.addEventListener('click', bloquearAvanco)
                             }, 2000)
                         }
                     }
                 })
-            });
+            })
         </script>
     @endpush
 @endif
