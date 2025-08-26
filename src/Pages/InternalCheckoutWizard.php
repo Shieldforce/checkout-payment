@@ -476,7 +476,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 ])
                                 // ->reactive()
                                 ->mask(function ($state, $get, $set, $livewire) {
-                                    return '9999 9999 9999 99999999';
+                                    return '9999 9999 9999 9999 99';
                                 })
                                 ->maxLength(19)
                                 ->required(function ($state, $get, $set, $livewire) {
