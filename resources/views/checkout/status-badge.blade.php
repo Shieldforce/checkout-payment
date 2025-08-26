@@ -17,7 +17,7 @@
 
     {{-- Resumo da compra --}}
     <div class="bg-white shadow rounded-xl p-6 w-full max-w-md text-center">
-        <h2 class="text-xl font-bold mb-4">Resumo do Pedido</h2>
+        <h2 class="text-xl font-bold mb-4">Resumo do Pedido {{ $this->statusCheckout ?? "" }}</h2>
 
         <div class="space-y-2 text-gray-700">
             <p><strong>Cliente:</strong> {{ $this->step2->first_name ?? "" }} {{ $this->step2->last_name ?? ""  }}</p>

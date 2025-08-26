@@ -758,6 +758,6 @@ class InternalCheckoutWizard extends Page implements HasForms
     #[On('refresh-status-checkout')]
     public function refreshStatusCheckout(): void
     {
-        $this->statusCheckout = $this->checkout->status;
+        $this->statusCheckout = $this->statusCheckout + 1;
     }
 }
