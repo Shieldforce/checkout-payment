@@ -81,7 +81,7 @@
     </div>
 
     {{-- Coluna da direita (resumo) --}}
-    <div class="flex flex-col justify-left w-full md:w-1/2 p-8" style="border-left: 1px dashed #cecece; padding-left: 30px;">
+    <div class="flex flex-col justify-left w-full md:w-1/2 p-8" style="border-left: 1px dashed #cecece; padding: 30px;">
 
         <h2 class="text-2xl font-bold mb-6 text-left md:text-left">Resumo do Pedido</h2>
 
