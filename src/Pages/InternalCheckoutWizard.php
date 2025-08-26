@@ -122,6 +122,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public $issuer;
 
+    public $statusCheckout;
+
     public array $paymentMethods = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
@@ -687,11 +689,12 @@ class InternalCheckoutWizard extends Page implements HasForms
     }
 
     protected $listeners = [
-        'showNotification' => 'showNotification',
-        'goToStep'         => 'goToStep',
-        'updateCardToken'  => 'updateCardToken',
-        'paymentMethodId'  => 'paymentMethodId',
-        'goInstallments'   => 'goInstallments',
+        'showNotification'      => 'showNotification',
+        'goToStep'              => 'goToStep',
+        'updateCardToken'       => 'updateCardToken',
+        'paymentMethodId'       => 'paymentMethodId',
+        'goInstallments'        => 'goInstallments',
+        'refreshStatusCheckout' => 'refreshStatusCheckout',
     ];
 
     #[On('show-notification')]
@@ -747,5 +750,11 @@ class InternalCheckoutWizard extends Page implements HasForms
         if ($installments) {
             $this->installments = $installments ?? null;
         }
+    }
+
+    #[On('refresh-status-checkout')]
+    public function refreshStatusCheckout(): void
+    {
+        $this->statusCheckout = $this->checkout->status ?? null;
     }
 }

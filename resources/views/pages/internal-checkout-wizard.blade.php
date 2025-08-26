@@ -2,10 +2,6 @@
     <form id="form-checkout-wizard">
         {{ $this->form }}
     </form>
-
-    {{--type="submit"--}} {{--wire:click="submit"--}}
-    {{--onclick="document.getElementById('form-checkout-wizard').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));"--}}
-    <!--onclick="document.getElementById('form-checkout-wizard').requestSubmit()"-->
 </x-filament::page>
 
 @if($this->cppGateways->field_1)
@@ -14,6 +10,15 @@
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
+                console.log(window.href);
+
+                /*setInterval(function() {
+
+                    window.Livewire.dispatch('refresh-status-checkout', {});
+
+                }, 30000)*/
+
+
 
                 const btn = document.querySelector('#btn-next-step')
                 btn.type = 'button'
@@ -21,7 +26,6 @@
                 btn.disabled = true
                 btn.classList.add('opacity-50', 'cursor-not-allowed')
                 btn.classList.add('disabled')
-
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
