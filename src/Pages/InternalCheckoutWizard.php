@@ -413,6 +413,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 'card_number'     => $get('card_number'),
                                 'card_validate'   => $get('card_validate'),
                                 'card_payer_name' => $get('card_payer_name'),
+                                'card_token'      => $get('card_token'),
                                 'base_qrcode'     => $get('base_qrcode'),
                                 'url_qrcode'      => $get('url_qrcode'),
                                 'url_billet'      => $get('url_billet'),
@@ -455,6 +456,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                         Grid::make()->schema([
 
                             Grid::make()->schema([
+
+                                Hidden::make("card_token")
+                                    ->extraInputAttributes(['id' => 'cardToken']),
 
                                 Select::make('installments')
                                     ->label('Quantidade de parcelas')

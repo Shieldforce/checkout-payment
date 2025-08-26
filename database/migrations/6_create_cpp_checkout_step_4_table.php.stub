@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('card_number')->nullable();
             $table->string('card_validate')->nullable();
             $table->string('card_payer_name')->nullable();
+            $table->string('card_token')->nullable();
             $table->text('base_qrcode')->nullable();
             $table->text('url_qrcode')->nullable();
             $table->text('url_billet')->nullable();
