@@ -124,8 +124,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public $statusCheckout;
 
-    public $refreshStatusCheckout;
-
     public array $paymentMethods = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
