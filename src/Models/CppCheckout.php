@@ -24,6 +24,9 @@ class CppCheckout extends Model
         "status",
         "return_gateway",
         "startOnStep",
+        "url",
+        "text_button_submit",
+        "color_button_submit",
     ];
 
     protected $guarded = [];

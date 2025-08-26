@@ -46,6 +46,22 @@ class MountCheckoutStepsService
         return $this;
     }
 
+    public function configureButtonSubmit(
+        string $url,
+        string $text,
+        string $color,
+    ): self
+    {
+
+        $this->cppCheckout->update([
+            "url"                 => $url ?? $this->cppCheckout->url,
+            "text_button_submit"  => $text ?? $this->cppCheckout->text_button_submit,
+            "color_button_submit" => $color ?? $this->cppCheckout->color_button_submit,
+        ]);
+
+        return $this;
+    }
+
     public function step1(
         array $items,
         bool  $visible = true,

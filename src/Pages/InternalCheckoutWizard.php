@@ -650,19 +650,24 @@ class InternalCheckoutWizard extends Page implements HasForms
             ];
         }
 
-        return [
-            Wizard::make($this->fieldWinzard())
-                ->submitAction(new HtmlString(Blade::render(
-                    <<<'BLADE'
+        $submitAction = new HtmlString(Blade::render(
+            <<<'BLADE'
                     <x-filament::button
                         wire:click="submit"
-                        type="submit"
-                        size="sm"
+                        type="button"
+                        size="sm",
+                        color="success"
                     >
                         Finalizar Checkout
                     </x-filament::button>
                 BLADE
-                )))
+        ));
+
+        $submitAction = view('submit-button-hidden');
+
+        return [
+            Wizard::make($this->fieldWinzard())
+                ->submitAction($submitAction)
                 ->nextAction(
                     fn(Action $action) => $action
                         ->label('Próximo')
@@ -717,7 +722,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         \Filament\Notifications\Notification::make()
             ->title($title ?? 'titulo')
             ->body($body ?? 'corpo')
-            ->seconds(60)
+            ->seconds(30)
             ->{$status ?? 'success'}()
             ->send();
     }
