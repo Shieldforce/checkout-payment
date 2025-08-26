@@ -649,7 +649,6 @@ class InternalCheckoutWizard extends Page implements HasForms
                 <x-filament::button
                     wire:click="submit"
                     type="button"
-                    size="sm"
                     color="{{ $color }}"
                     icon="heroicon-s-check"
                 >
