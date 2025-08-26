@@ -664,12 +664,12 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     protected $listeners = ['showNotification' => 'showNotification'];
 
-    public function showNotification($data)
+    public function showNotification(array $data = []): void
     {
         \Filament\Notifications\Notification::make()
-            ->title($data['title'])
-            ->body($data['body'])
-            ->success() // ou ->danger() / ->warning()
+            ->title($data['title'] ?? 'Aviso')
+            ->body($data['body'] ?? '')
+            ->{ $data['status'] ?? 'info' }()
             ->send();
     }
 }
