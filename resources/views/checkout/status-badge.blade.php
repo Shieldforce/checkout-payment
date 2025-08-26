@@ -71,9 +71,6 @@
             <div class="flex flex-col items-center space-y-4">
                 <img src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
                      alt="Aguardando pagamento" class="w-40 h-40 object-contain">
-                <p class="text-gray-500 text-base text-center">
-                    Estamos aguardando a confirmação do seu pagamento...
-                </p>
             </div>
         @else
             <div class="flex flex-col items-center space-y-4">
@@ -87,7 +84,8 @@
     </div>
 
     {{-- Coluna da direita (resumo) --}}
-    <div class="flex flex-col justify-center w-full md:w-1/2 p-8">
+    <div class="flex flex-col justify-left w-full md:w-1/2 p-8">
+
         <h2 class="text-2xl font-bold mb-6 text-center md:text-left">Resumo do Pedido</h2>
 
         <div class="space-y-3 text-gray-700 text-base">
@@ -101,7 +99,7 @@
         </div>
 
         {{-- Status atual --}}
-        <div class="mt-8 text-center md:text-left">
+        <div class="mt-8 text-left md:text-left">
             <span id="statusLabel"
                   class="px-5 py-2 rounded-full text-sm font-semibold
                          {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
