@@ -11,15 +11,10 @@
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
 
-                const btn = document.querySelector('#btn-next-step')
-                btn.type = 'button'
-                btn.textContent = 'Confirmar Pagamento'
-                btn.disabled = true
-                btn.classList.add('opacity-50', 'cursor-not-allowed')
-                btn.classList.add('disabled')
-
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
+                    const btn = document.querySelector('#btn-next-step')
+
                     const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                         locale: 'pt-BR',
                     })
@@ -219,10 +214,11 @@
                 // Inicializa quando a aba de cartão for visível
                 document.getElementById('method_checked').addEventListener('change', function(event) {
 
+                    btn.type = 'button'
                     btn.textContent = 'Confirmar Pagamento'
-                    btn.disabled = false
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed')
-                    btn.classList.remove('disabled')
+                    btn.disabled = true
+                    btn.classList.add('opacity-50', 'cursor-not-allowed')
+                    btn.classList.add('disabled')
 
                     const valueSelectMethodCheck = parseInt(event.target.value)
                     const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
