@@ -1,13 +1,17 @@
 <x-filament::page>
     <form id="form-checkout-wizard">
         {{ $this->form }}
-
-        @if($this->checkout->startOnStep == 4)
-            <x-filament::button wire:click="submit" class="mt-4">
-                Finalizar Pagamento
-            </x-filament::button>
-        @endif
     </form>
+
+    @if($this->checkout->startOnStep == 4)
+        <x-filament::button
+            {{--wire:click="submit" --}}
+            onclick="document.getElementById('form-checkout-wizard').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));"
+            class="mt-4"
+        >
+            Finalizar Pagamento
+        </x-filament::button>
+    @endif
 </x-filament::page>
 
 @if($this->cppGateways->field_1)
@@ -78,6 +82,16 @@
                             },
                             onSubmit: function(event) {
                                 console.log("onSubmit:", event);
+
+                                event.preventDefault();
+
+                                const formData = cardForm.getCardFormData();
+                                console.log('Token gerado:', formData.token);
+
+                                if (formData.token) {
+                                    // Chama método Livewire passando o token
+                                    Livewire.dispatch('processarPagamentoCartao', { token: formData.token });
+                                }
 
                                 /*event.preventDefault();
                                 const formData = cardForm.getCardFormData();
