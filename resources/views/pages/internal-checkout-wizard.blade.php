@@ -239,7 +239,7 @@
                             }
 
                             btn.addEventListener('click', bloquearAvanco)
-                        }, 500)
+                        }, 1000)
 
                     } else {
 
