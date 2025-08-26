@@ -33,11 +33,11 @@
         <div class="mt-6">
             <span id="statusLabel"
                   class="px-4 py-2 rounded-full text-sm font-semibold
-                         {{ $this->refreshStatusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
+                         {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
                             ? 'bg-green-200 text-green-800'
                             : 'bg-yellow-200 text-yellow-800' }}"
             >
-                {{ $this->refreshStatusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
+                {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
                     ? 'Pagamento Aprovado'
                     : 'Aguardando Pagamento...' }}
             </span>
@@ -45,7 +45,7 @@
     </div>
 
     {{-- Loading GIF enquanto espera --}}
-    @if($this->refreshStatusCheckout != \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value)
+    @if($this->statusCheckout != \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value)
         <div class="flex flex-col items-center space-y-2">
             <img src="{{ asset('images/payment-loading.gif') }}" alt="Aguardando pagamento" class="w-32 h-32">
             <p class="text-gray-500">Estamos aguardando a confirmação do seu pagamento...</p>

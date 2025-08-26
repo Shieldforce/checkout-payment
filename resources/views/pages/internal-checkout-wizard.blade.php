@@ -96,7 +96,7 @@
                                     msg += 'Pode ser por e-mail, whatsapp, sms ou até mesmo na próxima tela, fique ligado(a). '
                                     msg += 'Agora só clicar em próximo para finalizar o checkout e confirmar todas as informações!'
                                     window.Livewire.dispatch('show-notification', {
-                                        title: 'Oba, deu certo!',
+                                        title: 'Legal, falta só um pouquinho!',
                                         body: msg,
                                         status: 'warning',
                                     })
