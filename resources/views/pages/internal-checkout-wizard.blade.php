@@ -18,14 +18,16 @@
                 btn.classList.add('opacity-50', 'cursor-not-allowed')
                 btn.classList.add('disabled')
 
-                function updateStatusCheckout(){
-                    setInterval(function() {
+                @if($this->checkout->startOnStep == 5)
+                    function updateStatusCheckout(){
+                        setInterval(function() {
 
-                        window.Livewire.dispatch('refresh-status-checkout', {});
+                            window.Livewire.dispatch('refresh-status-checkout', {});
 
-                    }, 30000)
-                }
-                updateStatusCheckout();
+                        }, 30000)
+                    }
+                    updateStatusCheckout();
+                @endif
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
