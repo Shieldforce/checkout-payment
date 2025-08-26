@@ -790,11 +790,13 @@ class InternalCheckoutWizard extends Page implements HasForms
     #[On('method-checked-change')]
     public function methodCheckedChange($method): void
     {
-        $this->checkout->update([
-            "method_checked" => $method,
-        ]);
-
         try {
+            $checkout = $this->checkout;
+
+            $checkout->update([
+                "method_checked" => $method,
+            ]);
+
             if ($this->checkout->method_checked == MethodPaymentEnum::pix->value) {
                 $mp = new MercadoPagoService();
 
