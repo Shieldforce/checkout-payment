@@ -478,9 +478,6 @@ class InternalCheckoutWizard extends Page implements HasForms
                             Hidden::make("payment_method_id")
                                 ->id('paymentMethodId'),
 
-                            Hidden::make('issuer')
-                                ->id('issuer'),
-
                         ])->columnSpan(1),
 
                         Grid::make()->schema([
@@ -491,7 +488,13 @@ class InternalCheckoutWizard extends Page implements HasForms
                                     ->label('Quantidade de parcelas')
                                     ->extraInputAttributes(['id' => 'installments']),
 
-                            ])->columns(1),
+                                Select::make('issuer')
+                                    ->label('Tipo de cartão')
+                                    ->disabled()
+                                    ->dehydrated()
+                                    ->extraInputAttributes(['id' => 'issuer']),
+
+                            ])->columns(2),
 
                             // Card method ---
                             TextInput::make('card_number')

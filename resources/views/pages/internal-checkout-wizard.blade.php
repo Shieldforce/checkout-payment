@@ -116,6 +116,12 @@
 
                                 const issuerNameCard = document.getElementById('issuer-name-card')
                                 issuerNameCard.textContent = data[0].issuer.name ?? 'Meu Cartão'
+
+                                /*if(submitOff === false) {
+                                    paymentMethodId
+                                    window.Livewire.dispatch('go-to-step', { step: 5 });
+                                }*/
+
                             },
                             onCardTokenReceived: function(error, data) {
                                 if(data.token) {
