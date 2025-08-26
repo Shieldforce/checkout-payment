@@ -76,8 +76,8 @@
                             },
                             onSubmit: function(event) {
                                 console.log('onSubmit:', event)
-                                /*event.preventDefault();
-                                event.stopImmediatePropagation();*/
+                                event.preventDefault();
+                                event.stopImmediatePropagation();
 
                                 btn.textContent = 'Próximo'
                                 btn.type = 'button'
