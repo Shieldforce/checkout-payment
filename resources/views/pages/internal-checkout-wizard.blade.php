@@ -22,14 +22,14 @@
                 btn.classList.add('opacity-50', 'cursor-not-allowed');
                 btn.classList.add('disabled');
 
-                const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
-                    locale: 'pt-BR',
-                })
-
-                let submitOff = true
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
+                    const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
+                        locale: 'pt-BR',
+                    })
+
+                    let submitOff = true
 
                     return mp.cardForm({
                         amount: '100.00',
