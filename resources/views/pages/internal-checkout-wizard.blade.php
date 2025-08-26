@@ -3,7 +3,7 @@
         {{ $this->form }}
     </form>
 
-    @if($this->cppGateways)
+    @if($this->checkout->startOnStep == 4)
         <x-filament::button wire:click="submit" class="mt-4">
             Finalizar Pagamento
         </x-filament::button>
