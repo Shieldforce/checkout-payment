@@ -63,35 +63,36 @@
 </div>
 --}}
 
-<div class="flex flex-row items-start justify-center min-h-[70vh] space-x-8">
+<div class="bg-white shadow rounded-xl p-6 min-h-[70vh] flex flex-col md:flex-row items-center md:items-stretch">
 
-    {{-- Lado esquerdo - GIFs / Imagens --}}
-    <div class="flex flex-col items-center space-y-6">
-        {{-- Loading GIF enquanto espera --}}
+    {{-- Coluna esquerda - Imagem / GIF --}}
+    <div class="flex flex-col items-center justify-center w-full md:w-1/2 p-6">
         @if($this->statusCheckout != \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value)
-            <div class="flex flex-col items-center space-y-2">
+            <div class="flex flex-col items-center space-y-4">
                 <img src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
-                     alt="Aguardando pagamento" class="w-40 h-40">
-                <p class="text-gray-500">Estamos aguardando a confirmação do seu pagamento...</p>
+                     alt="Aguardando pagamento" class="w-48 h-48 object-contain">
+                <p class="text-gray-500 text-center">Estamos aguardando a confirmação do seu pagamento...</p>
             </div>
         @endif
 
-        {{-- Aprovado --}}
         @if($this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value)
-            <div class="flex flex-col items-center space-y-2">
+            <div class="flex flex-col items-center space-y-4">
                 <img src="https://cdn3d.iconscout.com/3d/premium/thumb/aprovado-3d-icon-png-download-11933264.png"
-                     alt="Pagamento aprovado" class="w-40 h-40">
-                <p class="text-green-600 font-semibold">Pagamento aprovado com sucesso!</p>
+                     alt="Pagamento aprovado" class="w-48 h-48 object-contain">
+                <p class="text-green-600 font-semibold text-center">Pagamento aprovado com sucesso!</p>
             </div>
         @endif
     </div>
 
-    {{-- Lado direito - Resumo da compra --}}
-    <div class="bg-white shadow rounded-xl p-6 w-full max-w-md">
-        <h2 class="text-xl font-bold mb-4 text-center">Resumo do Pedido</h2>
+    {{-- Divisor vertical (só em telas médias pra cima) --}}
+    <div class="hidden md:block border-l-2 border-dashed border-gray-300 mx-6"></div>
 
-        <div class="space-y-2 text-gray-700">
-            <p><strong>Cliente:</strong> {{ $this->step2->first_name ?? "" }} {{ $this->step2->last_name ?? ""  }}</p>
+    {{-- Coluna direita - Resumo do pedido --}}
+    <div class="flex flex-col justify-center w-full md:w-1/2 p-6">
+        <h2 class="text-2xl font-bold mb-6 text-center md:text-left">Resumo do Pedido</h2>
+
+        <div class="space-y-3 text-gray-700">
+            <p><strong>Cliente:</strong> {{ $this->step2->first_name ?? "" }} {{ $this->step2->last_name ?? "" }}</p>
             <p><strong>Email:</strong> {{ $this->step2->email ?? "" }}</p>
             <p><strong>Valor:</strong> R$ {{ number_format($this->checkout->total_price ?? 0, 2, ',', '.') }}</p>
             <p>
@@ -101,7 +102,7 @@
         </div>
 
         {{-- Status atual --}}
-        <div class="mt-6 text-center">
+        <div class="mt-8 text-center md:text-left">
             <span id="statusLabel"
                   class="px-4 py-2 rounded-full text-sm font-semibold
                          {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
