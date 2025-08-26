@@ -182,8 +182,7 @@
                                             errorEl.textContent = traduzMensagem(err.message);
 
                                             // insere logo abaixo do container do campo
-                                            input.closest('.filament-forms-field-wrapper')
-                                                ?.appendChild(errorEl);
+                                            input.insertAdjacentElement('afterend', errorEl);
                                         }
                                     }
                                 });
