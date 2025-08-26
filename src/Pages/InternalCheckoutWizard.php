@@ -493,7 +493,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 ->mask(function ($state, $get, $set, $livewire) {
                                     return '9999 9999 9999 9999 99';
                                 })
-                                ->maxLength(19)
+                                //->maxLength(19)
                                 ->required(function ($state, $get, $set, $livewire) {
                                     return $get('method_checked')
                                         ? $get('method_checked') == MethodPaymentEnum::credit_card->value
