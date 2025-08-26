@@ -103,10 +103,7 @@
                                 }
 
                                 if(submitOff === false) {
-                                    document.getElementById('form-checkout-wizard')
-                                        .dispatchEvent(new Event('submit', {
-                                            cancelable: true, bubbles: true
-                                        }));
+                                    window.Livewire.dispatch('go-to-step', { step: 5 });
                                 }
                             },
                             onPaymentMethodsReceived: function(error, data) {

@@ -663,10 +663,17 @@ class InternalCheckoutWizard extends Page implements HasForms
         return config()->get('checkout-payment.sidebar_group');
     }
 
-    protected $listeners = ['showNotification' => 'showNotification'];
+    protected $listeners = [
+        'showNotification' => 'showNotification',
+        'goToStep' => 'goToStep',
+    ];
 
     #[On('show-notification')]
-    public function showNotification(string $title = 'Aviso', string $body = '', string $status = 'info'): void
+    public function showNotification(
+        string $title = 'Aviso',
+        string $body = '',
+        string $status = 'info'
+    ): void
     {
         \Filament\Notifications\Notification::make()
             ->title($title ?? 'titulo')
@@ -674,5 +681,15 @@ class InternalCheckoutWizard extends Page implements HasForms
             ->seconds(60)
             ->{$status ?? 'success'}()
             ->send();
+    }
+
+    #[On('go-to-step')]
+    public function goToStep(
+        $step,
+    ): void
+    {
+        if ($step) {
+            $this->startOnStep = $step;
+        }
     }
 }
