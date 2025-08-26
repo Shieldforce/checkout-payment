@@ -793,7 +793,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     #[On('method-checked-change')]
     public function methodCheckedChange($method): void
     {
-        $checkout = CppCheckout::where("id", $this->checkout->id)->first();
+        /*$checkout = CppCheckout::where("id", $this->checkout->id)->first();
 
         $checkout->update([
             "method_checked" => $method,
@@ -844,6 +844,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         if ($this->checkout->method_checked == MethodPaymentEnum::billet->value) {
             dd("nada");
-        }
+        }*/
     }
 }
