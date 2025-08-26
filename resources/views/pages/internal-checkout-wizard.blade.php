@@ -11,6 +11,8 @@
 
         {{--Regra para cartão de crétido do mercado pago--}}
         <script>
+            const accessKey = "{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}";
+
             document.addEventListener('DOMContentLoaded', async () => {
 
                 const btn = document.querySelector('#btn-next-step')
@@ -18,8 +20,8 @@
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
 
-                    const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
-                        locale: 'pt-BR',
+                    const mp = new window.MercadoPago(accessKey, {
+                        locale: 'pt-BR'
                     })
 
                     let submitOff = true
@@ -254,5 +256,38 @@
                 })
             })
         </script>
+
+        {{--Regra para pix do mercado pago--}}
+        <script>
+            document.addEventListener('DOMContentLoaded', async () => {
+
+                const btn = document.querySelector('#btn-next-step')
+
+                // Função que inicializa o mp pix
+                const initPixForm = () => {
+
+                }
+
+                // Inicializa quando a aba de pix for visível
+                document.getElementById('method_checked').addEventListener('change', function(event) {
+
+                    const valueSelectMethodCheck = parseInt(event.target.value)
+                    const pixEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value }}")
+
+                    if (valueSelectMethodCheck === pixEnum) {
+
+                        setTimeout(function() {
+                            pixForm = initPixForm()
+
+                            alert("teste");
+
+                        }, 1000)
+
+                    }
+                })
+            })
+        </script>
+
+
     @endpush
 @endif
