@@ -21,6 +21,7 @@ use Illuminate\Support\HtmlString;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
+use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
 use Shieldforce\CheckoutPayment\Jobs\ProcessBillingCreditCardJob;
@@ -31,7 +32,6 @@ use Shieldforce\CheckoutPayment\Models\CppCheckoutStep3;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\BuscarViaCepService;
-use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 
 class InternalCheckoutWizard extends Page implements HasForms
 {
@@ -722,7 +722,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         'paymentMethodId'       => 'paymentMethodId',
         'goInstallments'        => 'goInstallments',
         'refreshStatusCheckout' => 'refreshStatusCheckout',
-        'generateQrcodePix'     => 'generateQrcodePix',
+        'methodCheckedChange'   => 'methodCheckedChange',
     ];
 
     #[On('show-notification')]
@@ -786,19 +786,46 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->statusCheckout = $this->checkout->status;
     }
 
-    #[On('generate-qrcode-pix')]
-    public function generateQrcodePix(): void
+    #[On('method-checked-change')]
+    public function methodCheckedChange($method): void
     {
-        $mp = new MercadoPagoService();
-        $return = $mp->gerarPagamentoPix(
-            value: 0.01,
-            description: "fsdfd",
-            external_id: "5345455345",
-            payer_email: "alexandrefn7@gmail.com",
-            payer_first_name: "Alexandre",
-        );
-        dd($return);
+        $this->checkout->update([
+            "method_checked" => $method,
+        ]);
 
-        //ProcessBillingCreditCardJob::dispatch($this->step4);
+        if ($this->checkout->method_checked == MethodPaymentEnum::pix->value) {
+            $this->checkout = $this?->step4?->ccpCheckout;
+            $step2          = $this->checkout?->step2()?->first();
+
+            $return = $this->mp->gerarPagamentoPix(
+                value: $this->sum,
+                description: "Pagamento via pix",
+                external_id: $this->checkout->id,
+                payer_email: $step2->email,
+                payer_first_name: $step2->first_name . " " . $step2->last_name,
+            );
+
+            if (isset($return["qr_code_base64"])) {
+                $this->checkout->step4()->updateOrCreate([
+                    "ccp_checkout_id" => $this->checkout->id,
+                ], [
+                    "base_qrcode" => $return["qr_code_base64"],
+                    "url_qrcode"  => $return["qr_code"],
+                ]);
+
+                $this->checkout->update([
+                    "total_price" => $this->sum,
+                    "status"      => StatusCheckoutEnum::pendente->value,
+                    "startOnStep" => 5,
+                ]);
+
+                $this->base_qrcode = $return["qr_code_base64"];
+                $this->url_qrcode  = $return["qr_code"];
+            }
+        }
+
+        if ($this->checkout->method_checked == MethodPaymentEnum::billet->value) {
+            dd("nada");
+        }
     }
 }

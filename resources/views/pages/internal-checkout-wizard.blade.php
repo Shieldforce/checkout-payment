@@ -238,6 +238,8 @@
                             btn.classList.remove('opacity-50', 'cursor-not-allowed')
                             btn.classList.remove('disabled')
 
+                            window.Livewire.dispatch('method-checked-change', { method: 1 });
+
                             function bloquearAvanco(event) {
                                 event.preventDefault()
                                 event.stopImmediatePropagation()
@@ -279,7 +281,7 @@
                         setTimeout(function() {
                             pixForm = initPixForm()
 
-                            window.Livewire.dispatch('generate-qrcode-pix', {});
+                            window.Livewire.dispatch('method-checked-change', { method: 2 });
 
                         }, 1000)
 
