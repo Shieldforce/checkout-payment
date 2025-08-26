@@ -792,13 +792,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     public function methodCheckedChange($method): void
     {
         try {
-            $checkout = $this->checkout;
-
-            $checkout->update([
-                "method_checked" => $method,
-            ]);
-
-            if ($this->checkout->method_checked == MethodPaymentEnum::pix->value) {
+            if ($method == MethodPaymentEnum::pix->value) {
                 $mp = new MercadoPagoService();
 
                 $this->checkout = $this?->step4?->ccpCheckout;
@@ -832,9 +826,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ]);
 
                     $this->checkout->update([
-                        "total_price" => $this->sum,
-                        "status"      => StatusCheckoutEnum::pendente->value,
-                        "startOnStep" => 5,
+                        "total_price"    => $this->sum,
+                        "status"         => StatusCheckoutEnum::pendente->value,
+                        "startOnStep"    => 5,
+                        "method_checked" => $method,
                     ]);
 
                     $this->base_qrcode = $return["qr_code_base64"];
@@ -842,7 +837,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                 }
             }
 
-            if ($this->checkout->method_checked == MethodPaymentEnum::billet->value) {
+            if ($method == MethodPaymentEnum::billet->value) {
+
                 dd("nada");
             }
         } catch (Throwable $e) {
