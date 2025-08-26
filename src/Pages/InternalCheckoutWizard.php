@@ -582,22 +582,6 @@ class InternalCheckoutWizard extends Page implements HasForms
                     TextInput::make('url_billet')
                         ->visible(false),
 
-                ])
-
-                ->actions([
-                    // Botão de pagamento
-                    Action::make('pagar')
-                        ->label('Pagar e Avançar')
-                        ->button()
-                        ->color('primary')
-                        ->extraAttributes(['id' => 'btn-pagar'])
-                        ->action(function (Get $get, Set $set) {
-                            dd("teste");
-                        }),
-                    // Mantém o botão Next padrão
-                    Action::make('next')
-                        ->label('Próximo 2')
-                        ->button(),
                 ]),
             Wizard\Step::make('Confirmação')
                 ->schema([
