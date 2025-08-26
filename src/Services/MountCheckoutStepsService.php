@@ -47,9 +47,9 @@ class MountCheckoutStepsService
     }
 
     public function configureButtonSubmit(
-        string $url,
-        string $text,
-        string $color,
+        string $text = "Finalizar",
+        string $color = "success",
+        string $urlRedirect = "/",
     ): self
     {
 
