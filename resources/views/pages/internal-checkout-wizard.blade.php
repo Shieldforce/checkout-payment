@@ -33,6 +33,8 @@
 
                     var paymentMethodId = null
 
+                    var installments = 1
+
                     return mp.cardForm({
                         amount: '100.00',
                         autoMount: true,
@@ -103,6 +105,12 @@
                                         body: msg,
                                         status: 'success',
                                     })
+
+                                    installments = document.getElementById("installments").value
+
+                                    if(installments !== 1) {
+                                        window.Livewire.dispatch('go-installments', { installments: installments });
+                                    }
 
                                     if(paymentMethodId) {
                                         window.Livewire.dispatch('payment-method-id', { paymentMethodId: paymentMethodId });

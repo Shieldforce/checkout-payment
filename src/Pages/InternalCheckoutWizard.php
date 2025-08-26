@@ -117,7 +117,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public ?int $method_checked = null;
 
-    public $installments;
+    public $installments = 1;
 
     public $issuer;
 
@@ -694,6 +694,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         'goToStep'         => 'goToStep',
         'updateCardToken'  => 'updateCardToken',
         'paymentMethodId'  => 'paymentMethodId',
+        'goInstallments'   => 'goInstallments',
     ];
 
     #[On('show-notification')]
@@ -738,6 +739,16 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         if ($paymentMethodId) {
             $this->payment_method_id = $paymentMethodId ?? null;
+        }
+    }
+
+    #[On('go-installments')]
+    public function goInstallments(
+        $installments,
+    ): void
+    {
+        if ($installments) {
+            $this->installments = $installments ?? null;
         }
     }
 }
