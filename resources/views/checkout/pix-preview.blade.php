@@ -7,7 +7,7 @@
     }"
     class="relative w-full max-w-md h-[300px] rounded-xl shadow-lg p-4 select-none flex flex-col justify-between
            bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
-    style="width: 100%; padding: 50px;"
+    style="width: 100%; padding: 50px;background: red !important;"
 >
     <!-- Header -->
     <div class="flex justify-between items-center w-full mb-2">
@@ -32,6 +32,8 @@
                     src="https://img.icons8.com/fluent/512/pix.png"
                     alt="PIX Logo"
                     class="max-w-[120px] max-h-[120px] object-contain"
+                    width="200"
+                    height="200"
                 />
             </div>
         </template>
