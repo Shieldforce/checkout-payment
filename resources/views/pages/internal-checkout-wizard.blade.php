@@ -281,7 +281,7 @@
                         setTimeout(function() {
                             pixForm = initPixForm()
 
-                            window.Livewire.dispatch('method-checked-change', { method: 2 });
+                            window.Livewire.dispatch('method-checked-change', { method: 3 });
 
                         }, 1000)
 
