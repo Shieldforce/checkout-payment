@@ -17,6 +17,7 @@ use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\HtmlString;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -791,6 +792,8 @@ class InternalCheckoutWizard extends Page implements HasForms
     #[On('method-checked-change')]
     public function methodCheckedChange($method): void
     {
+        DB::beginTransaction();
+
         try {
             if ($method == MethodPaymentEnum::pix->value) {
 
@@ -833,6 +836,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                     $this->base_qrcode = $return["qr_code_base64"];
                     $this->url_qrcode  = $return["qr_code"];
+
+                    DB::commit();
                 }
             }
 
@@ -841,6 +846,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                 dd("nada");
             }
         } catch (Throwable $e) {
+            DB::rollBack();
+
             logger($e->getMessage());
 
             $this->checkout->update([
