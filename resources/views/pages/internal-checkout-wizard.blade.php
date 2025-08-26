@@ -14,6 +14,7 @@
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
+                var mp = null;
 
                 const btn = document.querySelector('#btn-next-step')
                 btn.type = 'button'
@@ -25,7 +26,7 @@
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
-                    const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
+                    mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                         locale: 'pt-BR',
                     })
 
@@ -197,6 +198,7 @@
 
                 // Inicializa quando a aba de cartão for visível
                 document.getElementById('method_checked').addEventListener('change', function(event) {
+                    mp = null;
 
                     btn.textContent = 'Confirmar Pagamento'
                     btn.disabled = false;
