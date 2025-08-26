@@ -6,8 +6,11 @@
     @if($this->checkout->startOnStep == 4)
         <x-filament::button
             {{--type="submit"--}}
-            wire:click="submit"
+            {{--wire:click="submit"--}}
             {{--onclick="document.getElementById('form-checkout-wizard').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));"--}}
+            {{--onclick="formSubmit.submit()"--}}
+            {{--onclick="formSubmit.requestSubmit()"--}}
+            onclick="document.getElementById('form-checkout-wizard').requestSubmit()"
             class="mt-4"
         >
             Finalizar Pagamento
@@ -20,6 +23,8 @@
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
+
+                var formSubmit = null;
 
                 /*const btn = document.querySelector('#btn-next-step');
                 function bloquearAvanco(event) {
@@ -39,7 +44,7 @@
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
-                    return mp.cardForm({
+                    formSubmit = mp.cardForm({
                         amount: '100.00',
                         autoMount: true,
                         form: {
