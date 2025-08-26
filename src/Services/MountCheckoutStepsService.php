@@ -54,7 +54,7 @@ class MountCheckoutStepsService
     {
 
         $this->cppCheckout->update([
-            "url"                 => $url ?? $this->cppCheckout->url,
+            "url"                 => $urlRedirect ?? $this->cppCheckout->url,
             "text_button_submit"  => $text ?? $this->cppCheckout->text_button_submit,
             "color_button_submit" => $color ?? $this->cppCheckout->color_button_submit,
         ]);
