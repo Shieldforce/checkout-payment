@@ -660,7 +660,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             ])
         );
 
-        if(!isset($this->checkout->url)) {
+        if (!isset($this->checkout->url)) {
             $submitAction = view('checkout-payment::checkout.submit-button-hidden');
         }
 
@@ -670,9 +670,15 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->nextAction(
                     fn(Action $action) => $action
                         ->label('Próximo')
+                        ->icon('heroicon-s-arrow-right')
                         ->extraAttributes([
                             'id' => 'btn-next-step',
                         ])
+                )
+                ->previousAction(
+                    fn(Action $action) => $action
+                        ->label('Voltar')
+                        ->icon('heroicon-s-arrow-left')
                 )
                 ->startOnStep($this->startOnStep),
         ];
