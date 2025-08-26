@@ -150,11 +150,11 @@
                                 errors.forEach(err => {
                                     let field = null;
 
-                                    // tenta mapear pelo campo
+                                    // tenta mapear pelo campo vindo do MP
                                     if (err.field && fieldMap[err.field]) {
                                         field = fieldMap[err.field];
                                     } else {
-                                        // deduz pelo message
+                                        // tenta deduzir pelo texto da mensagem
                                         if (err.message.includes('cardNumber')) field = 'card_number';
                                         if (err.message.includes('expirationMonth') || err.message.includes('expirationYear')) field = 'cardExpiration';
                                         if (err.message.includes('securityCode')) field = 'card_cvv';
@@ -163,8 +163,23 @@
                                     }
 
                                     if (field) {
-                                        // aqui emitimos para o Livewire
-                                        Livewire.emit('setCardError', field, err.message);
+                                        // acha o input no DOM
+                                        const input = document.querySelector(`[name="${field}"]`);
+                                        if (input) {
+                                            // remove erros antigos se houver
+                                            let errorEl = input.parentNode.querySelector('.mp-error');
+                                            if (errorEl) errorEl.remove();
+
+                                            // cria o span de erro
+                                            errorEl = document.createElement('span');
+                                            errorEl.classList.add('mp-error');
+                                            errorEl.style.color = 'red';
+                                            errorEl.style.fontSize = '12px';
+                                            errorEl.textContent = err.message;
+
+                                            // insere logo abaixo do campo
+                                            input.parentNode.appendChild(errorEl);
+                                        }
                                     }
                                 });
                             },
