@@ -22,7 +22,7 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
     public function handle(): void
     {
-        $checkout = $this?->step4?->checkout;
+        $checkout = $this?->step4?->ccpCheckout;
         $step1    = $checkout?->step1()?->first();
 
         if (isset($step1->id) && isset($step1->items)) {
