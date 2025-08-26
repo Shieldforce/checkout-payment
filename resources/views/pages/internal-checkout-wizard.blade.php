@@ -21,7 +21,7 @@
 
 @if($this->cppGateways->field_1)
     @push('scripts')
-        @livewireScripts
+        <!--@livewireScripts-->
         <script src="https://sdk.mercadopago.com/js/v2"></script>
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
