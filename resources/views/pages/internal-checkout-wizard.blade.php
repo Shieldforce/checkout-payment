@@ -86,6 +86,12 @@
                                     event.preventDefault();
                                     event.stopImmediatePropagation();
 
+                                    btn.textContent = 'Próximo'
+                                    btn.type = 'submit'
+                                    btn.disabled = false;
+                                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                                    btn.classList.remove('disabled');
+
                                     var msg = 'Agora só esperar que avisaremos quando o pagamento for aprovado! ';
                                     msg += 'Pode ser por e-mail, whatsapp ou sms, fique ligado(a). ';
                                     msg += 'Agora só clicar em próximo para finalizar o checkout!';
@@ -94,15 +100,10 @@
                                         body: msg,
                                         status: 'success'
                                     });
+                                    return;
                                 }
 
                                 if(submitOff === false) {
-                                    btn.textContent = 'Próximo'
-                                    btn.type = 'submit'
-                                    btn.disabled = false;
-                                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                                    btn.classList.remove('disabled');
-
                                     window.Livewire.dispatch('go-to-step', { step: 5 });
                                 }
                             },
