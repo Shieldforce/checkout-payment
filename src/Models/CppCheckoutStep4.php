@@ -12,6 +12,8 @@ class CppCheckoutStep4 extends Model
         'cpp_checkout_id',
         "card_number",
         "card_token",
+        "installments",
+        "payment_method_id",
         "card_validate",
         "card_payer_name",
         "base_qrcode",

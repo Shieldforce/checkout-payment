@@ -119,7 +119,9 @@ class MercadoPagoService
         $external_id,
         $payer_email,
         $payer_first_name,
-        $token_card // token enviado pelo frontend
+        $token_card, // token enviado pelo frontend
+        $installments,
+        $payment_method_id,
     )
     {
         try {
@@ -129,8 +131,10 @@ class MercadoPagoService
                 "transaction_amount" => $value,
                 "token"              => $token_card,
                 "description"        => $description,
-                "payment_method_id"  => "visa",
-                "installments"       => 1,
+                "payment_method_id"  => $payment_method_id,
+                //visa
+                "installments"       => $installments,
+                // 1, 2 ,3
                 "payer"              => [
                     "email"      => $payer_email,
                     "first_name" => $payer_first_name

@@ -85,6 +85,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public ?string $card_payer_name = null;
 
+    public ?string $payment_method_id = null;
+
     public ?string $base_qrcode = null;
 
     public ?string $url_qrcode = null;
@@ -172,14 +174,16 @@ class InternalCheckoutWizard extends Page implements HasForms
             $this->number     = $this->step3->number ?? null;
             $this->complement = $this->step3->complement ?? null;
 
-            $this->step4           = $this?->checkout?->step4()?->first();
-            $this->card_number     = $this->step4->card_number ?? null;
-            $this->card_token      = $this->step4->card_token ?? null;
-            $this->card_validate   = $this->step4->card_validate ?? null;
-            $this->card_payer_name = $this->step4->card_payer_name ?? null;
-            $this->base_qrcode     = $this->step4->base_qrcode ?? null;
-            $this->url_qrcode      = $this->step4->url_qrcode ?? null;
-            $this->url_billet      = $this->step4->url_billet ?? null;
+            $this->step4             = $this?->checkout?->step4()?->first();
+            $this->card_number       = $this->step4->card_number ?? null;
+            $this->card_token        = $this->step4->card_token ?? null;
+            $this->installments      = $this->step4->installments ?? null;
+            $this->payment_method_id = $this->step4->payment_method_id ?? null;
+            $this->card_validate     = $this->step4->card_validate ?? null;
+            $this->card_payer_name   = $this->step4->card_payer_name ?? null;
+            $this->base_qrcode       = $this->step4->base_qrcode ?? null;
+            $this->url_qrcode        = $this->step4->url_qrcode ?? null;
+            $this->url_billet        = $this->step4->url_billet ?? null;
 
             $this->startOnStep = $this->checkout->startOnStep ?? null;
         }
@@ -414,13 +418,15 @@ class InternalCheckoutWizard extends Page implements HasForms
                         $step4Update = $this->checkout->step4()->updateOrCreate(
                             ['cpp_checkout_id' => $this->checkout->id],
                             [
-                                'card_number'     => $get('card_number'),
-                                'card_validate'   => $get('card_validate'),
-                                'card_payer_name' => $get('card_payer_name'),
-                                'card_token'      => $get('card_token'),
-                                'base_qrcode'     => $get('base_qrcode'),
-                                'url_qrcode'      => $get('url_qrcode'),
-                                'url_billet'      => $get('url_billet'),
+                                'card_number'       => $get('card_number'),
+                                'card_validate'     => $get('card_validate'),
+                                'card_payer_name'   => $get('card_payer_name'),
+                                'card_token'        => $get('card_token'),
+                                'installments'      => $get('installments'),
+                                'payment_method_id' => $get('payment_method_id'),
+                                'base_qrcode'       => $get('base_qrcode'),
+                                'url_qrcode'        => $get('url_qrcode'),
+                                'url_billet'        => $get('url_billet'),
                             ]
                         );
 
@@ -467,8 +473,13 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 ->extraInputAttributes(['id' => 'cardToken']),*/
 
                             Hidden::make("card_token")
-                                ->label("Liberação do cartão!")
                                 ->id('cardToken'),
+
+                            Hidden::make("payment_method_id")
+                                ->id('paymentMethodId'),
+
+                            Hidden::make('issuer')
+                                ->id('issuer'),
 
                         ])->columnSpan(1),
 
@@ -479,13 +490,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 Select::make('installments')
                                     ->label('Quantidade de parcelas')
                                     ->extraInputAttributes(['id' => 'installments']),
-                                Select::make('issuer')
-                                    ->label('Tipo de cartão')
-                                    ->disabled()
-                                    ->dehydrated()
-                                    ->extraInputAttributes(['id' => 'issuer']),
 
-                            ])->columns(2),
+                            ])->columns(1),
 
                             // Card method ---
                             TextInput::make('card_number')
