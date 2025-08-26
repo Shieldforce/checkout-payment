@@ -615,11 +615,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         // Preview do Pix
                         View::make('checkout-payment::checkout.pix-preview')
                             ->visible(fn(Get $get) => $get('method_checked') === MethodPaymentEnum::pix->value)
-                            ->columnSpan(1),
-
-                        Grid::make()->schema([
-
-                        ])->columns(2)->columnSpan(1),
+                            ->columnSpanFull(),
 
                         // Pix method ---
                         Hidden::make('base_qrcode'),
