@@ -2,6 +2,12 @@
     <form id="form-checkout-wizard">
         {{ $this->form }}
     </form>
+
+    @if($this->cppGateways)
+        <x-filament::button wire:click="submit" class="mt-4">
+            Finalizar Pagamento
+        </x-filament::button>
+    @endif
 </x-filament::page>
 
 @if($this->cppGateways->field_1)
