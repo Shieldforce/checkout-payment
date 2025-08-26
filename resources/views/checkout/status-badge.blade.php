@@ -11,10 +11,10 @@
         <div class="space-y-2 text-gray-700">
             <p><strong>Cliente:</strong> {{ $this->step2->first_name }} {{ $this->step2->last_name  }}</p>
             <p><strong>Email:</strong> {{ $this->step2->email }}</p>
-            <p><strong>Valor:</strong> R$ {{ number_format($checkout->total_price, 2, ',', '.') }}</p>
+            <p><strong>Valor:</strong> R$ {{ number_format($this->checkout->total_price, 2, ',', '.') }}</p>
             <p>
                 <strong>Forma de Pagamento:</strong>
-                {{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::from($checkout->method_checked)->label() }}
+                {{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::from($this->checkout->method_checked)->label() }}
             </p>
         </div>
 
@@ -43,7 +43,7 @@
 
     {{-- Atualização automática só se estiver no step 5 e ainda não aprovado --}}
     @if(
-        $checkout->startOnStep == 5 &&
+        $this->checkout->startOnStep == 5 &&
         $this->refreshStatusCheckout != \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
     )
         <div wire:poll.30s="refreshStatusCheckout"></div>
