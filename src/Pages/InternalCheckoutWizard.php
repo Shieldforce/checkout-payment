@@ -415,7 +415,14 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->visible($this->step4->visible ?? true)
                 ->afterValidation(function (Get $get) {
 
-                    dd($this->step1);
+                    if(isset($this->step1->id) && isset($this->step1->items)) {
+                        $items = json_decode($this->step1->items, true);
+                        $sum = 0;
+                        foreach ($items as $item) {
+                            $sum += $item['price'] * $item['quantity'];
+                        }
+                        dd($sum);
+                    }
 
                     try {
                         $step4Update = $this->checkout->step4()->updateOrCreate(
