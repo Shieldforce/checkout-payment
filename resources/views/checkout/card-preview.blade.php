@@ -42,6 +42,7 @@
         </span>
     </div>
 
+    <hr>
     <!-- Rodapé -->
     <div class="flex justify-between items-center mt-6">
         <div>
