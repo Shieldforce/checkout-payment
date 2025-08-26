@@ -681,6 +681,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         'showNotification' => 'showNotification',
         'goToStep'         => 'goToStep',
         'updateCardToken'  => 'updateCardToken',
+        'paymentMethodId'  => 'paymentMethodId',
     ];
 
     #[On('show-notification')]
@@ -715,6 +716,16 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         if ($cardToken) {
             $this->card_token = $cardToken ?? null;
+        }
+    }
+
+    #[On('payment-method-id')]
+    public function paymentMethodId(
+        $paymentMethodId,
+    ): void
+    {
+        if ($paymentMethodId) {
+            $this->payment_method_id = $paymentMethodId ?? null;
         }
     }
 }
