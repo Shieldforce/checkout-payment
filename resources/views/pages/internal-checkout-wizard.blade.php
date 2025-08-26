@@ -11,9 +11,10 @@
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
 
+                const btn = document.querySelector('#btn-next-step')
+
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
-                    const btn = document.querySelector('#btn-next-step')
 
                     const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                         locale: 'pt-BR',
