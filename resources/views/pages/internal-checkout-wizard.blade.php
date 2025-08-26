@@ -15,6 +15,11 @@
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
 
+                Echo.private("checkout.{{ $checkout->id }}")
+                    .listen("CheckoutStatusUpdated", (event) => {
+                        console.log(event);
+                    });
+
                 const btn = document.querySelector('#btn-next-step')
                 btn.type = 'button'
                 btn.textContent = 'Confirmar Pagamento'
