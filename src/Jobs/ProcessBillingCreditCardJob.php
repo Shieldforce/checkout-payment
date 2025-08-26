@@ -10,7 +10,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Errors\ProcessBillingCreditCardJobException;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
-use Shieldforce\CheckoutPayment\Notifications\CheckoutStatusUpdated;
 
 class ProcessBillingCreditCardJob implements ShouldQueue
 {

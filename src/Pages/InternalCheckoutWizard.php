@@ -31,6 +31,7 @@ use Shieldforce\CheckoutPayment\Models\CppCheckoutStep3;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\BuscarViaCepService;
+use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 
 class InternalCheckoutWizard extends Page implements HasForms
 {
@@ -193,7 +194,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             $this->url_billet        = $this->step4->url_billet ?? null;
 
             // mudar para true quando gerar o qrcode ---
-            $this->qrcode_yes        = false;
+            $this->qrcode_yes = false;
 
             if (isset($this->step1->id) && isset($this->step1->items)) {
                 $items = json_decode($this->step1->items, true);
@@ -721,6 +722,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         'paymentMethodId'       => 'paymentMethodId',
         'goInstallments'        => 'goInstallments',
         'refreshStatusCheckout' => 'refreshStatusCheckout',
+        'generateQrcodePix'     => 'generateQrcodePix',
     ];
 
     #[On('show-notification')]
@@ -787,6 +789,16 @@ class InternalCheckoutWizard extends Page implements HasForms
     #[On('generate-qrcode-pix')]
     public function generateQrcodePix(): void
     {
-        dd("teste");
+        $mp = new MercadoPagoService();
+        $return = $mp->gerarPagamentoPix(
+            value: "0.20",
+            description: "fsdfd",
+            external_id: "5345455345",
+            payer_email: "alexandrefn7@gmail.com",
+            payer_first_name: "Alexandre",
+        );
+        dd($return);
+
+        //ProcessBillingCreditCardJob::dispatch($this->step4);
     }
 }
