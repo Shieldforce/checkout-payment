@@ -1,3 +1,8 @@
-<span class="px-2 py-1 rounded-full text-white {{ $this->checkout->status === 2 ? 'bg-green-600' : 'bg-yellow-600' }}">
-    {{ $this->checkout->status === 2 ? 'Aprovado' : 'Em Processamento' }}
-</span>
+<div>
+    <span id="statusLabel" class="px-3 py-1 rounded bg-gray-200">
+        {{ $this->status }}
+    </span>
+
+    {{-- Atualiza sozinho a cada 30s --}}
+    <div wire:poll.30s="refreshStatusCheckout"></div>
+</div>

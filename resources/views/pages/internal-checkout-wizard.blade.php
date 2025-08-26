@@ -18,7 +18,7 @@
                 btn.classList.add('opacity-50', 'cursor-not-allowed')
                 btn.classList.add('disabled')
 
-                @if($this->checkout->startOnStep == 5)
+                {{--@if($this->checkout->startOnStep == 5)
                     function updateStatusCheckout(){
                         setInterval(function() {
 
@@ -27,7 +27,7 @@
                         }, 30000)
                     }
                     updateStatusCheckout();
-                @endif
+                @endif--}}
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
