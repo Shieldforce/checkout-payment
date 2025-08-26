@@ -793,11 +793,13 @@ class InternalCheckoutWizard extends Page implements HasForms
     #[On('method-checked-change')]
     public function methodCheckedChange($method): void
     {
-        $this->checkout->update([
+        $checkout = CppCheckout::where("id", $this->checkout->id)->first();
+
+        $checkout->update([
             "method_checked" => $method,
         ]);
 
-        if ($this->checkout->method_checked == MethodPaymentEnum::pix->value) {
+        if ($checkout->method_checked == MethodPaymentEnum::pix->value) {
 
             $this->checkout = $this?->step4?->ccpCheckout;
             $step1          = $this->checkout?->step1()?->first();
@@ -818,11 +820,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                 payer_first_name: $step2->first_name . " " . $step2->last_name,
             );
 
-            /*logger($return);
+            logger($return);
 
             if (isset($return["qr_code_base64"])) {
-
-                $checkout = CppCheckout::where("id", $this->checkout->id)->first();
 
                 $checkout->step4()->updateOrCreate([
                     "ccp_checkout_id" => $this->checkout->id,
@@ -839,7 +839,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                 $this->base_qrcode = $return["qr_code_base64"];
                 $this->url_qrcode  = $return["qr_code"];
-            }*/
+            }
         }
 
         if ($this->checkout->method_checked == MethodPaymentEnum::billet->value) {
