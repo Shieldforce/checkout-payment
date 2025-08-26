@@ -5,7 +5,7 @@
         first_name: @entangle('first_name').live,
         last_name: @entangle('last_name').live
     }"
-    class="relative w-full max-w-xl mx-auto h-[300px] rounded-xl shadow-lg p-4 sm:p-6 select-none flex flex-col justify-between
+    class="relative w-full max-w-md mx-auto h-[300px] rounded-xl shadow-lg p-4 sm:p-6 select-none flex flex-col justify-between
            bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
 >
     <!-- Header -->
