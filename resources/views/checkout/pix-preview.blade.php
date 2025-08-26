@@ -19,8 +19,17 @@
     <!-- QR Code -->
     <div class="flex-1 flex items-center justify-center mt-2 mb-2">
         <template x-if="base_qrcode">
-            <img :src="base_qrcode" alt="QR Code PIX"
-                 class="w-24 h-24 object-contain rounded-md border border-white/30 shadow" />
+            @if($this->qrcode_yes)
+                <img
+                    :src="base_qrcode" alt="QR Code PIX"
+                    class="w-24 h-24 object-contain rounded-md border border-white/30 shadow"
+                />
+            @else
+                <img
+                    src="https://img.icons8.com/fluent/512/pix.png" alt="QR Code PIX"
+                    class="w-24 h-24 object-contain rounded-md border border-white/30 shadow"
+                />
+            @endif
         </template>
         <template x-if="!base_qrcode">
             <div class="w-24 h-24 bg-white/20 flex items-center justify-center text-xs text-white/70 rounded-md">

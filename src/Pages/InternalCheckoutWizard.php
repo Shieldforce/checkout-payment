@@ -126,6 +126,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public $total_price;
 
+    public ?bool $qrcode_yes;
+
     public array $paymentMethods = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
@@ -189,6 +191,9 @@ class InternalCheckoutWizard extends Page implements HasForms
             $this->base_qrcode       = $this->step4->base_qrcode ?? null;
             $this->url_qrcode        = $this->step4->url_qrcode ?? null;
             $this->url_billet        = $this->step4->url_billet ?? null;
+
+            // mudar para true quando gerar o qrcode ---
+            $this->qrcode_yes        = false;
 
             if (isset($this->step1->id) && isset($this->step1->items)) {
                 $items = json_decode($this->step1->items, true);

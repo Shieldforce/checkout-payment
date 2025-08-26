@@ -8,6 +8,8 @@
     @push('scripts')
 
         <script src="https://sdk.mercadopago.com/js/v2"></script>
+
+        {{--Regra para cartão de crétido do mercado pago--}}
         <script>
             document.addEventListener('DOMContentLoaded', async () => {
 
@@ -133,12 +135,6 @@
                                     window.Livewire.dispatch('update-card-token', { cardToken: data.token })
                                 }
                             },
-                            /*onInstallmentsReceived: function(error, data) {
-                                console.log("onInstallmentsReceived", error, data);
-                            },
-                            onBinChange: function(error, data) {
-                                console.log("onBinChange", error, data);
-                            },*/
                             onError: function(errors) {
                                 console.log('Erro do MP:', errors)
 

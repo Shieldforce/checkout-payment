@@ -40,6 +40,7 @@ class ProcessBillingCreditCardJob implements ShouldQueue
             );
         }
 
+        // colocar dentro do job de pagamento após aprovado ou no job que verifica pagamento ---
         $checkout->update([
             "total_price" => $sum,
             "status"      => StatusCheckoutEnum::finalizado->value,
