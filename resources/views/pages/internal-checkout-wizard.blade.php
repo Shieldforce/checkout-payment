@@ -139,9 +139,9 @@
                                 console.log('Erro do MP:', errors);
 
                                 const fieldMap = {
-                                    cardNumber: 'card_number',
-                                    cardholderName: 'card_payer_name',
-                                    securityCode: 'card_cvv',
+                                    cardNumber: 'cardNumber',
+                                    cardholderName: 'cardholderName',
+                                    securityCode: 'cardCVV',
                                     expirationMonth: 'cardExpiration',
                                     expirationYear: 'cardExpiration',
                                     email: 'email',
@@ -155,18 +155,17 @@
                                         field = fieldMap[err.field];
                                     } else {
                                         // tenta deduzir pelo texto da mensagem
-                                        if (err.message.includes('cardNumber')) field = 'card_number';
+                                        if (err.message.includes('cardNumber')) field = 'cardNumber';
                                         if (err.message.includes('expirationMonth') || err.message.includes('expirationYear')) field = 'cardExpiration';
-                                        if (err.message.includes('securityCode')) field = 'card_cvv';
-                                        if (err.message.includes('cardholderName')) field = 'card_payer_name';
+                                        if (err.message.includes('securityCode')) field = 'cardCVV';
+                                        if (err.message.includes('cardholderName')) field = 'cardholderName';
                                         if (err.message.includes('email')) field = 'email';
                                     }
 
-                                    console.log(field);
-
                                     if (field) {
                                         // acha o input no DOM
-                                        const input = document.querySelector(`[name="${field}"]`);
+
+                                        const input = document.getElementById(`[name="${field}"]`);
                                         if (input) {
                                             // remove erros antigos se houver
                                             let errorEl = input.parentNode.querySelector('.mp-error');
