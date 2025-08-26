@@ -71,8 +71,8 @@
                             },
                             onSubmit: function(event) {
                                 console.log('onSubmit:', event)
-                                event.preventDefault();
-                                event.stopImmediatePropagation();
+                                /*event.preventDefault();
+                                event.stopImmediatePropagation();*/
 
                                 btn.textContent = 'Próximo'
                                 btn.type = 'button'
@@ -181,6 +181,11 @@
                         if (!cardForm) {
                             setTimeout(function() {
                                 cardForm = initCardForm()
+
+                                btn.textContent = 'Confirmar Pagamento'
+                                btn.disabled = false;
+                                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                                btn.classList.remove('disabled');
 
                                 function bloquearAvanco(event) {
                                     event.preventDefault()
