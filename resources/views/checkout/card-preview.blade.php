@@ -15,7 +15,7 @@
            bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
            text-black dark:text-white
            p-5 select-none rounded-xl"
-            style="padding: 30px;border: 1px dashed #cecece;height: 300px"
+            style="padding: 30px;border: 1px dashed #cecece;height: 270px"
 >
     <!-- Header -->
     <div class="flex justify-between items-center">
@@ -42,6 +42,8 @@
         </span>
     </div>
 
+    <br>
+    <br>
     <br>
     <hr>
     <!-- Rodapé -->
