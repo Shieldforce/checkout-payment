@@ -218,6 +218,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         return [
             Wizard\Step::make('Carrinho')
                 ->visible($this->step1->visible ?? true)
+                ->disabled($this->checkout->startOnStep != 1)
                 ->afterValidation(function (Get $get) {
                     $this->checkout->update([
                         'startOnStep' => 2,
@@ -230,6 +231,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ]),
             Wizard\Step::make('Dados Pessoais')
                 ->visible($this->step2->visible ?? true)
+                ->disabled($this->checkout->startOnStep != 2)
                 ->afterValidation(function (Get $get) {
 
                     $step2Update = $this->checkout->step2()->updateOrCreate(
@@ -318,6 +320,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                 ]),
             Wizard\Step::make('Dados de Endereço')
+                ->disabled($this->checkout->startOnStep != 3)
                 ->visible($this->step3->visible ?? true)
                 ->afterValidation(function (Get $get) {
 
@@ -429,6 +432,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ]),
             Wizard\Step::make('Pagamento')
                 ->visible($this->step4->visible ?? true)
+                ->disabled($this->checkout->startOnStep != 4)
                 ->afterValidation(function (Get $get) {
 
                     try {
@@ -634,6 +638,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                 ]),
             Wizard\Step::make('Confirmação')
+                ->disabled($this->checkout->startOnStep != 2)
                 ->schema([
                     View::make('checkout-payment::checkout.status-badge')
                 ]),
