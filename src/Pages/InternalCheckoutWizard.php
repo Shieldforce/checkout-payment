@@ -783,4 +783,10 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         $this->statusCheckout = $this->checkout->status;
     }
+
+    #[On('generate-qrcode-pix')]
+    public function generateQrcodePix(): void
+    {
+        dd("teste");
+    }
 }

@@ -279,7 +279,7 @@
                         setTimeout(function() {
                             pixForm = initPixForm()
 
-                            alert("teste");
+                            window.Livewire.dispatch('generate-qrcode-pix', {});
 
                         }, 1000)
 
