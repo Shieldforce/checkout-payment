@@ -202,6 +202,8 @@
                                     return traducoes[msg] || "Erro ao validar os dados.";
 
                                 }
+
+                            },
                         },
                     })
 
