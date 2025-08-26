@@ -662,7 +662,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         );
 
         if(!isset($this->checkout->url)) {
-            $submitAction = view('submit-button-hidden');
+            $submitAction = view('checkout-payment::submit-button-hidden');
         }
 
         return [
