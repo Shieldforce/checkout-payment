@@ -10,7 +10,7 @@
             <p><strong>Valor:</strong> R$ {{ number_format($this->checkout->total_price, 2, ',', '.') }}</p>
             <p>
                 <strong>Forma de Pagamento:</strong>
-                {{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::from($this->checkout->method_checked)->label() }}
+                {{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::from($this->checkout->method_checked ?? 1)->label() }}
             </p>
         </div>
 
