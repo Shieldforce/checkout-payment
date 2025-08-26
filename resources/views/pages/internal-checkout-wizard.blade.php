@@ -8,6 +8,8 @@
             {{--type="submit"--}}
             {{--wire:click="submit"--}}
             {{--onclick="document.getElementById('form-checkout-wizard').dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));"--}}
+
+            type="button"
             {{--onclick="formSubmit.submit()"--}}
             {{--onclick="formSubmit.requestSubmit()"--}}
             onclick="document.getElementById('form-checkout-wizard').requestSubmit()"
