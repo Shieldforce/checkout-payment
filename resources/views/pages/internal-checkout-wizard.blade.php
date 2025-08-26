@@ -16,20 +16,17 @@
             document.addEventListener('DOMContentLoaded', async () => {
 
                 const btn = document.querySelector('#btn-next-step')
-
-                let submitOff = true
-
-                if(submitOff) {
-                    btn.type = 'button'
-                    btn.textContent = 'Confirmar Pagamento'
-                    btn.disabled = true;
-                    btn.classList.add('opacity-50', 'cursor-not-allowed');
-                    btn.classList.add('disabled');
-                }
+                btn.type = 'button'
+                btn.textContent = 'Confirmar Pagamento'
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.classList.add('disabled');
 
                 const mp = new window.MercadoPago("{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}", {
                     locale: 'pt-BR',
                 })
+
+                let submitOff = true
 
                 // Função que inicializa o cardForm
                 const initCardForm = () => {
@@ -70,12 +67,10 @@
                                 if (error) return console.warn('Form Mounted handling error: ', error)
                                 console.log('Form mounted')
 
-                                if(submitOff) {
-                                    btn.textContent = 'Confirmar Pagamento'
-                                    btn.disabled = false;
-                                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                                    btn.classList.remove('disabled');
-                                }
+                                btn.textContent = 'Confirmar Pagamento'
+                                btn.disabled = false;
+                                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                                btn.classList.remove('disabled');
 
                                 // força o autofocus
                                 setTimeout(() => {
@@ -92,10 +87,10 @@
                                     event.stopImmediatePropagation();
 
                                     btn.textContent = 'Próximo'
-                                    btn.type = 'submit'
                                     btn.disabled = false;
                                     btn.classList.remove('opacity-50', 'cursor-not-allowed');
                                     btn.classList.remove('disabled');
+                                    btn.type = 'submit'
 
                                     var msg = 'Agora só esperar que avisaremos quando o pagamento for aprovado! ';
                                     msg += 'Pode ser por e-mail, whatsapp ou sms, fique ligado(a). ';
@@ -201,12 +196,10 @@
                 // Inicializa quando a aba de cartão for visível
                 document.getElementById('method_checked').addEventListener('change', function(event) {
 
-                    if(submitOff) {
-                        btn.textContent = 'Confirmar Pagamento'
-                        btn.disabled = false;
-                        btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                        btn.classList.remove('disabled');
-                    }
+                    btn.textContent = 'Confirmar Pagamento'
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btn.classList.remove('disabled');
 
                     const valueSelectMethodCheck = parseInt(event.target.value)
                     const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
@@ -216,12 +209,10 @@
                             setTimeout(function() {
                                 cardForm = initCardForm()
 
-                                if(submitOff) {
-                                    btn.textContent = 'Confirmar Pagamento'
-                                    btn.disabled = false;
-                                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                                    btn.classList.remove('disabled');
-                                }
+                                btn.textContent = 'Confirmar Pagamento'
+                                btn.disabled = false;
+                                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                                btn.classList.remove('disabled');
 
                                 function bloquearAvanco(event) {
                                     event.preventDefault()
