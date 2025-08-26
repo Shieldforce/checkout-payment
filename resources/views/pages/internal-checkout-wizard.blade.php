@@ -178,8 +178,8 @@
                                             errorEl.style.fontSize = '12px';
                                             errorEl.textContent = err.message;
 
-                                            // insere logo abaixo do campo
-                                            input.parentNode.appendChild(errorEl);
+                                            // insere logo abaixo do input
+                                            input.insertAdjacentElement('afterend', errorEl);
                                         }
                                     }
                                 });
