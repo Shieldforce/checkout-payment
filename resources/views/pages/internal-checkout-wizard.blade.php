@@ -87,9 +87,12 @@
 
                                 // Aqui você pode emitir um evento para o Livewire
                                 // dispara notificação pelo Livewire v3
+                                var msg = 'Agora só esperar que avisaremos quando o pagamento for aprovado! ';
+                                msg += 'Pode ser por e-mail, whatsapp ou sms, fique ligado(a). ';
+                                msg += 'Agora só clicar em próximo para finalizar o checkout!';
                                 window.Livewire.dispatch('show-notification', {
-                                    title: 'Sucesso!',
-                                    body: 'Pagamento validado com sucesso.',
+                                    title: 'Oba, deu certo!',
+                                    body: msg,
                                     status: 'success'
                                 });
                             },
@@ -208,7 +211,7 @@
                                 }
 
                                 btn.addEventListener('click', bloquearAvanco)
-                            }, 2000)
+                            }, 1000)
                         }
                     }
                 })
