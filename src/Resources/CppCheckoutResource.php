@@ -22,9 +22,9 @@ class CppCheckoutResource extends Resource
 {
     protected static ?string $model           = CppCheckout::class;
     protected static ?string $navigationIcon  = 'heroicon-o-currency-dollar';
-    protected static ?string $label           = "Checkout";
-    protected static ?string $pluralLabel     = "Checkouts";
-    protected static ?string $navigationLabel = "Checkouts";
+    protected static ?string $label           = "Cobrança";
+    protected static ?string $pluralLabel     = "Cobranças";
+    protected static ?string $navigationLabel = "Cobranças";
     protected static ?string $slug            = "checkouts-payment";
 
     public static function form(Form $form): Form
