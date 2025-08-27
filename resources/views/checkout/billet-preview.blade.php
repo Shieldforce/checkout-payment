@@ -4,15 +4,14 @@
             src="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
             class="w-full min-h-screen rounded-lg border border-gray-300 dark:border-white/30 shadow-md">
         </iframe>
-
-
-        <a
-            href="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
-            target="_blank"
-            class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
-            Abrir boleto em nova aba
-        </a>
     @else
-        <p class="text-gray-500">Nenhum boleto gerado ainda.</p>
+        <img
+            src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
+            alt="PIX Logo"
+            width="150"
+            height="150"
+            class="w-[120px] h-[120px] object-contain"
+        />
+        <p class="text-gray-500">Aguardando para gerar o boleto ...</p>
     @endif
 </div>
