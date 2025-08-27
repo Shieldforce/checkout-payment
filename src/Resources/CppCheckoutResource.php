@@ -7,6 +7,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\CreateCppCheckout;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\EditCppCheckout;
@@ -45,7 +46,11 @@ class CppCheckoutResource extends Resource
                     ->description('Métodos de pagamentos liberados')
                     ->formatStateUsing(function ($state) {
                         $array = json_decode($state, true);
-                        return implode(', ', $array);
+                        $tags = [];
+                        foreach ($array as $key => $value) {
+                            $tags[] = MethodPaymentEnum::from($value)->label();
+                        }
+                        return implode(', ', $tags);
                     })
                     ->html()
 
