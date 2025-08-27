@@ -61,13 +61,18 @@ class CppCheckoutResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ButtonAction::make("checkout")
-                    ->url(function (Model $record) {
-                        return InternalCheckoutWizard::getUrl(["cppCheckoutUuid" => $record->uuid]);
-                    })
-                    ->openUrlInNewTab(),
+                Tables\Actions\ActionGroup::make([
+
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ButtonAction::make("checkout")
+                        ->icon("heroicon-o-credit-card")
+                        ->url(function (Model $record) {
+                            return InternalCheckoutWizard::getUrl(["cppCheckoutUuid" => $record->uuid]);
+                        })
+                        ->openUrlInNewTab(),
+
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
