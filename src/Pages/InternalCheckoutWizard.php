@@ -807,24 +807,29 @@ class InternalCheckoutWizard extends Page implements HasForms
         DB::beginTransaction();
 
         try {
+
+            dd($this->checkout->referencable);
+
             if (isset($this->step4->base_qrcode)) {
                 $this->base_qrcode = $this->step4->base_qrcode;
                 $this->url_qrcode  = $this->step4->url_qrcode;
                 return;
             }
 
-            if ($method == MethodPaymentEnum::pix->value) {
+            $mp       = new MercadoPagoService();
+            $step2    = $this->checkout?->step2()?->first();
+            $fullName = (isset($step2->first_name) ? $step2->first_name . " " : "") .
+                (isset($step2->last_name) ? $step2->last_name : "");
+            $data     = [
+                "value"            => $this->total_price ?? null,
+                "description"      => "Pagamento via pix",
+                "external_id"      => $this->checkout->id ?? null,
+                "payer_email"      => $step2->email ?? null,
+                "payer_first_name" => $fullName ?? null,
+                "due_date"         => null,
+            ];
 
-                $mp    = new MercadoPagoService();
-                $step2 = $this->checkout?->step2()?->first();
-
-                $data = [
-                    "value"            => $this->total_price,
-                    "description"      => "Pagamento via pix",
-                    "external_id"      => $this->checkout->id,
-                    "payer_email"      => $step2->email,
-                    "payer_first_name" => $step2->first_name . " " . $step2->last_name,
-                ];
+            if ($method == MethodPaymentEnum::pix->value && isset($data["value"])) {
 
                 $return = $mp->gerarPagamentoPix(
                     value: $data["value"],
@@ -860,7 +865,15 @@ class InternalCheckoutWizard extends Page implements HasForms
             }
 
             if ($method == MethodPaymentEnum::billet->value) {
-                dd("nada");
+
+                $return = $mp->gerarPagamentoBoleto(
+                    value: $data["value"],
+                    description: $data["description"],
+                    external_id: $data["external_id"],
+                    payer_email: $data["payer_email"],
+                    payer_first_name: $data["payer_first_name"],
+                    due_date: $data["due_date"],
+                );
             }
 
         } catch (Throwable $e) {
