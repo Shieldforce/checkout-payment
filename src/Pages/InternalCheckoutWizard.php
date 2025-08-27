@@ -641,7 +641,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         Hidden::make('url_billet')
                             ->default($this->url_billet ?? $this->step4->url_billet ?? null),
 
-                    ])->visible(fn(Get $get) => $get('method_checked') === MethodPaymentEnum::pix->value),
+                    ])->visible(fn(Get $get) => $get('method_checked') === MethodPaymentEnum::billet->value),
 
                 ]),
             Wizard\Step::make('Checkout Finalizado')
