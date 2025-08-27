@@ -15,6 +15,7 @@ use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeStepEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
+use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\CreateCppCheckout;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\EditCppCheckout;
@@ -93,9 +94,15 @@ class CppCheckoutResource extends Resource
             ])
             ->filters([
 
-                SelectFilter::make('document')
+                SelectFilter::make('step2.document')
                 ->label('CPF/CNPJ')
-                ->relationship('step2.document', 'document')
+                ->options(
+                    CppCheckoutStep4::query()
+                        ->select('document')
+                        ->distinct()
+                        ->pluck('document', 'document')
+                        ->toArray()
+                ),
 
             ])
             ->actions([
