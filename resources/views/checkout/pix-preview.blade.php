@@ -14,6 +14,7 @@
 
     <!-- QR Code centralizado -->
     <div class="flex-1 flex items-center justify-center w-full">
+        @dd($this->step4)
         @if($this->base_qrcode || (isset($this->step4->base_qrcode) && $this->step4->base_qrcode))
 
             <img
