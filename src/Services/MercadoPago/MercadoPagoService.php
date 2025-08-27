@@ -42,12 +42,14 @@ class MercadoPagoService
                 ]
             ]);
 
+            $arrayPayment = json_decode(json_encode($payment), true);
+
             return [
                 'id'             => $payment->id ?? null,
                 'qr_code_base64' => $payment->point_of_interaction->transaction_data->qr_code_base64 ?? null,
                 'qr_code'        => $payment->point_of_interaction->transaction_data->qr_code ?? null,
                 'status'         => $payment->status ?? null,
-                "data"           => $payment ?? null
+                "data"           => $arrayPayment ?? null
             ];
         } catch (MPApiException $e) {
 
@@ -110,14 +112,14 @@ class MercadoPagoService
                 "date_of_expiration" => $due_date,
             ]);
 
-            dd($payment->transaction_details);
+            $arrayPayment = json_decode(json_encode($payment), true);
 
             return [
-                'id'      => $arrayPayment["id"] ?? null,
-                /*'barcode' => $payment->transaction_details->barcode->content ?? null,
+                'id'      => $payment->id ?? null,
+                'barcode' => $payment->transaction_details->barcode->content ?? null,
                 'pdf'     => $payment->transaction_details->external_resource_url ?? null,
-                'status'  => $payment["status"] ?? null,
-                'data'    => $payment ?? null,*/
+                'status'  => $payment->status ?? null,
+                'data'    => $arrayPayment ?? null,
             ];
         } catch (MPApiException $e) {
             $code = $e->getApiResponse()->getStatusCode();
@@ -165,10 +167,12 @@ class MercadoPagoService
                 "external_reference" => $external_id
             ]);
 
+            $arrayPayment = json_decode(json_encode($payment), true);
+
             return [
                 'id'     => $payment->id ?? null,
                 'status' => $payment->status ?? null,
-                'data'   => $payment ?? null,
+                'data'   => $arrayPayment ?? null,
             ];
         } catch (\Throwable $e) {
             logger("Erro ao gerar pagamento cartão: " . $e->getMessage());
