@@ -808,12 +808,20 @@ class InternalCheckoutWizard extends Page implements HasForms
                     }
                 }
 
+                $data = [
+                    "value"            => $this->total_price,
+                    "description"      => "Pagamento via pix",
+                    "external_id"      => $this->checkout->id,
+                    "payer_email"      => $step2->email,
+                    "payer_first_name" => $step2->first_name . " " . $step2->last_name,
+                ];
+
                 $return = $mp->gerarPagamentoPix(
-                    value: $this->total_price,
-                    description: "Pagamento via pix",
-                    external_id: $this->checkout->id,
-                    payer_email: $step2->email,
-                    payer_first_name: $step2->first_name . " " . $step2->last_name,
+                    value: $data["value"],
+                    description: $data["description"],
+                    external_id: $data["external_id"],
+                    payer_email: $data["payer_email"],
+                    payer_first_name: $data["payer_first_name"],
                 );
 
                 logger($return);
@@ -823,8 +831,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                     $this->checkout->step4()->updateOrCreate([
                         "cpp_checkout_id" => $this->checkout->id,
                     ], [
-                        "base_qrcode" => $return["qr_code_base64"],
-                        "url_qrcode"  => $return["qr_code"],
+                        "base_qrcode"   => $return["qr_code_base64"],
+                        "url_qrcode"    => $return["qr_code"],
+                        "request_data"  => json_encode($data),
+                        "response_data" => json_encode($return),
                     ]);
 
                     $this->checkout->update([
