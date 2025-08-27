@@ -16,12 +16,13 @@
     <div class="flex-1 flex items-center justify-center w-full">
         @if($this->base_qrcode ?? $this->step4->base_qrcode ?? null)
 
-            <img
-                src="data:image/png;base64,{{ $this->base_qrcode ?? $this->step4->base_qrcode ?? null }}"
-                alt="QR Code PIX"
-                width="150"
-                height="150"
-                class="
+            <div style="width: 150px;height: 150px">
+                <img
+                    src="data:image/png;base64,{{ $this->base_qrcode ?? $this->step4->base_qrcode ?? null }}"
+                    alt="QR Code PIX"
+                    width="150"
+                    height="150"
+                    class="
                     w-full
                     max-w-[150px]
                     h-auto
@@ -32,35 +33,40 @@
                     dark:border-white/30
                     shadow-md
                 "
-            />
+                />
+            </div>
 
         @else
 
-            <div
-                class="
-                    w-full
-                    max-w-[150px]
-                    h-[150px]
-                    bg-gray-200
-                    dark:bg-gray-700
-                    flex
-                    items-center
-                    justify-center
-                    rounded-lg
-                    border
-                    border-gray-300
-                    dark:border-white/30
-                    shadow-md
-                "
-            >
-                <img
-                    src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
-                    alt="PIX Logo"
-                    width="150"
-                    height="150"
-                    class="w-[120px] h-[120px] object-contain"
-                />
-                Aguardando para gerar pix ...
+            <div style="width: 150px;height: 150px">
+
+                <div
+                    class="
+                        w-full
+                        max-w-[150px]
+                        h-[150px]
+                        bg-gray-200
+                        dark:bg-gray-700
+                        flex
+                        items-center
+                        justify-center
+                        rounded-lg
+                        border
+                        border-gray-300
+                        dark:border-white/30
+                        shadow-md
+                    "
+                >
+                    <img
+                        src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
+                        alt="PIX Logo"
+                        width="150"
+                        height="150"
+                        class="w-[120px] h-[120px] object-contain"
+                    />
+                    Aguardando para gerar pix ...
+                </div>
+
             </div>
 
         @endif
