@@ -5,10 +5,13 @@ namespace Shieldforce\CheckoutPayment\Resources;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
+use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\CreateCppCheckout;
@@ -54,7 +57,33 @@ class CppCheckoutResource extends Resource
                         }
                         return implode(', ', $tags);
                     })
-                    ->html()
+                    ->html(),
+
+                TextColumn::make('total_price')
+                    ->label('Valor')
+                    ->description("Valor da cobrança!")
+                    ->formatStateUsing(function ($state) {
+                        return number_format($state, 2, ",", ".");
+                    }),
+
+                TextColumn::make('due_date')
+                    ->label('Vencimento')
+                    ->formatStateUsing(function ($state) {
+                        return Carbon::createFromFormat('Y-m-d', $state)
+                            ->format('d/m/Y');
+                    }),
+
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->formatStateUsing(function ($state) {
+                        return number_format($state, 2, ",", ".");
+                    }),
+
+                BadgeColumn::make('type')
+                    ->formatStateUsing(fn($state, $record) => StatusCheckoutEnum::labelEnum($state))
+                    ->color(fn($state, $record) => StatusCheckoutEnum::colorEnum($state))
+                    ->label('Tipo')
+                    ->sortable(),
 
             ])
             ->filters([

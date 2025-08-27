@@ -22,4 +22,40 @@ enum StatusCheckoutEnum: int
             self::erro       => 'Erro',
         };
     }
+
+    public function color(): string
+    {
+        return match ($this) {
+            self::criado     => 'success',
+            self::enviado    => 'primary',
+            self::perdido    => 'danger',
+            self::pendente   => 'warning',
+            self::finalizado => 'success',
+            self::erro       => 'danger',
+        };
+    }
+
+    public static function labelEnum($state): string
+    {
+        return match ($state) {
+            self::criado->value     => self::criado->label(),
+            self::enviado->value    => self::enviado->label(),
+            self::perdido->value    => self::perdido->label(),
+            self::pendente->value   => self::pendente->label(),
+            self::finalizado->value => self::finalizado->label(),
+            self::erro->value       => self::erro->label(),
+        };
+    }
+
+    public static function colorEnum($state): string
+    {
+        return match ($state) {
+            self::criado->value     => self::criado->color(),
+            self::enviado->value    => self::enviado->color(),
+            self::perdido->value    => self::perdido->color(),
+            self::pendente->value   => self::pendente->color(),
+            self::finalizado->value => self::finalizado->color(),
+            self::erro->value       => self::erro->color(),
+        };
+    }
 }
