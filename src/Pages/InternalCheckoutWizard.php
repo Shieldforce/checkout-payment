@@ -145,8 +145,8 @@ class InternalCheckoutWizard extends Page implements HasForms
         if (!Auth::check()) {
             filament()
                 ->getCurrentPanel()
-                ->topNavigation()
-                ->topbar(false);
+                ->topNavigation()/*
+                ->topbar(false)*/;
         }
 
         $this->cppGateways = CppGateways::where('active', true)->first();
