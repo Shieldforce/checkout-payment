@@ -828,7 +828,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
             $date = now()->setDay($dueDay)->format('Y-m-d');
 
-            dd($date);
+            dd($date, $dueDay);
             $date_of_expiration = "{}T23:59:59.000-04:00";
 
 
