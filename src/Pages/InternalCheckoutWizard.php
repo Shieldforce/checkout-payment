@@ -822,13 +822,18 @@ class InternalCheckoutWizard extends Page implements HasForms
             $dueDay   = $this->checkout->referencable->due_day;
             $fullName = (isset($step2->first_name) ? $step2->first_name . " " : "") .
                 (isset($step2->last_name) ? $step2->last_name : "");
-            $data     = [
+            $date     = now()
+                ->setDay($dueDay)
+                ->endOfDay()
+                ->format('Y-m-d\TH:i:s.000P');
+
+            $data = [
                 "value"            => $this->total_price ?? null,
                 "description"      => "Pagamento via pix",
                 "external_id"      => $this->checkout->id ?? null,
                 "payer_email"      => $step2->email ?? null,
                 "payer_first_name" => $fullName ?? null,
-                "due_date"         => now()->format("Y-m-{$dueDay}TH:i:s"),
+                "due_date"         => $date,
             ];
 
             if ($method == MethodPaymentEnum::pix->value && isset($data["value"])) {
