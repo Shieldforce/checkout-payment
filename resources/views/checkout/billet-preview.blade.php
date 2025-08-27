@@ -2,7 +2,7 @@
     @if($this->url_billet ?? $this->step4->url_billet ?? null)
         <iframe
             src="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
-            class="w-full min-h-[600px] rounded-lg border border-gray-300 dark:border-white/30 shadow-md">
+            class="w-full min-h-screen rounded-lg border border-gray-300 dark:border-white/30 shadow-md">
         </iframe>
 
 
