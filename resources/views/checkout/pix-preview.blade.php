@@ -16,7 +16,7 @@
     <div class="flex-1 flex items-center justify-center w-full">
         @if($this->base_qrcode ?? $this->step4->base_qrcode ?? null)
 
-            <div style="width: 150px;height: 150px">
+            <div style="width: 200px;height: 200px">
                 <img
                     src="data:image/png;base64,{{ $this->base_qrcode ?? $this->step4->base_qrcode ?? null }}"
                     alt="QR Code PIX"
@@ -38,7 +38,7 @@
 
         @else
 
-            <div style="width: 150px;height: 150px">
+            <div style="width: 200px;height: 200px">
 
                 <div
                     class="
