@@ -46,7 +46,7 @@ class CppCheckoutResource extends Resource
                 TextColumn::make('referencable_type')
                     ->label('TRT')
                     ->formatStateUsing(function ($state) {
-                        return str_replace(["\\App\\Models"], [""], $state);
+                        return str_replace(["\\App\\Models\\"], [""], $state);
                     })
                     ->description("Tipo de ref."),
 
