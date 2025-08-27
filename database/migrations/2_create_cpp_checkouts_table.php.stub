@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->integer('method_checked')->nullable();
             $table->uuid('uuid')->nullable();
             $table->decimal('total_price', 10, 2)->nullable();
+            $table->date('due_date')->nullable();
             $table->integer('status')
                 ->default(
                     \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::criado->value

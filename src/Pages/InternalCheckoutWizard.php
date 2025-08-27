@@ -824,7 +824,9 @@ class InternalCheckoutWizard extends Page implements HasForms
             $step2              = $this->checkout?->step2()?->first();
             $fullName           = (isset($step2->first_name) ? $step2->first_name . " " : "") .
                 (isset($step2->last_name) ? $step2->last_name : "");
-            $date_of_expiration = now()->addDays(3)->format("Y-m-d\TH:i:s") . ".000-04:00";
+
+            $date_of_expiration = Carbon::createFromFormat("Y-m-d", $this->checkout->due_date)
+                    ->format("Y-m-d\TH:i:s") . ".000-04:00";
 
             $data = [
                 "value"            => (float)$this->total_price ?? null,

@@ -21,6 +21,7 @@ class CppCheckout extends Model
         "methods",
         "method_checked",
         "total_price",
+        "due_date",
         "status",
         "return_gateway",
         "startOnStep",

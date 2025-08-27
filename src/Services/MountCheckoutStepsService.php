@@ -26,7 +26,8 @@ class MountCheckoutStepsService
             MethodPaymentEnum::credit_card->value,
             MethodPaymentEnum::pix->value,
             MethodPaymentEnum::billet->value,
-        ]
+        ],
+        protected       $due_date
     ) {}
 
     public function handle()
@@ -40,6 +41,7 @@ class MountCheckoutStepsService
                 'referencable_id'   => $this->model->id,
                 'referencable_type' => $this->model::class,
                 'methods'           => json_encode($this->requiredMethods),
+                'due_date'          => $this->due_date,
             ], []);
         }
 
