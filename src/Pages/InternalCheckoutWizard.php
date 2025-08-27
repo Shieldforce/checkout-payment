@@ -2,6 +2,8 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
+use DateTime;
+use DateTimeZone;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
@@ -822,7 +824,12 @@ class InternalCheckoutWizard extends Page implements HasForms
             $dueDay   = $this->checkout->referencable->due_day;
             $fullName = (isset($step2->first_name) ? $step2->first_name . " " : "") .
                 (isset($step2->last_name) ? $step2->last_name : "");
-            $date     = date("Y-m-{$dueDay}\TH:i:s.000") . 'Z';;
+
+            $timezone = new DateTimeZone('America/Sao_Paulo');
+            $dt       = new DateTime("now", $timezone);
+            $dt->setDate((int)$dt->format('Y'), (int)$dt->format('m'), $dueDay);
+            $date = $dt->format('Y-m-d\TH:i:s.000P');
+
 
             $data = [
                 "value"            => $this->total_price ?? null,
