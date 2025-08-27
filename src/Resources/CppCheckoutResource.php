@@ -95,19 +95,23 @@ class CppCheckoutResource extends Resource
             ->filters([
 
                 SelectFilter::make('document')
-                ->label('CPF/CNPJ')
-                ->options(
-                    CppCheckoutStep2::query()
-                        ->select('document')
-                        ->distinct()
-                        ->pluck('document', 'document')
-                        ->toArray()
-                )
-                ->query(function ($query, $value) {
-                    $query->whereHas('step2', function ($subQuery) use ($value) {
-                        $subQuery->where('document', $value);
-                    });
-                }),
+                    ->label('CPF/CNPJ')
+                    ->options(
+                        CppCheckoutStep2::query()
+                            ->whereNotNull('document')
+                            ->select('document')
+                            ->distinct()
+                            ->orderBy('document')
+                            ->pluck('document', 'document')
+                            ->toArray()
+                    )
+                    ->query(function ($query, array $data) {
+                        if (! empty($data['value'])) {
+                            $query->whereHas('step2', function ($subQuery) use ($data) {
+                                $subQuery->where('document', $data['value']);
+                            });
+                        }
+                    }),
 
             ], Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
