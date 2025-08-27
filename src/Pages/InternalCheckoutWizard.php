@@ -441,18 +441,6 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->visible($this->step4->visible ?? true)
                 ->afterValidation(function (Get $get) {
 
-                    dd([
-                        'card_number'       => str_replace(' ', '', $get('card_number')),
-                        'card_validate'     => $get('card_validate'),
-                        'card_payer_name'   => $get('card_payer_name'),
-                        'card_token'        => $get('card_token'),
-                        'installments'      => $get('installments'),
-                        'payment_method_id' => $get('payment_method_id'),
-                        'base_qrcode'       => $get('base_qrcode'),
-                        'url_qrcode'        => $get('url_qrcode'),
-                        'url_billet'        => $get('url_billet'),
-                    ]);
-
                     try {
                         $step4Update = $this->checkout->step4()->updateOrCreate(
                             ['cpp_checkout_id' => $this->checkout->id],
@@ -846,7 +834,6 @@ class InternalCheckoutWizard extends Page implements HasForms
                     $this->checkout->update([
                         "total_price"    => $this->total_price,
                         "status"         => StatusCheckoutEnum::pendente->value,
-                        "method_checked" => $method,
                     ]);
 
                     $this->base_qrcode = $return["qr_code_base64"];
