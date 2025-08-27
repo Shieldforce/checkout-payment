@@ -828,7 +828,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 "external_id"      => $this->checkout->id ?? null,
                 "payer_email"      => $step2->email ?? null,
                 "payer_first_name" => $fullName ?? null,
-                "due_date"         => now()->format("Y-m-{$dueDay}\TH:i:sP"),
+                "due_date"         => now()->format("Y-m-{$dueDay}TH:i:s"),
             ];
 
             if ($method == MethodPaymentEnum::pix->value && isset($data["value"])) {
