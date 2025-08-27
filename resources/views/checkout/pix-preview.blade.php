@@ -38,7 +38,7 @@
 
         @else
 
-            <div style="width: 200px;height: 200px">
+
 
                 <div
                     class="
@@ -57,16 +57,16 @@
                         shadow-md
                     "
                 >
-                    <img
-                        src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
-                        alt="PIX Logo"
-                        width="150"
-                        height="150"
-                        class="w-[120px] h-[120px] object-contain"
-                    />
-                    Aguardando para gerar pix ...
-                </div>
-
+                    <div style="width: 200px;height: 200px">
+                        <img
+                            src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
+                            alt="PIX Logo"
+                            width="150"
+                            height="150"
+                            class="w-[120px] h-[120px] object-contain"
+                        />
+                        Aguardando para gerar pix ...
+                    </div>
             </div>
 
         @endif
