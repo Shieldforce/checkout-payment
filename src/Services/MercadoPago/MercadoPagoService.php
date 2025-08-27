@@ -77,6 +77,7 @@ class MercadoPagoService
         $due_date,
         $document,
         $document_type,
+        $address = []
     )
     {
         try {
@@ -96,6 +97,14 @@ class MercadoPagoService
                         // CPF CNPJ
                         "number" => $document
                     ],
+                    "address"        => [
+                        "zip_code"      => $address["zip_code"],
+                        "city"          => $address["city"],
+                        "street_name"   => $address["street_name"],
+                        "street_number" => $address["street_number"],
+                        "neighborhood"  => $address["neighborhood"],
+                        "federal_unit"  => $address["federal_unit"]
+                    ]
                 ],
                 "date_of_expiration" => $due_date,
             ]);
