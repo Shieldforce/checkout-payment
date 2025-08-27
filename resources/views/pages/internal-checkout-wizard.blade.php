@@ -13,12 +13,11 @@
             /*Key mp*/
             const accessKey = "{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}";
 
-            {{--Regra para cartao de credito do mercado pago--------------------------------------}}
             document.addEventListener('DOMContentLoaded', async () => {
 
                 const btn = document.querySelector('#btn-next-step')
 
-                // Função que inicializa o cardForm
+                {{--Regra para cartao de credito do mercado pago--------------------------------------}}
                 const initCardForm = () => {
 
                     const mp = new window.MercadoPago(accessKey, {
@@ -255,15 +254,8 @@
                         }
                     }
                 })
-            })
 
-
-            {{--Regra para pix do mercado pago--------------------------------------}}
-            document.addEventListener('DOMContentLoaded', async () => {
-
-                const btn = document.querySelector('#btn-next-step')
-
-                // Função que inicializa o mp pix
+                {{--Regra para pix do mercado pago--------------------------------------}}
                 const initPixForm = () => {
 
                 }
@@ -271,16 +263,16 @@
                 // Inicializa quando a aba de pix for visível
                 document.getElementById('method_checked').addEventListener('change', function(event) {
 
-                    btn.type = 'button'
-                    btn.textContent = 'Próximo'
-                    btn.disabled = true
-                    btn.classList.add('opacity-50', 'cursor-not-allowed')
-                    btn.classList.add('disabled')
-
                     const valueSelectMethodCheck = parseInt(event.target.value)
                     const pixEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value }}")
 
                     if (valueSelectMethodCheck === pixEnum) {
+
+                        btn.type = 'button'
+                        btn.textContent = 'Próximo'
+                        btn.disabled = true
+                        btn.classList.add('opacity-50', 'cursor-not-allowed')
+                        btn.classList.add('disabled')
 
                         setTimeout(function() {
                             pixForm = initPixForm()
