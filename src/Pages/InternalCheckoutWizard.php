@@ -825,12 +825,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             $dueDay   = $this->checkout->referencable->due_day;
             $fullName = (isset($step2->first_name) ? $step2->first_name . " " : "") .
                 (isset($step2->last_name) ? $step2->last_name : "");
-
             $date_of_expiration = now()->format("Y-m-{$dueDay}\TH:i:s") . ".000-04:00";
-            dd($date_of_expiration);
-
-            //$date_of_expiration = "{$date}T23:59:59.000-04:00";
-
 
             $data = [
                 "value"            => $this->total_price ?? null,
@@ -838,7 +833,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 "external_id"      => $this->checkout->id ?? null,
                 "payer_email"      => $step2->email ?? null,
                 "payer_first_name" => $fullName ?? null,
-                "due_date"         => $date,
+                "due_date"         => $date_of_expiration,
             ];
 
             if ($method == MethodPaymentEnum::pix->value && isset($data["value"])) {
