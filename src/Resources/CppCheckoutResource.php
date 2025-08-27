@@ -5,6 +5,7 @@ namespace Shieldforce\CheckoutPayment\Resources;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\CreateCppCheckout;
@@ -32,13 +33,17 @@ class CppCheckoutResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('referencable_type')
+                ->label('ID/Tab/Referência'),
+                TextColumn::make('referencable_type')
+                    ->label('Tipo/Tab/Referência'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
