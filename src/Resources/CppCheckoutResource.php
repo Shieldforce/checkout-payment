@@ -136,6 +136,27 @@ class CppCheckoutResource extends Resource
                         }
                     }),
 
+                SelectFilter::make('first_name')
+                    ->label('Primeiro Nome')
+                    ->searchable()
+                    ->optionsLimit(5)
+                    ->options(
+                        CppCheckoutStep2::query()
+                            ->whereNotNull('first_name')
+                            ->select('first_name')
+                            ->distinct()
+                            ->orderBy('first_name')
+                            ->pluck('first_name', 'first_name')
+                            ->toArray()
+                    )
+                    ->query(function ($query, array $data) {
+                        if (! empty($data['value'])) {
+                            $query->whereHas('step2', function ($subQuery) use ($data) {
+                                $subQuery->where('first_name', $data['value']);
+                            });
+                        }
+                    }),
+
             ], Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\ActionGroup::make([
