@@ -2,6 +2,7 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
+use Carbon\Carbon;
 use DateTime;
 use DateTimeZone;
 use Filament\Forms\Components\Actions\Action;
@@ -825,10 +826,10 @@ class InternalCheckoutWizard extends Page implements HasForms
             $fullName = (isset($step2->first_name) ? $step2->first_name . " " : "") .
                 (isset($step2->last_name) ? $step2->last_name : "");
 
-            $timezone = new DateTimeZone('America/Sao_Paulo');
-            $dt       = new DateTime("now", $timezone);
-            $dt->setDate((int)$dt->format('Y'), (int)$dt->format('m'), $dueDay);
-            $date = $dt->format('Y-m-d\TH:i:s.000P');
+            $date = Carbon::createFromFormat('d/m/Y', $dueDay)->format('Y-m-d');
+
+            dd($date);
+            $date_of_expiration = "{}T23:59:59.000-04:00";
 
 
             $data = [
