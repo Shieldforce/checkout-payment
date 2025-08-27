@@ -67,7 +67,7 @@ class CppCheckoutResource extends Resource
                     ->label('Valor')
                     ->description("Valor da cobrança!")
                     ->formatStateUsing(function ($state) {
-                        return number_format($state, 2, ",", ".");
+                        return "R$ ". number_format($state, 2, ",", ".");
                     }),
 
                 TextColumn::make('due_date')
