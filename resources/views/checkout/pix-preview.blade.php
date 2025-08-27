@@ -13,7 +13,7 @@
         @if($this->base_qrcode)
 
             <img
-                src="{{ $this->base_qrcode }}"
+                src="data:image/png;base64,{{ $this->base_qrcode }}"
                 alt="QR Code PIX"
                 class="
                     w-full
