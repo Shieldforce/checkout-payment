@@ -104,7 +104,7 @@ class CppCheckoutResource extends Resource
                         ->toArray()
                 ),
 
-            ], Tables\Enums\FiltersLayout::AboveContent)
+            ], Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\ActionGroup::make([
 
