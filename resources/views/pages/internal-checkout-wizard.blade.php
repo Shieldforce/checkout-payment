@@ -271,6 +271,12 @@
                 // Inicializa quando a aba de pix for visível
                 document.getElementById('method_checked').addEventListener('change', function(event) {
 
+                    btn.type = 'button'
+                    btn.textContent = 'Próximo'
+                    btn.disabled = true
+                    btn.classList.add('opacity-50', 'cursor-not-allowed')
+                    btn.classList.add('disabled')
+
                     const valueSelectMethodCheck = parseInt(event.target.value)
                     const pixEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value }}")
 

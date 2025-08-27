@@ -850,9 +850,9 @@ class InternalCheckoutWizard extends Page implements HasForms
             }
 
             if ($method == MethodPaymentEnum::billet->value) {
-
                 dd("nada");
             }
+
         } catch (Throwable $e) {
             DB::rollBack();
 
