@@ -822,10 +822,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             $dueDay   = $this->checkout->referencable->due_day;
             $fullName = (isset($step2->first_name) ? $step2->first_name . " " : "") .
                 (isset($step2->last_name) ? $step2->last_name : "");
-            $date     = now()
-                ->setDay($dueDay)
-                ->endOfDay()
-                ->format('Y-m-d\TH:i:s.000P');
+            $date     = date("Y-m-{$dueDay}\TH:i:s.000") . 'Z';;
 
             $data = [
                 "value"            => $this->total_price ?? null,
