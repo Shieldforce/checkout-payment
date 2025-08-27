@@ -115,6 +115,27 @@ class CppCheckoutResource extends Resource
                         }
                     }),
 
+                SelectFilter::make('email')
+                    ->label('Email')
+                    ->searchable()
+                    ->optionsLimit(5)
+                    ->options(
+                        CppCheckoutStep2::query()
+                            ->whereNotNull('email')
+                            ->select('email')
+                            ->distinct()
+                            ->orderBy('email')
+                            ->pluck('email', 'email')
+                            ->toArray()
+                    )
+                    ->query(function ($query, array $data) {
+                        if (! empty($data['value'])) {
+                            $query->whereHas('step2', function ($subQuery) use ($data) {
+                                $subQuery->where('email', $data['value']);
+                            });
+                        }
+                    }),
+
             ], Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\ActionGroup::make([
