@@ -904,12 +904,12 @@ class InternalCheckoutWizard extends Page implements HasForms
                     address: $data["address"]
                 );
 
-                if (!isset($return["transaction_details"]["external_resource_url"])) {
+                if (!isset($return["pdf"])) {
 
                     $this->checkout->step4()->updateOrCreate([
                         "cpp_checkout_id" => $this->checkout->id,
                     ], [
-                        "url_billet"    => $return["transaction_details"]["external_resource_url"],
+                        "url_billet"    => $return["pdf"],
                         "request_data"  => json_encode($data),
                         "response_data" => json_encode($return),
                     ]);
@@ -918,7 +918,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         "status" => StatusCheckoutEnum::pendente->value,
                     ]);
 
-                    $this->url_billet = $return["transaction_details"]["external_resource_url"];
+                    $this->url_billet = $return["pdf"];
 
                     DB::commit();
 
