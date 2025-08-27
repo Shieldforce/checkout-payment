@@ -45,6 +45,9 @@ class CppCheckoutResource extends Resource
                     ->description("Id de ref."),
                 TextColumn::make('referencable_type')
                     ->label('TRT')
+                    ->formatStateUsing(function ($state) {
+                        return str_replace(["\\App\\Models"], [""], $state);
+                    })
                     ->description("Tipo de ref."),
 
                 TextColumn::make('methods')
