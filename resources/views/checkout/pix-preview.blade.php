@@ -1,4 +1,8 @@
 <div
+    x-data="{
+        first_name: @entangle('first_name').live,
+        last_name: @entangle('last_name').live
+    }"
     class="relative w-full max-w-md mx-auto h-[300px] rounded-xl shadow-lg p-4 sm:p-6 select-none flex flex-col justify-between
            bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors"
 >
@@ -10,10 +14,10 @@
 
     <!-- QR Code centralizado -->
     <div class="flex-1 flex items-center justify-center w-full">
-        @if($this->base_qrcode)
+        @if($this->base_qrcode || (isset($this->step4->base_qrcode) && $this->step4->base_qrcode))
 
             <img
-                src="data:image/png;base64,{{ $this->base_qrcode }}"
+                src="data:image/png;base64,{{ $this->base_qrcode || (isset($this->step4->base_qrcode) && $this->step4->base_qrcode) }}"
                 alt="QR Code PIX"
                 class="
                     w-full
@@ -84,3 +88,4 @@
         </div>
     </div>
 </div>
+
