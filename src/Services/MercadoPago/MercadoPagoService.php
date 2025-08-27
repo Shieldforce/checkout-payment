@@ -81,6 +81,8 @@ class MercadoPagoService
     )
     {
         try {
+            dd($address);
+
             $client = new PaymentClient();
 
             $payment = $client->create([
