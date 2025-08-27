@@ -131,8 +131,14 @@ class MountCheckoutStepsService
         ]);
 
         if ($up) {
+            $sum = 0;
+            foreach ($items as $item) {
+                $sum += $item['price'] * $item['quantity'];
+            }
+
             $this->cppCheckout->update([
                 'startOnStep' => 2,
+                'total_price' => $sum,
             ]);
         }
 

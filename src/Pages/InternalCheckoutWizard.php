@@ -798,15 +798,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             if ($method == MethodPaymentEnum::pix->value) {
 
                 $mp    = new MercadoPagoService();
-                $step1 = $this->checkout?->step1()?->first();
                 $step2 = $this->checkout?->step2()?->first();
-
-                if (isset($step1->id) && isset($step1->items)) {
-                    $items = json_decode($step1->items, true);
-                    foreach ($items as $item) {
-                        $this->total_price += $item['price'] * $item['quantity'];
-                    }
-                }
 
                 $data = [
                     "value"            => $this->total_price,
