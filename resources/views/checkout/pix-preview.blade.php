@@ -19,11 +19,11 @@
             <img
                 src="data:image/png;base64,{{ $this->base_qrcode ?? $this->step4->base_qrcode ?? null }}"
                 alt="QR Code PIX"
-                width="200"
-                height="200"
+                width="150"
+                height="150"
                 class="
                     w-full
-                    max-w-[200px]
+                    max-w-[150px]
                     h-auto
                     object-contain
                     rounded-lg
@@ -39,8 +39,8 @@
             <div
                 class="
                     w-full
-                    max-w-[200px]
-                    h-[200px]
+                    max-w-[150px]
+                    h-[150px]
                     bg-gray-200
                     dark:bg-gray-700
                     flex
@@ -56,8 +56,8 @@
                 <img
                     src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
                     alt="PIX Logo"
-                    width="200"
-                    height="200"
+                    width="150"
+                    height="150"
                     class="w-[120px] h-[120px] object-contain"
                 />
                 Aguardando para gerar pix ...
