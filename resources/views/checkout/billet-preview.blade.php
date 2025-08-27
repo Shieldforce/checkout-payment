@@ -4,10 +4,12 @@
             src="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
             class="w-full h-[500px] rounded-lg border border-gray-300 dark:border-white/30 shadow-md">
         </iframe>--}}
-        <iframe
-            src="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
-            class="w-full min-h-screen rounded-lg border border-gray-300 dark:border-white/30 shadow-md">
-        </iframe>
+        <div class="w-screen p-0 m-0">
+            <iframe
+                src="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
+                class="w-screen h-[800px] border-0">
+            </iframe>
+        </div>
 
         <a
             href="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
