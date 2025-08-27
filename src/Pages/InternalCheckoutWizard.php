@@ -808,8 +808,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         try {
 
-            dd($this->checkout->referencable);
-
             if (isset($this->step4->base_qrcode)) {
                 $this->base_qrcode = $this->step4->base_qrcode;
                 $this->url_qrcode  = $this->step4->url_qrcode;
@@ -818,6 +816,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
             $mp       = new MercadoPagoService();
             $step2    = $this->checkout?->step2()?->first();
+            $dueDay   = $this->checkout->referencable->due_day;
             $fullName = (isset($step2->first_name) ? $step2->first_name . " " : "") .
                 (isset($step2->last_name) ? $step2->last_name : "");
             $data     = [
@@ -826,7 +825,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 "external_id"      => $this->checkout->id ?? null,
                 "payer_email"      => $step2->email ?? null,
                 "payer_first_name" => $fullName ?? null,
-                "due_date"         => null,
+                "due_date"         => now()->format("Y-m-{$dueDay}"),
             ];
 
             if ($method == MethodPaymentEnum::pix->value && isset($data["value"])) {
@@ -874,6 +873,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                     payer_first_name: $data["payer_first_name"],
                     due_date: $data["due_date"],
                 );
+
+                dd($return);
             }
 
         } catch (Throwable $e) {
