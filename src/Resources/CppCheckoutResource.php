@@ -2,13 +2,16 @@
 
 namespace Shieldforce\CheckoutPayment\Resources;
 
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
@@ -156,6 +159,30 @@ class CppCheckoutResource extends Resource
                             });
                         }
                     }),
+
+                Filter::make('vencimento')
+                    ->columnSpan(2)
+                    ->form([
+                        DatePicker::make('due_date_start')
+                            ->label('Vencimento (Inicial)'),
+                        DatePicker::make('due_date_end')
+                            ->label('Vencimento (Final)'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['due_date_start'],
+                                function (Builder $query, $date): Builder {
+                                    return $query->whereDate('due_date', '>=', $date);
+                                }
+                            )
+                            ->when(
+                                $data['due_date_end'],
+                                function (Builder $query, $date): Builder {
+                                    return $query->whereDate('due_date', '<=', $date);
+                                }
+                            );
+                    })->columns(2),
 
             ], Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
