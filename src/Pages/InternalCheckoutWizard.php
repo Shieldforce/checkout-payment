@@ -623,12 +623,12 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                         // Pix method ---
                         TextInput::make('base_qrcode')
-                            ->label('Base QR Code')
+                            ->label('QR CodeB')
                             ->disabled()
                             ->dehydrated()
                             ->default($this->base_qrcode ?? $this->step4->base_qrcode ?? null),
                         TextInput::make('url_qrcode')
-                            ->label('Base QR Code')
+                            ->label('QR Code')
                             ->disabled()
                             ->dehydrated()
                             ->default($this->url_qrcode ?? $this->step4->url_qrcode ?? null),
