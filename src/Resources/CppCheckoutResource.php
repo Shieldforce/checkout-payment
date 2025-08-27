@@ -65,7 +65,7 @@ class CppCheckoutResource extends Resource
 
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                    Tables\Actions\ButtonAction::make("checkout")
+                    Tables\Actions\Action::make("checkout")
                         ->icon("heroicon-o-credit-card")
                         ->url(function (Model $record) {
                             return InternalCheckoutWizard::getUrl(["cppCheckoutUuid" => $record->uuid]);
