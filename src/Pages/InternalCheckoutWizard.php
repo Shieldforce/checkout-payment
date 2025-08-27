@@ -826,10 +826,10 @@ class InternalCheckoutWizard extends Page implements HasForms
             $fullName = (isset($step2->first_name) ? $step2->first_name . " " : "") .
                 (isset($step2->last_name) ? $step2->last_name : "");
 
-            $date = now()->format("Y-m-{$dueDay}");
+            $date_of_expiration = now()->format("Y-m-{$dueDay}TH:i:s") . ".000-04:00";
+            dd($date_of_expiration);
 
-            dd($date,$dueDay);
-            $date_of_expiration = "{}T23:59:59.000-04:00";
+            //$date_of_expiration = "{$date}T23:59:59.000-04:00";
 
 
             $data = [
