@@ -7,8 +7,10 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
+use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\CreateCppCheckout;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\EditCppCheckout;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\ListCppCheckouts;
@@ -46,7 +48,7 @@ class CppCheckoutResource extends Resource
                     ->description('Métodos liberados')
                     ->formatStateUsing(function ($state) {
                         $array = json_decode($state, true);
-                        $tags = [];
+                        $tags  = [];
                         foreach ($array as $key => $value) {
                             $tags[] = MethodPaymentEnum::from($value)->label();
                         }
@@ -62,10 +64,10 @@ class CppCheckoutResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ButtonAction::make("checkout")
-                ->url(function(CppCheckout $checkout) {
-                    return route(' filament.admin.checkout.external', $checkout);
-                })
-                ->openUrlInNewTab(),
+                    ->url(function (Model $record) {
+                        return InternalCheckoutWizard::getUrl(["cppCheckout" => $record]);
+                    })
+                    ->openUrlInNewTab(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
