@@ -193,7 +193,7 @@ class CppCheckoutResource extends Resource
                     Tables\Actions\Action::make("Link de Pagamento")
                         ->icon("heroicon-o-credit-card")
                         ->url(function (Model $record) {
-                            return InternalCheckoutWizard::getUrl(["cppCheckoutUuid" => $record->uuid]);
+                            return "/admin/checkout/{$record->uuid}";
                         })
                         ->openUrlInNewTab(),
 
