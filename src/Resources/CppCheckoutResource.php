@@ -7,6 +7,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -91,7 +92,11 @@ class CppCheckoutResource extends Resource
 
             ])
             ->filters([
-                //
+
+                SelectFilter::make('step2.document')
+                ->label('CPF/CNPJ')
+                ->relationship('step2.document', 'document')
+
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
