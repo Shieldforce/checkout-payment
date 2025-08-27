@@ -109,7 +109,9 @@ class MercadoPagoService
                 "date_of_expiration" => $due_date,
             ]);
 
-            dd((array)$payment);
+            $arrayPayment = json_decode(json_encode($payment), true);
+
+            dd($arrayPayment);
 
             return [
                 'id'      => $payment->id ?? null,
