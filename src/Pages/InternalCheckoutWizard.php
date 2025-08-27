@@ -623,9 +623,9 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                         // Pix method ---
                         Hidden::make('base_qrcode')
-                        ->default($this->base_qrcode ?? $this->step4->base_qrcode ?? null),
+                            ->default($this->base_qrcode ?? $this->step4->base_qrcode ?? null),
                         Hidden::make('url_qrcode')
-                        ->default($this->url_qrcode ?? $this->step4->url_qrcode ?? null),
+                            ->default($this->url_qrcode ?? $this->step4->url_qrcode ?? null),
 
                     ])->visible(fn(Get $get) => $get('method_checked') === MethodPaymentEnum::pix->value),
 
@@ -797,6 +797,12 @@ class InternalCheckoutWizard extends Page implements HasForms
         DB::beginTransaction();
 
         try {
+            if (isset($this->step4->base_qrcode)) {
+                $this->base_qrcode = $this->step4->base_qrcode;
+                $this->url_qrcode  = $this->step4->url_qrcode;
+                return;
+            }
+
             if ($method == MethodPaymentEnum::pix->value) {
 
                 $mp    = new MercadoPagoService();
@@ -832,8 +838,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ]);
 
                     $this->checkout->update([
-                        "total_price"    => $this->total_price,
-                        "status"         => StatusCheckoutEnum::pendente->value,
+                        "total_price" => $this->total_price,
+                        "status"      => StatusCheckoutEnum::pendente->value,
                     ]);
 
                     $this->base_qrcode = $return["qr_code_base64"];
