@@ -15,7 +15,7 @@ enum TypeStepEnum: int
             self::items          => 'Carrinho',
             self::dados_pessoais => 'Dados Pessoais',
             self::dados_endereco => 'Dados de Endereco',
-            self::pagamento      => 'pagamento',
+            self::pagamento      => 'Pagamento',
         };
     }
 }

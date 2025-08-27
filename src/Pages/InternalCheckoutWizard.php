@@ -26,6 +26,7 @@ use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
+use Shieldforce\CheckoutPayment\Enums\TypeStepEnum;
 use Shieldforce\CheckoutPayment\Jobs\ProcessBillingCreditCardJob;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep1;
