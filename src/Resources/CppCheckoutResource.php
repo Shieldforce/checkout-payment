@@ -34,11 +34,29 @@ class CppCheckoutResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('referencable_id')
-                ->label('TRI')
-                ->description("Id de referência"),
+                    ->label('TRI')
+                    ->description("Id de referência"),
                 TextColumn::make('referencable_type')
                     ->label('TRT')
                     ->description("Tipo de referência"),
+
+                TextColumn::make('methods')
+                    ->label('Métodos/Pag')
+                    ->description('Métodos de pagamentos liberados')
+                    ->formatStateUsing(function ($state) {
+                        if (!is_array($state)) {
+                            return null;
+                        }
+                        return collect($state)
+                            ->map(function ($item) {
+                                $msg = "<span class='inline-flex items-center px-2 py-0.5 rounded-full";
+                                $msg .= "text-xs font-medium bg-green-100 text-green-800 mr-1 mb-1'>{$item}</span>";
+                                return $msg;
+                            })
+                            ->join('');
+                    })
+                    ->html()
+
             ])
             ->filters([
                 //
