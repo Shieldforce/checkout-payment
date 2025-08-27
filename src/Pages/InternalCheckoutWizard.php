@@ -441,6 +441,18 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->visible($this->step4->visible ?? true)
                 ->afterValidation(function (Get $get) {
 
+                    dd([
+                        'card_number'       => str_replace(' ', '', $get('card_number')),
+                        'card_validate'     => $get('card_validate'),
+                        'card_payer_name'   => $get('card_payer_name'),
+                        'card_token'        => $get('card_token'),
+                        'installments'      => $get('installments'),
+                        'payment_method_id' => $get('payment_method_id'),
+                        'base_qrcode'       => $get('base_qrcode'),
+                        'url_qrcode'        => $get('url_qrcode'),
+                        'url_billet'        => $get('url_billet'),
+                    ]);
+
                     try {
                         $step4Update = $this->checkout->step4()->updateOrCreate(
                             ['cpp_checkout_id' => $this->checkout->id],
@@ -622,16 +634,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ->columnSpanFull(),
 
                         // Pix method ---
-                        TextInput::make('base_qrcode')
-                            ->label('QR CodeB')
-                            ->disabled()
-                            ->dehydrated()
-                            ->default($this->base_qrcode ?? $this->step4->base_qrcode ?? null),
-                        TextInput::make('url_qrcode')
-                            ->label('QR Code')
-                            ->disabled()
-                            ->dehydrated()
-                            ->default($this->url_qrcode ?? $this->step4->url_qrcode ?? null),
+                        Hidden::make('base_qrcode')
+                        ->default($this->base_qrcode ?? $this->step4->base_qrcode ?? null),
+                        Hidden::make('url_qrcode')
+                        ->default($this->url_qrcode ?? $this->step4->url_qrcode ?? null),
 
                     ])->visible(fn(Get $get) => $get('method_checked') === MethodPaymentEnum::pix->value),
 
