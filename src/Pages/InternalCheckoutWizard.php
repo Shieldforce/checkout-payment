@@ -870,8 +870,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ]);
 
                     $this->checkout->update([
-                        "total_price" => $this->total_price,
-                        "status"      => StatusCheckoutEnum::pendente->value,
+                        "status" => StatusCheckoutEnum::pendente->value,
                     ]);
 
                     $this->base_qrcode = $return["qr_code_base64"];
@@ -905,16 +904,34 @@ class InternalCheckoutWizard extends Page implements HasForms
                     address: $data["address"]
                 );
 
-                dd($return);
+                if (!isset($return["transaction_details"]["external_resource_url"])) {
 
-                /*if(!isset($return["qr_code_base64"])) {
+                    $this->checkout->step4()->updateOrCreate([
+                        "cpp_checkout_id" => $this->checkout->id,
+                    ], [
+                        "url_billet"    => $return["transaction_details"]["external_resource_url"],
+                        "request_data"  => json_encode($data),
+                        "response_data" => json_encode($return),
+                    ]);
+
+                    $this->checkout->update([
+                        "status" => StatusCheckoutEnum::pendente->value,
+                    ]);
+
+                    $this->url_billet = $return["transaction_details"]["external_resource_url"];
+
+                    DB::commit();
+
+                }
+
+                if (!isset($return["transaction_details"]["external_resource_url"])) {
                     $this->checkout->step4()->updateOrCreate([
                         "cpp_checkout_id" => $this->checkout->id,
                     ], [
                         "request_data"  => json_encode($data),
                         "response_data" => json_encode($return),
                     ]);
-                }*/
+                }
             }
 
         } catch (Throwable $e) {

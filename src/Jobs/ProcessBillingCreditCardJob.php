@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Errors\ProcessBillingCreditCardJobException;
+use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Notifications\CheckoutStatusUpdated;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
@@ -19,7 +20,7 @@ class ProcessBillingCreditCardJob implements ShouldQueue
     use Dispatchable, Queueable, Batchable;
 
     public MercadoPagoService $mp;
-    public                    $sum = 0;
+    public CppCheckout        $checkout;
 
     public function __construct(public CppCheckoutStep4 $step4)
     {
@@ -29,20 +30,6 @@ class ProcessBillingCreditCardJob implements ShouldQueue
     public function handle(): void
     {
         $this->checkout = $this?->step4?->ccpCheckout;
-        $step1          = $this->checkout?->step1()?->first();
-
-        if (isset($step1->id) && isset($step1->items)) {
-            $items = json_decode($step1->items, true);
-            foreach ($items as $item) {
-                $this->sum += $item['price'] * $item['quantity'];
-            }
-        }
-
-        if (!isset($this->sum) && $this->sum == 0) {
-            throw new ProcessBillingCreditCardJobException(
-                "Não existem itens a serem cobrados ou o preço final não foi gerado"
-            );
-        }
 
         if ($this->checkout->method_checked == MethodPaymentEnum::credit_card->value) {
             $this->creditCard();
