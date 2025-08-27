@@ -65,7 +65,7 @@ class CppCheckoutResource extends Resource
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ButtonAction::make("checkout")
                     ->url(function (Model $record) {
-                        return InternalCheckoutWizard::getUrl(["cppCheckout" => $record]);
+                        return InternalCheckoutWizard::getUrl(["cppCheckoutUuid" => $record->uuid]);
                     })
                     ->openUrlInNewTab(),
             ])
