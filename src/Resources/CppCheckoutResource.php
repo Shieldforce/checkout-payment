@@ -33,10 +33,12 @@ class CppCheckoutResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('referencable_id')
+                ->label('TRI')
+                ->description("Id de referência"),
                 TextColumn::make('referencable_type')
-                ->label('ID/Tab/Referência'),
-                TextColumn::make('referencable_type')
-                    ->label('Tipo/Tab/Referência'),
+                    ->label('TRT')
+                    ->description("Tipo de referência"),
             ])
             ->filters([
                 //
