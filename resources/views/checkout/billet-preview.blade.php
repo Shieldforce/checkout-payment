@@ -1,15 +1,10 @@
 <div class="flex flex-col items-center justify-center p-4">
     @if($this->url_billet ?? $this->step4->url_billet ?? null)
-        {{--<iframe
+        <iframe
             src="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
-            class="w-full h-[500px] rounded-lg border border-gray-300 dark:border-white/30 shadow-md">
-        </iframe>--}}
-        <div class="w-screen p-0 m-0">
-            <iframe
-                src="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
-                class="w-screen h-[800px] border-0">
-            </iframe>
-        </div>
+            class="w-full h-[600px] rounded-lg border border-gray-300 dark:border-white/30 shadow-md">
+        </iframe>
+
 
         <a
             href="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
