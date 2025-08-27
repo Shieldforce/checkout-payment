@@ -93,7 +93,7 @@ class CppCheckoutResource extends Resource
             ])
             ->filters([
 
-                SelectFilter::make('step2.document')
+                SelectFilter::make('document')
                 ->label('CPF/CNPJ')
                 ->relationship('step2.document', 'document')
 
