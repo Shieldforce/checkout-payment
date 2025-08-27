@@ -44,8 +44,8 @@ class CppCheckoutResource extends Resource
                     ->label('Métodos/Pag')
                     ->description('Métodos de pagamentos liberados')
                     ->formatStateUsing(function ($state) {
-                        dd($state);
-                        return implode(', ', $state);
+                        $array = json_decode($state, true);
+                        return implode(', ', $array);
                     })
                     ->html()
 
