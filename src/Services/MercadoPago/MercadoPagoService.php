@@ -101,7 +101,7 @@ class MercadoPagoService
                         "zip_code"      => $address["zip_code"],
                         "city"          => $address["city"] ?? null,
                         "street_name"   => $address["street_name"] ?? null,
-                        "street_number" => !empty($address["street_number"]) ? $address["street_number"] : "s/n",,
+                        "street_number" => !empty($address["street_number"]) ? $address["street_number"] : "s/n",
                         "neighborhood"  => $address["neighborhood"] ?? null,
                         "federal_unit"  => $address["federal_unit"] ?? "RJ"
                     ]
