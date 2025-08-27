@@ -109,6 +109,8 @@ class MercadoPagoService
                 "date_of_expiration" => $due_date,
             ]);
 
+            dd($payment);
+
             return [
                 'id'      => $payment->id ?? null,
                 'barcode' => $payment->point_of_interaction->transaction_data->barcode ?? null,
