@@ -822,9 +822,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
             $mp                 = new MercadoPagoService();
             $step2              = $this->checkout?->step2()?->first();
-            $fullName           = (isset($step2->first_name) ? $step2->first_name . " " : "") .
-                (isset($step2->last_name) ? $step2->last_name : "");
-
             $date_of_expiration = Carbon::createFromFormat("Y-m-d", $this->checkout->due_date)
                     ->format("Y-m-d\TH:i:s") . ".000-04:00";
 
@@ -833,7 +830,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                 "description"      => "Pagamento via pix",
                 "external_id"      => $this->checkout->id ?? null,
                 "payer_email"      => $step2->email ?? null,
-                "payer_first_name" => $fullName ?? null,
+                "payer_first_name" => $step2->first_name ?? null,
+                "payer_last_name"  => $step2->last_name ?? null,
                 "due_date"         => $date_of_expiration,
                 "document"         => $step2->document,
                 "document_type"    => TypePeopleEnum::from($step2->people_type)->mpLabel(),
@@ -891,6 +889,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     external_id: $data["external_id"],
                     payer_email: $data["payer_email"],
                     payer_first_name: $data["payer_first_name"],
+                    payer_last_name: $data["payer_last_name"],
                     due_date: $data["due_date"],
                     document: $data["document"],
                     document_type: $data["document_type"],

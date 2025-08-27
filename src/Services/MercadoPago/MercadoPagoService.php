@@ -73,6 +73,7 @@ class MercadoPagoService
         $external_id,
         $payer_email,
         $payer_first_name,
+        $payer_last_name,
         $due_date,
         $document,
         $document_type,
@@ -89,6 +90,7 @@ class MercadoPagoService
                 "payer"              => [
                     "email"          => $payer_email,
                     "first_name"     => $payer_first_name,
+                    "last_name"      => $payer_last_name,
                     "identification" => [
                         "type"   => $document_type,
                         // CPF CNPJ
