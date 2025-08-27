@@ -1,4 +1,4 @@
-<div class="flex flex-col items-center justify-center p-4">
+<div class="flex flex-col items-center justify-center">
     @if($this->url_billet ?? $this->step4->url_billet ?? null)
         <iframe
             src="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
