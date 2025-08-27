@@ -94,7 +94,7 @@ class CppCheckoutResource extends Resource
             ])
             ->filters([
 
-                SelectFilter::make('step2.document')
+                SelectFilter::make('document')
                 ->label('CPF/CNPJ')
                 ->options(
                     CppCheckoutStep2::query()
@@ -102,7 +102,12 @@ class CppCheckoutResource extends Resource
                         ->distinct()
                         ->pluck('document', 'document')
                         ->toArray()
-                ),
+                )
+                ->query(function ($query, $value) {
+                    $query->whereHas('step2', function ($subQuery) use ($value) {
+                        $subQuery->where('document', $value);
+                    });
+                }),
 
             ], Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
