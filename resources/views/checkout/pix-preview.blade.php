@@ -14,11 +14,10 @@
 
     <!-- QR Code centralizado -->
     <div class="flex-1 flex items-center justify-center w-full">
-        @dd($this->base_qrcode || $this->step4->base_qrcode || null )
-        @if($this->base_qrcode || $this->step4->base_qrcode || null)
+        @if($this->base_qrcode ?? $this->step4->base_qrcode ?? null)
 
             <img
-                src="data:image/png;base64,{{ $this->base_qrcode || $this->step4->base_qrcode || null }}"
+                src="data:image/png;base64,{{ $this->base_qrcode ?? $this->step4->base_qrcode ?? null }}"
                 alt="QR Code PIX"
                 class="
                     w-full
