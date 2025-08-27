@@ -61,7 +61,7 @@ class CppCheckoutResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ButtonAction::make()
+                Tables\Actions\ButtonAction::make("checkout")
                 ->url(function(CppCheckout $checkout) {
                     return route(' filament.admin.checkout.external', $checkout);
                 })
