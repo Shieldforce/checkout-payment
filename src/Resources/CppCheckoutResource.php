@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
+use Shieldforce\CheckoutPayment\Enums\TypeStepEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\CreateCppCheckout;
@@ -77,6 +78,12 @@ class CppCheckoutResource extends Resource
                     ->formatStateUsing(fn($state, $record) => StatusCheckoutEnum::labelEnum($state))
                     ->color(fn($state, $record) => StatusCheckoutEnum::colorEnum($state))
                     ->label('Status')
+                    ->sortable(),
+
+                BadgeColumn::make('startOnStep')
+                    ->formatStateUsing(fn($state, $record) => TypeStepEnum::from($state)->label())
+                    ->color("success")
+                    ->label('Passo Atual')
                     ->sortable(),
 
             ])
