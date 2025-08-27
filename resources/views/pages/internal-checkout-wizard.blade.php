@@ -277,6 +277,29 @@
 
                     }
                 })
+
+                {{--Regra para boleto do mercado pago--------------------------------------}}
+                const initBilletForm = () => {
+
+                }
+
+                // Inicializa quando a aba de pix for visível
+                document.getElementById('method_checked').addEventListener('change', function(event) {
+
+                    const valueSelectMethodCheck = parseInt(event.target.value)
+                    const billetEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::billet->value }}")
+
+                    if (valueSelectMethodCheck === billetEnum) {
+
+                        setTimeout(function() {
+                            billetForm = initBilletForm()
+
+                            window.Livewire.dispatch('method-checked-change', { method: 4 });
+
+                        }, 1000)
+
+                    }
+                })
             })
         </script>
 
