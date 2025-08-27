@@ -73,7 +73,9 @@ class MercadoPagoService
         $external_id,
         $payer_email,
         $payer_first_name,
-        $due_date
+        $due_date,
+        $document,
+        $document_type,
     )
     {
         try {
@@ -85,8 +87,13 @@ class MercadoPagoService
                 "payment_method_id"  => "bolbradesco",
                 "external_reference" => $external_id,
                 "payer"              => [
-                    "email"      => $payer_email,
-                    "first_name" => $payer_first_name
+                    "email"          => $payer_email,
+                    "first_name"     => $payer_first_name,
+                    "identification" => [
+                        "type"   => $document_type,
+                        // CPF CNPJ
+                        "number" => $document
+                    ],
                 ],
                 "date_of_expiration" => $due_date,
             ]);

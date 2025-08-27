@@ -14,4 +14,12 @@ enum TypePeopleEnum: int
             self::J => 'Jurídica',
         };
     }
+
+    public function mpLabel(): string
+    {
+        return match ($this) {
+            self::F => 'CPF',
+            self::J => 'CNPJ',
+        };
+    }
 }

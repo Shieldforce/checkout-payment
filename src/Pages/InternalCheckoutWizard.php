@@ -820,12 +820,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                 return;
             }
 
-            $mp       = new MercadoPagoService();
-            $step2    = $this->checkout?->step2()?->first();
-            $dueDay   = $this->checkout->referencable->due_day;
-            $fullName = (isset($step2->first_name) ? $step2->first_name . " " : "") .
+            $mp                 = new MercadoPagoService();
+            $step2              = $this->checkout?->step2()?->first();
+            $fullName           = (isset($step2->first_name) ? $step2->first_name . " " : "") .
                 (isset($step2->last_name) ? $step2->last_name : "");
-            $date_of_expiration = now()->format("Y-m-{$dueDay}\TH:i:s") . ".000-04:00";
+            $date_of_expiration = now()->addDays(3)->format("Y-m-d\TH:i:s") . ".000-04:00";
 
             $data = [
                 "value"            => (float)$this->total_price ?? null,
@@ -834,6 +833,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                 "payer_email"      => $step2->email ?? null,
                 "payer_first_name" => $fullName ?? null,
                 "due_date"         => $date_of_expiration,
+                "document"         => $step2->document,
+                "document_type"    => TypePeopleEnum::from($step2->people_type)->mpLabel(),
             ];
 
             if ($method == MethodPaymentEnum::pix->value && isset($data["value"])) {
@@ -870,7 +871,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     DB::commit();
                 }
 
-                if(!isset($return["qr_code_base64"])) {
+                if (!isset($return["qr_code_base64"])) {
                     $this->checkout->step4()->updateOrCreate([
                         "cpp_checkout_id" => $this->checkout->id,
                     ], [
@@ -889,6 +890,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                     payer_email: $data["payer_email"],
                     payer_first_name: $data["payer_first_name"],
                     due_date: $data["due_date"],
+                    document: $data["document"],
+                    document_type: $data["document_type"],
                 );
 
                 dd($return);
