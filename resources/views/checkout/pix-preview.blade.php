@@ -19,6 +19,8 @@
             <img
                 src="data:image/png;base64,{{ $this->base_qrcode ?? $this->step4->base_qrcode ?? null }}"
                 alt="QR Code PIX"
+                width="250"
+                height="250"
                 class="
                     w-full
                     max-w-[200px]
