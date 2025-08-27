@@ -268,12 +268,6 @@
 
                     if (valueSelectMethodCheck === pixEnum) {
 
-                        btn.type = 'button'
-                        btn.textContent = 'Próximo'
-                        btn.disabled = true
-                        btn.classList.add('opacity-50', 'cursor-not-allowed')
-                        btn.classList.add('disabled')
-
                         setTimeout(function() {
                             pixForm = initPixForm()
 
