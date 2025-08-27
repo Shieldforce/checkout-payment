@@ -43,8 +43,10 @@ class CppCheckoutResource extends Resource
                 TextColumn::make('methods')
                     ->label('Métodos/Pag')
                     ->description('Métodos de pagamentos liberados')
-                    ->toggleable(),
-
+                    ->formatStateUsing(function ($state) {
+                        return implode(', ', $state);
+                    })
+                    ->html()
 
             ])
             ->filters([
