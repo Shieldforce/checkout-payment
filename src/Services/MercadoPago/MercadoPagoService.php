@@ -110,12 +110,14 @@ class MercadoPagoService
                 "date_of_expiration" => $due_date,
             ]);
 
+            dd($payment->transaction_details);
+
             return [
                 'id'      => $arrayPayment["id"] ?? null,
-                'barcode' => $payment->transaction_details->barcode->content ?? null,
+                /*'barcode' => $payment->transaction_details->barcode->content ?? null,
                 'pdf'     => $payment->transaction_details->external_resource_url ?? null,
                 'status'  => $payment["status"] ?? null,
-                'data'    => $payment ?? null,
+                'data'    => $payment ?? null,*/
             ];
         } catch (MPApiException $e) {
             $code = $e->getApiResponse()->getStatusCode();
