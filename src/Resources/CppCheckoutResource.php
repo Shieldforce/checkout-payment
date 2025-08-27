@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeStepEnum;
@@ -225,5 +226,10 @@ class CppCheckoutResource extends Resource
     public static function getNavigationGroup(): ?string
     {
         return config()->get('checkout-payment.sidebar_group');
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::check();
     }
 }

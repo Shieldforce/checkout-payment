@@ -18,6 +18,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
@@ -194,5 +195,10 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     protected function getTableBulkActions(): array
     {
         return [];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::check();
     }
 }
