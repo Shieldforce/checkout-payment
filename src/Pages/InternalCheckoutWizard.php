@@ -622,8 +622,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ->columnSpanFull(),
 
                         // Pix method ---
-                        Hidden::make('base_qrcode'),
-                        Hidden::make('url_qrcode'),
+                        Hidden::make('base_qrcode')
+                        ->default($this->base_qrcode ?? $this->step4->base_qrcode ?? null),
+                        Hidden::make('url_qrcode')
+                        ->default($this->url_qrcode ?? $this->step4->url_qrcode ?? null),
 
                     ])->visible(fn(Get $get) => $get('method_checked') === MethodPaymentEnum::pix->value),
 
