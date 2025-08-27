@@ -20,7 +20,7 @@ class CppCheckoutResource extends Resource
     protected static ?string $label           = "Checkout";
     protected static ?string $pluralLabel     = "Checkouts";
     protected static ?string $navigationLabel = "Checkouts";
-    protected static ?string $slug            = "checkouts";
+    protected static ?string $slug            = "checkouts-payment";
 
     public static function form(Form $form): Form
     {
@@ -36,14 +36,14 @@ class CppCheckoutResource extends Resource
             ->columns([
                 TextColumn::make('referencable_id')
                     ->label('TRI')
-                    ->description("Id de referência"),
+                    ->description("Id de ref."),
                 TextColumn::make('referencable_type')
                     ->label('TRT')
-                    ->description("Tipo de referência"),
+                    ->description("Tipo de ref."),
 
                 TextColumn::make('methods')
                     ->label('Métodos/Pag')
-                    ->description('Métodos de pagamentos liberados')
+                    ->description('Métodos liberados')
                     ->formatStateUsing(function ($state) {
                         $array = json_decode($state, true);
                         $tags = [];
@@ -61,6 +61,11 @@ class CppCheckoutResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ButtonAction::make()
+                ->url(function(CppCheckout $checkout) {
+                    return route(' filament.admin.checkout.external', $checkout);
+                })
+                ->openUrlInNewTab(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
