@@ -77,7 +77,7 @@ class MercadoPagoService
         $due_date,
         $document,
         $document_type,
-        $address = []
+        $address
     )
     {
         try {
