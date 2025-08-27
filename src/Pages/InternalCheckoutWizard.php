@@ -869,6 +869,15 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                     DB::commit();
                 }
+
+                if(!isset($return["qr_code_base64"])) {
+                    $this->checkout->step4()->updateOrCreate([
+                        "cpp_checkout_id" => $this->checkout->id,
+                    ], [
+                        "request_data"  => json_encode($data),
+                        "response_data" => json_encode($return),
+                    ]);
+                }
             }
 
             if ($method == MethodPaymentEnum::billet->value) {
@@ -883,6 +892,15 @@ class InternalCheckoutWizard extends Page implements HasForms
                 );
 
                 dd($return);
+
+                /*if(!isset($return["qr_code_base64"])) {
+                    $this->checkout->step4()->updateOrCreate([
+                        "cpp_checkout_id" => $this->checkout->id,
+                    ], [
+                        "request_data"  => json_encode($data),
+                        "response_data" => json_encode($return),
+                    ]);
+                }*/
             }
 
         } catch (Throwable $e) {
