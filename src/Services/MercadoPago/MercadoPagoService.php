@@ -81,8 +81,6 @@ class MercadoPagoService
     )
     {
         try {
-            dd($address);
-
             $client = new PaymentClient();
 
             $payment = $client->create([
@@ -101,11 +99,11 @@ class MercadoPagoService
                     ],
                     "address"        => [
                         "zip_code"      => $address["zip_code"],
-                        "city"          => $address["city"],
-                        "street_name"   => $address["street_name"],
-                        "street_number" => $address["street_number"],
-                        "neighborhood"  => $address["neighborhood"],
-                        "federal_unit"  => $address["federal_unit"]
+                        "city"          => $address["city"] ?? null,
+                        "street_name"   => $address["street_name"] ?? null,
+                        "street_number" => $address["street_number"] ?? "s/n",
+                        "neighborhood"  => $address["neighborhood"] ?? null,
+                        "federal_unit"  => $address["federal_unit"] ?? "RJ"
                     ]
                 ],
                 "date_of_expiration" => $due_date,
