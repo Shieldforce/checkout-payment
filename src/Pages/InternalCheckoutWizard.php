@@ -827,10 +827,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                 (isset($step2->last_name) ? $step2->last_name : "");
             $date_of_expiration = now()->format("Y-m-{$dueDay}\TH:i:s") . ".000-04:00";
 
-            dd($date_of_expiration);
 
             $data = [
-                "value"            => $this->total_price ?? null,
+                "value"            => (float)$this->total_price ?? null,
                 "description"      => "Pagamento via pix",
                 "external_id"      => $this->checkout->id ?? null,
                 "payer_email"      => $step2->email ?? null,
