@@ -8,6 +8,7 @@ enum TypeStepEnum: int
     case dados_pessoais = 2;
     case dados_endereco = 3;
     case pagamento      = 4;
+    case finalizado     = 5;
 
     public function label(): string
     {
@@ -16,6 +17,7 @@ enum TypeStepEnum: int
             self::dados_pessoais => 'Dados Pessoais',
             self::dados_endereco => 'Dados de Endereco',
             self::pagamento      => 'Pagamento',
+            self::finalizado     => 'Finalizado',
         };
     }
 }
