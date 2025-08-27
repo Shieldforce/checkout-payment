@@ -96,6 +96,8 @@ class CppCheckoutResource extends Resource
 
                 SelectFilter::make('document')
                     ->label('CPF/CNPJ')
+                    ->searchable()
+                    ->optionsLimit(5)
                     ->options(
                         CppCheckoutStep2::query()
                             ->whereNotNull('document')
