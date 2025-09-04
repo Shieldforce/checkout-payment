@@ -208,6 +208,8 @@ class MercadoPagoService
                 )
             );
 
+            logger($payments);
+
             $elements = $payments->elements ?? [];
 
             $result = [];
