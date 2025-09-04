@@ -64,6 +64,9 @@
 @endphp
 
 @if(!empty($attempts))
+
+    @dd($attempts);
+
     <hr>
 
     <tbody class="bg-white divide-y divide-gray-100">
@@ -91,11 +94,11 @@
     </tbody>
 @else
     <tbody>
-    <tr>
-        <td colspan="4" class="text-center text-gray-500 py-6">
-            Nenhuma tentativa de pagamento encontrada.
-        </td>
-    </tr>
+        <tr>
+            <td colspan="4" class="text-center text-gray-500 py-6">
+                Nenhuma tentativa de pagamento encontrada.
+            </td>
+        </tr>
     </tbody>
 @endif
 
