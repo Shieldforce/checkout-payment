@@ -46,20 +46,18 @@ class ProcessBillingCreditCardJob implements ShouldQueue
         $step4          = $this->checkout?->step4()?->first();
 
         $data = [
-            "value"             => (float)$this->total_price ?? null,
-            "description"       => "Pagamento via pix",
+            "value"             => (float)$this->checkout->total_price ?? null,
             "external_id"       => $this->checkout->id ?? null,
             "payer_email"       => $step2->email ?? null,
             "payer_first_name"  => $step2->first_name ?? null,
             "token_card"        => $step4->card_token ?? null,
             "installments"      => $step4->installments ?? null,
             "payment_method_id" => $step4->payment_method_id ?? null,
-
         ];
 
         $return = $mp->gerarPagamentoCartao(
             value: $data["value"],
-            description: $data["description"],
+            description: "Pagamento via Cartão",
             external_id: $data["external_id"],
             payer_email: $data["payer_email"],
             payer_first_name: $data["payer_first_name"],

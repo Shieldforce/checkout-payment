@@ -810,6 +810,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         try {
 
+            $textType = "";
+
             if (
                 isset($this->step4->base_qrcode) &&
                 $method == MethodPaymentEnum::pix->value
@@ -835,7 +837,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
             $data = [
                 "value"            => (float)$this->total_price ?? null,
-                "description"      => "Pagamento via pix",
                 "external_id"      => $this->checkout->id ?? null,
                 "payer_email"      => $step2->email ?? null,
                 "payer_first_name" => $step2->first_name ?? null,
@@ -857,7 +858,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                 $return = $mp->gerarPagamentoPix(
                     value: $data["value"],
-                    description: $data["description"],
+                    description: "Pagamento via Pix",
                     external_id: $data["external_id"],
                     payer_email: $data["payer_email"],
                     payer_first_name: $data["payer_first_name"],
@@ -900,7 +901,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                 $return = $mp->gerarPagamentoBoleto(
                     value: $data["value"],
-                    description: $data["description"],
+                    description: "Pagamento via Boleto",
                     external_id: $data["external_id"],
                     payer_email: $data["payer_email"],
                     payer_first_name: $data["payer_first_name"],

@@ -13,6 +13,8 @@
             /*Key mp*/
             const accessKey = "{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}";
 
+            //const valor = "{{ $this->checkout->total_price }}";
+
             document.addEventListener('DOMContentLoaded', async () => {
 
                 const btn = document.querySelector('#btn-next-step')
@@ -30,8 +32,13 @@
 
                     var installments = 1
 
+                    if(!valor) {
+                        alert("fdfdf");
+                        return;
+                    }
+
                     return mp.cardForm({
-                        amount: '100.00',
+                        amount: valor,
                         autoMount: true,
                         form: {
                             id: 'form-checkout-wizard',
