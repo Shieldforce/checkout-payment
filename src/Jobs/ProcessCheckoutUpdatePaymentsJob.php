@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
+use Shieldforce\CheckoutPayment\Notifications\CheckoutStatusUpdated;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 
 class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
@@ -24,6 +25,7 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
     {
         logger("ProcessCheckoutUpdatePaymentsJob, checkout id: {$this->checkout->id} - " . date("Y-m-d H:i:s"));
         $payments = $this->mp->buscarPagamentoPorExternalId($this->checkout->id);
+
         $this->checkout->update([
             "return_gateway" => $payments,
         ]);
