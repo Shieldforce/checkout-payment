@@ -13,6 +13,11 @@
             src="https://docs.google.com/viewer?embedded=true&url={{ urlencode($billetUrl) }}"
             class="w-full min-h-screen rounded-lg border border-gray-300 dark:border-white/30 shadow-md"
         ></iframe>
+
+        <a href="{{ $billetUrl }}" target="_blank"
+           class="mt-3 text-blue-600 dark:text-blue-400 underline">
+            Baixar boleto em PDF
+        </a>
     @else
         <img
             src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
