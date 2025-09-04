@@ -12,6 +12,11 @@ class CheckoutPaymentServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'checkout-payment');
 
+        // Permite publicar para que o dev possa sobrescrever
+        $this->publishes([
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/checkout-payment'),
+        ], 'views');
+
         $this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);
             $schedule->job(new AllCheckoutsUpdatesPaymentsJob())->hourly();

@@ -113,7 +113,6 @@
 
 --}}
 
-
 <div class="flex flex-col md:flex-row items-stretch justify-center min-h-[60vh] bg-white dark:bg-gray-800 shadow rounded-xl overflow-hidden">
 
     {{-- Coluna da esquerda (imagem e loading) --}}
