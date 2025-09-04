@@ -53,50 +53,50 @@
         </div>
     </div>
 
-    {{-- Histórico de Tentativas --}}
-    <div class="mt-12">
-        <h3 class="text-xl font-semibold mb-4">Histórico de Tentativas de Pagamento</h3>
+    {{-- Atualização automática --}}
+    @if(isset($this->checkout->startOnStep) && $this->checkout->startOnStep == 5)
+        <div wire:poll.30s="refreshStatusCheckout"></div>
+    @endif
+</div>
 
-        <div class="overflow-x-auto rounded-lg shadow border border-gray-200">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+<hr>
+{{-- Histórico de Tentativas --}}
+<div class="mt-12">
+    <h3 class="text-xl font-semibold mb-4">Histórico de Tentativas de Pagamento</h3>
+
+    <div class="overflow-x-auto rounded-lg shadow border border-gray-200">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">#</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Forma</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Status</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Data</th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-100">
+            @foreach(json_decode($this->checkout->return_gateway ?? "{}", true) as $i => $attempt)
                 <tr>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">#</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Forma</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Status</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Data</th>
-                </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-100">
-                @foreach(json_decode($this->checkout->return_gateway ?? "{}", true) as $i => $attempt)
-                    <tr>
-                        <td class="px-6 py-4 text-sm text-gray-700">{{ $i+1 }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-700">
-                            {{ ucfirst($attempt['method']) }}
-                        </td>
-                        <td class="px-6 py-4 text-sm">
+                    <td class="px-6 py-4 text-sm text-gray-700">{{ $i+1 }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-700">
+                        {{ ucfirst($attempt['method']) }}
+                    </td>
+                    <td class="px-6 py-4 text-sm">
                             <span class="px-3 py-1 rounded-full text-xs font-semibold
                                 @if($attempt['status'] === 'approved') bg-green-100 text-green-700
                                 @elseif($attempt['status'] === 'rejected') bg-red-100 text-red-700
                                 @else bg-orange-100 text-orange-700 @endif">
                                 {{ ucfirst($attempt['status']) }}
                             </span>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-500">
-                            {{ isset($attempt['data']['date_created'])
-                                ? \Carbon\Carbon::parse($attempt['data']['date_created'])->format('d/m/Y H:i')
-                                : '-' }}
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                        {{ isset($attempt['data']['date_created'])
+                            ? \Carbon\Carbon::parse($attempt['data']['date_created'])->format('d/m/Y H:i')
+                            : '-' }}
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
     </div>
-
-
-    {{-- Atualização automática --}}
-    @if(isset($this->checkout->startOnStep) && $this->checkout->startOnStep == 5)
-        <div wire:poll.30s="refreshStatusCheckout"></div>
-    @endif
 </div>
