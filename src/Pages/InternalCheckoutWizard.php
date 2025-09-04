@@ -155,6 +155,8 @@ class InternalCheckoutWizard extends Page implements HasForms
         if ($cppCheckoutUuid) {
             $this->checkout = CppCheckout::where('uuid', $cppCheckoutUuid)->first();
 
+            dd(json_decode($this->checkout->return_gateway, true));
+
             $this->method_checked = $this->checkout->method_checked ?? null;
             $this->paymentMethods = $this?->checkout?->methods
                 ? array_map(function ($method) {
@@ -462,6 +464,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         if ($step4Update) {
                             $this->checkout->update([
                                 'startOnStep'    => 5,
+                                'status'         => StatusCheckoutEnum::pendente->value,
                                 'method_checked' => $get('method_checked'),
                             ]);
 
