@@ -13,7 +13,7 @@ class CheckoutPaymentServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'checkout-payment');
 
         $this->publishes([
-            __DIR__ . '/../resources/views' => resource_path('/../vendor/checkout-payment'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/checkout-payment'),
         ], 'views');
 
         $this->app->booted(function () {
