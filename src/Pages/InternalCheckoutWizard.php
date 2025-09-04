@@ -818,6 +818,14 @@ class InternalCheckoutWizard extends Page implements HasForms
                 return;
             }
 
+            if (
+                isset($this->step4->url_billet) &&
+                $method == MethodPaymentEnum::billet->value
+            ) {
+                $this->url_billet = $this->step4->url_billet;
+                return;
+            }
+
             $mp                 = new MercadoPagoService();
             $step2              = $this->checkout?->step2()?->first();
             $step3              = $this->checkout?->step3()?->first();
@@ -903,13 +911,13 @@ class InternalCheckoutWizard extends Page implements HasForms
                 );
 
                 if (
-                    isset($return["transaction_details"]["external_resource_url"]) ||
+                    isset($return["data"]["transaction_details"]["external_resource_url"]) ||
                     isset($return["pdf"])
                 ) {
 
-                    $pdf = $return["transaction_details"]["external_resource_url"] ?? $return["pdf"];
+                    $pdf = $return["data"]["transaction_details"]["external_resource_url"] ?? $return["pdf"];
 
-                    dd($return["transaction_details"]["external_resource_url"], $return);
+                    dd($return["data"]["transaction_details"]["external_resource_url"], $return);
 
                     $this->checkout->step4()->updateOrCreate([
                         "cpp_checkout_id" => $this->checkout->id,
