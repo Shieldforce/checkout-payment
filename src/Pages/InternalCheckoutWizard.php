@@ -133,6 +133,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public ?bool $qrcode_yes;
 
+    public ?array $attempts;
+
     public array $paymentMethods = [
         MethodPaymentEnum::debit_card,
         MethodPaymentEnum::pix,
@@ -155,7 +157,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         if ($cppCheckoutUuid) {
             $this->checkout = CppCheckout::where('uuid', $cppCheckoutUuid)->first();
 
-            /*dd(json_decode($this->checkout->return_gateway, true));*/
+            $this->attempts = json_decode($this->checkout->return_gateway ?? '[]', true);
 
             $this->method_checked = $this->checkout->method_checked ?? null;
             $this->paymentMethods = $this?->checkout?->methods
