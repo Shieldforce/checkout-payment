@@ -189,37 +189,45 @@ class MercadoPagoService
         return $client->get($paymentId);
     }
 
+    use MercadoPago\Client\Payment\PaymentClient;
+    use MercadoPago\Client\Payment\MPSearchRequest;
+    use MercadoPago\Exceptions\MPApiException;
+
     public function buscarPagamentoPorExternalId($externalId)
     {
         if (!$externalId) {
-            return null;
+            return [];
         }
 
         try {
             $client = new PaymentClient();
 
-            // Lista pagamentos filtrando pelo external_reference
-            $payments = $client->search(request: new MPSearchRequest(
-                50,
-                0,
-                filters: [
-                    'external_reference' => $externalId,
-                ]
-            ));
+            $payments = $client->search(
+                request: new MPSearchRequest(
+                    50,
+                    0,
+                    filters: [
+                        'external_reference' => $externalId,
+                    ]
+                )
+            );
 
-            $payment = $payments[0] ?? null;
+            $elements = $payments->elements ?? [];
 
-            if (!$payment) {
-                return null;
+            $result = [];
+
+            foreach ($elements as $payment) {
+                $arrayPayment = json_decode(json_encode($payment), true);
+
+                $result[] = [
+                    'id'     => $payment->id ?? null,
+                    'status' => $payment->status ?? null,
+                    'method' => $payment->payment_method_id ?? null,
+                    'data'   => $arrayPayment,
+                ];
             }
 
-            $arrayPayment = json_decode(json_encode($payment), true);
-
-            return [
-                'id'     => $payment->id ?? null,
-                'status' => $payment->status ?? null,
-                'data'   => $arrayPayment ?? null,
-            ];
+            return $result;
 
         } catch (MPApiException $e) {
             $code = $e->getApiResponse()->getStatusCode();
@@ -236,5 +244,6 @@ class MercadoPagoService
             return [];
         }
     }
+
 
 }
