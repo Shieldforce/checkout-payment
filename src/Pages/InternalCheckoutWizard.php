@@ -41,7 +41,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static string $view = 'pages.internal-checkout-wizard';
+    protected static string $view = 'checkout-payment::pages.internal-checkout-wizard';
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
