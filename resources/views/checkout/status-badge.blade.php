@@ -182,6 +182,7 @@
     <hr class="my-8 mt-5 border-gray-300 dark:border-gray-600">
 
     <div class="mt-8 w-full max-w-full">
+        <br>
         <h3 class="text-xl font-semibold mb-4 text-left dark:text-gray-200">
             Histórico de Tentativas de Pagamento
         </h3>
@@ -194,6 +195,7 @@
                     <th class="w-3/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Forma</th>
                     <th class="w-4/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Status</th>
                     <th class="w-4/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Data</th>
+                    <th class="w-3/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Ação</th>
                 </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-100 dark:bg-gray-900 dark:divide-gray-700">
@@ -215,6 +217,24 @@
                             {{ isset($attempt['data']['date_created'])
                                 ? \Carbon\Carbon::parse($attempt['data']['date_created'])->format('d/m/Y H:i')
                                 : '-' }}
+                        </td>
+                        <td class="px-6 py-4 text-sm">
+                            @if(
+                                isset($attempt['data']['point_of_interaction']["transaction_data"]["ticket_url"]) &&
+                                in_array(strtolower($attempt['method']), ['pix'])
+                            )
+                                <a href="{{ $attempt['data']['point_of_interaction']["transaction_data"]["ticket_url"] }}" target="_blank"
+                                   class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                                    Ir para pagamento
+                                </a>
+                            @elseif(isset($attempt['data']['fsffsd']))
+                                <a href="{{ $attempt['data']['url'] }}" target="_blank"
+                                   class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                                    Ir para pagamento
+                                </a>
+                            @else
+                                -
+                            @endif
                         </td>
                     </tr>
                 @empty
