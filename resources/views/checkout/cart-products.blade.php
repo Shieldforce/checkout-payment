@@ -37,7 +37,17 @@
                     src="{{ $item["img"] ??
                         "https://static.vecteezy.com/system/resources/previews/028/047/017/non_2x/3d-check-product-free-png.png" }}"
                     alt="{{ $item["name"] }}"
-                    class="w-16 h-16 object-cover rounded-md pr-2 mr-2 border-r border-dashed border-gray-300 dark:border-gray-600"
+                    class="
+                        w-16 h-16
+                        object-cover
+                        rounded-md
+                        pr-2
+                        mr-4
+                        border-r
+                        border-dashed
+                        border-gray-300
+                        dark:border-gray-600
+                    "
                 >
 
                 <div class="flex flex-col">
