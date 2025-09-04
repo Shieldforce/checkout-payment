@@ -113,18 +113,22 @@
 
 --}}
 
-<div class="flex flex-col md:flex-row items-stretch justify-center min-h-[60vh] bg-white dark:bg-gray-800 shadow rounded-xl overflow-hidden">
+<div
+    class="flex flex-col md:flex-row items-stretch justify-center min-h-[60vh] bg-white dark:bg-gray-800 shadow rounded-xl overflow-hidden">
 
     {{-- Coluna da esquerda (imagem e loading) --}}
-    <div class="flex flex-col items-center justify-center w-full md:w-1/2 bg-gray-50 dark:bg-gray-900 p-8 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700">
+    <div
+        class="flex flex-col items-center justify-center w-full md:w-1/2 bg-gray-50 dark:bg-gray-900 p-8 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700">
         @if($this->statusCheckout != \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value)
             <div class="flex flex-col items-center space-y-4">
-                <img src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
-                     alt="Aguardando pagamento" class="w-40 h-40 object-contain">
+                <img
+                    src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
+                    alt="Aguardando pagamento" class="w-40 h-40 object-contain">
             </div>
         @else
             <div class="flex flex-col items-center space-y-4">
-                <img width="150" height="150" src="https://cdn3d.iconscout.com/3d/premium/thumb/aprovado-3d-icon-png-download-11933264.png"
+                <img width="150" height="150"
+                     src="https://cdn3d.iconscout.com/3d/premium/thumb/aprovado-3d-icon-png-download-11933264.png"
                      alt="Pagamento aprovado" class="w-40 h-40 object-contain">
             </div>
         @endif
@@ -133,7 +137,8 @@
     {{-- Coluna da direita (resumo) --}}
     <div class="flex flex-col justify-left w-full md:w-1/2 p-8" style="border-left: 1px dashed #cecece; padding: 30px;">
 
-        <h2 class="text-2xl font-bold mb-6 text-left md:text-left text-gray-900 dark:text-gray-100">Resumo do Pedido</h2>
+        <h2 class="text-2xl font-bold mb-6 text-left md:text-left text-gray-900 dark:text-gray-100">Resumo do
+            Pedido</h2>
 
         <hr class="border-gray-300 dark:border-gray-600 mb-4">
 
@@ -191,11 +196,36 @@
             <table class="w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
                 <thead class="bg-gray-50 dark:bg-gray-800">
                 <tr>
-                    <th class="w-1/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">#</th>
-                    <th class="w-3/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Forma</th>
-                    <th class="w-4/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Status</th>
-                    <th class="w-4/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Data</th>
-                    <th class="w-3/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Ação</th>
+                    <th
+                        style="width: 20%;"
+                        class="w-1/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
+                    >
+                        #
+                    </th>
+                    <th
+                        style="width: 20%;"
+                        class="w-3/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
+                    >
+                        Forma
+                    </th>
+                    <th
+                        style="width: 20%;"
+                        class="w-4/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
+                    >
+                        Status
+                    </th>
+                    <th
+                        style="width: 20%;"
+                        class="w-4/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
+                    >
+                        Data
+                    </th>
+                    <th
+                        style="width: 20%;"
+                        class="w-3/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
+                    >
+                        Ação
+                    </th>
                 </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-100 dark:bg-gray-900 dark:divide-gray-700">
@@ -223,16 +253,24 @@
                                 isset($attempt['data']['point_of_interaction']["transaction_data"]["ticket_url"]) &&
                                 in_array(strtolower($attempt['method']), ['pix'])
                             )
-                                <a href="{{ $attempt['data']['point_of_interaction']["transaction_data"]["ticket_url"] }}" target="_blank"
-                                   class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                                <a
+                                    href="{{ $attempt['data']['point_of_interaction']["transaction_data"]["ticket_url"] }}"
+                                    target="_blank"
+                                    class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                                    style="background: green;color: white;padding: 5px;border-radius: 5px;"
+                                >
                                     Ir para pagamento
                                 </a>
                             @elseif(
                                 isset($attempt["data"]["transaction_details"]["external_resource_url"]) &&
                                 in_array(strtolower($attempt['method']), ['boleto'])
                             )
-                                <a href="{{ $attempt["data"]["transaction_details"]["external_resource_url"] }}" target="_blank"
-                                   class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                                <a
+                                    href="{{ $attempt["data"]["transaction_details"]["external_resource_url"] }}"
+                                    target="_blank"
+                                    class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                                    style="background: green;color: white;padding: 5px;border-radius: 5px;"
+                                >
                                     Ir para pagamento
                                 </a>
                             @else
