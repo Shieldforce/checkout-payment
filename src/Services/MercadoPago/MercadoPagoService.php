@@ -208,7 +208,7 @@ class MercadoPagoService
                 )
             );
 
-            logger($payments);
+            logger(json_decode(json_encode($payments), true));
 
             $elements = $payments->elements ?? [];
 
