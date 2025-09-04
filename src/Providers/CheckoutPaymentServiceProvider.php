@@ -10,16 +10,21 @@ class CheckoutPaymentServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        // Carrega views do plugin
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'checkout-payment');
 
+        // Permite publicação de views
         $this->publishes([
             __DIR__ . '/../resources/views' => resource_path('views/vendor/checkout-payment'),
         ], 'views');
 
-        $this->app->booted(function () {
-            $schedule = $this->app->make(Schedule::class);
-            $schedule->job(new AllCheckoutsUpdatesPaymentsJob())->hourly();
-        });
+        // Schedule do job
+        if ($this->app->runningInConsole()) {
+            $this->app->booted(function () {
+                $schedule = $this->app->make(Schedule::class);
+                $schedule->job(new AllCheckoutsUpdatesPaymentsJob())->hourly();
+            });
+        }
     }
 }
 
