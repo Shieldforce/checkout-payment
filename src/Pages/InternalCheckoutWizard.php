@@ -917,8 +917,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                     $pdf = $return["data"]["transaction_details"]["external_resource_url"] ?? $return["pdf"];
 
-                    dd($return["data"]["transaction_details"]["external_resource_url"], $return);
-
                     $this->checkout->step4()->updateOrCreate([
                         "cpp_checkout_id" => $this->checkout->id,
                     ], [
