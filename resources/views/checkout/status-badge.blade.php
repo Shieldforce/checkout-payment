@@ -227,8 +227,11 @@
                                    class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
                                     Ir para pagamento
                                 </a>
-                            @elseif(isset($attempt['data']['fsffsd']))
-                                <a href="{{ $attempt['data']['url'] }}" target="_blank"
+                            @elseif(
+                                isset($attempt["data"]["transaction_details"]["external_resource_url"]) &&
+                                in_array(strtolower($attempt['method']), ['boleto'])
+                            )
+                                <a href="{{ $attempt["data"]["transaction_details"]["external_resource_url"] }}" target="_blank"
                                    class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
                                     Ir para pagamento
                                 </a>
