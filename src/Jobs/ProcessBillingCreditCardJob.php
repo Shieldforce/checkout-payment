@@ -69,7 +69,10 @@ class ProcessBillingCreditCardJob implements ShouldQueue
         logger($return);
 
         $this->checkout->update([
-            "status"                    => StatusCheckoutEnum::finalizado->value,
+            "status" => StatusCheckoutEnum::finalizado->value,
+        ]);
+
+        $step4->update([
             "request_credit_card_data"  => json_encode($data),
             "response_credit_card_data" => json_encode($return),
         ]);
