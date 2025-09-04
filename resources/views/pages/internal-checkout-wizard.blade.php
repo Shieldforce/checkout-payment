@@ -13,7 +13,7 @@
             /*Key mp*/
             const accessKey = "{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}";
 
-            const valor = "";
+            const valor = "{{ $this->checkout->total_price }}";
 
             document.addEventListener('DOMContentLoaded', async () => {
 
@@ -33,7 +33,13 @@
                     var installments = 1
 
                     if(!valor) {
-                        alert("fdfdf");
+                        var msgError = 'Valor de pagamento não informado!'
+                        window.Livewire.dispatch('show-notification', {
+                            title: 'Ops, Error!',
+                            body: msgError,
+                            status: 'danger',
+                        })
+
                         return;
                     }
 
