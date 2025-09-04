@@ -157,9 +157,7 @@ class MercadoPagoService
                 "token"              => $token_card,
                 "description"        => $description,
                 "payment_method_id"  => $payment_method_id,
-                //visa
                 "installments"       => $installments,
-                // 1, 2 ,3
                 "payer"              => [
                     "email"      => $payer_email,
                     "first_name" => $payer_first_name

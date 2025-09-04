@@ -452,7 +452,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 'card_payer_name'   => $get('card_payer_name'),
                                 'card_token'        => $get('card_token'),
                                 'installments'      => $get('installments'),
-                                'payment_method_id' => $get('payment_method_id'),
+                                /*'payment_method_id' => $get('payment_method_id'),*/
                                 'base_qrcode'       => $get('base_qrcode'),
                                 'url_qrcode'        => $get('url_qrcode'),
                                 'url_billet'        => $get('url_billet'),
