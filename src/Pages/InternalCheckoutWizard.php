@@ -818,13 +818,13 @@ class InternalCheckoutWizard extends Page implements HasForms
                 return;
             }
 
-            /*if (
+            if (
                 isset($this->step4->url_billet) &&
                 $method == MethodPaymentEnum::billet->value
             ) {
                 $this->url_billet = $this->step4->url_billet;
                 return;
-            }*/
+            }
 
             $mp                 = new MercadoPagoService();
             $step2              = $this->checkout?->step2()?->first();
