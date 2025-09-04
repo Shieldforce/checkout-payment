@@ -177,13 +177,14 @@
 @endphp
 
 @if(isset($attempts) && count($attempts) > 0)
-    {{-- Histórico de Tentativas --}}
-    <div class="flex flex-col md:flex-row items-stretch justify-center min-h-[60vh] bg-white dark:bg-gray-800 shadow rounded-xl ">
-        <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Histórico de Tentativas de Pagamento</h3>
+    <hr class="my-8 border-gray-300 dark:border-gray-600">
 
-        <div class="overflow-x-auto rounded-lg shadow border border-gray-200 dark:border-gray-700">
+    <div class="mt-8 w-full">
+        <h3 class="text-xl font-semibold mb-4 text-left dark:text-gray-200">Histórico de Tentativas de Pagamento</h3>
+
+        <div class="overflow-x-auto w-full rounded-lg shadow border border-gray-200 dark:border-gray-700">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-900">
+                <thead class="bg-gray-50 dark:bg-gray-800">
                 <tr>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">#</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Forma</th>
@@ -191,11 +192,11 @@
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300">Data</th>
                 </tr>
                 </thead>
-                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
+                <tbody class="bg-white divide-y divide-gray-100 dark:bg-gray-900 dark:divide-gray-700">
                 @forelse($attempts as $i => $attempt)
                     <tr>
-                        <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">{{ $i+1 }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-300">{{ ucfirst($attempt['method'] ?? '-') }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">{{ $i+1 }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">{{ ucfirst($attempt['method'] ?? '-') }}</td>
                         <td class="px-6 py-4 text-sm">
                             <span class="px-3 py-1 rounded-full text-xs font-semibold
                                 @if(($attempt['status'] ?? '') === 'approved') bg-green-100 text-green-700 dark:bg-green-700 dark:text-green-100
@@ -221,4 +222,5 @@
             </table>
         </div>
     </div>
+
 @endif
