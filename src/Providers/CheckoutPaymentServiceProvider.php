@@ -12,7 +12,7 @@ class CheckoutPaymentServiceProvider extends ServiceProvider
     {
         $this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);
-            $schedule->job(new AllCheckoutsUpdatesPaymentsJob())->everyMinute();
+            $schedule->job(new AllCheckoutsUpdatesPaymentsJob())->hourly();
         });
     }
 }
