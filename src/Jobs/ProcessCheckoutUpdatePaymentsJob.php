@@ -22,6 +22,7 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
 
     public function handle(): void
     {
+        logger("ProcessCheckoutUpdatePaymentsJob, checkout id: {$this->checkout->id} - " . date("Y-m-d H:i:s"));
         $payments = $this->mp->buscarPagamentoPorExternalId($this->checkout->id);
         $this->checkout->update([
             "return_gateway" => $payments,

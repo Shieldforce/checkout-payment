@@ -23,11 +23,10 @@ class AllCheckoutsUpdatesPaymentsJob implements ShouldQueue
 
     public function handle(): void
     {
-        logger("dfdfs");
-
-        /*$checkouts = CppCheckout::where("status", StatusCheckoutEnum::pendente->value)->get();
+        logger("AllCheckoutsUpdatesPaymentsJob" . date("Y-m-d H:i:s"));
+        $checkouts = CppCheckout::where("status", StatusCheckoutEnum::pendente->value)->get();
         foreach ($checkouts as $checkout) {
             ProcessCheckoutUpdatePaymentsJob::dispatch($checkout);
-        }*/
+        }
     }
 }
