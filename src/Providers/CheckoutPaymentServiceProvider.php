@@ -10,6 +10,8 @@ class CheckoutPaymentServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'checkout-payment');
+
         $this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);
             $schedule->job(new AllCheckoutsUpdatesPaymentsJob())->hourly();
