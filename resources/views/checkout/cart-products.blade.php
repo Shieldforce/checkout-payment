@@ -27,7 +27,6 @@
 
 <div class="space-y-4">
     @if(isset($this->items))
-        @dd($this->items)
         @foreach ($this->items as $item)
             <div
                 class="flex items-center space-x-4 border p-3 rounded-lg shadow-sm
