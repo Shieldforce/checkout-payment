@@ -172,6 +172,75 @@ echo $checkoutPayment->echoPhrase('Hello, Shieldforce!');
             visible: true,
         );
 ```
+# Exemplo de implementação simples:
+```php
+    
+    /*
+     * A cada hora roda um job para atualizar os pagamentos de um checkout
+     * no campo checkout->return_gateway.
+     * Para os jobs do plugin acontecer você precisa ter o horizon ou os works
+     * rodando com supervisor, ou crontab.
+    */
+    
+    // Chamada no provider ---
+    class CheckoutPaymentServiceProvider extends ServiceProvider
+    {
+        public function boot(): void
+        {
+            $this->loadViewsFrom(__DIR__ . '/../resources/views', 'checkout-payment');
+    
+            $this->app->booted(function () {
+                $schedule = $this->app->make(Schedule::class);
+                $schedule->job(new AllCheckoutsUpdatesPaymentsJob())->hourly();
+            });
+        }
+    }
+
+    // Chamada no Job que executa os checkouts
+    class AllCheckoutsUpdatesPaymentsJob implements ShouldQueue
+    {
+        use Dispatchable, Queueable, Batchable;
+    
+        public MercadoPagoService $mp;
+    
+        public function __construct()
+        {
+            $this->mp = new MercadoPagoService();
+        }
+    
+        public function handle(): void
+        {
+            logger("AllCheckoutsUpdatesPaymentsJob" . date("Y-m-d H:i:s"));
+            $checkouts = CppCheckout::where("status", StatusCheckoutEnum::pendente->value)->get();
+            foreach ($checkouts as $checkout) {
+                ProcessCheckoutUpdatePaymentsJob::dispatch($checkout);
+            }
+        }
+    }
+
+    // Chamada do ‘update’ do checkout individual
+    class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
+    {
+        use Dispatchable, Queueable, Batchable;
+    
+        public MercadoPagoService $mp;
+    
+        public function __construct(public CppCheckout $checkout)
+        {
+            $this->mp = new MercadoPagoService();
+        }
+    
+        public function handle(): void
+        {
+            logger("ProcessCheckoutUpdatePaymentsJob, checkout id: {$this->checkout->id} - " . date("Y-m-d H:i:s"));
+            $payments = $this->mp->buscarPagamentoPorExternalId($this->checkout->id);
+    
+            $this->checkout->update([
+                "return_gateway" => $payments,
+            ]);
+        }
+    }
+```
 
 ## Testing
 

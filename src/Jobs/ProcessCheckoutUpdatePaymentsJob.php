@@ -7,7 +7,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
-use Shieldforce\CheckoutPayment\Notifications\CheckoutStatusUpdated;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 
 class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
