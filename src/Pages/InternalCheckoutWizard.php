@@ -155,6 +155,14 @@ class InternalCheckoutWizard extends Page implements HasForms
         if ($cppCheckoutUuid) {
             $this->checkout = CppCheckout::where('uuid', $cppCheckoutUuid)->first();
 
+
+
+            $mp = new MercadoPagoService();
+            $payments = $mp->buscarPagamentoPorExternalId($this->checkout->id);
+
+            dd($payments);
+
+
             $this->method_checked = $this->checkout->method_checked ?? null;
             $this->paymentMethods = $this?->checkout?->methods
                 ? array_map(function ($method) {
@@ -452,7 +460,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 'card_payer_name'   => $get('card_payer_name'),
                                 'card_token'        => $get('card_token'),
                                 'installments'      => $get('installments'),
-                                /*'payment_method_id' => $get('payment_method_id'),*/
+                                'payment_method_id' => $get('payment_method_id'),
                                 'base_qrcode'       => $get('base_qrcode'),
                                 'url_qrcode'        => $get('url_qrcode'),
                                 'url_billet'        => $get('url_billet'),
@@ -875,6 +883,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         "url_qrcode"        => $return["qr_code"],
                         "request_pix_data"  => json_encode($data),
                         "response_pix_data" => json_encode($return),
+                        'payment_method_id' => MethodPaymentEnum::pix->value,
                     ]);
 
                     $this->checkout->update([
@@ -927,6 +936,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         "url_billet"           => $pdf,
                         "request_billet_data"  => json_encode($data),
                         "response_billet_data" => json_encode($return),
+                        'payment_method_id'    => MethodPaymentEnum::billet->value,
                     ]);
 
                     $this->checkout->update([

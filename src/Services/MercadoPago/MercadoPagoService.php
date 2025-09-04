@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Crypt;
 use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\Exceptions\MPApiException;
 use MercadoPago\MercadoPagoConfig;
+use MercadoPago\Net\MPSearchRequest;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 
@@ -186,6 +187,54 @@ class MercadoPagoService
 
         $client = new PaymentClient();
         return $client->get($paymentId);
+    }
+
+    public function buscarPagamentoPorExternalId($externalId)
+    {
+        if (!$externalId) {
+            return null;
+        }
+
+        try {
+            $client = new PaymentClient();
+
+            // Lista pagamentos filtrando pelo external_reference
+            $payments = $client->search(request: new MPSearchRequest(
+                50,
+                0,
+                filters: [
+                    'external_reference' => $externalId,
+                ]
+            ));
+
+            $payment = $payments[0] ?? null;
+
+            if (!$payment) {
+                return null;
+            }
+
+            $arrayPayment = json_decode(json_encode($payment), true);
+
+            return [
+                'id'     => $payment->id ?? null,
+                'status' => $payment->status ?? null,
+                'data'   => $arrayPayment ?? null,
+            ];
+
+        } catch (MPApiException $e) {
+            $code = $e->getApiResponse()->getStatusCode();
+            $msg  = $e->getApiResponse()->getContent();
+
+            logger([
+                'code' => $code,
+                'msg'  => $msg,
+            ]);
+
+            return [];
+        } catch (\Throwable $e) {
+            logger("Erro ao buscar pagamento por external_id: " . $e->getMessage());
+            return [];
+        }
     }
 
 }

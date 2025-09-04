@@ -2,16 +2,12 @@
 
 namespace Shieldforce\CheckoutPayment\Jobs;
 
-
-use Carbon\Carbon;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
-use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
-use Shieldforce\CheckoutPayment\Errors\ProcessBillingCreditCardJobException;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Notifications\CheckoutStatusUpdated;
@@ -68,20 +64,33 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
         logger($return);
 
-        $this->checkout->update([
-            "status" => StatusCheckoutEnum::finalizado->value,
-        ]);
+        if(isset($return["status"]) && $return["status"] == "approved") {
+            $this->checkout->update([
+                "status" => StatusCheckoutEnum::finalizado->value,
+            ]);
+
+            $this->checkout->notify(new CheckoutStatusUpdated(
+                status: "approved",
+                message: "Pagamento aprovado com sucesso!",
+                corporateName: env("APP_NAME") ?? "Empresa",
+            ));
+        }
+
+        if(isset($return["status"]) && $return["status"] != "approved") {
+            $this->checkout->update([
+                "status" => StatusCheckoutEnum::pendente->value,
+            ]);
+
+            $this->checkout->notify(new CheckoutStatusUpdated(
+                status: "processing",
+                message: "Estamos processando seu pagamento",
+                corporateName: env("APP_NAME") ?? "Empresa",
+            ));
+        }
 
         $step4->update([
             "request_credit_card_data"  => json_encode($data),
             "response_credit_card_data" => json_encode($return),
         ]);
-
-        //logger($this->step4->toArray());
-        /*$checkout->notify(new CheckoutStatusUpdated(
-            status: "processing",
-            message: "Estamos processando seu pagamento",
-            corporateName: env("APP_NAME") ?? "Empresa",
-        ));*/
     }
 }
