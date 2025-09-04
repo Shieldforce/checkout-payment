@@ -902,14 +902,17 @@ class InternalCheckoutWizard extends Page implements HasForms
                     address: $data["address"]
                 );
 
-                dd($return);
+                if (
+                    isset($return["transaction_details"]["external_resource_url"]) ||
+                    isset($return["pdf"])
+                ) {
 
-                if (isset($return["pdf"])) {
+                    $pdf = $return["transaction_details"]["external_resource_url"] ?? $return["pdf"];
 
                     $this->checkout->step4()->updateOrCreate([
                         "cpp_checkout_id" => $this->checkout->id,
                     ], [
-                        "url_billet"    => $return["pdf"],
+                        "url_billet"    => $pdf,
                         "request_data"  => json_encode($data),
                         "response_data" => json_encode($return),
                     ]);
