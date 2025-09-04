@@ -263,7 +263,7 @@
                                 </a>
                             @elseif(
                                 isset($attempt["data"]["transaction_details"]["external_resource_url"]) &&
-                                in_array(strtolower($attempt['method']), ['Bolbradesco'])
+                                in_array(strtolower($attempt['method']), ['bolbradesco'])
                             )
                                 <a
                                     href="{{ $attempt["data"]["transaction_details"]["external_resource_url"] }}"
