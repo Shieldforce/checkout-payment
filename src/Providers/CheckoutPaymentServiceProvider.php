@@ -10,7 +10,7 @@ class CheckoutPaymentServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'checkout-payment');
+        //$this->loadViewsFrom(__DIR__ . '/../resources/views', 'checkout-payment');
 
         // Permite publicar para que o dev possa sobrescrever
         $this->publishes([
