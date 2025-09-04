@@ -177,7 +177,8 @@
 @endphp
 
 @if(isset($attempts) && count($attempts) > 0)
-
+    <br>
+    <br>
     <hr class="my-8 mt-5 border-gray-300 dark:border-gray-600">
 
     <div class="mt-8 w-full max-w-full">
