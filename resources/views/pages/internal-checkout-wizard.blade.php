@@ -13,7 +13,7 @@
             /*Key mp*/
             const accessKey = "{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}";
 
-            const valor = "";
+            const valor = "{{ $this->checkout->total_price }}";
 
             document.addEventListener('DOMContentLoaded', async () => {
 
