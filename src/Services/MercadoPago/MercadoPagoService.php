@@ -189,10 +189,6 @@ class MercadoPagoService
         return $client->get($paymentId);
     }
 
-    use MercadoPago\Client\Payment\PaymentClient;
-    use MercadoPago\Client\Payment\MPSearchRequest;
-    use MercadoPago\Exceptions\MPApiException;
-
     public function buscarPagamentoPorExternalId($externalId)
     {
         if (!$externalId) {
