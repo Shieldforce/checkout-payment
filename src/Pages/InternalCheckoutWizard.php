@@ -156,10 +156,11 @@ class InternalCheckoutWizard extends Page implements HasForms
             $this->checkout = CppCheckout::where('uuid', $cppCheckoutUuid)->first();
 
 
-            $mp = new MercadoPagoService();
+            $mp       = new MercadoPagoService();
             $payments = $mp->buscarPagamentoPorExternalId($this->checkout->id);
-
-            dd($payments);
+            $this->checkout->update([
+                "return_gateway" => $payments,
+            ]);
 
 
             $this->method_checked = $this->checkout->method_checked ?? null;

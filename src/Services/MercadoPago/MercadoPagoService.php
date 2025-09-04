@@ -208,13 +208,11 @@ class MercadoPagoService
                 )
             );
 
-            logger(json_decode(json_encode($payments), true));
-
-            $elements = $payments->elements ?? [];
+            $results = $payments->results ?? [];
 
             $result = [];
 
-            foreach ($elements as $payment) {
+            foreach ($results as $payment) {
                 $arrayPayment = json_decode(json_encode($payment), true);
 
                 $result[] = [
