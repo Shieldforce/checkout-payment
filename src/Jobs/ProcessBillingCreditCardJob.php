@@ -3,12 +3,14 @@
 namespace Shieldforce\CheckoutPayment\Jobs;
 
 
+use Carbon\Carbon;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
+use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
 use Shieldforce\CheckoutPayment\Errors\ProcessBillingCreditCardJobException;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
@@ -34,41 +36,46 @@ class ProcessBillingCreditCardJob implements ShouldQueue
         if ($this->checkout->method_checked == MethodPaymentEnum::credit_card->value) {
             $this->creditCard();
         }
-
-        if ($this->checkout->method_checked == MethodPaymentEnum::pix->value) {
-            $this->pix();
-        }
-
-        if ($this->checkout->method_checked == MethodPaymentEnum::billet->value) {
-            $this->billet();
-        }
     }
 
     public function creditCard()
     {
         $this->checkout = $this?->step4?->ccpCheckout;
-        //logger($this->step4->toArray());
-        /*$checkout->notify(new CheckoutStatusUpdated(
-            status: "processing",
-            message: "Estamos processando seu pagamento",
-            corporateName: env("APP_NAME") ?? "Empresa",
-        ));*/
-    }
+        $mp             = new MercadoPagoService();
+        $step2          = $this->checkout?->step2()?->first();
+        $step4          = $this->checkout?->step4()?->first();
 
-    public function pix()
-    {
-        $this->checkout = $this?->step4?->ccpCheckout;
-        //logger($this->step4->toArray());
-        /*$checkout->notify(new CheckoutStatusUpdated(
-            status: "processing",
-            message: "Estamos processando seu pagamento",
-            corporateName: env("APP_NAME") ?? "Empresa",
-        ));*/
-    }
+        $data = [
+            "value"             => (float)$this->total_price ?? null,
+            "description"       => "Pagamento via pix",
+            "external_id"       => $this->checkout->id ?? null,
+            "payer_email"       => $step2->email ?? null,
+            "payer_first_name"  => $step2->first_name ?? null,
+            "token_card"        => $step4->card_token ?? null,
+            "installments"      => $step4->installments ?? null,
+            "payment_method_id" => $step4->payment_method_id ?? null,
 
-    public function billet()
-    {
-        $this->checkout = $this?->step4?->ccpCheckout;
+        ];
+
+        $return = $mp->gerarPagamentoCartao(
+            value: $data["value"],
+            description: $data["description"],
+            external_id: $data["external_id"],
+            payer_email: $data["payer_email"],
+            payer_first_name: $data["payer_first_name"],
+            token_card: $data["token_card"],
+            installments: $data["installments"],
+            payment_method_id: $data["payment_method_id"],
+        );
+
+        logger($return);
+
+        $this->checkout->update([
+            "status"                    => StatusCheckoutEnum::finalizado->value,
+            "request_credit_card_data"  => json_encode($data),
+            "response_credit_card_data" => json_encode($return),
+        ]);
+
         //logger($this->step4->toArray());
         /*$checkout->notify(new CheckoutStatusUpdated(
             status: "processing",

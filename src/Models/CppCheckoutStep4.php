@@ -20,8 +20,12 @@ class CppCheckoutStep4 extends Model
         "url_qrcode",
         "url_billet",
         'visible',
-        'request_data',
-        'response_data',
+        'request_credit_card_data',
+        'response_credit_card_data',
+        'request_pix_data',
+        'response_pix_data',
+        'request_billet_data',
+        'response_billet_data',
     ];
 
     protected $guarded = [];
@@ -32,15 +36,6 @@ class CppCheckoutStep4 extends Model
             CppCheckout::class,
             'id',
             'cpp_checkout_id',
-        );
-    }
-
-    public function methods()
-    {
-        return $this->hasMany(
-            CppCheckoutStep4Methods::class,
-            'cpp_step_4_id',
-            'id',
         );
     }
 }

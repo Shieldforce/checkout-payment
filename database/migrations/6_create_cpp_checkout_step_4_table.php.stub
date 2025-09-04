@@ -27,8 +27,14 @@ return new class extends Migration
             $table->text('url_qrcode')->nullable();
             $table->text('url_billet')->nullable();
 
-            $table->json('request_data')->nullable();
-            $table->json('response_data')->nullable();
+            $table->json('request_credit_card_data')->nullable();
+            $table->json('response_credit_card_data')->nullable();
+
+            $table->json('request_pix_data')->nullable();
+            $table->json('response_pix_data')->nullable();
+
+            $table->json('request_billet_data')->nullable();
+            $table->json('response_billet_data')->nullable();
 
             $table->boolean('visible')->default(true);
 

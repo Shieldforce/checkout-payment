@@ -145,7 +145,8 @@ class InternalCheckoutWizard extends Page implements HasForms
             filament()
                 ->getCurrentPanel()
                 ->topNavigation()/*
-                ->topbar(false)*/;
+                ->topbar(false)*/
+            ;
         }
 
         $this->cppGateways = CppGateways::where('active', true)->first();
@@ -869,10 +870,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                     $this->checkout->step4()->updateOrCreate([
                         "cpp_checkout_id" => $this->checkout->id,
                     ], [
-                        "base_qrcode"   => $return["qr_code_base64"],
-                        "url_qrcode"    => $return["qr_code"],
-                        "request_data"  => json_encode($data),
-                        "response_data" => json_encode($return),
+                        "base_qrcode"       => $return["qr_code_base64"],
+                        "url_qrcode"        => $return["qr_code"],
+                        "request_pix_data"  => json_encode($data),
+                        "response_pix_data" => json_encode($return),
                     ]);
 
                     $this->checkout->update([
@@ -889,8 +890,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                     $this->checkout->step4()->updateOrCreate([
                         "cpp_checkout_id" => $this->checkout->id,
                     ], [
-                        "request_data"  => json_encode($data),
-                        "response_data" => json_encode($return),
+                        "request_pix_data"  => json_encode($data),
+                        "response_pix_data" => json_encode($return),
                     ]);
                 }
             }
@@ -910,6 +911,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                     address: $data["address"]
                 );
 
+                logger($return);
+
                 if (
                     isset($return["data"]["transaction_details"]["external_resource_url"]) ||
                     isset($return["pdf"])
@@ -920,9 +923,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                     $this->checkout->step4()->updateOrCreate([
                         "cpp_checkout_id" => $this->checkout->id,
                     ], [
-                        "url_billet"    => $pdf,
-                        "request_data"  => json_encode($data),
-                        "response_data" => json_encode($return),
+                        "url_billet"           => $pdf,
+                        "request_billet_data"  => json_encode($data),
+                        "response_billet_data" => json_encode($return),
                     ]);
 
                     $this->checkout->update([
@@ -939,8 +942,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                     $this->checkout->step4()->updateOrCreate([
                         "cpp_checkout_id" => $this->checkout->id,
                     ], [
-                        "request_data"  => json_encode($data),
-                        "response_data" => json_encode($return),
+                        "request_billet_data"  => json_encode($data),
+                        "response_billet_data" => json_encode($return),
                     ]);
                 }
             }
