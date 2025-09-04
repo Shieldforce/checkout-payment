@@ -64,9 +64,10 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
         logger($return);
 
-        if(isset($return["status"]) && $return["status"] == "approved") {
+        if (isset($return["status"]) && $return["status"] == "approved") {
             $this->checkout->update([
-                "status" => StatusCheckoutEnum::finalizado->value,
+                "status"      => StatusCheckoutEnum::finalizado->value,
+                "startOnStep" => 5,
             ]);
 
             $this->checkout->notify(new CheckoutStatusUpdated(
@@ -76,9 +77,10 @@ class ProcessBillingCreditCardJob implements ShouldQueue
             ));
         }
 
-        if(isset($return["status"]) && $return["status"] != "approved") {
+        if (isset($return["status"]) && $return["status"] != "approved") {
             $this->checkout->update([
-                "status" => StatusCheckoutEnum::pendente->value,
+                "status"      => StatusCheckoutEnum::pendente->value,
+                "startOnStep" => 5,
             ]);
 
             $this->checkout->notify(new CheckoutStatusUpdated(

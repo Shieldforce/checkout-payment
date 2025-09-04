@@ -155,7 +155,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         if ($cppCheckoutUuid) {
             $this->checkout = CppCheckout::where('uuid', $cppCheckoutUuid)->first();
 
-            dd(json_decode($this->checkout->return_gateway, true));
+            /*dd(json_decode($this->checkout->return_gateway, true));*/
 
             $this->method_checked = $this->checkout->method_checked ?? null;
             $this->paymentMethods = $this?->checkout?->methods
@@ -882,7 +882,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ]);
 
                     $this->checkout->update([
-                        "status" => StatusCheckoutEnum::pendente->value,
+                        "status"      => StatusCheckoutEnum::pendente->value,
+                        "startOnStep" => 5,
                     ]);
 
                     $this->base_qrcode = $return["qr_code_base64"];
@@ -935,7 +936,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ]);
 
                     $this->checkout->update([
-                        "status" => StatusCheckoutEnum::pendente->value,
+                        "status"      => StatusCheckoutEnum::pendente->value,
+                        "startOnStep" => 5,
                     ]);
 
                     $this->url_billet = $return["pdf"];
