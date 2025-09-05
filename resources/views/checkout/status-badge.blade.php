@@ -39,9 +39,11 @@
             <p>
                 <strong>Forma de Pagamento:</strong>
                 {{
-                    \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::from(
-                        $this->checkout->method_checked ?? 1
+                    $this->checkout->method_checked
+                    ? \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::from(
+                        $this->checkout->method_checked
                     )->label()
+                    : "Múltiplos métodos escolhidos!"
                  }}
             </p>
         </div>
