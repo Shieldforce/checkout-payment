@@ -489,7 +489,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 })
                 ->schema([
                     Select::make('method_checked')
-                        ->default(fn($state, $get, $set, $livewire) => $livewire->method_checked)
+                        //->default(fn($state, $get, $set, $livewire) => $livewire->method_checked)
                         ->extraAttributes(['id' => 'method_checked'])
                         ->label('Escolha como quer pagar!')
                         ->live()
