@@ -91,7 +91,8 @@
                     transition
                 "
                 style="background: darkcyan;color: white;padding: 10px;border-radius: 5px;"
-                onclick="methodChoose()"
+                type="button"
+                onclick="event.preventDefault();methodChoose()"
             >
                 Escolher outro método
             </button>
