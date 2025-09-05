@@ -97,7 +97,7 @@
                 "
                     style="background: darkcyan;color: white;padding: 10px;border-radius: 5px;"
                     type="button"
-                    wire:click="chooseOtherMethod"
+                    wire:click="$parent.chooseOtherMethod"
                 >
                     Escolher outro método
                 </button>
