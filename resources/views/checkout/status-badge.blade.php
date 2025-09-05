@@ -142,7 +142,7 @@
                                     href="{{ $attempt['data']['point_of_interaction']["transaction_data"]["ticket_url"] }}"
                                     target="_blank"
                                     class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                                    style="background: green;color: white;padding: 10px;border-radius: 5px;"
+                                    style="background: darkblue;color: white;padding: 10px;border-radius: 5px;"
                                 >
                                     Ir para pagamento
                                 </a>
@@ -154,7 +154,7 @@
                                     href="{{ $attempt["data"]["transaction_details"]["external_resource_url"] }}"
                                     target="_blank"
                                     class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                                    style="background: green;color: white;padding: 10px;border-radius: 5px;"
+                                    style="background: darkblue;color: white;padding: 10px;border-radius: 5px;"
                                 >
                                     Ir para pagamento
                                 </a>
