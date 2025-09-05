@@ -5,7 +5,7 @@ namespace Shieldforce\CheckoutPayment\Services\DtoSteps;
 class DtoStep3
 {
     public function __construct(
-        public int     $zipcode,
+        public string  $zipcode,
         public string  $street,
         public string  $district,
         public string  $city,
