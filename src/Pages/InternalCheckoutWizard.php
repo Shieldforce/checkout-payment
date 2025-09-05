@@ -830,6 +830,9 @@ class InternalCheckoutWizard extends Page implements HasForms
             ) {
                 $this->base_qrcode = $this->step4->base_qrcode;
                 $this->url_qrcode  = $this->step4->url_qrcode;
+                $this->checkout->update([
+                    "startOnStep" => 5,
+                ]);
                 return;
             }
 
@@ -838,6 +841,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                 $method == MethodPaymentEnum::billet->value
             ) {
                 $this->url_billet = $this->step4->url_billet;
+                $this->checkout->update([
+                    "startOnStep" => 5,
+                ]);
                 return;
             }
 
