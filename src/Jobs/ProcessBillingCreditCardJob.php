@@ -28,10 +28,7 @@ class ProcessBillingCreditCardJob implements ShouldQueue
     public function handle(): void
     {
         $this->checkout = $this?->step4?->ccpCheckout;
-
-        if ($this->checkout->method_checked == MethodPaymentEnum::credit_card->value) {
-            $this->creditCard();
-        }
+        $this->creditCard();
     }
 
     public function creditCard()
