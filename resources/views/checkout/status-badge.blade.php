@@ -78,7 +78,19 @@
                 Histórico de Tentativas de Pagamento
             </h3>
             <button
-                class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 transition"
+                class="
+                    px-4
+                    py-2
+                    bg-blue-600
+                    text-white
+                    text-sm
+                    font-medium
+                    rounded-lg
+                    shadow
+                    hover:bg-blue-700
+                    transition
+                "
+                style="background: darkcyan;color: white;padding: 10px;border-radius: 5px;"
                 onclick="methodChoose()"
             >
                 Escolher outro método
