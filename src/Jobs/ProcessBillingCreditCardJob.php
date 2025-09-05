@@ -66,8 +66,9 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
         if (isset($return["status"]) && $return["status"] == "approved") {
             $this->checkout->update([
-                "status"      => StatusCheckoutEnum::finalizado->value,
-                "startOnStep" => 5,
+                "startOnStep"    => 5,
+                "status"         => StatusCheckoutEnum::finalizado->value,
+                'method_checked' => MethodPaymentEnum::credit_card->value,
             ]);
 
             $this->checkout->notify(new CheckoutStatusUpdated(
@@ -79,8 +80,9 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
         if (isset($return["status"]) && $return["status"] == "pending") {
             $this->checkout->update([
-                "status"      => StatusCheckoutEnum::pendente->value,
-                "startOnStep" => 5,
+                "startOnStep"    => 5,
+                "status"         => StatusCheckoutEnum::pendente->value,
+                'method_checked' => MethodPaymentEnum::credit_card->value,
             ]);
 
             $this->checkout->notify(new CheckoutStatusUpdated(
@@ -92,8 +94,7 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
         if (isset($return["status"]) && $return["status"] == "rejected") {
             $this->checkout->update([
-                "status"      => StatusCheckoutEnum::perdido->value,
-                "startOnStep" => 5,
+                "status" => StatusCheckoutEnum::perdido->value,
             ]);
 
             $this->checkout->notify(new CheckoutStatusUpdated(
@@ -110,7 +111,7 @@ class ProcessBillingCreditCardJob implements ShouldQueue
             $return["status"] != "rejected"
         ) {
             $this->checkout->update([
-                "status"      => StatusCheckoutEnum::erro->value,
+                "status" => StatusCheckoutEnum::erro->value,
             ]);
 
             $this->checkout->notify(new CheckoutStatusUpdated(

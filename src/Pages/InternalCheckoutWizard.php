@@ -472,11 +472,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                         );
 
                         if ($step4Update) {
-                            $this->checkout->update([
+                            /*$this->checkout->update([
                                 'startOnStep'    => 5,
                                 'status'         => StatusCheckoutEnum::pendente->value,
                                 'method_checked' => $get('method_checked'),
-                            ]);
+                            ]);*/
 
                             if ($this->checkout->step4->first()) {
                                 ProcessBillingCreditCardJob::dispatch($step4Update)->delay(60);
