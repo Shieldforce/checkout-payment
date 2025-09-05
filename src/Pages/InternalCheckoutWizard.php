@@ -984,5 +984,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         ]);
 
         $this->startOnStep = 4;
+
+        redirect("/admin/checkout/{$this->checkout->uuid}");
     }
 }
