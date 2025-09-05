@@ -4,15 +4,15 @@
     @endphp
 
     @if($billetUrl)
-        {{--<iframe
+        <iframe
             src="{{ $this->url_billet ?? $this->step4->url_billet ?? null }}"
             class="w-full min-h-screen rounded-lg border border-gray-300 dark:border-white/30 shadow-md">
-        </iframe>--}}
+        </iframe>
 
-        <iframe
+        {{--<iframe
             src="https://docs.google.com/viewer?embedded=true&url={{ urlencode($billetUrl) }}"
             class="w-full min-h-screen rounded-lg border border-gray-300 dark:border-white/30 shadow-md"
-        ></iframe>
+        ></iframe>--}}
 
         <a href="{{ $billetUrl }}" target="_blank"
            class="mt-3 text-blue-600 dark:text-blue-400 underline">
