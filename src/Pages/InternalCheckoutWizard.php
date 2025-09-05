@@ -217,13 +217,13 @@ class InternalCheckoutWizard extends Page implements HasForms
 
             $this->startOnStep = $this->checkout->startOnStep ?? null;
 
-            if (isset($this->attempts) && count($this->attempts) > 0) {
+           /* if (isset($this->attempts) && count($this->attempts) > 0) {
                 $this->checkout->update([
                     "startOnStep" => 5,
                 ]);
 
                 $this->startOnStep = 5;
-            }
+            }*/
 
             $this->statusCheckout = $this->checkout->status ?? null;
         }
