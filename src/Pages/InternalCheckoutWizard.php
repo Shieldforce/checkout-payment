@@ -753,6 +753,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         'goInstallments'        => 'goInstallments',
         'refreshStatusCheckout' => 'refreshStatusCheckout',
         'methodCheckedChange'   => 'methodCheckedChange',
+        'chooseOtherMethod'     => 'chooseOtherMethod',
     ];
 
     #[On('show-notification')]
@@ -975,7 +976,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         }
     }
 
-    // Criar um movo metodo de pagamento ----
+    #[On('choose-other-method')]
     public function chooseOtherMethod(): void
     {
         $this->checkout->update([
