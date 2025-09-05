@@ -92,7 +92,7 @@
                 "
                 style="background: darkcyan;color: white;padding: 10px;border-radius: 5px;"
                 type="button"
-                onclick="event.preventDefault();methodChoose()"
+                wire:click="chooseOtherMethod"
             >
                 Escolher outro método
             </button>
