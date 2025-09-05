@@ -106,7 +106,21 @@
                     type="button"
                     wire:click="$dispatch('choose-other-method')"
                     wire:loading.attr="disabled"
-                    class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 transition flex items-center justify-center gap-2"
+                    class="
+                        px-4
+                        py-2
+                        bg-blue-600
+                        text-white
+                        text-sm
+                        font-medium
+                        rounded-lg
+                        shadow
+                        hover:bg-blue-700
+                        transition
+                        flex items-center
+                        justify-center
+                        gap-2
+                    "
                     style="background: darkcyan; color: white; padding: 10px; border-radius: 5px;"
                 >
                     <span wire:loading.remove>
