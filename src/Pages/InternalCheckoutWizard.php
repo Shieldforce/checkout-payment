@@ -984,7 +984,5 @@ class InternalCheckoutWizard extends Page implements HasForms
         ]);
 
         $this->startOnStep = 4;
-
-        dd($this->startOnStep);
     }
 }
