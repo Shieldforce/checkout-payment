@@ -66,6 +66,10 @@
     @endif
 </div>
 
+@php
+    $statusFinalizado = \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value;
+@endphp
+
 @if(isset($this->attempts) && count($this->attempts) > 0)
     <br>
     <br>
@@ -77,8 +81,9 @@
             <h3 class="text-xl font-semibold text-left dark:text-gray-200">
                 Histórico de Tentativas de Pagamento
             </h3>
-            <button
-                class="
+            @if($this->checkout->status != $statusFinalizado)
+                <button
+                    class="
                     px-4
                     py-2
                     bg-blue-600
@@ -90,12 +95,13 @@
                     hover:bg-blue-700
                     transition
                 "
-                style="background: darkcyan;color: white;padding: 10px;border-radius: 5px;"
-                type="button"
-                wire:click="chooseOtherMethod"
-            >
-                Escolher outro método
-            </button>
+                    style="background: darkcyan;color: white;padding: 10px;border-radius: 5px;"
+                    type="button"
+                    wire:click="chooseOtherMethod"
+                >
+                    Escolher outro método
+                </button>
+            @endif
         </div>
 
         <div class="overflow-x-auto w-full max-w-full rounded-lg shadow border border-gray-200 dark:border-gray-700">
@@ -156,6 +162,7 @@
                         </td>
                         <td class="px-6 py-4 text-sm">
                             @if(
+                                $this->checkout->status != $statusFinalizado &&
                                 isset($attempt['data']['point_of_interaction']["transaction_data"]["ticket_url"]) &&
                                 in_array(strtolower($attempt['method']), ['pix'])
                             )
@@ -168,6 +175,7 @@
                                     Ir para pagamento
                                 </a>
                             @elseif(
+                                $this->checkout->status != $statusFinalizado &&
                                 isset($attempt["data"]["transaction_details"]["external_resource_url"]) &&
                                 in_array(strtolower($attempt['method']), ['bolbradesco'])
                             )

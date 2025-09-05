@@ -978,6 +978,10 @@ class InternalCheckoutWizard extends Page implements HasForms
     // Criar um movo método de pagamento ----
     public function chooseOtherMethod(): void
     {
-        dd($this->checkout);
+        $this->checkout->update([
+            'startOnStep' => 4,
+        ]);
+
+        $this->startOnStep = 4;
     }
 }
