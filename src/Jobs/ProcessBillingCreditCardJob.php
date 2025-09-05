@@ -48,6 +48,10 @@ class ProcessBillingCreditCardJob implements ShouldQueue
             "payment_method_id" => $step4->payment_method_id ?? null,
         ];
 
+        logger([
+            "request_cartao_mp" => $data,
+        ]);
+
         $return = $mp->gerarPagamentoCartao(
             value: $data["value"],
             description: "Pagamento via Cartão",
