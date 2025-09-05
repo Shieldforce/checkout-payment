@@ -24,37 +24,59 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
 
     public function handle(): void
     {
-        logger("ProcessCheckoutUpdatePaymentsJob, checkout id: {$this->checkout->id} - " . date("Y-m-d H:i:s"));
+        logger("ProcessCheckoutUpdatePaymentsJob, checkout id: {$this->checkout->id} - " . now());
 
-        $payments = $this->mp->buscarPagamentoPorExternalId($this->checkout->id);
-
+        $payments      = $this->mp->buscarPagamentoPorExternalId($this->checkout->id);
         $paymentsArray = is_array($payments) ? $payments : json_decode($payments, true);
+
+        // Ordena pela data do pagamento (ajuste para o campo correto da API)
+        $paymentsCollection = collect($paymentsArray)->sortByDesc(
+            fn($p) => $p['date_created'] ?? $p['date_approved'] ?? null
+        );
 
         $updateData = [
             'return_gateway' => $payments,
         ];
 
-        $approvedPayment = collect($paymentsArray)->first(function ($payment) {
-            return ($payment['status'] ?? '') === 'approved';
-        });
+        // 1. Procura um aprovado (não importa a ordem, qualquer aprovado já finaliza)
+        $approvedPayment = $paymentsCollection->first(
+            fn($p) => ($p['status'] ?? '') === 'approved'
+        );
 
         if ($approvedPayment) {
             $updateData['status']         = StatusCheckoutEnum::finalizado->value;
-            $updateData['method_checked'] = $this->methodTransformer($approvedPayment['method']);
+            $updateData['method_checked'] = $this->methodTransformer($approvedPayment['method'] ?? null);
 
-            logger("Checkout id: {$this->checkout->id} atualizado para status 5 devido a pagamento aprovado. Método: {$updateData['method_type']}");
+            logger("Checkout id: {$this->checkout->id}, pagamento aprovado. Método: {$updateData['method_checked']}");
+            $this->checkout->update($updateData);
+            return;
         }
 
+        // 2. Se não tiver aprovado, pega o mais recente
+        $lastPayment = $paymentsCollection->first();
+
+        if ($lastPayment && ($lastPayment['status'] ?? '') === 'rejected') {
+            $updateData['status']         = StatusCheckoutEnum::perdido->value;
+            $updateData['method_checked'] = $this->methodTransformer($lastPayment['method'] ?? null);
+
+            logger("Checkout id: {$this->checkout->id}, pagamento reprovado. Método: {$updateData['method_checked']}");
+            $this->checkout->update($updateData);
+            return;
+        }
+
+        // 3. Se só tiver pendente ou nenhum -> não altera status
+        logger("Checkout id: {$this->checkout->id}, aguardando pagamento (pendente ou nenhum relevante).");
         $this->checkout->update($updateData);
     }
 
+
     public function methodTransformer($methodMP)
     {
-        if($methodMP== "pix") {
+        if ($methodMP == "pix") {
             return MethodPaymentEnum::pix->value;
         }
 
-        if($methodMP== "bolbradesco") {
+        if ($methodMP == "bolbradesco") {
             return MethodPaymentEnum::billet->value;
         }
 
