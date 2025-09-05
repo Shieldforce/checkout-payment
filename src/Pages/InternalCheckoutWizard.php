@@ -975,7 +975,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         }
     }
 
-    // Criar um movo método de pagamento ----
+    // Criar um movo metodo de pagamento ----
     public function chooseOtherMethod(): void
     {
         $this->checkout->update([
@@ -983,5 +983,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         ]);
 
         $this->startOnStep = 4;
+
+        dd($this->startOnStep);
     }
 }
