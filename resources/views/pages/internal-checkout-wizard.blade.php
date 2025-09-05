@@ -141,7 +141,8 @@
                                 issuerNameCard.textContent = data[0].issuer.name ?? 'Meu Cartão'
 
                                 if (data[0].payment_type_id) {
-                                    paymentMethodId = data[0].payment_type_id
+                                    //paymentMethodId = data[0].payment_type_id
+                                    paymentMethodId = data[0].id
                                 }
                             },
                             onCardTokenReceived: function(error, data) {
