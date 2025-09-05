@@ -12,7 +12,7 @@ class DtoStep2
         public string         $last_name,
         public string         $email,
         public int            $phone_number,
-        public int            $document,
+        public string         $document,
         public ?bool          $visible = null,
     ) {}
 
