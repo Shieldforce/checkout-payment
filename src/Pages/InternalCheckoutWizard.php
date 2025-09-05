@@ -479,7 +479,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             ]);*/
 
                             if ($this->checkout->step4->first()) {
-                                ProcessBillingCreditCardJob::dispatch($step4Update)->delay(60);
+                                ProcessBillingCreditCardJob::dispatch($step4Update);
                             }
                         }
                     } catch (Halt $exception) {
@@ -893,7 +893,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         "url_qrcode"        => $return["qr_code"],
                         "request_pix_data"  => json_encode($data),
                         "response_pix_data" => json_encode($return),
-                        'payment_method_id' => MethodPaymentEnum::pix->value,
+                        'payment_method_id' => "pix",
                     ]);
 
                     $this->checkout->update([
@@ -950,7 +950,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         "url_billet"           => $pdf,
                         "request_billet_data"  => json_encode($data),
                         "response_billet_data" => json_encode($return),
-                        'payment_method_id'    => MethodPaymentEnum::billet->value,
+                        'payment_method_id'    => "bolbradesco",
                     ]);
 
                     $this->checkout->update([
