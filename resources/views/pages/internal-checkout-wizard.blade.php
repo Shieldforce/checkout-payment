@@ -10,6 +10,10 @@
         <script src="https://sdk.mercadopago.com/js/v2"></script>
 
         <script>
+            function methodChoose() {
+                alert("fdsf")
+            }
+
             /*Key mp*/
             const accessKey = "{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}";
 

@@ -73,9 +73,17 @@
 
     <div class="mt-8 w-full max-w-full">
         <br>
-        <h3 class="text-xl font-semibold mb-4 text-left dark:text-gray-200">
-            Histórico de Tentativas de Pagamento
-        </h3>
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-semibold text-left dark:text-gray-200">
+                Histórico de Tentativas de Pagamento
+            </h3>
+            <button
+                class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 transition"
+                onclick="methodChoose()"
+            >
+                Escolher outro método
+            </button>
+        </div>
 
         <div class="overflow-x-auto w-full max-w-full rounded-lg shadow border border-gray-200 dark:border-gray-700">
             <table class="w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
