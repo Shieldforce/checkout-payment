@@ -27,6 +27,7 @@ use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
 use Shieldforce\CheckoutPayment\Jobs\ProcessBillingCreditCardJob;
+use Shieldforce\CheckoutPayment\Jobs\ProcessCheckoutUpdatePaymentsJob;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep1;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep2;
@@ -914,6 +915,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                         "request_pix_data"  => json_encode($data),
                         "response_pix_data" => json_encode($return),
                     ]);
+
+                    // Atualizar o json das tentativas de pagamento -> campo (return_gateway)
+                    ProcessCheckoutUpdatePaymentsJob::dispatch($this->checkout);
                 }
             }
 
@@ -971,6 +975,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                         "request_billet_data"  => json_encode($data),
                         "response_billet_data" => json_encode($return),
                     ]);
+
+                    // Atualizar o json das tentativas de pagamento -> campo (return_gateway)
+                    ProcessCheckoutUpdatePaymentsJob::dispatch($this->checkout);
                 }
             }
 
