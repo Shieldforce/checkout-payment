@@ -28,6 +28,10 @@ class ProcessBillingCreditCardJob implements ShouldQueue
     public function handle(): void
     {
         $this->checkout = $this?->step4?->ccpCheckout;
+
+        // Atualizar o json das tentativas de pagamento -> campo (return_gateway)
+        ProcessCheckoutUpdatePaymentsJob::dispatch($this->checkout);
+
         $this->creditCard();
     }
 
@@ -68,10 +72,7 @@ class ProcessBillingCreditCardJob implements ShouldQueue
         if (isset($return["status"]) && $return["status"] == "approved") {
             $this->checkout->update([
                 "startOnStep"    => 5,
-                /*
-                 * só a função ProcessCheckoutUpdatePaymentsJob que atualiza o status para finalizado
-                 */
-                //"status"         => StatusCheckoutEnum::finalizado->value,
+                "status"         => StatusCheckoutEnum::finalizado->value,
                 'method_checked' => MethodPaymentEnum::credit_card->value,
             ]);
 
