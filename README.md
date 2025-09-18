@@ -24,7 +24,7 @@ php artisan migrate
 
 Caso se arrependa (CUIDADO, TENHA CERTEZA QUE OS MIGRATIONS DO CHECKOUT FORAM OS ÚLTIMOS A SEREM RODADOS):
 ```bash
- php artisan migrate:rollback --step=3
+ php artisan migrate:rollback --step=6
 ```
 
 Você precisa publicar as configurações:
