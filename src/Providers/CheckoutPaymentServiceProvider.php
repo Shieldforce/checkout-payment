@@ -6,11 +6,14 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\ServiceProvider;
 use Shieldforce\CheckoutPayment\Jobs\AllCheckoutsUpdatesPaymentsJob;
 use Illuminate\Support\Facades\Schema;
+use Shieldforce\CheckoutPayment\CheckoutPaymentServiceProvider as BaseProvider;
 
-class CheckoutPaymentServiceProvider extends ServiceProvider
+class CheckoutPaymentServiceProvider extends BaseProvider
 {
     public function boot(): void
     {
+        parent::boot(); // carrega Spatie package tools
+
         // Carrega views do plugin
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'checkout-payment');
 
