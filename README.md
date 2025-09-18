@@ -13,15 +13,15 @@ Instalar Via Composer:
 
 ```bash
 composer require shieldforce/checkout-payment
-
-
-or
 ```
 
 Você precisa publicar as migrações:
 
 ```bash
-php artisan vendor:publish --tag="checkout-payment-migrations" or  php artisan checkout-payment:install
+
+php artisan checkout-payment:install
+
+php artisan vendor:publish --tag="checkout-payment-migrations"
 php artisan migrate
 ```
 
@@ -33,7 +33,7 @@ Caso se arrependa (CUIDADO, TENHA CERTEZA QUE OS MIGRATIONS DO CHECKOUT FORAM OS
 Você precisa publicar as configurações:
 
 ```bash
-php artisan vendor:publish --tag="checkout-payment-config" or  php artisan checkout-payment:install
+php artisan vendor:publish --tag="checkout-payment-config"
 ```
 
 Opcionalmente você pode publicar as views:
