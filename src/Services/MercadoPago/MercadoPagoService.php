@@ -15,12 +15,15 @@ class MercadoPagoService
 {
     public function __construct()
     {
-        $cppGateways = CppGateways::where("name", TypeGatewayEnum::mercado_pago->value)
-            ->where("active", true)
-            ->first();
-        if (/*!App::runningInConsole() && */ Schema::hasTable('cpp_gateways')) {
-            MercadoPagoConfig::setAccessToken(Crypt::decrypt($cppGateways->field_2));
-        }
+        try {
+            $cppGateways = CppGateways::where("name", TypeGatewayEnum::mercado_pago->value)
+                ->where("active", true)
+                ->first();
+
+            if (/*!App::runningInConsole() && */ Schema::hasTable('cpp_gateways')) {
+                MercadoPagoConfig::setAccessToken(Crypt::decrypt($cppGateways->field_2));
+            }
+        } catch (\Exception $e) {}
     }
 
     public function gerarPagamentoPix(
