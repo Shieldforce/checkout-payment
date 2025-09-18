@@ -3,6 +3,7 @@
 namespace Shieldforce\CheckoutPayment\Services\MercadoPago;
 
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Schema;
 use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\Exceptions\MPApiException;
 use MercadoPago\MercadoPagoConfig;
@@ -17,8 +18,9 @@ class MercadoPagoService
         $cppGateways = CppGateways::where("name", TypeGatewayEnum::mercado_pago->value)
             ->where("active", true)
             ->first();
-
-        MercadoPagoConfig::setAccessToken(Crypt::decrypt($cppGateways->field_2));
+        if (/*!App::runningInConsole() && */ Schema::hasTable('cpp_gateways')) {
+            MercadoPagoConfig::setAccessToken(Crypt::decrypt($cppGateways->field_2));
+        }
     }
 
     public function gerarPagamentoPix(
