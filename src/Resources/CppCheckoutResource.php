@@ -56,8 +56,12 @@ class CppCheckoutResource extends Resource
                     })
                     ->description("Tipo de ref."),*/
 
-                TextColumn::make('step2.first_name')
-                    ->label('Cliente'),
+                TextColumn::make('step2')
+                    ->label('Cliente')
+                    ->formatStateUsing(function ($record) {
+                        $first = $record->step2()->first();
+                        return $first ? $first->first_name . ' ' . $first->last_name : '-';
+                    }),
 
                 TextColumn::make('methods')
                     ->label('Métodos/Pag')
