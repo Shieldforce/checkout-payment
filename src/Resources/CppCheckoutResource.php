@@ -46,7 +46,7 @@ class CppCheckoutResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('referencable_id')
+                /*TextColumn::make('referencable_id')
                     ->label('TRI')
                     ->description("Id de ref."),
                 TextColumn::make('referencable_type')
@@ -54,7 +54,10 @@ class CppCheckoutResource extends Resource
                     ->formatStateUsing(function ($state) {
                         return str_replace(["\\","App","Models"], ["","",""], $state);
                     })
-                    ->description("Tipo de ref."),
+                    ->description("Tipo de ref."),*/
+
+                TextColumn::make('step2.first_name')
+                    ->label('Cliente'),
 
                 TextColumn::make('methods')
                     ->label('Métodos/Pag')
