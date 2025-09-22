@@ -3,6 +3,7 @@
 namespace Shieldforce\CheckoutPayment\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\DB;
 use Shieldforce\CheckoutPayment\Jobs\AllCheckoutsUpdatesPaymentsJob;
 use Illuminate\Support\Facades\Schema;
 use Shieldforce\CheckoutPayment\CheckoutPaymentServiceProvider as BaseProvider;
@@ -25,6 +26,7 @@ class CheckoutPaymentServiceProvider extends BaseProvider
         try {
             if (
                 $this->app->runningInConsole() &&
+                DB::connection()->getPdo() &&
                 Schema::connection(config('database.default'))->hasTable('cpp_gateways') &&
                 Schema::connection(config('database.default'))->hasTable('cpp_checkouts') &&
                 Schema::connection(config('database.default'))->hasTable('cpp_checkout_step_1') &&
