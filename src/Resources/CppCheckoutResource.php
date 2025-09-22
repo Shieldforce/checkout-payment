@@ -3,6 +3,7 @@
 namespace Shieldforce\CheckoutPayment\Resources;
 
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -38,7 +39,7 @@ class CppCheckoutResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
             ]);
     }
 
