@@ -3,7 +3,6 @@
 namespace Shieldforce\CheckoutPayment\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\ServiceProvider;
 use Shieldforce\CheckoutPayment\Jobs\AllCheckoutsUpdatesPaymentsJob;
 use Illuminate\Support\Facades\Schema;
 use Shieldforce\CheckoutPayment\CheckoutPaymentServiceProvider as BaseProvider;
@@ -26,12 +25,12 @@ class CheckoutPaymentServiceProvider extends BaseProvider
         try {
             if (
                 $this->app->runningInConsole() &&
-                Schema::hasTable('cpp_gateways') &&
-                Schema::hasTable('cpp_checkouts') &&
-                Schema::hasTable('cpp_checkout_step_1') &&
-                Schema::hasTable('cpp_checkout_step_2') &&
-                Schema::hasTable('cpp_checkout_step_3') &&
-                Schema::hasTable('cpp_checkout_step_4')
+                Schema::connection(config('database.default'))->hasTable('cpp_gateways') &&
+                Schema::connection(config('database.default'))->hasTable('cpp_checkouts') &&
+                Schema::connection(config('database.default'))->hasTable('cpp_checkout_step_1') &&
+                Schema::connection(config('database.default'))->hasTable('cpp_checkout_step_2') &&
+                Schema::connection(config('database.default'))->hasTable('cpp_checkout_step_3') &&
+                Schema::connection(config('database.default'))->hasTable('cpp_checkout_step_4')
             ) {
                 $this->app->booted(function () {
                     $schedule = $this->app->make(Schedule::class);
