@@ -12,19 +12,21 @@ use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 
 class AllCheckoutsUpdatesPaymentsJob implements ShouldQueue
 {
-    use Dispatchable, Queueable, Batchable;
+    use Batchable;
+    use Dispatchable;
+    use Queueable;
 
     public MercadoPagoService $mp;
 
     public function __construct()
     {
-        $this->mp = new MercadoPagoService();
+        $this->mp = new MercadoPagoService;
     }
 
     public function handle(): void
     {
-        logger("AllCheckoutsUpdatesPaymentsJob" . date("Y-m-d H:i:s"));
-        $checkouts = CppCheckout::where("status", StatusCheckoutEnum::pendente->value)->get();
+        logger('AllCheckoutsUpdatesPaymentsJob' . date('Y-m-d H:i:s'));
+        $checkouts = CppCheckout::where('status', StatusCheckoutEnum::pendente->value)->get();
         foreach ($checkouts as $checkout) {
             ProcessCheckoutUpdatePaymentsJob::dispatch($checkout);
         }
