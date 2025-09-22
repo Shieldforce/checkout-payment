@@ -38,9 +38,7 @@ class CppCheckoutResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                TextInput::make('name')
-            ]);
+            ->schema([]);
     }
 
     public static function table(Table $table): Table
@@ -226,8 +224,8 @@ class CppCheckoutResource extends Resource
     {
         return [
             'index'  => ListCppCheckouts::route('/'),
-            'create' => CreateCppCheckout::route('/create'),
-            'edit'   => EditCppCheckout::route('/{record}/edit'),
+            //'create' => CreateCppCheckout::route('/create'),
+            //'edit'   => EditCppCheckout::route('/{record}/edit'),
         ];
     }
 
