@@ -23,20 +23,22 @@ class CheckoutPaymentServiceProvider extends BaseProvider
         ], 'views');
 
         // Schedule do job
-        if (
-            $this->app->runningInConsole() &&
-            Schema::hasTable('cpp_gateways') &&
-            Schema::hasTable('cpp_checkouts') &&
-            Schema::hasTable('cpp_checkout_step_1') &&
-            Schema::hasTable('cpp_checkout_step_2') &&
-            Schema::hasTable('cpp_checkout_step_3') &&
-            Schema::hasTable('cpp_checkout_step_4')
-        ) {
-            $this->app->booted(function () {
-                $schedule = $this->app->make(Schedule::class);
-                $schedule->job(new AllCheckoutsUpdatesPaymentsJob())->hourly();
-            });
-        }
+        try {
+            if (
+                $this->app->runningInConsole() &&
+                Schema::hasTable('cpp_gateways') &&
+                Schema::hasTable('cpp_checkouts') &&
+                Schema::hasTable('cpp_checkout_step_1') &&
+                Schema::hasTable('cpp_checkout_step_2') &&
+                Schema::hasTable('cpp_checkout_step_3') &&
+                Schema::hasTable('cpp_checkout_step_4')
+            ) {
+                $this->app->booted(function () {
+                    $schedule = $this->app->make(Schedule::class);
+                    $schedule->job(new AllCheckoutsUpdatesPaymentsJob())->hourly();
+                });
+            }
+        } catch (\Exception $e) {}
     }
 }
 
