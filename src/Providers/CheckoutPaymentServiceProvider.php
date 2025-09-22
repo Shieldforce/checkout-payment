@@ -3,9 +3,9 @@
 namespace Shieldforce\CheckoutPayment\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Shieldforce\CheckoutPayment\Jobs\AllCheckoutsUpdatesPaymentsJob;
 use Illuminate\Support\Facades\Schema;
 use Shieldforce\CheckoutPayment\CheckoutPaymentServiceProvider as BaseProvider;
+use Shieldforce\CheckoutPayment\Jobs\AllCheckoutsUpdatesPaymentsJob;
 
 class CheckoutPaymentServiceProvider extends BaseProvider
 {
@@ -34,10 +34,10 @@ class CheckoutPaymentServiceProvider extends BaseProvider
             ) {
                 $this->app->booted(function () {
                     $schedule = $this->app->make(Schedule::class);
-                    $schedule->job(new AllCheckoutsUpdatesPaymentsJob())->hourly();
+                    $schedule->job(new AllCheckoutsUpdatesPaymentsJob)->hourly();
                 });
             }
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
     }
 }
-
