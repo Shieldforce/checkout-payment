@@ -195,7 +195,7 @@ class CppCheckoutResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
 
-                    Tables\Actions\EditAction::make(),
+                    //Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\Action::make("Link de Pagamento")
                         ->icon("heroicon-o-credit-card")
