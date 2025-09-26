@@ -99,7 +99,9 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
         if (isset($return["status"]) && $return["status"] == "rejected") {
             $this->checkout->update([
-                "status" => StatusCheckoutEnum::perdido->value,
+                "startOnStep"    => 5,
+                "status"         => StatusCheckoutEnum::perdido->value,
+                'method_checked' => MethodPaymentEnum::credit_card->value,
             ]);
 
             $this->checkout->notify(new CheckoutStatusUpdated(
