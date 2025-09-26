@@ -697,6 +697,11 @@ class InternalCheckoutWizard extends Page implements HasForms
             $submitAction = view('checkout-payment::checkout.submit-button-hidden');
         }
 
+        $statusFinalizado = StatusCheckoutEnum::finalizado->value;
+        if ($this->checkout->status != $statusFinalizado) {
+            $submitAction = view('checkout-payment::checkout.submit-button-hidden');
+        }
+
         return [
             Wizard::make($this->fieldWinzard())
                 ->submitAction($submitAction)
@@ -723,7 +728,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public function submit()
     {
-        //dd($this->form->getState());
         return redirect($this->checkout->url);
     }
 
