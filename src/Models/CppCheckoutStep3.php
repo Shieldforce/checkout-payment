@@ -10,13 +10,13 @@ class CppCheckoutStep3 extends Model
 
     protected $fillable = [
         'cpp_checkout_id',
-        "zipcode",
-        "street",
-        "district",
-        "city",
-        "state",
-        "number",
-        "complement",
+        'zipcode',
+        'street',
+        'district',
+        'city',
+        'state',
+        'number',
+        'complement',
         'visible',
     ];
 
