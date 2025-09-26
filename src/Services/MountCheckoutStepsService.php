@@ -32,7 +32,7 @@ class MountCheckoutStepsService
 
     public function handle()
     {
-        // Gateway Ativo ---
+        // Gateway Ativo ----
         $cppGateway = CppGateways::where('active', true)->first();
         if (isset($cppGateway->id)) {
 
@@ -45,7 +45,6 @@ class MountCheckoutStepsService
                 'due_date' => $this->due_date,
             ]);
         }
-
 
         return $this;
     }
