@@ -35,13 +35,9 @@
                 "
                 />
             </div>
-
         @else
-
-
-
-                <div
-                    class="
+            <div
+                class="
                         w-full
                         max-w-[150px]
                         h-[150px]
@@ -79,13 +75,15 @@
             <div class="font-semibold truncate" x-text="(first_name || 'Primeiro Nome') + ' ' + (last_name || 'Sobrenome')"></div>
         </div>
         <div class="flex flex-col sm:items-end gap-1">
-            <a
-                :href="url_qrcode"
-                target="_blank"
-                class="text-xs font-bold underline hover:text-gray-900 dark:hover:text-white/90 transition-colors"
-            >
-                Abrir PIX
-            </a>
+            @if($this->url_qrcode)
+                <a
+                    href="{{ $this->url_qrcode }}"
+                    target="_blank"
+                    class="text-xs font-bold underline hover:text-gray-900 dark:hover:text-white/90 transition-colors"
+                >
+                    Abrir PIX
+                </a>
+            @endif
             <a
                 :href="url_qrcode"
                 target="_blank"
