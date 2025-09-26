@@ -12,11 +12,11 @@ class CpfCnpjRule implements ValidationRule
         $value = preg_replace('/\D/', '', $value);
 
         if (strlen($value) === 11) {
-            if (!$this->validateCpf($value)) {
+            if (! $this->validateCpf($value)) {
                 $fail("O campo {$attribute} não é um CPF válido.");
             }
         } elseif (strlen($value) === 14) {
-            if (!$this->validateCnpj($value)) {
+            if (! $this->validateCnpj($value)) {
                 $fail("O campo {$attribute} não é um CNPJ válido.");
             }
         } else {
@@ -26,7 +26,9 @@ class CpfCnpjRule implements ValidationRule
 
     private function validateCpf(string $cpf): bool
     {
-        if (preg_match('/(\d)\1{10}/', $cpf)) return false; // números iguais não são válidos
+        if (preg_match('/(\d)\1{10}/', $cpf)) {
+            return false;
+        } // números iguais não são válidos
 
         $sum = 0;
         for ($i = 0, $j = 10; $i < 9; $i++, $j--) {
@@ -53,7 +55,7 @@ class CpfCnpjRule implements ValidationRule
             return false;
         }
 
-        $lengths = [5,6];
+        $lengths = [5, 6];
         $sum = 0;
 
         for ($i = 0; $i < 12; $i++) {
@@ -64,7 +66,7 @@ class CpfCnpjRule implements ValidationRule
         $digit1 = ($rest < 2) ? 0 : 11 - $rest;
 
         $sum = 0;
-        $lengths = [6,5];
+        $lengths = [6, 5];
         for ($i = 0; $i < 13; $i++) {
             $sum += $cnpj[$i] * $lengths[$i % 2];
         }
