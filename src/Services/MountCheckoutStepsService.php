@@ -48,6 +48,11 @@ class MountCheckoutStepsService
         return $this;
     }
 
+    public function getCppCheckout()
+    {
+        return $this->cppCheckout;
+    }
+
     public function configureButtonSubmit(
         string $text = "Finalizar",
         string $color = "success",
@@ -383,6 +388,13 @@ class MountCheckoutStepsService
                 'startOnStep' => 5,
             ]);
         }
+
+        return $this;
+    }
+
+    public function delete()
+    {
+        $this->cppCheckout->delete();
 
         return $this;
     }
