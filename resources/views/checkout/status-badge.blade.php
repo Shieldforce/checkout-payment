@@ -72,7 +72,7 @@
     $statusFinalizado = \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value;
 @endphp
 
-@if(isset($this->attempts) && count($this->attempts) > 0)
+{{--@if(isset($this->attempts) && count($this->attempts) > 0)--}}
     <br>
     <br>
     <hr class="my-8 mt-5 border-gray-300 dark:border-gray-600">
@@ -206,5 +206,5 @@
         </div>
     </div>
 
-@endif
+{{--@endif--}}
 

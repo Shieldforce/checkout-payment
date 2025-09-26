@@ -103,7 +103,6 @@ class MercadoPagoService
                     "last_name"      => $payer_last_name,
                     "identification" => [
                         "type"   => $document_type,
-                        // CPF CNPJ
                         "number" => $document
                     ],
                     "address"        => [
