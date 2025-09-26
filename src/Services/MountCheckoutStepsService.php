@@ -391,4 +391,40 @@ class MountCheckoutStepsService
 
         return $this;
     }
+
+    public function verifyStepsCreateRollback($lastStepNumber = 3)
+    {
+        if (
+            isset($this->cppCheckout->id) &&
+            $lastStepNumber == 1 &&
+            (
+                !isset($this->cppCheckout->step1()->first()->id)
+            )
+        ) {
+            $this->cppCheckout->delete();
+        }
+
+        if (
+            isset($this->cppCheckout->id) &&
+            $lastStepNumber == 2 &&
+                (
+                    !isset($this->cppCheckout->step1()->first()->id) ||
+                    !isset($this->cppCheckout->step2()->first()->id)
+                )
+        ) {
+            $this->cppCheckout->delete();
+        }
+
+        if (
+            isset($this->cppCheckout->id) &&
+            $lastStepNumber == 3 &&
+            (
+                !isset($this->cppCheckout->step1()->first()->id) ||
+                !isset($this->cppCheckout->step2()->first()->id) ||
+                !isset($this->cppCheckout->step3()->first()->id)
+            )
+        ) {
+            $this->cppCheckout->delete();
+        }
+    }
 }
