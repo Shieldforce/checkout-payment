@@ -54,10 +54,38 @@
                 class="px-5 py-2 rounded-full text-sm font-semibold
                     {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
                         ? 'bg-green-100 text-green-700 dark:bg-green-700 dark:text-green-100'
-                        : 'bg-orange-100 text-orange-700 dark:bg-orange-700 dark:text-orange-100' }}">
+                        : ''
+                    }}
+                    {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::pendente->value
+                        ? 'bg-orange-100 text-orange-700 dark:bg-orange-700 dark:text-orange-100'
+                        : ''
+                    }}
+                    {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::perdido->value
+                        ? 'bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-100'
+                        : ''
+                    }}
+                    {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::erro->value
+                        ? 'bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-100'
+                        : ''
+                    }}
+                    "
+            >
                 {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
                     ? 'Pagamento Aprovado'
-                    : 'Aguardando Pagamento...' }}
+                    : ''
+                }}
+                {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::pendente->value
+                    ? 'Aguardando Pagamento...'
+                    : ''
+                }}
+                {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::perdido->value
+                    ? 'Pagamento recusado'
+                    : ''
+                }}
+                {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::erro->value
+                    ? 'Pagamento com erro'
+                    : ''
+                }}
             </span>
         </div>
     </div>
