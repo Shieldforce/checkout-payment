@@ -47,7 +47,7 @@ class CpfCnpjRule implements ValidationRule
 
     private function validateCnpj(string $cnpj): bool
     {
-        $cnpj = preg_replace('/\D/', '', $cnpj);
+        /*$cnpj = preg_replace('/\D/', '', $cnpj);
 
         if (preg_match('/(\d)\1{13}/', $cnpj)) {
             return false;
@@ -72,6 +72,8 @@ class CpfCnpjRule implements ValidationRule
         $rest = $sum % 11;
         $digit2 = ($rest < 2) ? 0 : 11 - $rest;
 
-        return $cnpj[12] == $digit1 && $cnpj[13] == $digit2;
+        return $cnpj[12] == $digit1 && $cnpj[13] == $digit2;*/
+
+        return true;
     }
 }
