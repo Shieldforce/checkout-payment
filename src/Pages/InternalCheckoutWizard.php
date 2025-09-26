@@ -473,11 +473,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                         );
 
                         if ($step4Update) {
-                            /*$this->checkout->update([
+                            $this->checkout->update([
                                 'startOnStep'    => 5,
                                 'status'         => StatusCheckoutEnum::pendente->value,
                                 'method_checked' => $get('method_checked'),
-                            ]);*/
+                            ]);
 
                             if ($this->checkout->step4->first()) {
                                 ProcessBillingCreditCardJob::dispatch($step4Update);
@@ -787,9 +787,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     }
 
     #[On('update-card-token')]
-    public function updateCardToken(
-        $cardToken,
-    ): void
+    public function updateCardToken($cardToken): void
     {
         if ($cardToken) {
             $this->card_token = $cardToken ?? null;
@@ -797,9 +795,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     }
 
     #[On('payment-method-id')]
-    public function paymentMethodId(
-        $paymentMethodId,
-    ): void
+    public function paymentMethodId($paymentMethodId): void
     {
         if ($paymentMethodId) {
             $this->payment_method_id = $paymentMethodId ?? null;

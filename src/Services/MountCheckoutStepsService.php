@@ -40,9 +40,10 @@ class MountCheckoutStepsService
                 'cpp_gateway_id'    => $cppGateway->id,
                 'referencable_id'   => $this->model->id,
                 'referencable_type' => $this->model::class,
-                'methods'           => json_encode($this->requiredMethods),
-                'due_date'          => $this->due_date,
-            ], []);
+            ], [
+                'methods'  => json_encode($this->requiredMethods),
+                'due_date' => $this->due_date,
+            ]);
         }
 
         return $this;
@@ -398,7 +399,7 @@ class MountCheckoutStepsService
             isset($this->cppCheckout->id) &&
             $lastStepNumber == 1 &&
             (
-                !isset($this->cppCheckout->step1()->first()->id)
+            !isset($this->cppCheckout->step1()->first()->id)
             )
         ) {
             $this->cppCheckout->delete();
@@ -407,10 +408,10 @@ class MountCheckoutStepsService
         if (
             isset($this->cppCheckout->id) &&
             $lastStepNumber == 2 &&
-                (
-                    !isset($this->cppCheckout->step1()->first()->id) ||
-                    !isset($this->cppCheckout->step2()->first()->id)
-                )
+            (
+                !isset($this->cppCheckout->step1()->first()->id) ||
+                !isset($this->cppCheckout->step2()->first()->id)
+            )
         ) {
             $this->cppCheckout->delete();
         }

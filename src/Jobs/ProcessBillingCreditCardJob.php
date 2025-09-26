@@ -105,8 +105,8 @@ class ProcessBillingCreditCardJob implements ShouldQueue
             ]);
 
             $this->checkout->notify(new CheckoutStatusUpdated(
-                status: "processing",
-                message: "Estamos processando seu pagamento",
+                status: "rejected",
+                message: "Seu Pagamento Foi recusado!",
                 corporateName: env("APP_NAME") ?? "Empresa",
             ));
         }
