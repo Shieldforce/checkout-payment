@@ -891,7 +891,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                         "cpp_checkout_id" => $this->checkout->id,
                     ], [
                         "base_qrcode"       => $return["qr_code_base64"],
-                        "url_qrcode"        => $return["qr_code"],
+                        "url_qrcode"        => $return["data"]["point_of_interaction"]["transaction_data"]["ticket_url"]
+                            ?? $return["qr_code"],
                         "request_pix_data"  => json_encode($data),
                         "response_pix_data" => json_encode($return),
                         'payment_method_id' => "pix",
@@ -903,7 +904,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ]);
 
                     $this->base_qrcode = $return["qr_code_base64"];
-                    $this->url_qrcode  = $return["qr_code"];
+                    $this->url_qrcode  = $return["data"]["point_of_interaction"]["transaction_data"]["ticket_url"]
+                        ?? $return["qr_code"];
 
                     DB::commit();
                 }
