@@ -53,7 +53,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn(Action $action) => $action
+                fn (Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
@@ -87,7 +87,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ->label('Ativo'),
 
             TextColumn::make('created_at')
-                ->label("Criado em")
+                ->label('Criado em')
                 ->formatStateUsing(function ($state, $record) {
                     return $record->created_at->diffForHumans();
                 })
@@ -100,8 +100,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending'   => 'Pending',
-                    'paid'      => 'Paid',
+                    'pending' => 'Pending',
+                    'paid' => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -158,7 +158,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ->live()
                 ->options(function () {
                     return collect(TypeGatewayEnum::cases())
-                        ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+                        ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
                         ->toArray();
                 })
                 ->columnSpanFull()
