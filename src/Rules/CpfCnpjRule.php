@@ -47,7 +47,11 @@ class CpfCnpjRule implements ValidationRule
 
     private function validateCnpj(string $cnpj): bool
     {
-        if (preg_match('/(\d)\1{13}/', $cnpj)) return false; // números iguais não são válidos
+        $cnpj = preg_replace('/\D/', '', $cnpj);
+
+        if (preg_match('/(\d)\1{13}/', $cnpj)) {
+            return false;
+        }
 
         $lengths = [5,6];
         $sum = 0;
