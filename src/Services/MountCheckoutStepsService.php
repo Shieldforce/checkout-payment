@@ -386,4 +386,11 @@ class MountCheckoutStepsService
 
         return $this;
     }
+
+    public function delete()
+    {
+        $this->cppCheckout->delete();
+
+        return $this;
+    }
 }
