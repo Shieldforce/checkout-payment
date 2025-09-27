@@ -1,3 +1,26 @@
+@php
+    $statusFinalizado = \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value;
+
+    $statusClass = match ($this->statusCheckout) {
+        \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value =>
+            'bg-green-100 text-green-700 dark:bg-green-700 dark:text-green-100',
+        \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::pendente->value =>
+            'bg-orange-100 text-orange-700 dark:bg-orange-700 dark:text-orange-100',
+        \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::perdido->value,
+        \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::erro->value =>
+            'bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-100',
+        default => '',
+    };
+
+    $statusText = match ($this->statusCheckout) {
+        \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value => 'Pagamento Aprovado',
+        \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::pendente->value => 'Aguardando Pagamento...',
+        \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::perdido->value => 'Pagamento recusado',
+        \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::erro->value => 'Pagamento com erro',
+        default => '',
+    };
+@endphp
+
 <div
     class="flex flex-col md:flex-row items-stretch justify-center min-h-[60vh] bg-white dark:bg-gray-800 shadow rounded-xl overflow-hidden">
 
@@ -51,41 +74,9 @@
         {{-- Status atual --}}
         <div class="mt-8 text-left md:text-left">
             <span
-                class="px-5 py-2 rounded-full text-sm font-semibold
-                    {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
-                        ? 'bg-green-100 text-green-700 dark:bg-green-700 dark:text-green-100'
-                        : ''
-                    }}
-                    {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::pendente->value
-                        ? 'bg-orange-100 text-orange-700 dark:bg-orange-700 dark:text-orange-100'
-                        : ''
-                    }}
-                    {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::perdido->value
-                        ? 'bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-100'
-                        : ''
-                    }}
-                    {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::erro->value
-                        ? 'bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-100'
-                        : ''
-                    }}
-                    "
+                class="px-5 py-2 rounded-full text-sm font-semibold {{ $statusClass }}"
             >
-                {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value
-                    ? 'Pagamento Aprovado'
-                    : ''
-                }}
-                {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::pendente->value
-                    ? 'Aguardando Pagamento...'
-                    : ''
-                }}
-                {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::perdido->value
-                    ? 'Pagamento recusado'
-                    : ''
-                }}
-                {{ $this->statusCheckout == \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::erro->value
-                    ? 'Pagamento com erro'
-                    : ''
-                }}
+                {{ $statusText }}
             </span>
         </div>
     </div>
@@ -95,10 +86,6 @@
         <div wire:poll.30s="refreshStatusCheckout"></div>
     @endif
 </div>
-
-@php
-    $statusFinalizado = \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::finalizado->value;
-@endphp
 
 {{--@if(isset($this->attempts) && count($this->attempts) > 0)--}}
     <br>
