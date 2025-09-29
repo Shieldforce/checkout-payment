@@ -56,7 +56,7 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
         $lastPayment = $paymentsCollection->first();
 
         if ($lastPayment && ($lastPayment['status'] ?? '') === 'rejected') {
-            $updateData['status']         = StatusCheckoutEnum::perdido->value;
+            $updateData['status']         = StatusCheckoutEnum::rejeitado->value;
             $updateData['method_checked'] = $this->methodTransformer($lastPayment['method'] ?? null);
 
             logger("Checkout id: {$this->checkout->id}, pagamento reprovado. Método: {$updateData['method_checked']}");
