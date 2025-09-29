@@ -7,8 +7,9 @@
         \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::pendente->value =>
             'bg-orange-100 text-orange-700 dark:bg-orange-700 dark:text-orange-100',
         \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::perdido->value,
+        \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::rejeitado->value,
         \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::erro->value =>
-            'bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-100',
+            'bg-red-100 text-red text-red-700 dark:bg-red-700 dark:text-red-100',
         default => '',
     };
 
@@ -17,6 +18,7 @@
         \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::pendente->value => 'Aguardando Pagamento...',
         \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::perdido->value => 'Pagamento recusado',
         \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::erro->value => 'Pagamento com erro',
+        \Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum::rejeitado->value => 'Pagamento rejeitado',
         default => '',
     };
 @endphp
@@ -88,19 +90,19 @@
 </div>
 
 {{--@if(isset($this->attempts) && count($this->attempts) > 0)--}}
-    <br>
-    <br>
-    <hr class="my-8 mt-5 border-gray-300 dark:border-gray-600">
+<br>
+<br>
+<hr class="my-8 mt-5 border-gray-300 dark:border-gray-600">
 
-    <div class="mt-8 w-full max-w-full">
-        <br>
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-xl font-semibold text-left dark:text-gray-200">
-                Histórico de Tentativas de Pagamento
-            </h3>
-            @if($this->checkout->status != $statusFinalizado)
-                <button
-                    class="
+<div class="mt-8 w-full max-w-full">
+    <br>
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-semibold text-left dark:text-gray-200">
+            Histórico de Tentativas de Pagamento
+        </h3>
+        @if($this->checkout->status != $statusFinalizado)
+            <button
+                class="
                     px-4
                     py-2
                     bg-blue-600
@@ -112,110 +114,110 @@
                     hover:bg-blue-700
                     transition
                 "
-                    style="background: darkcyan;color: white;padding: 10px;border-radius: 5px;"
-                    type="button"
-                    wire:click="$dispatch('choose-other-method')"
-                >
-                    Escolher outro método
-                </button>
-            @endif
-        </div>
+                style="background: darkcyan;color: white;padding: 10px;border-radius: 5px;"
+                type="button"
+                wire:click="$dispatch('choose-other-method')"
+            >
+                Escolher outro método
+            </button>
+        @endif
+    </div>
 
-        <div class="overflow-x-auto w-full max-w-full rounded-lg shadow border border-gray-200 dark:border-gray-700">
-            <table class="w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-800">
+    <div class="overflow-x-auto w-full max-w-full rounded-lg shadow border border-gray-200 dark:border-gray-700">
+        <table class="w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-50 dark:bg-gray-800">
+            <tr>
+                <th
+                    style="width: 20%;"
+                    class="w-1/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
+                >
+                    #
+                </th>
+                <th
+                    style="width: 20%;"
+                    class="w-3/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
+                >
+                    Forma
+                </th>
+                <th
+                    style="width: 20%;"
+                    class="w-4/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
+                >
+                    Status
+                </th>
+                <th
+                    style="width: 20%;"
+                    class="w-4/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
+                >
+                    Data
+                </th>
+                <th
+                    style="width: 20%;"
+                    class="w-3/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
+                >
+                    Ação
+                </th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-100 dark:bg-gray-900 dark:divide-gray-700">
+            @forelse($this->attempts as $i => $attempt)
                 <tr>
-                    <th
-                        style="width: 20%;"
-                        class="w-1/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
-                    >
-                        #
-                    </th>
-                    <th
-                        style="width: 20%;"
-                        class="w-3/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
-                    >
-                        Forma
-                    </th>
-                    <th
-                        style="width: 20%;"
-                        class="w-4/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
-                    >
-                        Status
-                    </th>
-                    <th
-                        style="width: 20%;"
-                        class="w-4/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
-                    >
-                        Data
-                    </th>
-                    <th
-                        style="width: 20%;"
-                        class="w-3/12 px-6 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300"
-                    >
-                        Ação
-                    </th>
-                </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-100 dark:bg-gray-900 dark:divide-gray-700">
-                @forelse($this->attempts as $i => $attempt)
-                    <tr>
-                        <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">{{ $i+1 }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
-                            {{ ucfirst($attempt['method'] ?? '-') }}
-                        </td>
-                        <td class="px-6 py-4 text-sm">
+                    <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">{{ $i+1 }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
+                        {{ ucfirst($attempt['method'] ?? '-') }}
+                    </td>
+                    <td class="px-6 py-4 text-sm">
                                 <span class="px-3 py-1 rounded-full text-xs font-semibold
                                     @if(($attempt['status'] ?? '') === 'approved') bg-green-100 text-green-700 dark:bg-green-700 dark:text-green-100
                                     @elseif(($attempt['status'] ?? '') === 'rejected') bg-red-100 text-red-700 dark:bg-red-700 dark:text-red-100
                                     @else bg-orange-100 text-orange-700 dark:bg-orange-700 dark:text-orange-100 @endif">
                                     {{ ucfirst($attempt['status'] ?? '-') }}
                                 </span>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                            {{ isset($attempt['data']['date_created'])
-                                ? \Carbon\Carbon::parse($attempt['data']['date_created'])->format('d/m/Y H:i')
-                                : '-' }}
-                        </td>
-                        <td class="px-6 py-4 text-sm">
-                            @if(
-                                $this->checkout->status != $statusFinalizado &&
-                                isset($attempt['data']['point_of_interaction']["transaction_data"]["ticket_url"]) &&
-                                in_array(strtolower($attempt['method']), ['pix'])
-                            )
-                                <a
-                                    href="{{ $attempt['data']['point_of_interaction']["transaction_data"]["ticket_url"] }}"
-                                    target="_blank"
-                                    class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                                    style="background: darkblue;color: white;padding: 10px;border-radius: 5px;"
-                                >
-                                    Ir para pagamento
-                                </a>
-                            @elseif(
-                                $this->checkout->status != $statusFinalizado &&
-                                isset($attempt["data"]["transaction_details"]["external_resource_url"]) &&
-                                in_array(strtolower($attempt['method']), ['bolbradesco'])
-                            )
-                                <a
-                                    href="{{ $attempt["data"]["transaction_details"]["external_resource_url"] }}"
-                                    target="_blank"
-                                    class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                                    style="background: darkblue;color: white;padding: 10px;border-radius: 5px;"
-                                >
-                                    Ir para pagamento
-                                </a>
-                            @else
-                                -
-                            @endif
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="text-center text-gray-500 dark:text-gray-400 py-6">
-                            Nenhuma tentativa de pagamento encontrada.
-                        </td>
-                    </tr>
-                @endforelse
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                        {{ isset($attempt['data']['date_created'])
+                            ? \Carbon\Carbon::parse($attempt['data']['date_created'])->format('d/m/Y H:i')
+                            : '-' }}
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        @if(
+                            $this->checkout->status != $statusFinalizado &&
+                            isset($attempt['data']['point_of_interaction']["transaction_data"]["ticket_url"]) &&
+                            in_array(strtolower($attempt['method']), ['pix'])
+                        )
+                            <a
+                                href="{{ $attempt['data']['point_of_interaction']["transaction_data"]["ticket_url"] }}"
+                                target="_blank"
+                                class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                                style="background: darkblue;color: white;padding: 10px;border-radius: 5px;"
+                            >
+                                Ir para pagamento
+                            </a>
+                        @elseif(
+                            $this->checkout->status != $statusFinalizado &&
+                            isset($attempt["data"]["transaction_details"]["external_resource_url"]) &&
+                            in_array(strtolower($attempt['method']), ['bolbradesco'])
+                        )
+                            <a
+                                href="{{ $attempt["data"]["transaction_details"]["external_resource_url"] }}"
+                                target="_blank"
+                                class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                                style="background: darkblue;color: white;padding: 10px;border-radius: 5px;"
+                            >
+                                Ir para pagamento
+                            </a>
+                        @else
+                            -
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4" class="text-center text-gray-500 dark:text-gray-400 py-6">
+                        Nenhuma tentativa de pagamento encontrada.
+                    </td>
+                </tr>
+            @endforelse
                 </tbody>
             </table>
         </div>

@@ -9,6 +9,7 @@ enum StatusCheckoutEnum: int
     case perdido    = 3;
     case pendente   = 4;
     case finalizado = 5;
+    case rejeitado  = 6;
     case erro       = 999;
 
     public function label(): string
@@ -19,6 +20,7 @@ enum StatusCheckoutEnum: int
             self::perdido    => 'Perdido',
             self::pendente   => 'Pendente',
             self::finalizado => 'Finalizado',
+            self::rejeitado  => 'Rejeitado',
             self::erro       => 'Erro',
         };
     }
@@ -31,6 +33,7 @@ enum StatusCheckoutEnum: int
             self::perdido    => 'danger',
             self::pendente   => 'warning',
             self::finalizado => 'success',
+            self::rejeitado  => 'danger',
             self::erro       => 'danger',
         };
     }
@@ -43,6 +46,7 @@ enum StatusCheckoutEnum: int
             self::perdido->value    => self::perdido->label(),
             self::pendente->value   => self::pendente->label(),
             self::finalizado->value => self::finalizado->label(),
+            self::rejeitado->value  => self::rejeitado->label(),
             self::erro->value       => self::erro->label(),
         };
     }
@@ -55,6 +59,7 @@ enum StatusCheckoutEnum: int
             self::perdido->value    => self::perdido->color(),
             self::pendente->value   => self::pendente->color(),
             self::finalizado->value => self::finalizado->color(),
+            self::rejeitado->value  => self::rejeitado->color(),
             self::erro->value       => self::erro->color(),
         };
     }
