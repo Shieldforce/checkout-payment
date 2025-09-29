@@ -74,7 +74,7 @@
         </div>
 
         {{-- Status atual --}}
-        <div class="mt-8 text-left md:text-left">
+        <div class="mt-8 text-left md:text-left mt-3">
             <span
                 class="px-5 py-2 rounded-full text-sm font-semibold {{ $statusClass }}"
             >
