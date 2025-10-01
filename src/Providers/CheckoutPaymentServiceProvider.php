@@ -12,15 +12,18 @@ class CheckoutPaymentServiceProvider extends BaseProvider
 {
     public function boot(): void
     {
-        parent::boot(); // carrega Spatie package tools
+        parent::boot();
 
-        // Carrega views do plugin
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'checkout-payment');
+        $viewsPath = __DIR__ . '/../../resources/views';
 
-        // Permite publicação de views
-        $this->publishes([
-            __DIR__ . '/../../resources/views' => resource_path('views/vendor/checkout-payment'),
-        ], 'views');
+        if (is_dir($viewsPath)) {
+            // Carrega views do plugin
+            $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'checkout-payment');
+
+            $this->publishes([
+                $viewsPath => resource_path('views/vendor/checkout-payment'),
+            ], 'views');
+        }
 
         // Schedule do job
         try {
