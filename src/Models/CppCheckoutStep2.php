@@ -10,12 +10,12 @@ class CppCheckoutStep2 extends Model
 
     protected $fillable = [
         'cpp_checkout_id',
-        "people_type",
-        "first_name",
-        "last_name",
-        "email",
-        "phone_number",
-        "document",
+        'people_type',
+        'first_name',
+        'last_name',
+        'email',
+        'phone_number',
+        'document',
         'visible',
     ];
 

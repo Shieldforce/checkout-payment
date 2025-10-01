@@ -10,15 +10,16 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
+use Shieldforce\CheckoutPayment\Commands\CheckoutPaymentCommand;
+use Shieldforce\CheckoutPayment\Testing\TestsCheckoutPayment;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Shieldforce\CheckoutPayment\Commands\CheckoutPaymentCommand;
-use Shieldforce\CheckoutPayment\Testing\TestsCheckoutPayment;
 
 class CheckoutPaymentServiceProvider extends PackageServiceProvider
 {
-    public static string $name          = 'checkout-payment';
+    public static string $name = 'checkout-payment';
+
     public static string $viewNamespace = 'checkout-payment';
 
     public function configurePackage(Package $package): void

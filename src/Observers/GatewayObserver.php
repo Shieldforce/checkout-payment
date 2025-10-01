@@ -20,8 +20,8 @@ class GatewayObserver
     public function saved(Model $model): void
     {
         if ($model->active) {
-            CppGateways::where("id", "!=", $model->id)->update([
-                "active" => 0
+            CppGateways::where('id', '!=', $model->id)->update([
+                'active' => 0,
             ]);
         }
     }

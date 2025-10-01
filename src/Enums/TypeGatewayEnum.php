@@ -127,20 +127,20 @@ enum TypeGatewayEnum: int
     {
         return match ($this) {
             self::mercado_pago => [
-                'field_1' => "Gateway",
-                'field_2' => "Campo sensível",
-                'field_3' => "Campo sensível",
-                'field_4' => "-",
-                'field_5' => "-",
-                'field_6' => "-",
+                'field_1' => 'Gateway',
+                'field_2' => 'Campo sensível',
+                'field_3' => 'Campo sensível',
+                'field_4' => '-',
+                'field_5' => '-',
+                'field_6' => '-',
             ],
             default => [
-                'field_1' => "-",
-                'field_2' => "-",
-                'field_3' => "-",
-                'field_4' => "-",
-                'field_5' => "-",
-                'field_6' => "-",
+                'field_1' => '-',
+                'field_2' => '-',
+                'field_3' => '-',
+                'field_4' => '-',
+                'field_5' => '-',
+                'field_6' => '-',
             ],
         };
     }
@@ -149,20 +149,20 @@ enum TypeGatewayEnum: int
     {
         return match ($this) {
             self::mercado_pago => [
-                'field_1' => "-",
-                'field_2' => "Campo sensível",
-                'field_3' => "Campo sensível",
-                'field_4' => "-",
-                'field_5' => "-",
-                'field_6' => "-",
+                'field_1' => '-',
+                'field_2' => 'Campo sensível',
+                'field_3' => 'Campo sensível',
+                'field_4' => '-',
+                'field_5' => '-',
+                'field_6' => '-',
             ],
             default => [
-                'field_1' => "-",
-                'field_2' => "-",
-                'field_3' => "-",
-                'field_4' => "-",
-                'field_5' => "-",
-                'field_6' => "-",
+                'field_1' => '-',
+                'field_2' => '-',
+                'field_3' => '-',
+                'field_4' => '-',
+                'field_5' => '-',
+                'field_6' => '-',
             ],
         };
     }
