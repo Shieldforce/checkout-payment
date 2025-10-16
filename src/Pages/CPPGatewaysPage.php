@@ -23,25 +23,21 @@ use Illuminate\Support\Facades\Crypt;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\ManagerFieldService;
+use Shieldforce\CheckoutPayment\Services\Permissions\CanTrait;
 
 class CPPGatewaysPage extends Page implements HasForms, HasTable
 {
+    use CanTrait;
     use InteractsWithForms;
     use InteractsWithTable;
 
-    protected static string $view = 'checkout-payment::pages.cpp_gateways';
-
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
-
+    protected static string  $view            = 'checkout-payment::pages.cpp_gateways';
+    protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
     protected static ?string $navigationGroup = 'Gateways';
-
-    protected static ?string $label = 'Gateway';
-
+    protected static ?string $label           = 'Gateway';
     protected static ?string $navigationLabel = 'Gateway';
-
-    protected static ?string $slug = 'cpp-gateways';
-
-    protected static ?string $title = 'Lista de Gateways';
+    protected static ?string $slug            = 'cpp-gateways';
+    protected static ?string $title           = 'Lista de Gateways';
 
     public function mount(?int $checkoutId = null): void {}
 

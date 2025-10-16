@@ -3,7 +3,6 @@
 namespace Shieldforce\CheckoutPayment\Resources;
 
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -21,13 +20,13 @@ use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeStepEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep2;
-use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
-use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\CreateCppCheckout;
-use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\EditCppCheckout;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\ListCppCheckouts;
+use Shieldforce\CheckoutPayment\Services\Permissions\CanTrait;
 
 class CppCheckoutResource extends Resource
 {
+    use CanTrait;
+
     protected static ?string $model           = CppCheckout::class;
     protected static ?string $navigationIcon  = 'heroicon-o-currency-dollar';
     protected static ?string $label           = "Cobrança";
