@@ -23,11 +23,12 @@ use Illuminate\Support\Facades\Crypt;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\ManagerFieldService;
-use Shieldforce\CheckoutPayment\Services\Permissions\CanTrait;
+use Shieldforce\CheckoutPayment\Services\Permissions\CanPageTrait;
 
 class CPPGatewaysPage extends Page implements HasForms, HasTable
 {
-    use CanTrait;
+    use CanPageTrait;
+
     use InteractsWithForms;
     use InteractsWithTable;
 
