@@ -15,8 +15,7 @@ class CheckoutStatusUpdated extends Notification
         public string $status,
         public string $message,
         public string $corporateName,
-    )
-    {
+    ) {
         //
     }
 
@@ -25,7 +24,7 @@ class CheckoutStatusUpdated extends Notification
         return [
             'mail',
             'database',
-            'broadcast'
+            'broadcast',
         ];
     }
 
@@ -33,14 +32,14 @@ class CheckoutStatusUpdated extends Notification
     {
         return (new MailMessage)
             ->line($this->message ?? 'sem mensagem')
-            ->action('Ir para painel', url("/"))
+            ->action('Ir para painel', url('/'))
             ->line($this->corporateName ?? 'Sem nome');
     }
 
     public function toDatabase($notifiable)
     {
         return [
-            'status'  => $this->status ?? 'processing',
+            'status' => $this->status ?? 'processing',
             'message' => $this->message ?? 'Sem mensagem',
         ];
     }
@@ -48,7 +47,7 @@ class CheckoutStatusUpdated extends Notification
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'status'  => $this->status ?? 'processing',
+            'status' => $this->status ?? 'processing',
             'message' => $this->message ?? 'Sem mensagem',
         ]);
     }
