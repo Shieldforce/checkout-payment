@@ -62,15 +62,12 @@ class MercadoPagoService
             $code = $e->getApiResponse()->getStatusCode();
             $msg  = $e->getApiResponse()->getContent();
 
-            logger([
-                'code' => $code,
-                'msg'  => $msg,
-            ]);
+            logger("[Mercado Pago] - Erro ao gerar pagamento: " . $msg);
 
             return [];
 
         } catch (\Throwable $e) {
-            logger("Erro ao gerar pagamento: " . $e->getMessage());
+            logger("[Mercado Pago] - Erro ao gerar pagamento: " . $e->getMessage());
 
             return [];
         }
@@ -130,14 +127,11 @@ class MercadoPagoService
             $code = $e->getApiResponse()->getStatusCode();
             $msg  = $e->getApiResponse()->getContent();
 
-            logger([
-                'code' => $code,
-                'msg'  => $msg,
-            ]);
+            logger("[Mercado Pago] - Erro ao gerar pagamento boleto: " . $msg);
 
             return [];
         } catch (\Throwable $e) {
-            logger("Erro ao gerar pagamento boleto: " . $e->getMessage());
+            logger("[Mercado Pago] - Erro ao gerar pagamento boleto: " . $e->getMessage());
 
             return [];
         }
@@ -178,7 +172,7 @@ class MercadoPagoService
                 'data'   => $arrayPayment ?? null,
             ];
         } catch (\Throwable $e) {
-            logger("Erro ao gerar pagamento cartão: " . $e->getMessage());
+            logger("[Mercado Pago] - Erro ao gerar pagamento cartão: " . $e->getMessage());
             return [];
         }
     }
@@ -233,14 +227,11 @@ class MercadoPagoService
             $code = $e->getApiResponse()->getStatusCode();
             $msg  = $e->getApiResponse()->getContent();
 
-            logger([
-                'code' => $code,
-                'msg'  => $msg,
-            ]);
+            logger("[Mercado Pago] - Erro ao buscar pagamento por external_id: " . $msg);
 
             return [];
         } catch (\Throwable $e) {
-            logger("Erro ao buscar pagamento por external_id: " . $e->getMessage());
+            logger("[Mercado Pago] - Erro ao buscar pagamento por external_id: " . $e->getMessage());
             return [];
         }
     }

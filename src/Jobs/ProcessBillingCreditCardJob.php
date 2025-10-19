@@ -54,6 +54,7 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
         logger([
             "request_cartao_mp" => $data,
+            "tag"               => "[Mercado Pago] - Request"
         ]);
 
         $return = $mp->gerarPagamentoCartao(
@@ -67,7 +68,10 @@ class ProcessBillingCreditCardJob implements ShouldQueue
             payment_method_id: $data["payment_method_id"],
         );
 
-        logger($return);
+        logger([
+            "retorno_cartao_mp" => $return,
+            "tag"               => "[Mercado Pago] - Response"
+        ]);
 
         if (isset($return["status"]) && $return["status"] == "approved") {
             $this->checkout->update([

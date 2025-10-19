@@ -47,7 +47,11 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
             $updateData['status']         = StatusCheckoutEnum::finalizado->value;
             $updateData['method_checked'] = $this->methodTransformer($approvedPayment['method'] ?? null);
 
-            logger("Checkout id: {$this->checkout->id}, pagamento aprovado. Método: {$updateData['method_checked']}");
+            logger([
+                "Checkout id: {$this->checkout->id}, pagamento aprovado. Método: {$updateData['method_checked']}",
+                "[Mercado Pago] - Pagamento aprovado"
+            ]);
+
             $this->checkout->update($updateData);
             return;
         }
@@ -59,13 +63,21 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
             $updateData['status']         = StatusCheckoutEnum::rejeitado->value;
             $updateData['method_checked'] = $this->methodTransformer($lastPayment['method'] ?? null);
 
-            logger("Checkout id: {$this->checkout->id}, pagamento reprovado. Método: {$updateData['method_checked']}");
+            logger([
+                "Checkout id: {$this->checkout->id}, pagamento reprovado. Método: {$updateData['method_checked']}",
+                "[Mercado Pago] - Pagamento reprovado"
+            ]);
+
             $this->checkout->update($updateData);
             return;
         }
 
         // 3. Se só tiver pendente ou nenhum -> não altera status
-        logger("Checkout id: {$this->checkout->id}, aguardando pagamento (pendente ou nenhum relevante).");
+        logger([
+            "Checkout id: {$this->checkout->id}, aguardando pagamento (pendente ou nenhum relevante).",
+            "[Mercado Pago] - Pagamento pendente"
+        ]);
+
         $this->checkout->update($updateData);
     }
 
