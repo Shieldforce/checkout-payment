@@ -430,9 +430,11 @@ class MountCheckoutStepsService
         }
     }
 
-    public function criarBoleto($checkout, $criar = false)
+    public function criarBoleto(?CppCheckout $checkout = null, $criar = false)
     {
-        if($criar) {
+        $checkout = $checkout ?? $this->cppCheckout;
+
+        if($criar && isset($checkout->id)) {
             $mpCreate = new MPCreateLocalService($checkout);
             $mpCreate->boleto();
         }
@@ -440,9 +442,11 @@ class MountCheckoutStepsService
         return $this;
     }
 
-    public function criarPix($checkout, $criar = false)
+    public function criarPix(?CppCheckout $checkout = null, $criar = false)
     {
-        if($criar) {
+        $checkout = $checkout ?? $this->cppCheckout;
+
+        if($criar && isset($checkout->id)) {
             $mpCreate = new MPCreateLocalService($checkout);
             $mpCreate->pix();
         }
