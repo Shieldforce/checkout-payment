@@ -23,7 +23,8 @@ class MercadoPagoService
             if (/*!App::runningInConsole() && */ Schema::hasTable('cpp_gateways')) {
                 MercadoPagoConfig::setAccessToken(Crypt::decrypt($cppGateways->field_2));
             }
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
     }
 
     public function gerarPagamentoPix(
@@ -62,7 +63,10 @@ class MercadoPagoService
             $code = $e->getApiResponse()->getStatusCode();
             $msg  = $e->getApiResponse()->getContent();
 
-            logger("[Mercado Pago] - Erro ao gerar pagamento: " . $msg);
+            logger([
+                "msg"   => "[Mercado Pago] - Erro ao gerar pagamento pix: $code",
+                "error" => $msg
+            ]);
 
             return [];
 
@@ -127,7 +131,10 @@ class MercadoPagoService
             $code = $e->getApiResponse()->getStatusCode();
             $msg  = $e->getApiResponse()->getContent();
 
-            logger("[Mercado Pago] - Erro ao gerar pagamento boleto: " . $msg);
+            logger([
+                "msg"   => "[Mercado Pago] - Erro ao gerar pagamento boleto: $code",
+                "error" => $msg
+            ]);
 
             return [];
         } catch (\Throwable $e) {
