@@ -31,12 +31,12 @@ class MPCreateLocalService
         $this->dateOfExpiration = Carbon::createFromFormat("Y-m-d", $checkout->due_date)
                 ->format("Y-m-d\TH:i:s") . ".000-04:00";
 
-        if (!isset($step1->id) || !isset($step2->id) || !isset($step3->id)) {
+        if (!isset($this->step1->id) || !isset($this->step2->id) || !isset($this->step3->id)) {
             throw new CheckoutPaymentException("Etapa 1,2 e 3 são necessárias para gerar boleto!");
         }
 
-        if (isset($step1->items)) {
-            $items = json_decode($step1->items, true);
+        if (isset($this->step1->items)) {
+            $items = json_decode($this->step1->items, true);
             $sum   = 0;
             foreach ($items as $item) {
                 $sum += $item['price'] * $item['quantity'];
@@ -48,19 +48,19 @@ class MPCreateLocalService
         $this->data = [
             "value"            => isset($this->totalPrice) && $this->totalPrice > 0 ? (float)$this->totalPrice : null,
             "external_id"      => $this->checkout->id ?? null,
-            "payer_email"      => $step2->email ?? null,
-            "payer_first_name" => $step2->first_name ?? null,
-            "payer_last_name"  => $step2->last_name ?? null,
+            "payer_email"      => $this->step2->email ?? null,
+            "payer_first_name" => $this->step2->first_name ?? null,
+            "payer_last_name"  => $this->step2->last_name ?? null,
             "due_date"         => $this->dateOfExpiration,
-            "document"         => $step2->document,
-            "document_type"    => TypePeopleEnum::from($step2->people_type)->mpLabel(),
+            "document"         => $this->step2->document,
+            "document_type"    => TypePeopleEnum::from($this->step2->people_type)->mpLabel(),
             "address"          => [
-                "zip_code"      => $step3->zipcode ?? null,
-                "city"          => $step3->city ?? null,
-                "street_name"   => $step3->street ?? null,
-                "street_number" => $step3->number ?? null,
-                "neighborhood"  => $step3->district ?? null,
-                "federal_unit"  => $step3->state ?? null,
+                "zip_code"      => $this->step3->zipcode ?? null,
+                "city"          => $this->step3->city ?? null,
+                "street_name"   => $this->step3->street ?? null,
+                "street_number" => $this->step3->number ?? null,
+                "neighborhood"  => $this->step3->district ?? null,
+                "federal_unit"  => $this->step3->state ?? null,
             ]
         ];
     }
