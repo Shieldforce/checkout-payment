@@ -64,14 +64,18 @@ class MercadoPagoService
             $msg  = $e->getApiResponse()->getContent();
 
             logger([
-                "msg"   => "[Mercado Pago] - Erro ao gerar pagamento pix: $code",
+                "msg"   => "[Mercado Pago] - Erro ao gerar pagamento pix: (log-error-pix-email:{$payer_email})- (valor:{$value}) - (code:{$code})",
                 "error" => $msg
             ]);
 
             return [];
 
         } catch (\Throwable $e) {
-            logger("[Mercado Pago] - Erro ao gerar pagamento: " . $e->getMessage());
+
+            logger([
+                "msg"   => "[Mercado Pago] - Erro ao gerar pagamento pix: (log-error-pix-email:{$payer_email})- (valor:{$value}) - (code:{$e->getCode()})",
+                "error" => $e->getMessage()
+            ]);
 
             return [];
         }
@@ -132,13 +136,17 @@ class MercadoPagoService
             $msg  = $e->getApiResponse()->getContent();
 
             logger([
-                "msg"   => "[Mercado Pago] - Erro ao gerar pagamento boleto: $code",
+                "msg"   => "[Mercado Pago] - Erro ao gerar pagamento boleto: (log-error-boleto-email:{$payer_email})- (valor:{$value}) - (code:{$code})",
                 "error" => $msg
             ]);
 
             return [];
         } catch (\Throwable $e) {
-            logger("[Mercado Pago] - Erro ao gerar pagamento boleto: " . $e->getMessage());
+
+            logger([
+                "msg"   => "[Mercado Pago] - Erro ao gerar pagamento boleto: (log-error-boleto-email:{$payer_email})- (valor:{$value}) - (code:{$e->getCode()})",
+                "error" => $e->getMessage()
+            ]);
 
             return [];
         }
@@ -178,8 +186,23 @@ class MercadoPagoService
                 'status' => $payment->status ?? null,
                 'data'   => $arrayPayment ?? null,
             ];
+        } catch (MPApiException $e) {
+            $code = $e->getApiResponse()->getStatusCode();
+            $msg  = $e->getApiResponse()->getContent();
+
+            logger([
+                "msg"   => "[Mercado Pago] - Erro ao gerar pagamento cartão: (log-error-cartao-email:{$payer_email}) - (valor:{$value}) - (code:{$code})",
+                "error" => $msg
+            ]);
+
+            return [];
         } catch (\Throwable $e) {
-            logger("[Mercado Pago] - Erro ao gerar pagamento cartão: " . $e->getMessage());
+
+            logger([
+                "msg"   => "[Mercado Pago] - Erro ao gerar pagamento cartão: (log-error-cartao-email:{$payer_email}) - (valor:{$value}) - (code:{$e->getCode()})",
+                "error" => $e->getMessage()
+            ]);
+
             return [];
         }
     }
