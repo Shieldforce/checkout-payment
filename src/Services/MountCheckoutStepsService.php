@@ -15,6 +15,7 @@ use Shieldforce\CheckoutPayment\Rules\ImageUrlRule;
 use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep2;
 use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep3;
 use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep4;
+use Shieldforce\CheckoutPayment\Services\MercadoPago\MPCreateLocalService;
 
 class MountCheckoutStepsService
 {
@@ -427,5 +428,21 @@ class MountCheckoutStepsService
         ) {
             $this->cppCheckout->delete();
         }
+    }
+
+    public function criarBoleto($checkout)
+    {
+        $mpCreate = new MPCreateLocalService($checkout);
+        $mpCreate->boleto();
+
+        return $this;
+    }
+
+    public function criarPix($checkout)
+    {
+        $mpCreate = new MPCreateLocalService($checkout);
+        $mpCreate->pix();
+
+        return $this;
     }
 }

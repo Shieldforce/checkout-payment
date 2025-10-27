@@ -36,6 +36,7 @@ use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\BuscarViaCepService;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
+use Shieldforce\CheckoutPayment\Services\MercadoPago\MPCreateLocalService;
 use Throwable;
 
 class InternalCheckoutWizard extends Page implements HasForms
@@ -848,140 +849,17 @@ class InternalCheckoutWizard extends Page implements HasForms
                 return;
             }
 
-            $mp                 = new MercadoPagoService();
-            $step2              = $this->checkout?->step2()?->first();
-            $step3              = $this->checkout?->step3()?->first();
-            $date_of_expiration = Carbon::createFromFormat("Y-m-d", $this->checkout->due_date)
-                    ->format("Y-m-d\TH:i:s") . ".000-04:00";
+            $mpCreate = new MPCreateLocalService($this->checkout);
 
-            $data = [
-                "value"            => (float)$this->total_price ?? null,
-                "external_id"      => $this->checkout->id ?? null,
-                "payer_email"      => $step2->email ?? null,
-                "payer_first_name" => $step2->first_name ?? null,
-                "payer_last_name"  => $step2->last_name ?? null,
-                "due_date"         => $date_of_expiration,
-                "document"         => $step2->document,
-                "document_type"    => TypePeopleEnum::from($step2->people_type)->mpLabel(),
-                "address"          => [
-                    "zip_code"      => $step3->zipcode ?? null,
-                    "city"          => $step3->city ?? null,
-                    "street_name"   => $step3->street ?? null,
-                    "street_number" => $step3->number ?? null,
-                    "neighborhood"  => $step3->district ?? null,
-                    "federal_unit"  => $step3->state ?? null,
-                ]
-            ];
-
-            if ($method == MethodPaymentEnum::pix->value && isset($data["value"])) {
-
-                $return = $mp->gerarPagamentoPix(
-                    value: $data["value"],
-                    description: "Pagamento via Pix",
-                    external_id: $data["external_id"],
-                    payer_email: $data["payer_email"],
-                    payer_first_name: $data["payer_first_name"],
-                );
-
-                logger($return);
-
-                if (isset($return["qr_code_base64"])) {
-
-                    $this->checkout->step4()->updateOrCreate([
-                        "cpp_checkout_id" => $this->checkout->id,
-                    ], [
-                        "base_qrcode"       => $return["qr_code_base64"],
-                        "url_qrcode"        => $return["data"]["point_of_interaction"]["transaction_data"]["ticket_url"]
-                            ?? $return["qr_code"],
-                        "request_pix_data"  => json_encode($data),
-                        "response_pix_data" => json_encode($return),
-                        'payment_method_id' => "pix",
-                    ]);
-
-                    $this->checkout->update([
-                        "status"      => StatusCheckoutEnum::pendente->value,
-                        "startOnStep" => 5,
-                    ]);
-
-                    $this->base_qrcode = $return["qr_code_base64"];
-                    $this->url_qrcode  = $return["data"]["point_of_interaction"]["transaction_data"]["ticket_url"]
-                        ?? $return["qr_code"];
-
-                    DB::commit();
-                }
-
-                if (!isset($return["qr_code_base64"])) {
-                    $this->checkout->step4()->updateOrCreate([
-                        "cpp_checkout_id" => $this->checkout->id,
-                    ], [
-                        "request_pix_data"  => json_encode($data),
-                        "response_pix_data" => json_encode($return),
-                    ]);
-
-                    // Atualizar o json das tentativas de pagamento -> campo (return_gateway)
-                    ProcessCheckoutUpdatePaymentsJob::dispatch($this->checkout);
-                }
+            if ($method == MethodPaymentEnum::pix->value) {
+                $mpCreate->pix();
             }
 
             if ($method == MethodPaymentEnum::billet->value) {
-
-                $return = $mp->gerarPagamentoBoleto(
-                    value: $data["value"],
-                    description: "Pagamento via Boleto",
-                    external_id: $data["external_id"],
-                    payer_email: $data["payer_email"],
-                    payer_first_name: $data["payer_first_name"],
-                    payer_last_name: $data["payer_last_name"],
-                    due_date: $data["due_date"],
-                    document: $data["document"],
-                    document_type: $data["document_type"],
-                    address: $data["address"]
-                );
-
-                logger($return);
-
-                if (
-                    isset($return["data"]["point_of_interaction"]["transaction_data"]["ticket_url"]) ||
-                    isset($return["data"]["transaction_details"]["external_resource_url"]) ||
-                    isset($return["pdf"])
-                ) {
-
-                    $pdf = $return["data"]["point_of_interaction"]["transaction_data"]["ticket_url"] ??
-                        $return["data"]["transaction_details"]["external_resource_url"] ??
-                        $return["pdf"];
-
-                    $this->checkout->step4()->updateOrCreate([
-                        "cpp_checkout_id" => $this->checkout->id,
-                    ], [
-                        "url_billet"           => $pdf,
-                        "request_billet_data"  => json_encode($data),
-                        "response_billet_data" => json_encode($return),
-                        'payment_method_id'    => "bolbradesco",
-                    ]);
-
-                    $this->checkout->update([
-                        "status"      => StatusCheckoutEnum::pendente->value,
-                        "startOnStep" => 5,
-                    ]);
-
-                    $this->url_billet = $return["pdf"];
-
-                    DB::commit();
-
-                }
-
-                if (!isset($return["transaction_details"]["external_resource_url"])) {
-                    $this->checkout->step4()->updateOrCreate([
-                        "cpp_checkout_id" => $this->checkout->id,
-                    ], [
-                        "request_billet_data"  => json_encode($data),
-                        "response_billet_data" => json_encode($return),
-                    ]);
-
-                    // Atualizar o json das tentativas de pagamento -> campo (return_gateway)
-                    ProcessCheckoutUpdatePaymentsJob::dispatch($this->checkout);
-                }
+                $mpCreate->boleto();
             }
+
+            DB::commit();
 
         } catch (Throwable $e) {
             DB::rollBack();
