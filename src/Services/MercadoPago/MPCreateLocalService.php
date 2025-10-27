@@ -15,9 +15,9 @@ class MPCreateLocalService
 
     public array              $data;
     public MercadoPagoService $mp;
-    public HasMany            $step1;
-    public HasMany            $step2;
-    public HasMany            $step3;
+    public                    $step1;
+    public                    $step2;
+    public                    $step3;
     public                    $dateOfExpiration;
     public                    $totalPrice;
 
