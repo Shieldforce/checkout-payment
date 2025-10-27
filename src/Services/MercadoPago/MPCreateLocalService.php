@@ -3,7 +3,6 @@
 namespace Shieldforce\CheckoutPayment\Services\MercadoPago;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
 use Shieldforce\CheckoutPayment\Errors\CheckoutPaymentException;

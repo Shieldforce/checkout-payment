@@ -27,6 +27,7 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
         logger("ProcessCheckoutUpdatePaymentsJob, checkout id: {$this->checkout->id} - " . now());
 
         $payments      = $this->mp->buscarPagamentoPorExternalId($this->checkout->id);
+
         $paymentsArray = is_array($payments) ? $payments : json_decode($payments, true);
 
         // Ordena pela data do pagamento (ajuste para o campo correto da API)
@@ -75,7 +76,7 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
         // 3. Se só tiver pendente ou nenhum -> não altera status
         logger([
             "Checkout id: {$this->checkout->id}, aguardando pagamento (pendente ou nenhum relevante).",
-            "[Mercado Pago] - Pagamento pendente"
+            "[Mercado Pago] - Pagamento pendente ou não criado!"
         ]);
 
         $this->checkout->update($updateData);
