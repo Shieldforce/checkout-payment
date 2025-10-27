@@ -3,7 +3,6 @@
 namespace Shieldforce\CheckoutPayment\Services\MercadoPago;
 
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\Exceptions\MPApiException;
@@ -65,12 +64,13 @@ class MercadoPagoService
             $msg  = $e->getApiResponse()->getContent();
 
             logger()->error('[Mercado Pago]', [
-                "error" => $msg,
-                "tag"   => "[Mercado Pago]",
-                "email" => $payer_email,
-                "valor" => $value,
-                "code"  => $code,
-                "type"  => "pix",
+                "error"       => $msg,
+                "tag"         => "[Mercado Pago]",
+                "email"       => $payer_email,
+                "valor"       => $value,
+                "code"        => $code,
+                "external_id" => $external_id,
+                "type"        => "pix",
             ]);
 
             return [];
@@ -81,12 +81,13 @@ class MercadoPagoService
             $msg  = $e->getMessage();
 
             logger()->error('[Mercado Pago]', [
-                "error" => $msg,
-                "tag"   => "[Mercado Pago]",
-                "email" => $payer_email,
-                "valor" => $value,
-                "code"  => $code,
-                "type"  => "pix",
+                "error"       => $msg,
+                "tag"         => "[Mercado Pago]",
+                "email"       => $payer_email,
+                "valor"       => $value,
+                "code"        => $code,
+                "external_id" => $external_id,
+                "type"        => "pix",
             ]);
 
             return [];
@@ -149,12 +150,13 @@ class MercadoPagoService
             $msg  = $e->getApiResponse()->getContent();
 
             logger()->error('[Mercado Pago]', [
-                "error" => $msg,
-                "tag"   => "[Mercado Pago]",
-                "email" => $payer_email,
-                "valor" => $value,
-                "code"  => $code,
-                "type"  => "boleto",
+                "error"       => $msg,
+                "tag"         => "[Mercado Pago]",
+                "email"       => $payer_email,
+                "valor"       => $value,
+                "code"        => $code,
+                "external_id" => $external_id,
+                "type"        => "boleto",
             ]);
 
             return [];
@@ -164,12 +166,13 @@ class MercadoPagoService
             $msg  = $e->getMessage();
 
             logger()->error('[Mercado Pago]', [
-                "error" => $msg,
-                "tag"   => "[Mercado Pago]",
-                "email" => $payer_email,
-                "valor" => $value,
-                "code"  => $code,
-                "type"  => "boleto",
+                "error"       => $msg,
+                "tag"         => "[Mercado Pago]",
+                "email"       => $payer_email,
+                "valor"       => $value,
+                "code"        => $code,
+                "external_id" => $external_id,
+                "type"        => "boleto",
             ]);
 
             return [];
@@ -215,12 +218,13 @@ class MercadoPagoService
             $msg  = $e->getApiResponse()->getContent();
 
             logger()->error('[Mercado Pago]', [
-                "error" => $msg,
-                "tag"   => "[Mercado Pago]",
-                "email" => $payer_email,
-                "valor" => $value,
-                "code"  => $code,
-                "type"  => "cartão",
+                "error"       => $msg,
+                "tag"         => "[Mercado Pago]",
+                "email"       => $payer_email,
+                "valor"       => $value,
+                "code"        => $code,
+                "external_id" => $external_id,
+                "type"        => "cartão",
             ]);
 
             return [];
@@ -229,12 +233,13 @@ class MercadoPagoService
             $msg  = $e->getMessage();
 
             logger()->error('[Mercado Pago]', [
-                "error" => $msg,
-                "tag"   => "[Mercado Pago]",
-                "email" => $payer_email,
-                "valor" => $value,
-                "code"  => $code,
-                "type"  => "cartão",
+                "error"       => $msg,
+                "tag"         => "[Mercado Pago]",
+                "email"       => $payer_email,
+                "valor"       => $value,
+                "code"        => $code,
+                "external_id" => $external_id,
+                "type"        => "cartão",
             ]);
 
             return [];
