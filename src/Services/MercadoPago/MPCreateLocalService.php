@@ -24,7 +24,7 @@ class MPCreateLocalService
     public function __construct(public CppCheckout $checkout)
     {
         $this->mp    = new MercadoPagoService();
-        $this->step1 = $checkout?->step2()?->first();
+        $this->step1 = $checkout?->step1()?->first();
         $this->step2 = $checkout?->step2()?->first();
         $this->step3 = $checkout?->step3()?->first();
 
