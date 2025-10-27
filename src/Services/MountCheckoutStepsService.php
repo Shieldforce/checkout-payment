@@ -430,18 +430,22 @@ class MountCheckoutStepsService
         }
     }
 
-    public function criarBoleto($checkout)
+    public function criarBoleto($checkout, $criar = false)
     {
-        $mpCreate = new MPCreateLocalService($checkout);
-        $mpCreate->boleto();
+        if($criar) {
+            $mpCreate = new MPCreateLocalService($checkout);
+            $mpCreate->boleto();
+        }
 
         return $this;
     }
 
-    public function criarPix($checkout)
+    public function criarPix($checkout, $criar = false)
     {
-        $mpCreate = new MPCreateLocalService($checkout);
-        $mpCreate->pix();
+        if($criar) {
+            $mpCreate = new MPCreateLocalService($checkout);
+            $mpCreate->pix();
+        }
 
         return $this;
     }
