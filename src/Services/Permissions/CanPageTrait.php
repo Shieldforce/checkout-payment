@@ -6,9 +6,11 @@ use Illuminate\Support\Facades\Gate;
 
 trait CanPageTrait
 {
-    public static function canAccess(): bool {
+    public static function canAccess(): bool
+    {
 
         $slug = self::$slug;
+
         return Gate::allows(
             "filament.admin.pages.{$slug}.create"
         );

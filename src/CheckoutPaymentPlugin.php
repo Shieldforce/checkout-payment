@@ -12,7 +12,8 @@ use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource;
 class CheckoutPaymentPlugin implements Plugin
 {
     public TypeGatewayEnum $typeGateway;
-    public string          $labelGroupSidebar = "Checkout Payment";
+
+    public string $labelGroupSidebar = 'Checkout Payment';
 
     public function getId(): string
     {
@@ -57,17 +58,17 @@ class CheckoutPaymentPlugin implements Plugin
 
     public function setTypeGateway(
         $typeGateway
-    ): static
-    {
+    ): static {
         $this->typeGateway = $typeGateway;
+
         return $this;
     }
 
     public function setLabelGroupSidebar(
         string $labelGroupSidebar
-    ): static
-    {
+    ): static {
         $this->labelGroupSidebar = $labelGroupSidebar;
+
         return $this;
     }
 

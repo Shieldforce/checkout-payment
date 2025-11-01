@@ -17,7 +17,7 @@ class CppCheckoutStep1 extends Model
     protected $guarded = [];
 
     protected $casts = [
-        "items" => "array",
+        'items' => 'array',
     ];
 
     public function ccpCheckout()

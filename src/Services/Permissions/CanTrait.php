@@ -31,6 +31,7 @@ trait CanTrait
     public static function canCreate(): bool
     {
         $slug = self::$slug;
+
         return Gate::allows(
             "filament.admin.resources.{$slug}.create"
         );
@@ -39,6 +40,7 @@ trait CanTrait
     public static function canEdit(Model $record): bool
     {
         $slug = self::$slug;
+
         return Gate::allows(
             "filament.admin.resources.{$slug}.edit"
         );
@@ -47,6 +49,7 @@ trait CanTrait
     public static function canViewAny(): bool
     {
         $slug = self::$slug;
+
         return Gate::allows(
             "filament.admin.resources.{$slug}.index"
         );
@@ -59,6 +62,7 @@ trait CanTrait
         }
 
         $slug = self::$slug;
+
         return Gate::allows(
             "filament.admin.resources.{$slug}.delete"
         );
@@ -67,6 +71,7 @@ trait CanTrait
     public static function canDeleteAny(): bool
     {
         $slug = self::$slug;
+
         return Gate::allows(
             "filament.admin.resources.{$slug}.delete"
         );
@@ -80,6 +85,7 @@ trait CanTrait
     public static function canRestore(Model $record): bool
     {
         $slug = self::$slug;
+
         return Gate::allows(
             "filament.admin.resources.{$slug}.delete"
         );
@@ -93,6 +99,7 @@ trait CanTrait
     public static function canRestoreAny(): bool
     {
         $slug = self::$slug;
+
         return Gate::allows(
             "filament.admin.resources.{$slug}.delete"
         );

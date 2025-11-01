@@ -18,6 +18,7 @@ class ImageUrlRule implements ValidationRule
 
             if ($headers === false || strpos($headers[0], '200') === false) {
                 $fail("A URL fornecida em {$attribute} não está acessível.");
+
                 return;
             }
 
@@ -27,7 +28,7 @@ class ImageUrlRule implements ValidationRule
                 $contentType = $contentType[0];
             }
 
-            if (!$contentType || !str_starts_with($contentType, 'image/')) {
+            if (! $contentType || ! str_starts_with($contentType, 'image/')) {
                 $fail("A URL fornecida em {$attribute} não é uma imagem válida.");
             }
         } catch (\Throwable $e) {
@@ -35,4 +36,3 @@ class ImageUrlRule implements ValidationRule
         }
     }
 }
-
