@@ -14,26 +14,26 @@ class CppCheckout extends Model
     protected $table = 'cpp_checkouts';
 
     protected $fillable = [
-        "uuid",
-        "cpp_gateway_id",
-        "referencable_id",
-        "referencable_type",
-        "methods",
-        "method_checked",
-        "total_price",
-        "due_date",
-        "status",
-        "return_gateway",
-        "startOnStep",
-        "url",
-        "text_button_submit",
-        "color_button_submit",
+        'uuid',
+        'cpp_gateway_id',
+        'referencable_id',
+        'referencable_type',
+        'methods',
+        'method_checked',
+        'total_price',
+        'due_date',
+        'status',
+        'return_gateway',
+        'startOnStep',
+        'url',
+        'text_button_submit',
+        'color_button_submit',
     ];
 
     protected $guarded = [];
 
     protected $casts = [
-        "methods" => "array",
+        'methods' => 'array',
     ];
 
     protected $attributes = [
@@ -63,7 +63,7 @@ class CppCheckout extends Model
             $now = now()->format('YmdHis');
 
             $checkout->update([
-                "uuid" => Uuid::uuid3(
+                'uuid' => Uuid::uuid3(
                     Uuid::NAMESPACE_DNS,
                     (string) "$checkout->id-$now"
                 )->toString(),
@@ -75,8 +75,8 @@ class CppCheckout extends Model
     {
         return $this->hasMany(
             CppCheckoutStep1::class,
-            "cpp_checkout_id",
-            "id",
+            'cpp_checkout_id',
+            'id',
         );
     }
 
@@ -84,8 +84,8 @@ class CppCheckout extends Model
     {
         return $this->hasMany(
             CppCheckoutStep2::class,
-            "cpp_checkout_id",
-            "id",
+            'cpp_checkout_id',
+            'id',
         );
     }
 
@@ -93,8 +93,8 @@ class CppCheckout extends Model
     {
         return $this->hasMany(
             CppCheckoutStep3::class,
-            "cpp_checkout_id",
-            "id",
+            'cpp_checkout_id',
+            'id',
         );
     }
 
@@ -102,8 +102,8 @@ class CppCheckout extends Model
     {
         return $this->hasMany(
             CppCheckoutStep4::class,
-            "cpp_checkout_id",
-            "id",
+            'cpp_checkout_id',
+            'id',
         );
     }
 

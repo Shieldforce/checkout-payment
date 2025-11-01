@@ -13,26 +13,28 @@ use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 
 class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
 {
-    use Dispatchable, Queueable, Batchable;
+    use Batchable;
+    use Dispatchable;
+    use Queueable;
 
     public MercadoPagoService $mp;
 
     public function __construct(public CppCheckout $checkout)
     {
-        $this->mp = new MercadoPagoService();
+        $this->mp = new MercadoPagoService;
     }
 
     public function handle(): void
     {
         logger("ProcessCheckoutUpdatePaymentsJob, checkout uuid: {$this->checkout->uuid} - " . now());
 
-        $payments      = $this->mp->buscarPagamentoPorExternalId($this->checkout->uuid);
+        $payments = $this->mp->buscarPagamentoPorExternalId($this->checkout->uuid);
 
         $paymentsArray = is_array($payments) ? $payments : json_decode($payments, true);
 
         // Ordena pela data do pagamento (ajuste para o campo correto da API)
         $paymentsCollection = collect($paymentsArray)->sortByDesc(
-            fn($p) => $p['date_created'] ?? $p['date_approved'] ?? null
+            fn ($p) => $p['date_created'] ?? $p['date_approved'] ?? null
         );
 
         $updateData = [
@@ -41,19 +43,20 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
 
         // 1. Procura um aprovado (não importa a ordem, qualquer aprovado já finaliza)
         $approvedPayment = $paymentsCollection->first(
-            fn($p) => ($p['status'] ?? '') === 'approved'
+            fn ($p) => ($p['status'] ?? '') === 'approved'
         );
 
         if ($approvedPayment) {
-            $updateData['status']         = StatusCheckoutEnum::finalizado->value;
+            $updateData['status'] = StatusCheckoutEnum::finalizado->value;
             $updateData['method_checked'] = $this->methodTransformer($approvedPayment['method'] ?? null);
 
             logger([
                 "Checkout uuid: {$this->checkout->uuid}, pagamento aprovado. Método: {$updateData['method_checked']}",
-                "[Mercado Pago] - Pagamento aprovado"
+                '[Mercado Pago] - Pagamento aprovado',
             ]);
 
             $this->checkout->update($updateData);
+
             return;
         }
 
@@ -61,35 +64,35 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
         $lastPayment = $paymentsCollection->first();
 
         if ($lastPayment && ($lastPayment['status'] ?? '') === 'rejected') {
-            $updateData['status']         = StatusCheckoutEnum::rejeitado->value;
+            $updateData['status'] = StatusCheckoutEnum::rejeitado->value;
             $updateData['method_checked'] = $this->methodTransformer($lastPayment['method'] ?? null);
 
             logger([
                 "Checkout uuid: {$this->checkout->uuid}, pagamento reprovado. Método: {$updateData['method_checked']}",
-                "[Mercado Pago] - Pagamento reprovado"
+                '[Mercado Pago] - Pagamento reprovado',
             ]);
 
             $this->checkout->update($updateData);
+
             return;
         }
 
         // 3. Se só tiver pendente ou nenhum -> não altera status
         logger([
             "Checkout uuid: {$this->checkout->uuid}, aguardando pagamento (pendente ou nenhum relevante).",
-            "[Mercado Pago] - Pagamento pendente ou não criado!"
+            '[Mercado Pago] - Pagamento pendente ou não criado!',
         ]);
 
         $this->checkout->update($updateData);
     }
 
-
     public function methodTransformer($methodMP)
     {
-        if ($methodMP == "pix") {
+        if ($methodMP == 'pix') {
             return MethodPaymentEnum::pix->value;
         }
 
-        if ($methodMP == "bolbradesco") {
+        if ($methodMP == 'bolbradesco') {
             return MethodPaymentEnum::billet->value;
         }
 
