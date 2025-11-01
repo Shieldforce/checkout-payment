@@ -235,8 +235,8 @@ echo $checkoutPayment->echoPhrase('Hello, Shieldforce!');
     
         public function handle(): void
         {
-            logger("ProcessCheckoutUpdatePaymentsJob, checkout id: {$this->checkout->id} - " . date("Y-m-d H:i:s"));
-            $payments = $this->mp->buscarPagamentoPorExternalId($this->checkout->id);
+            logger("ProcessCheckoutUpdatePaymentsJob, checkout id: {$this->checkout->uuid} - " . date("Y-m-d H:i:s"));
+            $payments = $this->mp->buscarPagamentoPorExternalId($this->checkout->uuid);
     
             $this->checkout->update([
                 "return_gateway" => $payments,

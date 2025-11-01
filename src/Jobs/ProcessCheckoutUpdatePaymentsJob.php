@@ -24,9 +24,9 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
 
     public function handle(): void
     {
-        logger("ProcessCheckoutUpdatePaymentsJob, checkout id: {$this->checkout->id} - " . now());
+        logger("ProcessCheckoutUpdatePaymentsJob, checkout uuid: {$this->checkout->uuid} - " . now());
 
-        $payments      = $this->mp->buscarPagamentoPorExternalId($this->checkout->id);
+        $payments      = $this->mp->buscarPagamentoPorExternalId($this->checkout->uuid);
 
         $paymentsArray = is_array($payments) ? $payments : json_decode($payments, true);
 
@@ -49,7 +49,7 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
             $updateData['method_checked'] = $this->methodTransformer($approvedPayment['method'] ?? null);
 
             logger([
-                "Checkout id: {$this->checkout->id}, pagamento aprovado. Método: {$updateData['method_checked']}",
+                "Checkout uuid: {$this->checkout->uuid}, pagamento aprovado. Método: {$updateData['method_checked']}",
                 "[Mercado Pago] - Pagamento aprovado"
             ]);
 
@@ -65,7 +65,7 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
             $updateData['method_checked'] = $this->methodTransformer($lastPayment['method'] ?? null);
 
             logger([
-                "Checkout id: {$this->checkout->id}, pagamento reprovado. Método: {$updateData['method_checked']}",
+                "Checkout uuid: {$this->checkout->uuid}, pagamento reprovado. Método: {$updateData['method_checked']}",
                 "[Mercado Pago] - Pagamento reprovado"
             ]);
 
@@ -75,7 +75,7 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
 
         // 3. Se só tiver pendente ou nenhum -> não altera status
         logger([
-            "Checkout id: {$this->checkout->id}, aguardando pagamento (pendente ou nenhum relevante).",
+            "Checkout uuid: {$this->checkout->uuid}, aguardando pagamento (pendente ou nenhum relevante).",
             "[Mercado Pago] - Pagamento pendente ou não criado!"
         ]);
 
