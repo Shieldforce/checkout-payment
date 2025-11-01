@@ -44,7 +44,7 @@ class ProcessBillingCreditCardJob implements ShouldQueue
 
         $data = [
             "value"             => (float)$this->checkout->total_price ?? null,
-            "external_id"       => $this->checkout->id ?? null,
+            "external_id"       => $this->checkout->uuid ?? null,
             "payer_email"       => $step2->email ?? null,
             "payer_first_name"  => $step4->card_payer_name ?? null,
             "token_card"        => $step4->card_token ?? null,

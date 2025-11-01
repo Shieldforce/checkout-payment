@@ -46,7 +46,7 @@ class MPCreateLocalService
 
         $this->data = [
             "value"            => isset($this->totalPrice) && $this->totalPrice > 0 ? (float)$this->totalPrice : null,
-            "external_id"      => $this->checkout->id ?? null,
+            "external_id"      => $this->checkout->uuid ?? null,
             "payer_email"      => $this->step2->email ?? null,
             "payer_first_name" => $this->step2->first_name ?? null,
             "payer_last_name"  => $this->step2->last_name ?? null,
