@@ -60,10 +60,12 @@ class CppCheckout extends Model
         });
 
         static::created(function (CppCheckout $checkout) {
+            $now = now()->format('YmdHis');
+
             $checkout->update([
                 "uuid" => Uuid::uuid3(
                     Uuid::NAMESPACE_DNS,
-                    (string) $checkout->id
+                    (string) "$checkout->id-$now"
                 )->toString(),
             ]);
         });
