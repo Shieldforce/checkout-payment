@@ -55,7 +55,7 @@
                         {{ $item["name"] }}
                     </span>
                     <span class="text-sm text-gray-600 dark:text-gray-300">
-                        {{ $item["description"] ?? 'Sem descrição' }}
+                        {!! $item["description"] ?? 'Sem descrição' !!}
                     </span>
                     <span class="text-sm text-green-600 dark:text-green-400 font-bold">
                         R$ {{ number_format($item["price"], 2, ',', '.') }}

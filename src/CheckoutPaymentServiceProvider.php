@@ -2,7 +2,6 @@
 
 namespace Shieldforce\CheckoutPayment;
 
-use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
