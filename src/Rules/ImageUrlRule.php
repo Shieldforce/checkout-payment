@@ -13,7 +13,7 @@ class ImageUrlRule implements ValidationRule
             return;
         }
 
-        try {
+        /*try {
             $headers = @get_headers($value, 1);
 
             if ($headers === false || strpos($headers[0], '200') === false) {
@@ -32,7 +32,7 @@ class ImageUrlRule implements ValidationRule
             }
         } catch (\Throwable $e) {
             $fail("Não foi possível validar a imagem em {$attribute}.");
-        }
+        }*/
     }
 }
 
