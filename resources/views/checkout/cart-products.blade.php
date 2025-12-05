@@ -50,7 +50,7 @@
                     "
                 >
 
-                <div class="flex flex-col ml-4">
+                <div class="flex flex-col ml-4" style="margin-left: 30px !important;">
                     <span class="font-semibold text-gray-800 dark:text-gray-100">
                         {{ $item["name"] }}
                     </span>
