@@ -33,13 +33,6 @@
             if (tipoUrl && !this.selecionado) {
                 this.selecionado = tipoUrl;
             }
-        },
-        redirecionar(tipo) {
-            //const url = new URL(window.location.href);
-            //url.searchParams.set('tipo', tipo);
-            //window.location.href = url.toString(); // <-- refresh real da página
-
-            cardGo(tipo);
         }
     }"
     x-init="init()"
@@ -70,3 +63,14 @@
         Clique em uma das opções acima para fazer o pagamento.
     </p>
 @endif
+
+@push('scripts')
+    <script>
+        function redirecionar(tipo) {
+            alert("fdsfd");
+            //const url = new URL(window.location.href);
+            //url.searchParams.set('tipo', tipo);
+            //window.location.href = url.toString(); // <-- refresh real da página
+        }
+    </script>
+@endpush
