@@ -286,14 +286,14 @@
                     // Inicializa quando a aba de pix for visível
                     document.getElementById('method_checked').addEventListener('change', function(event) {
 
+                        alert("teste");
+
                         const valueSelectMethodCheck = parseInt(event.target.value)
                         const pixEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value }}")
 
                         if (valueSelectMethodCheck === pixEnum) {
 
                             setTimeout(function() {
-                                alert("teste");
-
                                 pixForm = initPixForm()
 
                                 window.Livewire.dispatch('method-checked-change', { method: 3 });
