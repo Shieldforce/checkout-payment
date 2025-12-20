@@ -27,13 +27,7 @@
 <div
     x-data="{
         selecionado: Number(@entangle($getStatePath())),
-        init() {
-            // se a URL tiver o parâmetro tipo, já seleciona automaticamente
-            const tipoUrl = Number(new URL(window.location.href).searchParams.get('tipo'));
-            if (tipoUrl && !this.selecionado) {
-                this.selecionado = tipoUrl;
-            }
-        }
+        init() {}
     }"
     x-init="init()"
     class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4"
@@ -41,10 +35,7 @@
     @foreach ($opcoes as $opcao)
         <div
             wire:click="$set('method_checked', '{{ $opcao['id'] }}')"
-            @click="
-                selecionado = {{ $opcao['id'] }};
-                metodoGo({{ $opcao['id'] }});
-            "
+            @click="selecionado = {{ $opcao['id'] }};"
             :class="selecionado == @js($opcao['id'])
                 ? 'bg-primary-500 text-white dark:bg-primary-600 dark:text-white shadow-lg ring-2 ring-primary-400 border-transparent'
                 : 'bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 hover:border-primary-400 hover:bg-primary-50 dark:hover:bg-gray-700'"
@@ -64,11 +55,3 @@
         Clique em uma das opções acima para fazer o pagamento.
     </p>
 @endif
-
-@push('scripts')
-    <script>
-        function metodoGo(tipo) {
-
-        }
-    </script>
-@endpush
