@@ -237,6 +237,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public function fieldWinzard()
     {
+        $cppGateways = $this->cppGateways;
+
         return [
             Wizard\Step::make('Carrinho')
                 ->visible($this->step1->visible ?? true)
@@ -489,7 +491,12 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ->schema([
                     ViewField::make('method_checked')
                         ->live()
-                        ->view('checkout-payment::pages.cards.method_checked'),
+                        ->view(
+                            'checkout-payment::pages.cards.method_checked',
+                            compact(
+                                "cppGateways"
+                            )
+                        ),
 
                     /*Select::make('method_checked')
                         // ->default(fn($state, $get, $set, $livewire) => $livewire->method_checked)
