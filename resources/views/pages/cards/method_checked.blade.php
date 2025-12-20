@@ -42,7 +42,7 @@
         <div
             @click="
                 selecionado = {{ $opcao['id'] }};
-                redirecionar({{ $opcao['id'] }});
+                metodoGo({{ $opcao['id'] }});
             "
             :class="selecionado == @js($opcao['id'])
                 ? 'bg-primary-500 text-white dark:bg-primary-600 dark:text-white shadow-lg ring-2 ring-primary-400 border-transparent'
@@ -65,12 +65,18 @@
 @endif
 
 @push('scripts')
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+
     <script>
-        function redirecionar(tipo) {
-            alert("fdsfd");
-            //const url = new URL(window.location.href);
-            //url.searchParams.set('tipo', tipo);
-            //window.location.href = url.toString(); // <-- refresh real da página
+        /*Key mp*/
+        const accessKey = "{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}";
+
+        const valor = "{{ $this->checkout->total_price }}";
+
+        const btn = document.querySelector('#btn-next-step');
+
+        function metodoGo(tipo) {
+            console.log(btn, tipo);
         }
     </script>
 @endpush

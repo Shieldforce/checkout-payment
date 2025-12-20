@@ -224,10 +224,6 @@
 
                 let cardForm = null
 
-                function cardGo(id) {
-                    alert(id);
-                }
-
                 // Inicializa quando a aba de cartão for visível
                 document.getElementById('method_checked').addEventListener('change', function(event) {
 
@@ -320,7 +316,6 @@
                 })
             })
         </script>
-
 
     @endpush
 @endif
