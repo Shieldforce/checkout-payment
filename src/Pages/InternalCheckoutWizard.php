@@ -101,6 +101,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
     public ?string $review = null;
 
+    public ?int $card_method_checked = null;
+
     public ?CppCheckoutStep1 $step1 = null;
 
     public ?CppCheckoutStep2 $step2 = null;
