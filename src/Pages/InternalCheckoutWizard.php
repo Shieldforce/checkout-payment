@@ -826,11 +826,16 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->statusCheckout = $this->checkout->status;
     }
 
+    public function update($attribute)
+    {
+        dd($attribute);
+    }
+
     #[On('method-checked-change')]
     public function methodCheckedChange($method): void
     {
         DB::beginTransaction();
-
+            dd("fdfds");
         try {
 
             if (
