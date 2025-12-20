@@ -830,6 +830,8 @@ class InternalCheckoutWizard extends Page implements HasForms
     public function methodCheckedChange($method): void
     {
 
+        dd($method);
+
         DB::beginTransaction();
 
         try {
