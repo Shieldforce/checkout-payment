@@ -20,7 +20,7 @@
         </a>
     @else
         <img
-            src="{{ asset("/images/loading_2.gif") }}w"
+            src="{{ asset("/images/loading_2.gif") }}"
             alt="PIX Logo"
             width="150"
             height="150"

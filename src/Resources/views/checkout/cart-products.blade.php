@@ -50,12 +50,12 @@
                     "
                 >
 
-                <div class="flex flex-col ml-4">
+                <div class="flex flex-col ml-4" style="margin-left: 30px !important;">
                     <span class="font-semibold text-gray-800 dark:text-gray-100">
                         {{ $item["name"] }}
                     </span>
                     <span class="text-sm text-gray-600 dark:text-gray-300">
-                        {{ $item["description"] ?? 'Sem descrição' }}
+                        {!! $item["description"] ?? 'Sem descrição' !!}
                     </span>
                     <span class="text-sm text-green-600 dark:text-green-400 font-bold">
                         R$ {{ number_format($item["price"], 2, ',', '.') }}

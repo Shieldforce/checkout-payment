@@ -505,7 +505,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         ->extraAttributes(['id' => 'method_checked'])
                         ->label('Escolha como quer pagar!')
                         ->live()
-                        //->hidden()
+                        ->hidden()
                         ->options(
                             collect($this->paymentMethods)
                                 ->mapWithKeys(fn (MethodPaymentEnum $method) => [
@@ -830,8 +830,6 @@ class InternalCheckoutWizard extends Page implements HasForms
     public function methodCheckedChange($method): void
     {
         DB::beginTransaction();
-
-        dd("teste");
 
         try {
 
