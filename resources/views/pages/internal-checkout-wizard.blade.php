@@ -319,6 +319,8 @@
                         if (valueSelectMethodCheck === billetEnum) {
 
                             setTimeout(function() {
+                                alert("teste");
+
                                 billetForm = initBilletForm()
 
                                 window.Livewire.dispatch('method-checked-change', { method: 4 });
