@@ -8,6 +8,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\View;
+use Filament\Forms\Components\ViewField;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -486,7 +487,11 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                 })
                 ->schema([
-                    Select::make('method_checked')
+                    ViewField::make('method_checked')
+                        ->live()
+                        ->view('checkout-payment::pages.cards.method_checked'),
+
+                    /*Select::make('method_checked')
                         // ->default(fn($state, $get, $set, $livewire) => $livewire->method_checked)
                         ->extraAttributes(['id' => 'method_checked'])
                         ->label('Escolha como quer pagar!')
@@ -498,7 +503,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 ])
                                 ->toArray()
                         )
-                        ->required(),
+                        ->required(),*/
 
                     Grid::make(2)->schema([
 
@@ -814,8 +819,6 @@ class InternalCheckoutWizard extends Page implements HasForms
     #[On('method-checked-change')]
     public function methodCheckedChange($method): void
     {
-
-        dd("teste");
 
         DB::beginTransaction();
 
