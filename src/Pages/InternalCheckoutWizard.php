@@ -829,9 +829,6 @@ class InternalCheckoutWizard extends Page implements HasForms
     #[On('method-checked-change')]
     public function methodCheckedChange($method): void
     {
-
-        dd($method);
-
         DB::beginTransaction();
 
         try {
