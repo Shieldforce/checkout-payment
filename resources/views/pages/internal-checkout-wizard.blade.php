@@ -11,9 +11,9 @@
 
         <script>
             /*Key mp*/
-            const accessKey = "{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}";
+            const accessKey = "{{ \Illuminate\Support\Facades\Crypt::decrypt($cppGateways->field_1) }}"
 
-            const valor = "{{ $this->checkout->total_price }}";
+            const valor = "{{ $this->checkout->total_price }}"
 
             document.addEventListener('DOMContentLoaded', async () => {
 
@@ -23,7 +23,7 @@
                 const initCardForm = () => {
 
                     const mp = new window.MercadoPago(accessKey, {
-                        locale: 'pt-BR'
+                        locale: 'pt-BR',
                     })
 
                     let submitOff = true
@@ -32,7 +32,7 @@
 
                     var installments = 1
 
-                    if(!valor) {
+                    if (!valor) {
                         var msgError = 'Valor de pagamento não informado!'
                         window.Livewire.dispatch('show-notification', {
                             title: 'Ops, Error!',
@@ -40,7 +40,7 @@
                             status: 'danger',
                         })
 
-                        return;
+                        return
                     }
 
                     return mp.cardForm({
@@ -114,14 +114,14 @@
                                         status: 'warning',
                                     })
 
-                                    installments = document.getElementById("installments").value
+                                    installments = document.getElementById('installments').value
 
-                                    if(installments !== 1) {
-                                        window.Livewire.dispatch('go-installments', { installments: installments });
+                                    if (installments !== 1) {
+                                        window.Livewire.dispatch('go-installments', { installments: installments })
                                     }
 
-                                    if(paymentMethodId) {
-                                        window.Livewire.dispatch('payment-method-id', { paymentMethodId: paymentMethodId });
+                                    if (paymentMethodId) {
+                                        window.Livewire.dispatch('payment-method-id', { paymentMethodId: paymentMethodId })
                                     }
 
                                     return
@@ -226,115 +226,104 @@
 
                 // Inicializa quando a aba de cartão for visível
 
-                const method_checked_id = document.getElementById('method_checked');
+                const method_checked_id = document.getElementById('method_checked')
 
-                if( method_checked_id ) {
+                method_checked_id.addEventListener('change', function(event) {
 
-                    method_checked_id.addEventListener('change', function(event) {
+                    const valueSelectMethodCheck = parseInt(event.target.value)
+                    const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
 
-                        const valueSelectMethodCheck = parseInt(event.target.value)
-                        const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
+                    if (valueSelectMethodCheck !== creditCardEnum) {
+                        return
+                    }
 
-                        if (valueSelectMethodCheck !== creditCardEnum) { return; }
+                    btn.type = 'button'
+                    btn.textContent = 'Confirmar Pagamento'
+                    btn.disabled = true
+                    btn.classList.add('opacity-50', 'cursor-not-allowed')
+                    btn.classList.add('disabled')
 
-                        btn.type = 'button'
-                        btn.textContent = 'Confirmar Pagamento'
-                        btn.disabled = true
-                        btn.classList.add('opacity-50', 'cursor-not-allowed')
-                        btn.classList.add('disabled')
+                    if (valueSelectMethodCheck === creditCardEnum) {
 
-                        if (valueSelectMethodCheck === creditCardEnum) {
-
-                            if (cardForm) {
-                                cardForm.unmount?.()
-                                cardForm = null
-                            }
-
-                            setTimeout(function() {
-                                cardForm = initCardForm()
-
-                                btn.textContent = 'Confirmar Pagamento'
-                                btn.disabled = false
-                                btn.classList.remove('opacity-50', 'cursor-not-allowed')
-                                btn.classList.remove('disabled')
-
-                                function bloquearAvanco(event) {
-                                    event.preventDefault()
-                                    event.stopImmediatePropagation()
-                                    document.getElementById('form-checkout-wizard').requestSubmit()
-                                }
-
-                                btn.addEventListener('click', bloquearAvanco)
-                            }, 1000)
-
-                        } else {
-
-                            if (cardForm) {
-                                cardForm.unmount?.()
-                                cardForm = null
-                            }
+                        if (cardForm) {
+                            cardForm.unmount?.()
+                            cardForm = null
                         }
-                    })
 
-                }
+                        setTimeout(function() {
+                            cardForm = initCardForm()
+
+                            btn.textContent = 'Confirmar Pagamento'
+                            btn.disabled = false
+                            btn.classList.remove('opacity-50', 'cursor-not-allowed')
+                            btn.classList.remove('disabled')
+
+                            function bloquearAvanco(event) {
+                                event.preventDefault()
+                                event.stopImmediatePropagation()
+                                document.getElementById('form-checkout-wizard').requestSubmit()
+                            }
+
+                            btn.addEventListener('click', bloquearAvanco)
+                        }, 1000)
+
+                    } else {
+
+                        if (cardForm) {
+                            cardForm.unmount?.()
+                            cardForm = null
+                        }
+                    }
+                })
 
                 {{--Regra para pix do mercado pago--------------------------------------}}
                 const initPixForm = () => {
 
                 }
 
-                if( method_checked_id ) {
+                // Inicializa quando a aba de pix for visível
+                method_checked_id.addEventListener('change', function(event) {
 
-                    // Inicializa quando a aba de pix for visível
-                    method_checked_id.addEventListener('change', function(event) {
+                    const valueSelectMethodCheck = parseInt(event.target.value)
+                    const pixEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value }}")
 
-                        const valueSelectMethodCheck = parseInt(event.target.value)
-                        const pixEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value }}")
+                    if (valueSelectMethodCheck === pixEnum) {
 
-                        if (valueSelectMethodCheck === pixEnum) {
+                        setTimeout(function() {
+                            pixForm = initPixForm()
 
-                            setTimeout(function() {
-                                pixForm = initPixForm()
+                            window.Livewire.dispatch('method-checked-change', { method: 3 })
 
-                                window.Livewire.dispatch('method-checked-change', { method: 3 });
+                        }, 1000)
 
-                            }, 1000)
-
-                        }
-                    })
-
-                }
+                    }
+                })
 
                 {{--Regra para boleto do mercado pago--------------------------------------}}
                 const initBilletForm = () => {
 
                 }
 
-                if( method_checked_id ) {
+                // Inicializa quando a aba de boleto for visível
+                method_checked_id.addEventListener('change', function(event) {
 
-                    // Inicializa quando a aba de boleto for visível
-                    method_checked_id.addEventListener('change', function(event) {
+                    const valueSelectMethodCheck = parseInt(event.target.value)
+                    const billetEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::billet->value }}")
 
-                        const valueSelectMethodCheck = parseInt(event.target.value)
-                        const billetEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::billet->value }}")
+                    if (valueSelectMethodCheck === billetEnum) {
 
-                        if (valueSelectMethodCheck === billetEnum) {
+                        setTimeout(function() {
+                            billetForm = initBilletForm()
 
-                            setTimeout(function() {
-                                billetForm = initBilletForm()
+                            window.Livewire.dispatch('method-checked-change', { method: 4 })
 
-                                window.Livewire.dispatch('method-checked-change', { method: 4 });
+                        }, 1000)
 
-                            }, 1000)
-
-                        }
-                    })
-
-                }
+                    }
+                })
 
             })
         </script>
-
 
     @endpush
 @endif
