@@ -292,6 +292,8 @@
                         if (valueSelectMethodCheck === pixEnum) {
 
                             setTimeout(function() {
+                                alert("teste");
+
                                 pixForm = initPixForm()
 
                                 window.Livewire.dispatch('method-checked-change', { method: 3 });
@@ -310,7 +312,7 @@
 
                 if( method_checked_id ) {
 
-                    // Inicializa quando a aba de pix for visível
+                    // Inicializa quando a aba de boleto for visível
                     document.getElementById('method_checked').addEventListener('change', function(event) {
 
                         const valueSelectMethodCheck = parseInt(event.target.value)
@@ -319,8 +321,6 @@
                         if (valueSelectMethodCheck === billetEnum) {
 
                             setTimeout(function() {
-                                alert("teste");
-
                                 billetForm = initBilletForm()
 
                                 window.Livewire.dispatch('method-checked-change', { method: 4 });
