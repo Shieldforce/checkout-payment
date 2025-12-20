@@ -228,7 +228,7 @@
 
                 const method_checked_id = document.getElementById('method_checked');
 
-                if(method_checked_id) {
+                if( method_checked_id ) {
 
                     document.getElementById('method_checked').addEventListener('change', function(event) {
 
