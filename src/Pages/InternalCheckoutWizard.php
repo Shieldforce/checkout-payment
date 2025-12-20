@@ -528,6 +528,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                                 default => null,
                             };
+
                         }),
 
                     Grid::make(2)->schema([

@@ -222,86 +222,8 @@
 
                 }
 
-                let cardForm = null
-
-                // Inicializa quando a aba de cartão for visível
-
-                const method_checked_id = document.getElementById('method_checked');
-
-                if( method_checked_id ) {
-
-                    method_checked_id.addEventListener('change', function(event) {
-
-                        const valueSelectMethodCheck = parseInt(event.target.value)
-                        const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
-
-                        if (valueSelectMethodCheck !== creditCardEnum) { return; }
-
-                        btn.type = 'button'
-                        btn.textContent = 'Confirmar Pagamento'
-                        btn.disabled = true
-                        btn.classList.add('opacity-50', 'cursor-not-allowed')
-                        btn.classList.add('disabled')
-
-                        if (valueSelectMethodCheck === creditCardEnum) {
-
-                            if (cardForm) {
-                                cardForm.unmount?.()
-                                cardForm = null
-                            }
-
-                            setTimeout(function() {
-                                cardForm = initCardForm()
-
-                                btn.textContent = 'Confirmar Pagamento'
-                                btn.disabled = false
-                                btn.classList.remove('opacity-50', 'cursor-not-allowed')
-                                btn.classList.remove('disabled')
-
-                                function bloquearAvanco(event) {
-                                    event.preventDefault()
-                                    event.stopImmediatePropagation()
-                                    document.getElementById('form-checkout-wizard').requestSubmit()
-                                }
-
-                                btn.addEventListener('click', bloquearAvanco)
-                            }, 1000)
-
-                        } else {
-
-                            if (cardForm) {
-                                cardForm.unmount?.()
-                                cardForm = null
-                            }
-                        }
-                    })
-
-                }
-
                 {{--Regra para pix do mercado pago--------------------------------------}}
                 const initPixForm = () => {
-
-                }
-
-                if( method_checked_id ) {
-
-                    // Inicializa quando a aba de pix for visível
-                    method_checked_id.addEventListener('change', function(event) {
-
-                        const valueSelectMethodCheck = parseInt(event.target.value)
-                        const pixEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value }}")
-
-                        if (valueSelectMethodCheck === pixEnum) {
-
-                            setTimeout(function() {
-                                pixForm = initPixForm()
-
-                                window.Livewire.dispatch('method-checked-change', { method: 3 });
-
-                            }, 1000)
-
-                        }
-                    })
 
                 }
 
@@ -310,38 +232,48 @@
 
                 }
 
-                if( method_checked_id ) {
-
-                    // Inicializa quando a aba de boleto for visível
-                    method_checked_id.addEventListener('change', function(event) {
-
-                        const valueSelectMethodCheck = parseInt(event.target.value)
-                        const billetEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::billet->value }}")
-
-                        if (valueSelectMethodCheck === billetEnum) {
-
-                            setTimeout(function() {
-                                billetForm = initBilletForm()
-
-                                window.Livewire.dispatch('method-checked-change', { method: 4 });
-
-                            }, 1000)
-
-                        }
-                    })
-
-                }
+                let cardForm = null
 
                 window.addEventListener('init-credit-card', () => {
-                    alert("teste1");
+                    if (cardForm) {
+                        cardForm.unmount?.()
+                        cardForm = null
+                    }
+
+                    setTimeout(function() {
+                        cardForm = initCardForm()
+
+                        btn.textContent = 'Confirmar Pagamento'
+                        btn.disabled = false
+                        btn.classList.remove('opacity-50', 'cursor-not-allowed')
+                        btn.classList.remove('disabled')
+
+                        function bloquearAvanco(event) {
+                            event.preventDefault()
+                            event.stopImmediatePropagation()
+                            document.getElementById('form-checkout-wizard').requestSubmit()
+                        }
+
+                        btn.addEventListener('click', bloquearAvanco)
+                    }, 1000)
                 })
 
                 window.addEventListener('init-pix', () => {
-                    alert("teste2");
+                    setTimeout(function() {
+                        pixForm = initPixForm()
+
+                        window.Livewire.dispatch('method-checked-change', { method: 3 });
+
+                    }, 1000)
                 })
 
                 window.addEventListener('init-billet', () => {
-                    alert("teste3");
+                    setTimeout(function() {
+                        billetForm = initBilletForm()
+
+                        window.Livewire.dispatch('method-checked-change', { method: 4 });
+
+                    }, 1000)
                 })
 
             })
