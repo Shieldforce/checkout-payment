@@ -34,11 +34,11 @@
                 this.selecionado = tipoUrl;
             }
         },
-        redirecionar(tipo) {
+        <!--redirecionar(tipo) {
             const url = new URL(window.location.href);
             url.searchParams.set('tipo', tipo);
-            window.location.href = url.toString(); // <-- refresh real da página
-        }
+            window.location.href = url.toString(); // <&#45;&#45; refresh real da página
+        }-->
     }"
     x-init="init()"
     class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4"
@@ -47,7 +47,8 @@
         <div
             @click="
                 selecionado = {{ $opcao['id'] }};
-                redirecionar({{ $opcao['id'] }});
+                {{--redirecionar({{ $opcao['id'] }});--}}
+                cardGo({{ $opcao['id'] }});
             "
             :class="selecionado == @js($opcao['id'])
                 ? 'bg-primary-500 text-white dark:bg-primary-600 dark:text-white shadow-lg ring-2 ring-primary-400 border-transparent'
@@ -65,6 +66,6 @@
 
 @if (!$selecionado)
     <p class="text-center text-gray-400 mt-2 text-sm italic">
-        Clique em uma das opções acima para continuar
+        Clique em uma das opções acima para fazer o pagamento.
     </p>
 @endif
