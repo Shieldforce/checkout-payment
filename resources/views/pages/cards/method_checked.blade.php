@@ -34,11 +34,13 @@
                 this.selecionado = tipoUrl;
             }
         },
-        <!--redirecionar(tipo) {
-            const url = new URL(window.location.href);
-            url.searchParams.set('tipo', tipo);
-            window.location.href = url.toString(); // <&#45;&#45; refresh real da página
-        }-->
+        redirecionar(tipo) {
+            //const url = new URL(window.location.href);
+            //url.searchParams.set('tipo', tipo);
+            //window.location.href = url.toString(); // <-- refresh real da página
+
+            cardGo(tipo);
+        }
     }"
     x-init="init()"
     class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4"
@@ -47,8 +49,7 @@
         <div
             @click="
                 selecionado = {{ $opcao['id'] }};
-                {{--redirecionar({{ $opcao['id'] }});--}}
-                cardGo({{ $opcao['id'] }});
+                redirecionar({{ $opcao['id'] }});
             "
             :class="selecionado == @js($opcao['id'])
                 ? 'bg-primary-500 text-white dark:bg-primary-600 dark:text-white shadow-lg ring-2 ring-primary-400 border-transparent'
