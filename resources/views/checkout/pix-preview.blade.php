@@ -55,7 +55,7 @@
                 >
                     <div style="width: 200px;height: 200px">
                         <img
-                            src="https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!f305cw"
+                            src="{{ asset("/images/loading_2.gif") }}"
                             alt="PIX Logo"
                             width="150"
                             height="150"
