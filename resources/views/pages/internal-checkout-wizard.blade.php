@@ -232,14 +232,18 @@
 
                     document.getElementById('method_checked').addEventListener('change', function(event) {
 
+                        alert("fdsfds");
+
+                        const valueSelectMethodCheck = parseInt(event.target.value)
+                        const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
+
+                        if (valueSelectMethodCheck !== creditCardEnum) { return; }
+
                         btn.type = 'button'
                         btn.textContent = 'Confirmar Pagamento'
                         btn.disabled = true
                         btn.classList.add('opacity-50', 'cursor-not-allowed')
                         btn.classList.add('disabled')
-
-                        const valueSelectMethodCheck = parseInt(event.target.value)
-                        const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
 
                         if (valueSelectMethodCheck === creditCardEnum) {
 
@@ -285,8 +289,6 @@
 
                     // Inicializa quando a aba de pix for visível
                     document.getElementById('method_checked').addEventListener('change', function(event) {
-
-                        alert("teste");
 
                         const valueSelectMethodCheck = parseInt(event.target.value)
                         const pixEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value }}")
