@@ -518,13 +518,13 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                             match ((int) $state) {
                                 MethodPaymentEnum::credit_card->value =>
-                                $this->dispatchBrowserEvent('init-credit-card'),
+                                $this->dispatch('init-credit-card'),
 
                                 MethodPaymentEnum::pix->value =>
-                                $this->dispatchBrowserEvent('init-pix'),
+                                $this->dispatch('init-pix'),
 
                                 MethodPaymentEnum::billet->value =>
-                                $this->dispatchBrowserEvent('init-billet'),
+                                $this->dispatch('init-billet'),
 
                                 default => null,
                             };
