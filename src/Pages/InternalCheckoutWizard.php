@@ -496,7 +496,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         ->view(
                             'checkout-payment::pages.cards.method_checked',
                             compact(
-                                "cppGateways"
+                                'cppGateways'
                             )
                         ),
 
@@ -517,14 +517,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                         ->afterStateUpdated(function ($state) {
 
                             match ((int) $state) {
-                                MethodPaymentEnum::credit_card->value =>
-                                $this->dispatch('init-credit-card'),
+                                MethodPaymentEnum::credit_card->value => $this->dispatch('init-credit-card'),
 
-                                MethodPaymentEnum::pix->value =>
-                                $this->dispatch('init-pix'),
+                                MethodPaymentEnum::pix->value => $this->dispatch('init-pix'),
 
-                                MethodPaymentEnum::billet->value =>
-                                $this->dispatch('init-billet'),
+                                MethodPaymentEnum::billet->value => $this->dispatch('init-billet'),
 
                                 default => null,
                             };
