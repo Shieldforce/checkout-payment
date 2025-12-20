@@ -489,7 +489,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
                 })
                 ->schema([
-                    ViewField::make('method_checked')
+                    ViewField::make('card_method_checked')
                         ->live()
                         ->view(
                             'checkout-payment::pages.cards.method_checked',
@@ -498,7 +498,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                             )
                         ),
 
-                    /*Select::make('method_checked')
+                    Select::make('method_checked')
                         // ->default(fn($state, $get, $set, $livewire) => $livewire->method_checked)
                         ->extraAttributes(['id' => 'method_checked'])
                         ->label('Escolha como quer pagar!')
@@ -510,7 +510,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 ])
                                 ->toArray()
                         )
-                        ->required(),*/
+                        ->required(),
 
                     Grid::make(2)->schema([
 
