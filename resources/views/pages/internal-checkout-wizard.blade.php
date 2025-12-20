@@ -225,49 +225,56 @@
                 let cardForm = null
 
                 // Inicializa quando a aba de cartão for visível
-                document.getElementById('method_checked').addEventListener('change', function(event) {
 
-                    btn.type = 'button'
-                    btn.textContent = 'Confirmar Pagamento'
-                    btn.disabled = true
-                    btn.classList.add('opacity-50', 'cursor-not-allowed')
-                    btn.classList.add('disabled')
+                const method_checked_id = document.getElementById('method_checked');
 
-                    const valueSelectMethodCheck = parseInt(event.target.value)
-                    const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
+                if(method_checked_id) {
 
-                    if (valueSelectMethodCheck === creditCardEnum) {
+                    document.getElementById('method_checked').addEventListener('change', function(event) {
 
-                        if (cardForm) {
-                            cardForm.unmount?.()
-                            cardForm = null
-                        }
+                        btn.type = 'button'
+                        btn.textContent = 'Confirmar Pagamento'
+                        btn.disabled = true
+                        btn.classList.add('opacity-50', 'cursor-not-allowed')
+                        btn.classList.add('disabled')
 
-                        setTimeout(function() {
-                            cardForm = initCardForm()
+                        const valueSelectMethodCheck = parseInt(event.target.value)
+                        const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
 
-                            btn.textContent = 'Confirmar Pagamento'
-                            btn.disabled = false
-                            btn.classList.remove('opacity-50', 'cursor-not-allowed')
-                            btn.classList.remove('disabled')
+                        if (valueSelectMethodCheck === creditCardEnum) {
 
-                            function bloquearAvanco(event) {
-                                event.preventDefault()
-                                event.stopImmediatePropagation()
-                                document.getElementById('form-checkout-wizard').requestSubmit()
+                            if (cardForm) {
+                                cardForm.unmount?.()
+                                cardForm = null
                             }
 
-                            btn.addEventListener('click', bloquearAvanco)
-                        }, 1000)
+                            setTimeout(function() {
+                                cardForm = initCardForm()
 
-                    } else {
+                                btn.textContent = 'Confirmar Pagamento'
+                                btn.disabled = false
+                                btn.classList.remove('opacity-50', 'cursor-not-allowed')
+                                btn.classList.remove('disabled')
 
-                        if (cardForm) {
-                            cardForm.unmount?.()
-                            cardForm = null
+                                function bloquearAvanco(event) {
+                                    event.preventDefault()
+                                    event.stopImmediatePropagation()
+                                    document.getElementById('form-checkout-wizard').requestSubmit()
+                                }
+
+                                btn.addEventListener('click', bloquearAvanco)
+                            }, 1000)
+
+                        } else {
+
+                            if (cardForm) {
+                                cardForm.unmount?.()
+                                cardForm = null
+                            }
                         }
-                    }
-                })
+                    })
+
+                }
 
                 {{--Regra para pix do mercado pago--------------------------------------}}
                 const initPixForm = () => {
