@@ -281,46 +281,55 @@
 
                 }
 
-                // Inicializa quando a aba de pix for visível
-                document.getElementById('method_checked').addEventListener('change', function(event) {
+                if( method_checked_id ) {
 
-                    const valueSelectMethodCheck = parseInt(event.target.value)
-                    const pixEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value }}")
+                    // Inicializa quando a aba de pix for visível
+                    document.getElementById('method_checked').addEventListener('change', function(event) {
 
-                    if (valueSelectMethodCheck === pixEnum) {
+                        const valueSelectMethodCheck = parseInt(event.target.value)
+                        const pixEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value }}")
 
-                        setTimeout(function() {
-                            pixForm = initPixForm()
+                        if (valueSelectMethodCheck === pixEnum) {
 
-                            window.Livewire.dispatch('method-checked-change', { method: 3 });
+                            setTimeout(function() {
+                                pixForm = initPixForm()
 
-                        }, 1000)
+                                window.Livewire.dispatch('method-checked-change', { method: 3 });
 
-                    }
-                })
+                            }, 1000)
+
+                        }
+                    })
+
+                }
 
                 {{--Regra para boleto do mercado pago--------------------------------------}}
                 const initBilletForm = () => {
 
                 }
 
-                // Inicializa quando a aba de pix for visível
-                document.getElementById('method_checked').addEventListener('change', function(event) {
+                if( method_checked_id ) {
 
-                    const valueSelectMethodCheck = parseInt(event.target.value)
-                    const billetEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::billet->value }}")
+                    // Inicializa quando a aba de pix for visível
+                    document.getElementById('method_checked').addEventListener('change', function(event) {
 
-                    if (valueSelectMethodCheck === billetEnum) {
+                        const valueSelectMethodCheck = parseInt(event.target.value)
+                        const billetEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::billet->value }}")
 
-                        setTimeout(function() {
-                            billetForm = initBilletForm()
+                        if (valueSelectMethodCheck === billetEnum) {
 
-                            window.Livewire.dispatch('method-checked-change', { method: 4 });
+                            setTimeout(function() {
+                                billetForm = initBilletForm()
 
-                        }, 1000)
+                                window.Livewire.dispatch('method-checked-change', { method: 4 });
 
-                    }
-                })
+                            }, 1000)
+
+                        }
+                    })
+
+                }
+
             })
         </script>
 
