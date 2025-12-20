@@ -228,11 +228,13 @@
 
                 const method_checked_id = document.getElementById('method_checked');
 
-                console.log(method_checked_id);
-
                 if( method_checked_id ) {
 
+                    console.log(method_checked_id);
+
                     method_checked_id.addEventListener('change', function(event) {
+
+                        console.log(method_checked_id);
 
                         const valueSelectMethodCheck = parseInt(event.target.value)
                         const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
