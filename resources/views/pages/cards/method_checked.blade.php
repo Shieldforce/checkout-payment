@@ -288,7 +288,7 @@
             btn.classList.add('opacity-50', 'cursor-not-allowed')
             btn.classList.add('disabled')
 
-            const valueSelectMethodCheck = parseInt(event.target.value)
+            const valueSelectMethodCheck = parseInt(tipo)
             const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
 
             if (valueSelectMethodCheck === creditCardEnum) {
