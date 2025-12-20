@@ -230,9 +230,7 @@
 
                 if( method_checked_id ) {
 
-                    document.getElementById('method_checked').addEventListener('change', function(event) {
-
-                        alert("fdsfds");
+                    method_checked_id.addEventListener('change', function(event) {
 
                         const valueSelectMethodCheck = parseInt(event.target.value)
                         const creditCardEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::credit_card->value }}")
@@ -288,7 +286,7 @@
                 if( method_checked_id ) {
 
                     // Inicializa quando a aba de pix for visível
-                    document.getElementById('method_checked').addEventListener('change', function(event) {
+                    method_checked_id.addEventListener('change', function(event) {
 
                         const valueSelectMethodCheck = parseInt(event.target.value)
                         const pixEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::pix->value }}")
@@ -315,7 +313,7 @@
                 if( method_checked_id ) {
 
                     // Inicializa quando a aba de boleto for visível
-                    document.getElementById('method_checked').addEventListener('change', function(event) {
+                    method_checked_id.addEventListener('change', function(event) {
 
                         const valueSelectMethodCheck = parseInt(event.target.value)
                         const billetEnum = parseInt("{{ \Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum::billet->value }}")
