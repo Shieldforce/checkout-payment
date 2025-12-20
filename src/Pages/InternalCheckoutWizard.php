@@ -852,6 +852,8 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         DB::beginTransaction();
 
+        dd($method);
+
         try {
 
             if (
