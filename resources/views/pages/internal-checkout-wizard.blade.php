@@ -230,14 +230,6 @@
 
                 if( method_checked_id ) {
 
-
-
-                    method_checked_id.addEventListener('selected', function(event) {
-
-                        console.log("teste");
-
-                    });
-
                     method_checked_id.addEventListener('change', function(event) {
 
                         const valueSelectMethodCheck = parseInt(event.target.value)
@@ -339,6 +331,18 @@
                     })
 
                 }
+
+                window.addEventListener('init-credit-card', () => {
+                    alert("teste1");
+                })
+
+                window.addEventListener('init-pix', () => {
+                    alert("teste2");
+                })
+
+                window.addEventListener('init-billet', () => {
+                    alert("teste3");
+                })
 
             })
 

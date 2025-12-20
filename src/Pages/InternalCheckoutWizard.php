@@ -505,7 +505,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         ->extraAttributes(['id' => 'method_checked'])
                         ->label('Escolha como quer pagar!')
                         ->live()
-                        //->hidden()
+                        ->hidden()
                         ->options(
                             collect($this->paymentMethods)
                                 ->mapWithKeys(fn (MethodPaymentEnum $method) => [
@@ -513,7 +513,22 @@ class InternalCheckoutWizard extends Page implements HasForms
                                 ])
                                 ->toArray()
                         )
-                        ->required(),
+                        ->required()
+                        ->afterStateUpdated(function ($state) {
+
+                            match ((int) $state) {
+                                MethodPaymentEnum::credit_card->value =>
+                                $this->dispatchBrowserEvent('init-credit-card'),
+
+                                MethodPaymentEnum::pix->value =>
+                                $this->dispatchBrowserEvent('init-pix'),
+
+                                MethodPaymentEnum::billet->value =>
+                                $this->dispatchBrowserEvent('init-billet'),
+
+                                default => null,
+                            };
+                        }),
 
                     Grid::make(2)->schema([
 
