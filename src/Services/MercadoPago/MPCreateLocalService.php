@@ -32,6 +32,8 @@ class MPCreateLocalService
         $this->step2 = $checkout?->step2()?->first();
         $this->step3 = $checkout?->step3()?->first();
 
+        dd($this->step2);
+
         $this->dateOfExpiration = Carbon::createFromFormat('Y-m-d', $checkout->due_date)
             ->format("Y-m-d\TH:i:s") . '.000-04:00';
 

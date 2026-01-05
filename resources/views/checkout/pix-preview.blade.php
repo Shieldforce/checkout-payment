@@ -83,14 +83,14 @@
                 >
                     Abrir PIX
                 </a>
+                <a
+                    :href="url_qrcode"
+                    target="_blank"
+                    class="text-xs font-bold underline hover:text-gray-900 dark:hover:text-white/90 transition-colors"
+                >
+                    Copia e Cola
+                </a>
             @endif
-            <a
-                :href="url_qrcode"
-                target="_blank"
-                class="text-xs font-bold underline hover:text-gray-900 dark:hover:text-white/90 transition-colors"
-            >
-                Copia e Cola
-            </a>
         </div>
     </div>
 </div>
