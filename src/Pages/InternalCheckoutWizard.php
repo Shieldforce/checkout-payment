@@ -877,11 +877,29 @@ class InternalCheckoutWizard extends Page implements HasForms
             $mpCreate = new MPCreateLocalService($this->checkout);
 
             if ($method == MethodPaymentEnum::pix->value) {
-                $mpCreate->pix();
+                $returnPix = $mpCreate->pix();
             }
 
             if ($method == MethodPaymentEnum::billet->value) {
-                $mpCreate->boleto();
+                $returnBillet = $mpCreate->boleto();
+            }
+
+            if (isset($returnPix['qr_code_base64'])) {
+                $this->base_qrcode = $returnPix['qr_code_base64'];
+                $this->url_qrcode  = $returnPix['data']['point_of_interaction']['transaction_data']['ticket_url']
+                    ?? $returnPix['qr_code'];
+            }
+
+            if (
+                isset($returnBillet['data']['point_of_interaction']['transaction_data']['ticket_url']) ||
+                isset($returnBillet['data']['transaction_details']['external_resource_url']) ||
+                isset($returnBillet['pdf'])
+            ) {
+                $pdf = $returnBillet['data']['point_of_interaction']['transaction_data']['ticket_url'] ??
+                    $returnBillet['data']['transaction_details']['external_resource_url'] ??
+                    $returnBillet['pdf'];
+
+                $this->url_billet = $pdf;
             }
 
             DB::commit();

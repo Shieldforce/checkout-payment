@@ -121,6 +121,8 @@ class MPCreateLocalService
             // Atualizar o json das tentativas de pagamento -> campo (return_gateway)
             ProcessCheckoutUpdatePaymentsJob::dispatch($this->checkout);
         }
+
+        return $return;
     }
 
     public function pix()
@@ -164,5 +166,7 @@ class MPCreateLocalService
             // Atualizar o json das tentativas de pagamento -> campo (return_gateway)
             ProcessCheckoutUpdatePaymentsJob::dispatch($this->checkout);
         }
+
+        return $return;
     }
 }
