@@ -213,7 +213,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4" class="text-center text-gray-500 dark:text-gray-400 py-6">
+                    <td colspan="5" class="text-center text-gray-500 dark:text-gray-400 py-6">
                         Nenhuma tentativa de pagamento encontrada.
                     </td>
                 </tr>
