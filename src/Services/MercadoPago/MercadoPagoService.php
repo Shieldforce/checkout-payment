@@ -110,31 +110,6 @@ class MercadoPagoService
         try {
             $client = new PaymentClient;
 
-            dd([
-                'transaction_amount' => $value,
-                'description'        => $description,
-                'payment_method_id'  => 'bolbradesco',
-                'external_reference' => $external_id,
-                'payer'              => [
-                    'email'          => $payer_email,
-                    'first_name'     => $payer_first_name,
-                    'last_name'      => $payer_last_name,
-                    'identification' => [
-                        'type'   => $document_type,
-                        'number' => $document,
-                    ],
-                    'address'        => [
-                        'zip_code'      => $address['zip_code'],
-                        'city'          => $address['city'] ?? null,
-                        'street_name'   => $address['street_name'] ?? null,
-                        'street_number' => !empty($address['street_number']) ? $address['street_number'] : 's/n',
-                        'neighborhood'  => $address['neighborhood'] ?? null,
-                        'federal_unit'  => $address['federal_unit'] ?? 'RJ',
-                    ],
-                ],
-                'date_of_expiration' => $due_date,
-            ]);
-
             $payment = $client->create([
                 'transaction_amount' => $value,
                 'description'        => $description,
