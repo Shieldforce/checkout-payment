@@ -67,12 +67,13 @@ class MPCreateLocalService
                 'federal_unit' => $this->step3->state ?? null,
             ],
         ];
-
-        dd($this->data);
     }
 
     public function boleto()
     {
+
+        dd($this->data);
+
         $return = $this->mp->gerarPagamentoBoleto(
             value: $this->data['value'],
             description: 'Pagamento via Boleto',
