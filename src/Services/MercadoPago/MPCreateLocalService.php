@@ -71,9 +71,6 @@ class MPCreateLocalService
 
     public function boleto()
     {
-
-        dd($this->data);
-
         $return = $this->mp->gerarPagamentoBoleto(
             value: $this->data['value'],
             description: 'Pagamento via Boleto',
