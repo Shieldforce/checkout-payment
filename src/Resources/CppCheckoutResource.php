@@ -200,8 +200,8 @@ class CppCheckoutResource extends Resource
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options(StatusCheckoutEnum::options())
-                    ->query(fn (Builder $query, array $data) =>
-                    filled($data['value'])
+                    ->query(
+                        fn (Builder $query, array $data) => filled($data['value'])
                         ? $query->where('status', $data['value'])
                         : $query
                     ),
@@ -212,7 +212,7 @@ class CppCheckoutResource extends Resource
 
                     // Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()
-                    ->visible(fn ($record) => $record->status == StatusCheckoutEnum::criado->value),
+                        ->visible(fn ($record) => $record->status == StatusCheckoutEnum::criado->value),
                     Tables\Actions\Action::make('Link de Pagamento')
                         ->icon('heroicon-o-credit-card')
                         ->url(function (Model $record) {
@@ -224,7 +224,7 @@ class CppCheckoutResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    //Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -232,14 +232,14 @@ class CppCheckoutResource extends Resource
     protected function getTableQuery(): Builder
     {
         return parent::getTableQuery()
-            ->orderByRaw("
+            ->orderByRaw('
             CASE status
                 WHEN ? THEN 1
                 WHEN ? THEN 2
                 WHEN ? THEN 3
                 ELSE 4
             END
-        ", [
+        ', [
                 StatusCheckoutEnum::criado->value,
                 StatusCheckoutEnum::pendente->value,
                 StatusCheckoutEnum::finalizado->value,
