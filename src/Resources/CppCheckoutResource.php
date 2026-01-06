@@ -203,7 +203,7 @@ class CppCheckoutResource extends Resource
 
                     // Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()
-                    ->visible(fn ($record) => $record->status != StatusCheckoutEnum::finalizado->value),
+                    ->hidden(fn ($record) => $record->status == StatusCheckoutEnum::finalizado->value),
                     Tables\Actions\Action::make('Link de Pagamento')
                         ->icon('heroicon-o-credit-card')
                         ->url(function (Model $record) {
