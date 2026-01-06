@@ -63,4 +63,11 @@ enum StatusCheckoutEnum: int
             self::erro->value       => self::erro->color(),
         };
     }
+
+    public static function options(): array
+    {
+        return collect(self::cases())
+            ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+            ->toArray();
+    }
 }

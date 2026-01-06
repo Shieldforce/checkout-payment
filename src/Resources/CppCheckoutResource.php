@@ -48,7 +48,6 @@ class CppCheckoutResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultSort('due_date', 'desc')
             ->columns([
                 /*TextColumn::make('referencable_id')
                     ->label('TRI')
@@ -198,6 +197,15 @@ class CppCheckoutResource extends Resource
                             );
                     })->columns(2),
 
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options(StatusCheckoutEnum::options())
+                    ->query(fn (Builder $query, array $data) =>
+                    filled($data['value'])
+                        ? $query->where('status', $data['value'])
+                        : $query
+                    ),
+
             ], Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -219,6 +227,24 @@ class CppCheckoutResource extends Resource
                     //Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    protected function getTableQuery(): Builder
+    {
+        return parent::getTableQuery()
+            ->orderByRaw("
+            CASE status
+                WHEN ? THEN 1
+                WHEN ? THEN 2
+                WHEN ? THEN 3
+                ELSE 4
+            END
+        ", [
+                StatusCheckoutEnum::criado->value,
+                StatusCheckoutEnum::pendente->value,
+                StatusCheckoutEnum::finalizado->value,
+            ])
+            ->orderBy('due_date', 'desc');
     }
 
     public static function getRelations(): array
