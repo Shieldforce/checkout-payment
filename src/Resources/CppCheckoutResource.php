@@ -48,6 +48,7 @@ class CppCheckoutResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('due_date', 'desc')
             ->columns([
                 /*TextColumn::make('referencable_id')
                     ->label('TRI')
