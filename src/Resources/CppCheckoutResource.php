@@ -48,6 +48,21 @@ class CppCheckoutResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                return $query->orderByRaw("
+                        CASE status
+                            WHEN ? THEN 1
+                            WHEN ? THEN 2
+                            WHEN ? THEN 3
+                            ELSE 4
+                        END
+                    ", [
+                    StatusCheckoutEnum::criado->value,
+                    StatusCheckoutEnum::pendente->value,
+                    StatusCheckoutEnum::finalizado->value,
+                ])
+                    ->orderBy('due_date', 'desc');
+            })
             ->columns([
                 /*TextColumn::make('referencable_id')
                     ->label('TRI')
@@ -72,7 +87,7 @@ class CppCheckoutResource extends Resource
                     ->description('Métodos liberados')
                     ->formatStateUsing(function ($state) {
                         $array = json_decode($state, true);
-                        $tags = [];
+                        $tags  = [];
                         foreach ($array as $key => $value) {
                             $tags[] = MethodPaymentEnum::from($value)->label();
                         }
@@ -96,13 +111,13 @@ class CppCheckoutResource extends Resource
                     }),
 
                 BadgeColumn::make('status')
-                    ->formatStateUsing(fn ($state, $record) => StatusCheckoutEnum::labelEnum($state))
-                    ->color(fn ($state, $record) => StatusCheckoutEnum::colorEnum($state))
+                    ->formatStateUsing(fn($state, $record) => StatusCheckoutEnum::labelEnum($state))
+                    ->color(fn($state, $record) => StatusCheckoutEnum::colorEnum($state))
                     ->label('Status')
                     ->sortable(),
 
                 BadgeColumn::make('startOnStep')
-                    ->formatStateUsing(fn ($state, $record) => TypeStepEnum::from($state)->label())
+                    ->formatStateUsing(fn($state, $record) => TypeStepEnum::from($state)->label())
                     ->color('success')
                     ->label('Passo Atual')
                     ->sortable(),
@@ -124,7 +139,7 @@ class CppCheckoutResource extends Resource
                             ->toArray()
                     )
                     ->query(function ($query, array $data) {
-                        if (! empty($data['value'])) {
+                        if (!empty($data['value'])) {
                             $query->whereHas('step2', function ($subQuery) use ($data) {
                                 $subQuery->where('document', $data['value']);
                             });
@@ -145,7 +160,7 @@ class CppCheckoutResource extends Resource
                             ->toArray()
                     )
                     ->query(function ($query, array $data) {
-                        if (! empty($data['value'])) {
+                        if (!empty($data['value'])) {
                             $query->whereHas('step2', function ($subQuery) use ($data) {
                                 $subQuery->where('email', $data['value']);
                             });
@@ -166,7 +181,7 @@ class CppCheckoutResource extends Resource
                             ->toArray()
                     )
                     ->query(function ($query, array $data) {
-                        if (! empty($data['value'])) {
+                        if (!empty($data['value'])) {
                             $query->whereHas('step2', function ($subQuery) use ($data) {
                                 $subQuery->where('first_name', $data['value']);
                             });
@@ -200,8 +215,7 @@ class CppCheckoutResource extends Resource
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options(StatusCheckoutEnum::options())
-                    ->query(fn (Builder $query, array $data) =>
-                    filled($data['value'])
+                    ->query(fn(Builder $query, array $data) => filled($data['value'])
                         ? $query->where('status', $data['value'])
                         : $query
                     ),
@@ -212,7 +226,7 @@ class CppCheckoutResource extends Resource
 
                     // Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()
-                    ->visible(fn ($record) => $record->status == StatusCheckoutEnum::criado->value),
+                        ->visible(fn($record) => $record->status == StatusCheckoutEnum::criado->value),
                     Tables\Actions\Action::make('Link de Pagamento')
                         ->icon('heroicon-o-credit-card')
                         ->url(function (Model $record) {
@@ -227,24 +241,6 @@ class CppCheckoutResource extends Resource
                     //Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    protected function getTableQuery(): Builder
-    {
-        return parent::getTableQuery()
-            ->orderByRaw("
-            CASE status
-                WHEN ? THEN 1
-                WHEN ? THEN 2
-                WHEN ? THEN 3
-                ELSE 4
-            END
-        ", [
-                StatusCheckoutEnum::criado->value,
-                StatusCheckoutEnum::pendente->value,
-                StatusCheckoutEnum::finalizado->value,
-            ])
-            ->orderBy('due_date', 'desc');
     }
 
     public static function getRelations(): array
