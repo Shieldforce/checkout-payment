@@ -203,7 +203,7 @@ class CppCheckoutResource extends Resource
 
                     // Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make()
-                    ->visible(fn ($record) => $record->status == StatusCheckoutEnum::criado->value),
+                        ->visible(fn ($record) => $record->status == StatusCheckoutEnum::criado->value),
                     Tables\Actions\Action::make('Link de Pagamento')
                         ->icon('heroicon-o-credit-card')
                         ->url(function (Model $record) {
@@ -215,7 +215,7 @@ class CppCheckoutResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    //Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
