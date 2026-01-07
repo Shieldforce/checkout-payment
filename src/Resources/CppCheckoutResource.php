@@ -27,17 +27,12 @@ class CppCheckoutResource extends Resource
 {
     use CanTrait;
 
-    protected static ?string $model = CppCheckout::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
-
-    protected static ?string $label = 'Cobrança';
-
-    protected static ?string $pluralLabel = 'Cobranças';
-
+    protected static ?string $model           = CppCheckout::class;
+    protected static ?string $navigationIcon  = 'heroicon-o-currency-dollar';
+    protected static ?string $label           = 'Cobrança';
+    protected static ?string $pluralLabel     = 'Cobranças';
     protected static ?string $navigationLabel = 'Cobranças';
-
-    protected static ?string $slug = 'checkouts-payment';
+    protected static ?string $slug            = 'checkouts-payment';
 
     public static function form(Form $form): Form
     {
