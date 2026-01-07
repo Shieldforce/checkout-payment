@@ -34,7 +34,7 @@ class ListCppCheckouts extends ListRecords
                         ->numeric()
                         ->minValue(1)
                         ->maxValue(31)
-                        ->default(now()->format("d")->day)
+                        ->default(now()->format("d"))
                         ->required(),
                 ])
 
