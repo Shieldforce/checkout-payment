@@ -17,8 +17,6 @@ class ListCppCheckouts extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        $year = now()->year;
-
         return [
             Actions\Action::make('runMonthlyBilling')
                 ->label('Rodar Faturamento Mensal')
@@ -27,31 +25,11 @@ class ListCppCheckouts extends ListRecords
 
                 // 👉 FORM DO MODAL
                 ->form([
-                    /*TextInput::make('reference')
-                        ->label('Referência')
+                    TextInput::make('reference')
+                        ->label('Referência - Exp: 12/2025')
                         ->helperText('Ex: 01/2026')
                         ->default(now()->subMonth()->format('m/Y'))
-                        ->required(),*/
-
-                    Select::make('reference')
-                        ->label('Referência')
-                        ->required()
-                        ->options([
-                            "01/{$year}" => "01/{$year} - Janeiro",
-                            "02/{$year}" => "02/{$year} - Fevereiro",
-                            "03/{$year}" => "03/{$year} - Março",
-                            "04/{$year}" => "04/{$year} - Abril",
-                            "05/{$year}" => "05/{$year} - Maio",
-                            "06/{$year}" => "06/{$year} - Junho",
-                            "07/{$year}" => "07/{$year} - Julho",
-                            "08/{$year}" => "08/{$year} - Agosto",
-                            "09/{$year}" => "09/{$year} - Setembro",
-                            "10/{$year}" => "10/{$year} - Outubro",
-                            "11/{$year}" => "11/{$year} - Novembro",
-                            "12/{$year}" => "12/{$year} - Dezembro",
-                        ])
-                        ->default(now()->subMonth()->format('m'))
-                        ->live(),
+                        ->required(),
 
                     Select::make('billingDay')
                         ->label('Dia de Cobrança')
