@@ -102,6 +102,7 @@ class CppCheckoutResource extends Resource
                     ->label('Vencimento')
                     ->formatStateUsing(function ($state) {
                         return Carbon::createFromFormat('Y-m-d', $state)
+                            ->addMonths(1)
                             ->format('d/m/Y');
                     }),
 
