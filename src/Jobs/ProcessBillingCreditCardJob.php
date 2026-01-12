@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
+use Shieldforce\CheckoutPayment\Enums\StatusTransactionEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Notifications\CheckoutStatusUpdated;
@@ -83,6 +84,10 @@ class ProcessBillingCreditCardJob implements ShouldQueue
                 'method_checked' => MethodPaymentEnum::credit_card->value,
             ]);
 
+            $this->checkout->referencable?->update([
+                'status' => StatusTransactionEnum::PAGO->value,
+            ]);
+
             $this->checkout->notify(new CheckoutStatusUpdated(
                 status: 'approved',
                 message: 'Pagamento aprovado com sucesso!',
@@ -97,6 +102,10 @@ class ProcessBillingCreditCardJob implements ShouldQueue
                 'method_checked' => MethodPaymentEnum::credit_card->value,
             ]);
 
+            $this->checkout->referencable?->update([
+                'status' => StatusTransactionEnum::AGUARDANDO->value,
+            ]);
+
             $this->checkout->notify(new CheckoutStatusUpdated(
                 status: 'processing',
                 message: 'Estamos processando seu pagamento',
@@ -109,6 +118,10 @@ class ProcessBillingCreditCardJob implements ShouldQueue
                 'startOnStep' => 5,
                 'status' => StatusCheckoutEnum::rejeitado->value,
                 'method_checked' => MethodPaymentEnum::credit_card->value,
+            ]);
+
+            $this->checkout->referencable?->update([
+                'status' => StatusTransactionEnum::NEGADO->value,
             ]);
 
             $this->checkout->notify(new CheckoutStatusUpdated(
