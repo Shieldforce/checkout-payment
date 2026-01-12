@@ -6,7 +6,6 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\DB;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusTransactionEnum;
@@ -60,7 +59,7 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
             $this->checkout->update($updateData);
 
             $this->checkout->referencable
-                ->update(["status" => StatusTransactionEnum::PAGO->value]);
+                ->update(['status' => StatusTransactionEnum::PAGO->value]);
 
             return;
         }

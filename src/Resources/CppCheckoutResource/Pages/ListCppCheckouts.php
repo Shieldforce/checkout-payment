@@ -2,14 +2,14 @@
 
 namespace Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages;
 
+use App\Jobs\GenerateMonthlyBillingsJob;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Carbon;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource;
-use App\Jobs\GenerateMonthlyBillingsJob;
-use Filament\Notifications\Notification;
 
 class ListCppCheckouts extends ListRecords
 {
@@ -46,7 +46,7 @@ class ListCppCheckouts extends ListRecords
 
                             return collect(range(1, $daysInMonth))
                                 ->mapWithKeys(fn ($day) => [
-                                    str_pad($day, 2, '0', STR_PAD_LEFT) => str_pad($day, 2, '0', STR_PAD_LEFT)
+                                    str_pad($day, 2, '0', STR_PAD_LEFT) => str_pad($day, 2, '0', STR_PAD_LEFT),
                                 ])
                                 ->toArray();
                         })
