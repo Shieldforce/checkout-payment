@@ -80,6 +80,10 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
 
             $this->checkout->update($updateData);
 
+            $this->checkout->referencable?->update([
+                'status' => StatusTransactionEnum::NEGADO->value,
+            ]);
+
             return;
         }
 
