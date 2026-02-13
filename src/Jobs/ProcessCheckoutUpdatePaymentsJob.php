@@ -6,7 +6,6 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\DB;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusTransactionEnum;
