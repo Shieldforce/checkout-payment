@@ -216,7 +216,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 $this->total_price = $sum;
             }
 
-            $this->startOnStep = $this->checkout->startOnStep ?? null;
+            $this->startOnStep = $this?->checkout?->startOnStep ?? null;
 
             /* if (isset($this->attempts) && count($this->attempts) > 0) {
                  $this->checkout->update([
@@ -226,7 +226,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                  $this->startOnStep = 5;
              }*/
 
-            $this->statusCheckout = $this->checkout->status ?? null;
+            $this->statusCheckout = $this?->checkout?->status ?? null;
         }
 
         $this->form->fill();
