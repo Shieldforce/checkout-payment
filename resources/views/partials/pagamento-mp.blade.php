@@ -33,9 +33,7 @@
                         break-words
                     "
                     style="overflow-y: scroll;overflow-x: scroll;height: 500px;"
-                >
-                    {{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}
-                </pre>
+                >{{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
             </details>
         </div>
     @endforeach
