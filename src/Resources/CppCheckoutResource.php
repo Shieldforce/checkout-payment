@@ -4,6 +4,7 @@ namespace Shieldforce\CheckoutPayment\Resources;
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
@@ -249,12 +250,19 @@ class CppCheckoutResource extends Resource
                             $pagamentos->buscarPagamentoPorExternalId($record->referencable_id);
 
                             if (empty($pagamentos)) {
+                                Notification::make('errors_mp')
+                                    ->persistent()
+                                    ->danger()
+                                    ->title('Erro!!')
+                                    ->body("Nenhum pagamento encontrado.")
+                                    ->send();
+
                                 return view('filament.components.empty', [
                                     'message' => 'Nenhum pagamento encontrado.',
                                 ]);
                             }
 
-                            return view('partials.pagamento-mp', [
+                            return view('checkout-payment::partials.pagamento-mp', [
                                 'pagamentos' => $pagamentos
                             ]);
                         }),
