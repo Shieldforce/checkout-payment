@@ -20,9 +20,16 @@
                     Ver JSON completo
                 </summary>
 
-                <pre class="text-xs bg-gray-100 p-2 rounded mt-2 overflow-auto">
-                    {{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}
-                </pre>
+                <pre
+                    class="
+                    text-xs
+                    bg-gray-100
+                    p-2
+                    rounded
+                    mt-2
+                    overflow-auto
+                    "
+                >{{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
             </details>
         </div>
     @endforeach

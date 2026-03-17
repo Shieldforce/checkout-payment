@@ -250,9 +250,6 @@ class CppCheckoutResource extends Resource
                             $pagamentos = $mps->buscarPagamentoPorExternalId($record->uuid);
 
                             logger([
-                                'id'       => $record->id ?? null,
-                                'status'   => $record->status ?? null,
-                                'method'   => $record->payment_method_id ?? null,
                                 'external' => $record->uuid ?? null,
                                 'return'   => $pagamentos ?? null
                             ]);
