@@ -278,6 +278,8 @@ class MercadoPagoService
 
             $results = $payments->results ?? [];
 
+            logger($results);
+
             $result = [];
 
             foreach ($results as $payment) {
