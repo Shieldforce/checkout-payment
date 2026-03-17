@@ -246,10 +246,16 @@ class CppCheckoutResource extends Resource
                         ->modalSubmitAction(false) // não precisa botão salvar
                         ->modalCancelActionLabel('Fechar')
                         ->modalContent(function (Model $record) {
-                            $mps = new MercadoPagoService();
+                            $mps        = new MercadoPagoService();
                             $pagamentos = $mps->buscarPagamentoPorExternalId($record->referencable_id);
 
-                            logger($pagamentos);
+                            logger([
+                                'id'              => $record->id ?? null,
+                                'status'          => $record->status ?? null,
+                                'method'          => $record->payment_method_id ?? null,
+                                'referencable_id' => $record->referencable_id ?? null,
+                                'return'          => $pagamentos ?? null
+                            ]);
 
                             if (empty($pagamentos)) {
                                 Notification::make('errors_mp')
