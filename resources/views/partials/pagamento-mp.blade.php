@@ -32,6 +32,7 @@
                         whitespace-pre-wrap
                         break-words
                     "
+                    style="overflow-y: scroll;overflow-x: hidden;text-align: justify;"
                 >
                     {{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}
                 </pre>
