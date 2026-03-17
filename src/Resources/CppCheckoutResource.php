@@ -249,6 +249,8 @@ class CppCheckoutResource extends Resource
                             $mps = new MercadoPagoService();
                             $pagamentos = $mps->buscarPagamentoPorExternalId($record->referencable_id);
 
+                            logger($pagamentos);
+
                             if (empty($pagamentos)) {
                                 Notification::make('errors_mp')
                                     ->persistent()
