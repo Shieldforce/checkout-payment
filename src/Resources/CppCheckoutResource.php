@@ -254,6 +254,15 @@ class CppCheckoutResource extends Resource
                                 'return'   => $pagamentos ?? null
                             ]);
 
+                            $approved = collect($pagamentos)
+                                ->firstWhere('status', 'approved');
+
+                            if ($approved) {
+                                $record->update([
+                                    "startOnStep" => TypeStepEnum::finalizado->value,
+                                ]);
+                            }
+
                             if (empty($pagamentos)) {
                                 Notification::make('errors_mp')
                                     ->persistent()
