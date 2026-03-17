@@ -259,7 +259,7 @@ class CppCheckoutResource extends Resource
                                     ->body("Nenhum pagamento encontrado.")
                                     ->send();
 
-                                return view('filament.components.empty', [
+                                return view('checkout-payment::partials.empty', [
                                     'message' => 'Nenhum pagamento encontrado.',
                                 ]);
                             }
