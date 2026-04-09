@@ -135,6 +135,11 @@ class MercadoPagoService
                 'date_of_expiration' => $due_date,
             ]);
 
+            logger([
+                "boleto" => "ok",
+                $payment
+            ]);
+
             $arrayPayment = json_decode(json_encode($payment), true);
 
             return [
