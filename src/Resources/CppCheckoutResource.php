@@ -51,7 +51,9 @@ class CppCheckoutResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                return $query->orderByRaw('
+                return $query
+                    ->orderBy('due_date', 'desc')
+                    ->orderByRaw('
                         CASE status
                             WHEN ? THEN 1
                             WHEN ? THEN 2
@@ -62,8 +64,7 @@ class CppCheckoutResource extends Resource
                     StatusCheckoutEnum::criado->value,
                     StatusCheckoutEnum::pendente->value,
                     StatusCheckoutEnum::finalizado->value,
-                ])
-                    ->orderBy('due_date', 'desc');
+                ]);
             })
             ->columns([
                 /*TextColumn::make('referencable_id')
