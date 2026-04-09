@@ -904,7 +904,10 @@ class InternalCheckoutWizard extends Page implements HasForms
         } catch (Throwable $e) {
             DB::rollBack();
 
-            logger($e->getMessage());
+            logger([
+                "error_mercado_InternalCheckoutWizard",
+                $e->getMessage()
+            ]);
 
             $this->checkout->update([
                 'method_checked' => null,
