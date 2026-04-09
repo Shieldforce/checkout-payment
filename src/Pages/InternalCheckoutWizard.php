@@ -856,7 +856,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     'startOnStep' => 5,
                 ]);
 
-                return;
+                //return;
             }
 
             if (
@@ -868,7 +868,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     'startOnStep' => 5,
                 ]);
 
-                return;
+                //return;
             }
 
             $mpCreate = new MPCreateLocalService($this->checkout);
