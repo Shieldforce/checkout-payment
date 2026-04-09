@@ -135,11 +135,6 @@ class MercadoPagoService
                 'date_of_expiration' => $due_date,
             ]);
 
-            logger([
-                "boleto" => "ok",
-                $payment
-            ]);
-
             $arrayPayment = json_decode(json_encode($payment), true);
 
             return [
@@ -164,6 +159,11 @@ class MercadoPagoService
                 'type'        => 'boleto',
             ]);
 
+            logger([
+                "boleto" => "error_address",
+                $address ?? null
+            ]);
+
             return [];
         } catch (\Throwable $e) {
 
@@ -178,6 +178,11 @@ class MercadoPagoService
                 'code'        => $code,
                 'external_id' => $external_id,
                 'type'        => 'boleto',
+            ]);
+
+            logger([
+                "boleto" => "error_address",
+                $address ?? null
             ]);
 
             return [];
