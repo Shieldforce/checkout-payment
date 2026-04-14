@@ -46,8 +46,7 @@ class ListCppCheckouts extends ListRecords
 
                             $days = collect(range(1, $daysInMonth))
                                 ->mapWithKeys(fn ($day) => [
-                                    str_pad($day, 2, '0', STR_PAD_LEFT) =>
-                                        str_pad($day, 2, '0', STR_PAD_LEFT),
+                                    str_pad($day, 2, '0', STR_PAD_LEFT) => str_pad($day, 2, '0', STR_PAD_LEFT),
                                 ])
                                 ->toArray();
 
