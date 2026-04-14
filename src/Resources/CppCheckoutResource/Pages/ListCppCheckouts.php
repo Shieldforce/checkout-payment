@@ -68,7 +68,7 @@ class ListCppCheckouts extends ListRecords
 
                     GenerateMonthlyBillingsJob::dispatch(
                         $data['reference'],
-                        (int) $data['billingDay'],
+                        $data['billingDay'],
                     );
 
                     Notification::make()
