@@ -4,16 +4,13 @@ namespace Shieldforce\CheckoutPayment\Pages;
 
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Contracts\HasTable;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 use Shieldforce\CheckoutPayment\Services\Permissions\CanPageTrait;
 
-class DashboardMercadoPago extends Page implements HasTable
+class DashboardMercadoPago extends Page
 {
     use CanPageTrait;
     use InteractsWithForms;
-    use InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
@@ -23,58 +20,89 @@ class DashboardMercadoPago extends Page implements HasTable
 
     protected static ?string $title = 'Dashboard Mercado Pago';
 
-    # protected static ?string $navigationGroup = 'Checkout Payment';
+    protected static ?int $navigationSort = 2;
 
     public array $payments = [];
 
     public array $stats = [];
-
-    public function mount(): void
-    {
-        $this->loadData();
-    }
 
     public static function getSlug(): string
     {
         return 'dashboard-mercado-pago';
     }
 
-    public function loadData()
+    public function mount(): void
+    {
+        $this->loadData();
+    }
+
+    public function refreshData(): void
+    {
+        $this->loadData();
+    }
+
+    public function loadData(): void
     {
         $mp = new MercadoPagoService();
 
         $this->payments = $mp->listarPagamentos(100);
 
+        $payments = collect($this->payments);
+
+        $approved = $payments->where('status', 'approved');
+
+        $todayApproved = $payments->filter(function ($item) {
+            if (empty($item['created'])) {
+                return false;
+            }
+
+            return $item['status'] === 'approved'
+                && now()->isSameDay(\Carbon\Carbon::parse($item['created']));
+        });
+
+        $pixToday = $payments->filter(function ($item) {
+            if (empty($item['created'])) {
+                return false;
+            }
+
+            return $item['method'] === 'pix'
+                && $item['status'] === 'approved'
+                && now()->isSameDay(\Carbon\Carbon::parse($item['created']));
+        });
+
+        $boletoPaid = $payments->filter(function ($item) {
+            return str_contains(($item['method'] ?? ''), 'bol')
+                && $item['status'] === 'approved';
+        });
+
+        $chargebacks = $payments->filter(function ($item) {
+            return in_array($item['status'], [
+                'charged_back',
+                'refunded',
+                'cancelled',
+            ]);
+        });
+
         $this->stats = [
-            'today'      => collect($this->payments)
-                ->where('status', 'approved')
-                ->where('created', '>=', now()->startOfDay())
-                ->sum('value'),
-
-            'approved'   => collect($this->payments)
-                ->where('status', 'approved')
-                ->sum('value'),
-
-            'pending'    => collect($this->payments)
-                ->where('status', 'pending')
-                ->count(),
-
-            'rejected'   => collect($this->payments)
-                ->where('status', 'rejected')
-                ->count(),
-
-            'pix'        => collect($this->payments)
-                ->where('method', 'pix')
-                ->sum('value'),
-
-            'boleto'     => collect($this->payments)
-                ->filter(fn($p) => str_contains($p['method'], 'bol'))
-                ->sum('value'),
+            'today'       => $todayApproved->sum('value'),
+            'approved'    => $approved->sum('value'),
+            'pending'     => $payments->where('status', 'pending')->count(),
+            'rejected'    => $payments->where('status', 'rejected')->count(),
+            'pix_today'   => $pixToday->sum('value'),
+            'boleto_paid' => $boletoPaid->sum('value'),
+            'chargeback'  => $chargebacks->count(),
+            'total'       => $payments->count(),
         ];
     }
 
-    public function refreshData()
+    public function getHeaderActions(): array
     {
-        $this->loadData();
+        return [
+            \Filament\Actions\Action::make('refresh')
+                ->label('Atualizar')
+                ->icon('heroicon-o-arrow-path')
+                ->color('success')
+                ->action(fn () => $this->refreshData()),
+        ];
     }
 }
