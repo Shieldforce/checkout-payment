@@ -2,6 +2,8 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
+use Carbon\Carbon;
+use Filament\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
@@ -43,7 +45,7 @@ class DashboardMercadoPago extends Page
 
     public function loadData(): void
     {
-        $mp = new MercadoPagoService();
+        $mp = new MercadoPagoService;
 
         $this->payments = $mp->listarPagamentos(50);
 
@@ -57,7 +59,7 @@ class DashboardMercadoPago extends Page
             }
 
             return $item['status'] === 'approved'
-                && now()->isSameDay(\Carbon\Carbon::parse($item['created']));
+                && now()->isSameDay(Carbon::parse($item['created']));
         });
 
         $pixToday = $payments->filter(function ($item) {
@@ -67,7 +69,7 @@ class DashboardMercadoPago extends Page
 
             return $item['method'] === 'pix'
                 && $item['status'] === 'approved'
-                && now()->isSameDay(\Carbon\Carbon::parse($item['created']));
+                && now()->isSameDay(Carbon::parse($item['created']));
         });
 
         $boletoPaid = $payments->filter(function ($item) {
@@ -84,21 +86,21 @@ class DashboardMercadoPago extends Page
         });
 
         $this->stats = [
-            'today'       => $todayApproved->sum('value'),
-            'approved'    => $approved->sum('value'),
-            'pending'     => $payments->where('status', 'pending')->count(),
-            'rejected'    => $payments->where('status', 'rejected')->count(),
-            'pix_today'   => $pixToday->sum('value'),
+            'today' => $todayApproved->sum('value'),
+            'approved' => $approved->sum('value'),
+            'pending' => $payments->where('status', 'pending')->count(),
+            'rejected' => $payments->where('status', 'rejected')->count(),
+            'pix_today' => $pixToday->sum('value'),
             'boleto_paid' => $boletoPaid->sum('value'),
-            'chargeback'  => $chargebacks->count(),
-            'total'       => $payments->count(),
+            'chargeback' => $chargebacks->count(),
+            'total' => $payments->count(),
         ];
     }
 
     public function getHeaderActions(): array
     {
         return [
-            \Filament\Actions\Action::make('refresh')
+            Action::make('refresh')
                 ->label('Atualizar')
                 ->icon('heroicon-o-arrow-path')
                 ->color('success')
