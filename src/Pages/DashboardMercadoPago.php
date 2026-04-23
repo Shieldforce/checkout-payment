@@ -1,111 +1,4 @@
 <?php
-/*
-namespace Shieldforce\CheckoutPayment\Pages;
-
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Pages\Page;
-use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
-use Shieldforce\CheckoutPayment\Services\Permissions\CanPageTrait;
-
-class DashboardMercadoPago extends Page
-{
-    use CanPageTrait;
-    use InteractsWithForms;
-
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
-
-    protected static string $view = 'checkout-payment::pages.dashboard-mercado-pago';
-
-    protected static ?string $navigationLabel = 'Dashboard MP';
-
-    protected static ?string $title = 'Dashboard Mercado Pago';
-
-    protected static ?int $navigationSort = 2;
-
-    public array $payments = [];
-
-    public array $stats = [];
-
-    public static function getSlug(): string
-    {
-        return 'dashboard-mercado-pago';
-    }
-
-    public function mount(): void
-    {
-        $this->loadData();
-    }
-
-    public function refreshData(): void
-    {
-        $this->loadData();
-    }
-
-    public function loadData(): void
-    {
-        $mp = new MercadoPagoService();
-
-        $this->payments = $mp->listarPagamentos(50);
-
-        $payments = collect($this->payments);
-
-        $approved = $payments->where('status', 'approved');
-
-        $todayApproved = $payments->filter(function ($item) {
-            if (empty($item['created'])) {
-                return false;
-            }
-
-            return $item['status'] === 'approved'
-                && now()->isSameDay(\Carbon\Carbon::parse($item['created']));
-        });
-
-        $pixToday = $payments->filter(function ($item) {
-            if (empty($item['created'])) {
-                return false;
-            }
-
-            return $item['method'] === 'pix'
-                && $item['status'] === 'approved'
-                && now()->isSameDay(\Carbon\Carbon::parse($item['created']));
-        });
-
-        $boletoPaid = $payments->filter(function ($item) {
-            return str_contains(($item['method'] ?? ''), 'bol')
-                && $item['status'] === 'approved';
-        });
-
-        $chargebacks = $payments->filter(function ($item) {
-            return in_array($item['status'], [
-                'charged_back',
-                'refunded',
-                'cancelled',
-            ]);
-        });
-
-        $this->stats = [
-            'today'       => $todayApproved->sum('value'),
-            'approved'    => $approved->sum('value'),
-            'pending'     => $payments->where('status', 'pending')->count(),
-            'rejected'    => $payments->where('status', 'rejected')->count(),
-            'pix_today'   => $pixToday->sum('value'),
-            'boleto_paid' => $boletoPaid->sum('value'),
-            'chargeback'  => $chargebacks->count(),
-            'total'       => $payments->count(),
-        ];
-    }
-
-    public function getHeaderActions(): array
-    {
-        return [
-            \Filament\Actions\Action::make('refresh')
-                ->label('Atualizar')
-                ->icon('heroicon-o-arrow-path')
-                ->color('success')
-                ->action(fn () => $this->refreshData()),
-        ];
-    }
-}*/
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
@@ -149,6 +42,18 @@ class DashboardMercadoPago extends Page
 
     public string $method = '';
 
+    public string $date_from = '';
+
+    public string $date_to = '';
+
+    public string $date_approved_from = '';
+
+    public string $date_approved_to = '';
+
+    public string $date_expiration_from = '';
+
+    public string $date_expiration_to = '';
+
     public static function getSlug(): string
     {
         return 'dashboard-mercado-pago';
@@ -166,6 +71,13 @@ class DashboardMercadoPago extends Page
             'external',
             'payer',
             'method',
+            'date_from',
+            'date_to',
+            'date_approved_from',
+            'date_approved_to',
+            'date_expiration_from',
+            'date_expiration_to',
+            'limit',
         ])) {
             $this->page = 1;
             $this->loadData();
@@ -174,8 +86,10 @@ class DashboardMercadoPago extends Page
 
     public function nextPage(): void
     {
-        $this->page++;
-        $this->loadData();
+        if ($this->page < $this->getTotalPages()) {
+            $this->page++;
+            $this->loadData();
+        }
     }
 
     public function prevPage(): void
@@ -191,16 +105,57 @@ class DashboardMercadoPago extends Page
         $this->loadData();
     }
 
+    public function resetFilters(): void
+    {
+        $this->status               = '';
+        $this->external             = '';
+        $this->payer                = '';
+        $this->method               = '';
+        $this->date_from            = '';
+        $this->date_to              = '';
+        $this->date_approved_from   = '';
+        $this->date_approved_to     = '';
+        $this->date_expiration_from = '';
+        $this->date_expiration_to   = '';
+        $this->page                 = 1;
+        $this->loadData();
+    }
+
+    public function getTotalPages(): int
+    {
+        $total = $this->paging['total'] ?? 0;
+
+        return $total > 0 ? (int) ceil($total / $this->limit) : 1;
+    }
+
     public function loadData(): void
     {
         $offset = ($this->page - 1) * $this->limit;
 
-        $filters = [
-            'status'             => $this->status,
-            'external_reference' => $this->external,
-            'payer.email'        => $this->payer,
-            'payment_method_id'  => $this->method,
-        ];
+        $filters = array_filter([
+            'status'                  => $this->status ?: null,
+            'external_reference'      => $this->external ?: null,
+            'payer.email'             => $this->payer ?: null,
+            'payment_method_id'       => $this->method ?: null,
+            'begin_date'              => $this->date_from
+                ? Carbon::parse($this->date_from)->startOfDay()->toIso8601String()
+                : null,
+            'end_date'                => $this->date_to
+                ? Carbon::parse($this->date_to)->endOfDay()->toIso8601String()
+                : null,
+            'date_approved.from'      => $this->date_approved_from
+                ? Carbon::parse($this->date_approved_from)->startOfDay()->toIso8601String()
+                : null,
+            'date_approved.to'        => $this->date_approved_to
+                ? Carbon::parse($this->date_approved_to)->endOfDay()->toIso8601String()
+                : null,
+            'date_of_expiration.from' => $this->date_expiration_from
+                ? Carbon::parse($this->date_expiration_from)->startOfDay()->toIso8601String()
+                : null,
+            'date_of_expiration.to'   => $this->date_expiration_to
+                ? Carbon::parse($this->date_expiration_to)->endOfDay()->toIso8601String()
+                : null,
+        ], fn($v) => $v !== null);
 
         $mp = new MercadoPagoService();
 
