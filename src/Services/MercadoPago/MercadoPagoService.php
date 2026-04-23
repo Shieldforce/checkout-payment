@@ -322,13 +322,13 @@ class MercadoPagoService
     public function listarPagamentos($limit = 50)
     {
         try {
+
             $client = new PaymentClient;
 
             $payments = $client->search(
                 request: new MPSearchRequest(
                     $limit,
-                    0,
-                    filters: []
+                    0
                 )
             );
 
@@ -348,12 +348,23 @@ class MercadoPagoService
                 ];
             }
 
-            logger($data);
-
             return $data;
 
+        } catch (MPApiException $e) {
+
+            logger([
+                'status_code' => $e->getApiResponse()->getStatusCode(),
+                'content'     => $e->getApiResponse()->getContent(),
+            ]);
+
+            return [];
+
         } catch (\Throwable $e) {
-            logger($e->getMessage());
+
+            logger([
+                'erro' => $e->getMessage()
+            ]);
+
             return [];
         }
     }
