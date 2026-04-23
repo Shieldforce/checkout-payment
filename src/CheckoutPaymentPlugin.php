@@ -6,6 +6,7 @@ use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Illuminate\Support\Facades\Route;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
+use Shieldforce\CheckoutPayment\Pages\CPPGatewaysPage;
 use Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource;
 
@@ -32,8 +33,8 @@ class CheckoutPaymentPlugin implements Plugin
                 CppCheckoutResource::class,
             ])
             ->pages([
-                \Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard::class,
-                \Shieldforce\CheckoutPayment\Pages\CPPGatewaysPage::class,
+                InternalCheckoutWizard::class,
+                CPPGatewaysPage::class,
             ]);
     }
 
