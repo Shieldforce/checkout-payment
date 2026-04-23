@@ -348,6 +348,8 @@ class MercadoPagoService
                 ];
             }
 
+            logger($data);
+
             return $data;
 
         } catch (\Throwable $e) {
