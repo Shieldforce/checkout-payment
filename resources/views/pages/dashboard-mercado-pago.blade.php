@@ -95,54 +95,6 @@
                        class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
             </div>
 
-            {{-- Data Criação De --}}
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Criado De</label>
-                <input type="date"
-                       wire:model.live="date_from"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
-            </div>
-
-            {{-- Data Criação Até --}}
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Criado Até</label>
-                <input type="date"
-                       wire:model.live="date_to"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
-            </div>
-
-            {{-- Data Aprovação De --}}
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Aprovado De</label>
-                <input type="date"
-                       wire:model.live="date_approved_from"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
-            </div>
-
-            {{-- Data Aprovação Até --}}
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Aprovado Até</label>
-                <input type="date"
-                       wire:model.live="date_approved_to"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
-            </div>
-
-            {{-- Vencimento De (boleto) --}}
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Vencimento De</label>
-                <input type="date"
-                       wire:model.live="date_expiration_from"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
-            </div>
-
-            {{-- Vencimento Até (boleto) --}}
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Vencimento Até</label>
-                <input type="date"
-                       wire:model.live="date_expiration_to"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
-            </div>
-
             {{-- Itens por página --}}
             <div>
                 <label class="block text-xs text-gray-500 mb-1">Por Página</label>

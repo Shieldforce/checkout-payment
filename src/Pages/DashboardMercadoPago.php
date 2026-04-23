@@ -42,18 +42,6 @@ class DashboardMercadoPago extends Page
 
     public string $method = '';
 
-    public string $date_from = '';
-
-    public string $date_to = '';
-
-    public string $date_approved_from = '';
-
-    public string $date_approved_to = '';
-
-    public string $date_expiration_from = '';
-
-    public string $date_expiration_to = '';
-
     public static function getSlug(): string
     {
         return 'dashboard-mercado-pago';
@@ -63,26 +51,6 @@ class DashboardMercadoPago extends Page
     {
         $this->loadData();
     }
-
-    /*public function updated($field): void
-    {
-        if (in_array($field, [
-            'status',
-            'external',
-            'payer',
-            'method',
-            'date_from',
-            'date_to',
-            'date_approved_from',
-            'date_approved_to',
-            'date_expiration_from',
-            'date_expiration_to',
-            'limit',
-        ])) {
-            $this->page = 1;
-            $this->loadData();
-        }
-    }*/
 
     public function nextPage(): void
     {
@@ -111,12 +79,6 @@ class DashboardMercadoPago extends Page
         $this->external             = '';
         $this->payer                = '';
         $this->method               = '';
-        $this->date_from            = '';
-        $this->date_to              = '';
-        $this->date_approved_from   = '';
-        $this->date_approved_to     = '';
-        $this->date_expiration_from = '';
-        $this->date_expiration_to   = '';
         $this->page                 = 1;
         $this->loadData();
     }
