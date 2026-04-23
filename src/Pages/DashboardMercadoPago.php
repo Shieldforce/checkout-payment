@@ -45,7 +45,7 @@ class DashboardMercadoPago extends Page
     {
         $mp = new MercadoPagoService();
 
-        $this->payments = $mp->listarPagamentos(100);
+        $this->payments = $mp->listarPagamentos(50);
 
         $payments = collect($this->payments);
 

@@ -319,7 +319,7 @@ class MercadoPagoService
         }
     }
 
-    public function listarPagamentos($limit = 100)
+    public function listarPagamentos($limit = 50)
     {
         try {
             $client = new PaymentClient;
