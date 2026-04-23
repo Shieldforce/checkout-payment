@@ -319,7 +319,7 @@ class MercadoPagoService
         }
     }
 
-    public function listarPagamentos(
+    /*public function listarPagamentos(
         int $limit = 50,
         int $offset = 0,
         array $filters = []
@@ -378,6 +378,78 @@ class MercadoPagoService
                     'limit' => $limit,
                     'offset' => $offset,
                 ],
+            ];
+        }
+    }*/
+
+    public function listarPagamentos(
+        int $limit = 50,
+        int $offset = 0,
+        array $filters = []
+    ): array {
+        try {
+            $client = new PaymentClient;
+
+            // Remove payer.email do payload — a API não aceita esse filtro
+            $payerEmail = $filters['payer.email'] ?? null;
+            unset($filters['payer.email']);
+
+            $payload = array_filter(
+                array_merge(['sort' => 'date_created', 'criteria' => 'desc'], $filters),
+                fn($v) => $v !== null && $v !== ''
+            );
+
+            // Se só temos filtro de email, precisamos buscar mais registros
+            // para compensar o filtro local
+            $fetchLimit = $payerEmail ? min($limit * 5, 200) : $limit;
+
+            $payments = $client->search(
+                request: new MPSearchRequest($fetchLimit, $offset, filters: $payload)
+            );
+
+            $results = collect($payments->results ?? []);
+
+            // Filtra localmente por email se necessário
+            if ($payerEmail) {
+                $results = $results->filter(
+                    fn($p) => str_contains(
+                        strtolower($p->payer->email ?? ''),
+                        strtolower($payerEmail)
+                    )
+                )->take($limit);
+            }
+
+            $data = [];
+
+            foreach ($results as $payment) {
+                $data[] = [
+                    'id'         => $payment->id ?? null,
+                    'status'     => $payment->status ?? null,
+                    'method'     => $payment->payment_method_id ?? null,
+                    'value'      => $payment->transaction_amount ?? 0,
+                    'external'   => $payment->external_reference ?? null,
+                    'created'    => $payment->date_created ?? null,
+                    'payer'      => $payment->payer->email ?? null,
+                    'first_name' => $payment->payer->first_name ?? null,
+                    'last_name'  => $payment->payer->last_name ?? null,
+                ];
+            }
+
+            return [
+                'data'   => $data,
+                'paging' => [
+                    'total'  => $payments->paging->total ?? 0,
+                    'limit'  => $payments->paging->limit ?? $limit,
+                    'offset' => $payments->paging->offset ?? $offset,
+                ],
+            ];
+
+        } catch (\Throwable $e) {
+            logger($e->getMessage());
+
+            return [
+                'data'   => [],
+                'paging' => ['total' => 0, 'limit' => $limit, 'offset' => $offset],
             ];
         }
     }
