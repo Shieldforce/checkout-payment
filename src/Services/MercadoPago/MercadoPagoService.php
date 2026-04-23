@@ -318,4 +318,41 @@ class MercadoPagoService
             return [];
         }
     }
+
+    public function listarPagamentos($limit = 100)
+    {
+        try {
+            $client = new PaymentClient;
+
+            $payments = $client->search(
+                request: new MPSearchRequest(
+                    $limit,
+                    0,
+                    filters: []
+                )
+            );
+
+            $results = $payments->results ?? [];
+
+            $data = [];
+
+            foreach ($results as $payment) {
+                $data[] = [
+                    'id'       => $payment->id ?? null,
+                    'status'   => $payment->status ?? null,
+                    'method'   => $payment->payment_method_id ?? null,
+                    'value'    => $payment->transaction_amount ?? 0,
+                    'external' => $payment->external_reference ?? null,
+                    'created'  => $payment->date_created ?? null,
+                    'payer'    => $payment->payer->email ?? null,
+                ];
+            }
+
+            return $data;
+
+        } catch (\Throwable $e) {
+            logger($e->getMessage());
+            return [];
+        }
+    }
 }
