@@ -42,6 +42,18 @@ class DashboardMercadoPago extends Page
 
     public string $method = '';
 
+    public string $date_from = '';
+
+    public string $date_to = '';
+
+    public string $date_approved_from = '';
+
+    public string $date_approved_to = '';
+
+    public string $date_expiration_from = '';
+
+    public string $date_expiration_to = '';
+
     public static function getSlug(): string
     {
         return 'dashboard-mercado-pago';
