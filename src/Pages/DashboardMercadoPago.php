@@ -9,7 +9,7 @@ class DashboardMercadoPago extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
-    protected static string $view = 'checkout-payment::filament.pages.dashboard-mercado-pago';
+    protected static string $view = 'checkout-payment::pages.dashboard-mercado-pago';
 
     protected static ?string $navigationLabel = 'Dashboard MP';
 
