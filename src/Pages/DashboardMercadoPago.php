@@ -5,10 +5,11 @@ namespace Shieldforce\CheckoutPayment\Pages;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 use Shieldforce\CheckoutPayment\Services\Permissions\CanPageTrait;
 
-class DashboardMercadoPago extends Page
+class DashboardMercadoPago extends Page implements HasTable
 {
     use CanPageTrait;
     use InteractsWithForms;
