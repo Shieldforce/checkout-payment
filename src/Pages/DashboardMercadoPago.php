@@ -15,7 +15,7 @@ class DashboardMercadoPago extends Page
 
     protected static ?string $title = 'Dashboard Mercado Pago';
 
-    protected static ?string $navigationGroup = 'Checkout Payment';
+    # protected static ?string $navigationGroup = 'Checkout Payment';
 
     public array $payments = [];
 
