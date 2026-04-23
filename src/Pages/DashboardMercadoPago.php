@@ -1,4 +1,5 @@
 <?php
+
 /*
 namespace Shieldforce\CheckoutPayment\Pages;
 
@@ -196,13 +197,13 @@ class DashboardMercadoPago extends Page
         $offset = ($this->page - 1) * $this->limit;
 
         $filters = [
-            'status'             => $this->status,
+            'status' => $this->status,
             'external_reference' => $this->external,
-            'payer.email'        => $this->payer,
-            'payment_method_id'  => $this->method,
+            'payer.email' => $this->payer,
+            'payment_method_id' => $this->method,
         ];
 
-        $mp = new MercadoPagoService();
+        $mp = new MercadoPagoService;
 
         $result = $mp->listarPagamentos(
             $this->limit,
@@ -211,7 +212,7 @@ class DashboardMercadoPago extends Page
         );
 
         $this->payments = $result['data'] ?? [];
-        $this->paging   = $result['paging'] ?? [];
+        $this->paging = $result['paging'] ?? [];
 
         $payments = collect($this->payments);
 
@@ -250,14 +251,14 @@ class DashboardMercadoPago extends Page
         });
 
         $this->stats = [
-            'today'       => $todayApproved->sum('value'),
-            'approved'    => $approved->sum('value'),
-            'pending'     => $payments->where('status', 'pending')->count(),
-            'rejected'    => $payments->where('status', 'rejected')->count(),
-            'pix_today'   => $pixToday->sum('value'),
+            'today' => $todayApproved->sum('value'),
+            'approved' => $approved->sum('value'),
+            'pending' => $payments->where('status', 'pending')->count(),
+            'rejected' => $payments->where('status', 'rejected')->count(),
+            'pix_today' => $pixToday->sum('value'),
             'boleto_paid' => $boletoPaid->sum('value'),
-            'chargeback'  => $chargebacks->count(),
-            'total'       => $this->paging['total'] ?? 0,
+            'chargeback' => $chargebacks->count(),
+            'total' => $this->paging['total'] ?? 0,
         ];
     }
 
@@ -268,7 +269,7 @@ class DashboardMercadoPago extends Page
                 ->label('Atualizar')
                 ->icon('heroicon-o-arrow-path')
                 ->color('success')
-                ->action(fn() => $this->refreshData()),
+                ->action(fn () => $this->refreshData()),
         ];
     }
 }
