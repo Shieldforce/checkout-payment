@@ -107,17 +107,17 @@ class DashboardMercadoPago extends Page
 
     public function resetFilters(): void
     {
-        $this->status               = '';
-        $this->external             = '';
-        $this->payer                = '';
-        $this->method               = '';
-        $this->date_from            = '';
-        $this->date_to              = '';
-        $this->date_approved_from   = '';
-        $this->date_approved_to     = '';
+        $this->status = '';
+        $this->external = '';
+        $this->payer = '';
+        $this->method = '';
+        $this->date_from = '';
+        $this->date_to = '';
+        $this->date_approved_from = '';
+        $this->date_approved_to = '';
         $this->date_expiration_from = '';
-        $this->date_expiration_to   = '';
-        $this->page                 = 1;
+        $this->date_expiration_to = '';
+        $this->page = 1;
         $this->loadData();
     }
 
@@ -133,31 +133,31 @@ class DashboardMercadoPago extends Page
         $offset = ($this->page - 1) * $this->limit;
 
         $filters = array_filter([
-            'status'                  => $this->status ?: null,
-            'external_reference'      => $this->external ?: null,
-            'payer.email'             => $this->payer ?: null,
-            'payment_method_id'       => $this->method ?: null,
-            'begin_date'              => $this->date_from
+            'status' => $this->status ?: null,
+            'external_reference' => $this->external ?: null,
+            'payer.email' => $this->payer ?: null,
+            'payment_method_id' => $this->method ?: null,
+            'begin_date' => $this->date_from
                 ? Carbon::parse($this->date_from)->startOfDay()->toIso8601String()
                 : null,
-            'end_date'                => $this->date_to
+            'end_date' => $this->date_to
                 ? Carbon::parse($this->date_to)->endOfDay()->toIso8601String()
                 : null,
-            'date_approved.from'      => $this->date_approved_from
+            'date_approved.from' => $this->date_approved_from
                 ? Carbon::parse($this->date_approved_from)->startOfDay()->toIso8601String()
                 : null,
-            'date_approved.to'        => $this->date_approved_to
+            'date_approved.to' => $this->date_approved_to
                 ? Carbon::parse($this->date_approved_to)->endOfDay()->toIso8601String()
                 : null,
             'date_of_expiration.from' => $this->date_expiration_from
                 ? Carbon::parse($this->date_expiration_from)->startOfDay()->toIso8601String()
                 : null,
-            'date_of_expiration.to'   => $this->date_expiration_to
+            'date_of_expiration.to' => $this->date_expiration_to
                 ? Carbon::parse($this->date_expiration_to)->endOfDay()->toIso8601String()
                 : null,
-        ], fn($v) => $v !== null);
+        ], fn ($v) => $v !== null);
 
-        $mp = new MercadoPagoService();
+        $mp = new MercadoPagoService;
 
         $result = $mp->listarPagamentos(
             $this->limit,
@@ -166,7 +166,7 @@ class DashboardMercadoPago extends Page
         );
 
         $this->payments = $result['data'] ?? [];
-        $this->paging   = $result['paging'] ?? [];
+        $this->paging = $result['paging'] ?? [];
 
         $payments = collect($this->payments);
 
@@ -205,14 +205,14 @@ class DashboardMercadoPago extends Page
         });
 
         $this->stats = [
-            'today'       => $todayApproved->sum('value'),
-            'approved'    => $approved->sum('value'),
-            'pending'     => $payments->where('status', 'pending')->count(),
-            'rejected'    => $payments->where('status', 'rejected')->count(),
-            'pix_today'   => $pixToday->sum('value'),
+            'today' => $todayApproved->sum('value'),
+            'approved' => $approved->sum('value'),
+            'pending' => $payments->where('status', 'pending')->count(),
+            'rejected' => $payments->where('status', 'rejected')->count(),
+            'pix_today' => $pixToday->sum('value'),
             'boleto_paid' => $boletoPaid->sum('value'),
-            'chargeback'  => $chargebacks->count(),
-            'total'       => $this->paging['total'] ?? 0,
+            'chargeback' => $chargebacks->count(),
+            'total' => $this->paging['total'] ?? 0,
         ];
     }
 
@@ -223,7 +223,7 @@ class DashboardMercadoPago extends Page
                 ->label('Atualizar')
                 ->icon('heroicon-o-arrow-path')
                 ->color('success')
-                ->action(fn() => $this->refreshData()),
+                ->action(fn () => $this->refreshData()),
         ];
     }
 
