@@ -319,7 +319,7 @@ class MercadoPagoService
         }
     }
 
-    public function listarPagamentos($limit = 50)
+    /*public function listarPagamentos($limit = 50)
     {
         try {
 
@@ -366,6 +366,69 @@ class MercadoPagoService
             ]);
 
             return [];
+        }
+    }*/
+
+    public function listarPagamentos(
+        int $limit = 50,
+        int $offset = 0,
+        array $filters = []
+    ) {
+        try {
+
+            $client = new PaymentClient;
+
+            $payload = array_filter(array_merge([
+                'sort'     => 'date_created',
+                'criteria' => 'desc',
+            ], $filters), fn ($v) => $v !== null && $v !== '');
+
+            $payments = $client->search(
+                request: new MPSearchRequest(
+                    $limit,
+                    $offset,
+                    filters: $payload
+                )
+            );
+
+            $results = $payments->results ?? [];
+
+            $data = [];
+
+            foreach ($results as $payment) {
+                $data[] = [
+                    'id'          => $payment->id ?? null,
+                    'status'      => $payment->status ?? null,
+                    'method'      => $payment->payment_method_id ?? null,
+                    'value'       => $payment->transaction_amount ?? 0,
+                    'external'    => $payment->external_reference ?? null,
+                    'created'     => $payment->date_created ?? null,
+                    'payer'       => $payment->payer->email ?? null,
+                    'first_name'  => $payment->payer->first_name ?? null,
+                    'last_name'   => $payment->payer->last_name ?? null,
+                ];
+            }
+
+            return [
+                'data'   => $data,
+                'paging' => [
+                    'total'  => $payments->paging->total ?? 0,
+                    'limit'  => $payments->paging->limit ?? $limit,
+                    'offset' => $payments->paging->offset ?? $offset,
+                ],
+            ];
+
+        } catch (\Throwable $e) {
+            logger($e->getMessage());
+
+            return [
+                'data' => [],
+                'paging' => [
+                    'total' => 0,
+                    'limit' => $limit,
+                    'offset' => $offset,
+                ],
+            ];
         }
     }
 }
