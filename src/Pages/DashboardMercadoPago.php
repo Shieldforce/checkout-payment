@@ -22,7 +22,7 @@ class DashboardMercadoPago extends Page
 
     protected static ?string $title = 'Dashboard Mercado Pago';
 
-    # protected static ?string $navigationGroup = 'Checkout Payment';
+    // protected static ?string $navigationGroup = 'Checkout Payment';
 
     public array $payments = [];
 
@@ -40,34 +40,34 @@ class DashboardMercadoPago extends Page
 
     public function loadData()
     {
-        $mp = new MercadoPagoService();
+        $mp = new MercadoPagoService;
 
         $this->payments = $mp->listarPagamentos(100);
 
         $this->stats = [
-            'today'      => collect($this->payments)
+            'today' => collect($this->payments)
                 ->where('status', 'approved')
                 ->where('created', '>=', now()->startOfDay())
                 ->sum('value'),
 
-            'approved'   => collect($this->payments)
+            'approved' => collect($this->payments)
                 ->where('status', 'approved')
                 ->sum('value'),
 
-            'pending'    => collect($this->payments)
+            'pending' => collect($this->payments)
                 ->where('status', 'pending')
                 ->count(),
 
-            'rejected'   => collect($this->payments)
+            'rejected' => collect($this->payments)
                 ->where('status', 'rejected')
                 ->count(),
 
-            'pix'        => collect($this->payments)
+            'pix' => collect($this->payments)
                 ->where('method', 'pix')
                 ->sum('value'),
 
-            'boleto'     => collect($this->payments)
-                ->filter(fn($p) => str_contains($p['method'], 'bol'))
+            'boleto' => collect($this->payments)
+                ->filter(fn ($p) => str_contains($p['method'], 'bol'))
                 ->sum('value'),
         ];
     }
