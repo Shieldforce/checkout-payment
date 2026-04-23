@@ -226,4 +226,10 @@ class DashboardMercadoPago extends Page
                 ->action(fn() => $this->refreshData()),
         ];
     }
+
+    public function goToPage(int $page): void
+    {
+        $this->page = $page;
+        $this->loadData();
+    }
 }

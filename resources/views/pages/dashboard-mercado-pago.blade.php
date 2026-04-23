@@ -249,7 +249,7 @@
                 <div class="flex items-center gap-1">
 
                     {{-- Primeira --}}
-                    <button wire:click="$set('page', 1)" @if($page <= 1) disabled @endif
+                    <button wire:click="goToPage(1)" @if($page <= 1) disabled @endif
                     class="px-2 py-1 rounded text-sm {{ $page <= 1 ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300' }}">
                         «
                     </button>
@@ -268,12 +268,12 @@
                     @endphp
 
                     @for($p = $start; $p <= $end; $p++)
-                        <button wire:click="$set('page', {{ $p }})"
+                        <button wire:click="goToPage({{ $p }})"
                                 class="px-3 py-1 rounded text-sm
                                 {{ $p == $page
                                     ? 'bg-primary-600 text-white font-bold'
                                     : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300' }}">
-                            {{ $p }}
+                                            {{ $p }}
                         </button>
                     @endfor
 
@@ -284,7 +284,7 @@
                     </button>
 
                     {{-- Última --}}
-                    <button wire:click="$set('page', {{ $pages }})" @if($page >= $pages) disabled @endif
+                    <button wire:click="goToPage({{ $pages }})" @if($page >= $pages) disabled @endif
                     class="px-2 py-1 rounded text-sm {{ $page >= $pages ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300' }}">
                         »
                     </button>
