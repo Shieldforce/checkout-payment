@@ -2,11 +2,18 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
+use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
+use Filament\Tables\Concerns\InteractsWithTable;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
+use Shieldforce\CheckoutPayment\Services\Permissions\CanPageTrait;
 
 class DashboardMercadoPago extends Page
 {
+    use CanPageTrait;
+    use InteractsWithForms;
+    use InteractsWithTable;
+
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
     protected static string $view = 'checkout-payment::pages.dashboard-mercado-pago';
@@ -24,6 +31,11 @@ class DashboardMercadoPago extends Page
     public function mount(): void
     {
         $this->loadData();
+    }
+
+    public static function getSlug(): string
+    {
+        return 'dashboard-mercado-pago';
     }
 
     public function loadData()
