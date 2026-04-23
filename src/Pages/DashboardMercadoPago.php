@@ -64,7 +64,7 @@ class DashboardMercadoPago extends Page
         $this->loadData();
     }
 
-    public function updated($field): void
+    /*public function updated($field): void
     {
         if (in_array($field, [
             'status',
@@ -82,7 +82,7 @@ class DashboardMercadoPago extends Page
             $this->page = 1;
             $this->loadData();
         }
-    }
+    }*/
 
     public function nextPage(): void
     {
@@ -230,6 +230,12 @@ class DashboardMercadoPago extends Page
     public function goToPage(int $page): void
     {
         $this->page = $page;
+        $this->loadData();
+    }
+
+    public function applyFilters(): void
+    {
+        $this->page = 1;
         $this->loadData();
     }
 }
