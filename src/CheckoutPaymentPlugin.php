@@ -34,7 +34,7 @@ class CheckoutPaymentPlugin implements Plugin
             ->pages([
                 \Shieldforce\CheckoutPayment\Pages\InternalCheckoutWizard::class,
                 \Shieldforce\CheckoutPayment\Pages\CPPGatewaysPage::class,
-                \Shieldforce\CheckoutPayment\Pages\DashboardMercadoPago::class::class,
+                \Shieldforce\CheckoutPayment\Pages\DashboardMercadoPago::class,
             ]);
     }
 
