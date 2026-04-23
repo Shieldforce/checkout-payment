@@ -9,6 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Carbon;
+use Shieldforce\CheckoutPayment\Pages\DashboardMercadoPago;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource;
 
 class ListCppCheckouts extends ListRecords
@@ -18,6 +19,14 @@ class ListCppCheckouts extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+
+            Actions\Action::make('dashboard_mp')
+                ->label('Dashboard MP')
+                ->icon('heroicon-o-chart-bar')
+                ->color('success')
+                ->url(fn () => DashboardMercadoPago::getUrl())
+                ->openUrlInNewTab(),
+
             Actions\Action::make('runMonthlyBilling')
                 ->label('Rodar Faturamento Mensal')
                 ->icon('heroicon-o-play')

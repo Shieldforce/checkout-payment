@@ -16,13 +16,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\HtmlString;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeStepEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep2;
-use Shieldforce\CheckoutPayment\Pages\DashboardMercadoPago;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\ListCppCheckouts;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 use Shieldforce\CheckoutPayment\Services\Permissions\CanTrait;
@@ -228,13 +226,6 @@ class CppCheckoutResource extends Resource
 
             ], Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->headerActions([
-
-                Tables\Actions\Action::make('dashboard_mp')
-                    ->label('Dashboard MP')
-                    ->icon('heroicon-o-chart-bar')
-                    ->color('success')
-                    ->url(fn () => DashboardMercadoPago::getUrl())
-                    ->openUrlInNewTab(),
 
             ])
             ->actions([
