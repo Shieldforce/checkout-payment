@@ -123,11 +123,12 @@ class DashboardMercadoPago extends Page
 
     public function loadData(): void
     {
-        $offset = ($this->page - 1) * $this->limit;
+        $offset        = ($this->page - 1) * $this->limit;
+        $firstCheckout = $this?->checkouts?->first();
 
         $filters = array_filter([
             'status'                  => $this->status ?: null,
-            'external_reference'      => $this->transaction_id ?? $this->external ?: null,
+            'external_reference'      => $firstCheckout->uuid ?? $this->external ?: null,
             'payer.email'             => $this->payer ?: null,
             'payment_method_id'       => $this->method ?: null,
             'sort'                    => $this->sort ?: null,
