@@ -359,7 +359,10 @@ class MercadoPagoService
             $data = [];
 
             foreach ($results as $payment) {
-                logger($payment->payer->identification->number ?? "-");
+                logger([
+                    "document" =>$payment->payer->identification->number ?? "-",
+                    "email" =>$payment->payer->email ?? "-",
+                ]);
                 $data[] = [
                     'id'         => $payment->id ?? null,
                     'status'     => $payment->status ?? null,
