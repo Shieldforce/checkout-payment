@@ -22,21 +22,22 @@ class DashboardMercadoPago extends Page
     protected static ?int    $navigationSort  = 2;
 
     /* VARIÁVEIS */
-    public array  $payments             = [];
-    public array  $stats                = [];
-    public array  $paging               = [];
-    public int    $page                 = 1;
-    public int    $limit                = 50;
-    public string $status               = '';
-    public string $external             = '';
-    public string $payer                = '';
-    public string $method               = '';
-    public string $date_from            = '';
-    public string $date_to              = '';
-    public string $date_approved_from   = '';
-    public string $date_approved_to     = '';
-    public string $date_expiration_from = '';
-    public string $date_expiration_to   = '';
+    public array   $payments             = [];
+    public array   $stats                = [];
+    public array   $paging               = [];
+    public int     $page                 = 1;
+    public int     $limit                = 50;
+    public string  $status               = '';
+    public string  $external             = '';
+    public string  $payer                = '';
+    public string  $method               = '';
+    public string  $date_from            = '';
+    public string  $date_to              = '';
+    public string  $date_approved_from   = '';
+    public string  $date_approved_to     = '';
+    public string  $date_expiration_from = '';
+    public string  $date_expiration_to   = '';
+    public ?string $sort                 = 'date_created';
 
     public static function getSlug(): string
     {
@@ -76,6 +77,7 @@ class DashboardMercadoPago extends Page
         $this->payer    = '';
         $this->method   = '';
         $this->page     = 1;
+        $this->sort     = 'date_created';
         $this->loadData();
     }
 
@@ -95,6 +97,7 @@ class DashboardMercadoPago extends Page
             'external_reference'      => $this->external ?: null,
             'payer.email'             => $this->payer ?: null,
             'payment_method_id'       => $this->method ?: null,
+            'sort'                    => $this->sort ?: null,
             'begin_date'              => $this->date_from
                 ? Carbon::parse($this->date_from)->startOfDay()->toIso8601String()
                 : null,

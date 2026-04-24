@@ -322,9 +322,9 @@ class MercadoPagoService
     }
 
     public function listarPagamentos(
-        int   $limit = 50,
-        int   $offset = 0,
-        array $filters = []
+        int    $limit = 50,
+        int    $offset = 0,
+        array  $filters = [],
     ): array
     {
         try {
@@ -336,7 +336,7 @@ class MercadoPagoService
 
             $payload = array_filter(
                 array_merge([
-                    'sort'     => 'date_created',
+                    'sort'     => $filters['sort'],
                     'criteria' => 'desc'
                 ], $filters),
                 fn($v) => $v !== null && $v !== ''
