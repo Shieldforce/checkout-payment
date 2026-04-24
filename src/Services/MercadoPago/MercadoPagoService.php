@@ -364,6 +364,7 @@ class MercadoPagoService
                     )
                 )->take($limit);
                 $limit = count($results);
+                $total = count($results);
             }
 
             // ✅ Adicionar logo abaixo:
@@ -374,6 +375,7 @@ class MercadoPagoService
                     return $transaction?->id == $transaction_id;
                 })->take($limit);
                 $limit = count($results);
+                $total = count($results);
             }
 
             $data = [];
@@ -415,7 +417,7 @@ class MercadoPagoService
             return [
                 'data'   => $data,
                 'paging' => [
-                    'total'  => $payments->paging->total ?? 0,
+                    'total'  => $total ?? $payments->paging->total ?? 0,
                     'limit'  => $limit ?? $payments->paging->limit,
                     'offset' => $offset ?? $payments->paging->offset,
                 ],
