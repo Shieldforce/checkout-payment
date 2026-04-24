@@ -320,10 +320,11 @@ class MercadoPagoService
     }
 
     public function listarPagamentos(
-        int $limit = 50,
-        int $offset = 0,
+        int   $limit = 50,
+        int   $offset = 0,
         array $filters = []
-    ): array {
+    ): array
+    {
         try {
             $client = new PaymentClient;
 
@@ -332,7 +333,10 @@ class MercadoPagoService
             unset($filters['payer.email']);
 
             $payload = array_filter(
-                array_merge(['sort' => 'date_created', 'criteria' => 'desc'], $filters),
+                array_merge([
+                    'sort'     => 'date_created',
+                    'criteria' => 'desc'
+                ], $filters),
                 fn($v) => $v !== null && $v !== ''
             );
 
@@ -359,10 +363,6 @@ class MercadoPagoService
             $data = [];
 
             foreach ($results as $payment) {
-                logger([
-                    "document" =>$payment->payer->identification->number ?? "-",
-                    "email" =>$payment->payer->email ?? "-",
-                ]);
                 $data[] = [
                     'id'         => $payment->id ?? null,
                     'status'     => $payment->status ?? null,
@@ -373,6 +373,7 @@ class MercadoPagoService
                     'payer'      => $payment->payer->email ?? null,
                     'first_name' => $payment->payer->first_name ?? null,
                     'last_name'  => $payment->payer->last_name ?? null,
+                    'due_date'   => $payment->date_of_expiration ?? null,
                 ];
             }
 
@@ -390,7 +391,11 @@ class MercadoPagoService
 
             return [
                 'data'   => [],
-                'paging' => ['total' => 0, 'limit' => $limit, 'offset' => $offset],
+                'paging' => [
+                    'total'  => 0,
+                    'limit'  => $limit,
+                    'offset' => $offset
+                ],
             ];
         }
     }

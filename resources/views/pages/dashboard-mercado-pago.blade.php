@@ -263,6 +263,7 @@
                     <th class="p-3 text-left">Valor</th>
                     <th class="p-3 text-left">Ref. Externa</th>
                     <th class="p-3 text-left">Criado em</th>
+                    <th class="p-3 text-left">Vencimento</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -310,6 +311,11 @@
                         <td class="p-3 text-xs">
                             {{ !empty($payment['created'])
                             ? \Carbon\Carbon::parse($payment['created'])->format('d/m/Y H:i')
+                            : '-' }}
+                        </td>
+                        <td class="p-3 text-xs">
+                            {{ !empty($payment['due_date'])
+                            ? \Carbon\Carbon::parse($payment['due_date'])->format('d/m/Y H:i')
                             : '-' }}
                         </td>
                     </tr>
