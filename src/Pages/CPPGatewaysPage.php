@@ -31,19 +31,13 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     use InteractsWithForms;
     use InteractsWithTable;
 
-    protected static string $view = 'checkout-payment::pages.cpp_gateways';
-
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
-
+    protected static string  $view            = 'checkout-payment::pages.cpp_gateways';
+    protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
     protected static ?string $navigationGroup = 'Gateways';
-
-    protected static ?string $label = 'Gateway';
-
+    protected static ?string $label           = 'Gateway';
     protected static ?string $navigationLabel = 'Gateway';
-
-    protected static ?string $slug = 'cpp-gateways';
-
-    protected static ?string $title = 'Lista de Gateways';
+    protected static ?string $slug            = 'cpp-gateways';
+    protected static ?string $title           = 'Lista de Gateways';
 
     public function mount(?int $checkoutId = null): void {}
 
@@ -55,7 +49,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn (Action $action) => $action
+                fn(Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
@@ -102,8 +96,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending' => 'Pending',
-                    'paid' => 'Paid',
+                    'pending'   => 'Pending',
+                    'paid'      => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -120,7 +114,10 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ->form($this->fields())
                 ->action(function (array $data, $record) {
 
-                    if (TypeGatewayEnum::from($data['name']) == TypeGatewayEnum::mercado_pago) {
+                    if (
+                        TypeGatewayEnum::from($data['name']) == TypeGatewayEnum::mercado_pago ||
+                        TypeGatewayEnum::from($data['name']) == TypeGatewayEnum::mercado_pago->value
+                    ) {
                         $data['field_1'] = Crypt::encrypt($data['field_1']);
                         $data['field_2'] = Crypt::encrypt($data['field_2']);
                     }
@@ -160,7 +157,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ->live()
                 ->options(function () {
                     return collect(TypeGatewayEnum::cases())
-                        ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
+                        ->mapWithKeys(fn($case) => [$case->value => $case->label()])
                         ->toArray();
                 })
                 ->columnSpanFull()
