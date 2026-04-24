@@ -168,15 +168,13 @@ class DashboardMercadoPago extends Page
 
         $allPayments = $result['data'] ?? [];
 
-        if(isset($this->transaction_id)) {
-            dd($this->transaction_id);
-        }
-
-
         if ($this->transaction_id) {
             $allPayments = array_values(array_filter(
                 $allPayments,
-                fn($p) => ($p['transaction_id'] ?? null) == $this->transaction_id
+                function ($payment) {
+                    dd($payment);
+                    return ($payment['transaction_id'] ?? null) == $this->transaction_id;
+                }
             ));
         }
 
