@@ -9,6 +9,8 @@ use MercadoPago\Exceptions\MPApiException;
 use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Net\MPSearchRequest;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
+use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
+use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 
 class MercadoPagoService
@@ -363,6 +365,19 @@ class MercadoPagoService
             $data = [];
 
             foreach ($results as $payment) {
+                $cc        = CppCheckout::where("uuid", $payment->external_reference)->first();
+                $reference = $cc?->referencable;
+                $order     = $reference?->order;
+                $client    = $order?->client;
+
+                $document_number = $payment?->payer?->identification?->number;
+                $document_type   = $payment?->payer?->identification?->type;
+
+                if (isset($client->id)) {
+                    $document_number = $client->document;
+                    $document_type   = $client->type_people == TypePeopleEnum::F->value ? "CPF" : "CNPJ";
+                }
+
                 $data[] = [
                     'id'              => $payment->id ?? null,
                     'status'          => $payment->status ?? null,
@@ -374,8 +389,8 @@ class MercadoPagoService
                     'first_name'      => $payment->payer->first_name ?? null,
                     'last_name'       => $payment->payer->last_name ?? null,
                     'due_date'        => $payment->date_of_expiration ?? null,
-                    'document_number' => $payment->payer->identification->number ?? null,
-                    'document_type'   => $payment->payer->identification->type ?? null,
+                    'document_number' => $document_number ?? null,
+                    'document_type'   => $document_type ?? null,
                 ];
             }
 
