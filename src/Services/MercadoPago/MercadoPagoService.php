@@ -358,7 +358,10 @@ class MercadoPagoService
 
             $data = [];
 
+            logger($results);
+
             foreach ($results as $payment) {
+
                 $data[] = [
                     'id'         => $payment->id ?? null,
                     'status'     => $payment->status ?? null,
