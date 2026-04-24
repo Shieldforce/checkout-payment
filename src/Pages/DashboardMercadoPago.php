@@ -61,7 +61,6 @@ class DashboardMercadoPago extends Page
         $query = Transaction::where('type', TypeTransactionEnum::input->value);
 
         if ($this->transaction_search !== '') {
-            dd($this->transaction_search);
             $query->where('name', 'like', '%' . $this->transaction_search . '%');
         }
 
@@ -78,8 +77,6 @@ class DashboardMercadoPago extends Page
         $this->transaction_id     = $id;
         $this->transaction_search = $name;
         $this->transactions       = collect(); // fecha o dropdown
-        $this->page               = 1;
-        $this->loadData();
     }
 
     public function clearTransaction(): void
@@ -87,8 +84,6 @@ class DashboardMercadoPago extends Page
         $this->transaction_id     = null;
         $this->transaction_search = '';
         $this->loadTransactions();
-        $this->page = 1;
-        $this->loadData();
     }
 
     public function nextPage(): void
