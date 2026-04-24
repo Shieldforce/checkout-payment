@@ -2,7 +2,7 @@
 
     {{-- STATS --}}
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-        <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
+        {{--<div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Recebido Hoje</div>
             <div class="text-2xl font-bold text-success-600">
                 R$ {{ number_format($stats['today'] ?? 0, 2, ',', '.') }}
@@ -13,7 +13,7 @@
             <div class="text-2xl font-bold text-primary-600">
                 R$ {{ number_format($stats['approved'] ?? 0, 2, ',', '.') }}
             </div>
-        </div>
+        </div>--}}
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Pendentes</div>
             <div class="text-2xl font-bold text-warning-600">
@@ -26,7 +26,7 @@
                 {{ $stats['rejected'] ?? 0 }}
             </div>
         </div>
-        <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
+        {{--<div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Pix Hoje</div>
             <div class="text-2xl font-bold text-success-600">
                 R$ {{ number_format($stats['pix_today'] ?? 0, 2, ',', '.') }}
@@ -37,7 +37,7 @@
             <div class="text-2xl font-bold text-info-600">
                 R$ {{ number_format($stats['boleto_paid'] ?? 0, 2, ',', '.') }}
             </div>
-        </div>
+        </div>--}}
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Chargeback / Estorno</div>
             <div class="text-2xl font-bold text-danger-600">
