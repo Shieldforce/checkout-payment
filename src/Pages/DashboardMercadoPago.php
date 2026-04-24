@@ -60,9 +60,8 @@ class DashboardMercadoPago extends Page
     {
         $query = Transaction::where('type', TypeTransactionEnum::input->value);
 
-        if ($this->transaction_search !== '') {
-            dd($this->transaction_search);
-            $query->where('name', 'like', '%' . $this->transaction_search . '%');
+        if ($this->transaction_id !== '') {
+            $query->where('id', $this->transaction_id);
         }
 
         $this->transactions = $query->orderBy('name')->get();
@@ -77,8 +76,8 @@ class DashboardMercadoPago extends Page
     {
         $this->transaction_id     = $id;
         $this->transaction_search = $name;
-        dd($this->transaction_id, $this->transaction_search);
-        $this->transactions       = collect(); // fecha o dropdown
+        $this->transactions       = collect();
+        $this->loadTransactions();
     }
 
     public function clearTransaction(): void
@@ -127,7 +126,7 @@ class DashboardMercadoPago extends Page
     {
         $total = $this->paging['total'] ?? 0;
 
-        return $total > 0 ? (int) ceil($total / $this->limit) : 1;
+        return $total > 0 ? (int)ceil($total / $this->limit) : 1;
     }
 
     public function loadData(): void
@@ -185,13 +184,15 @@ class DashboardMercadoPago extends Page
         $approved = $payments->where('status', 'approved');
 
         $todayApproved = $payments->filter(function ($item) {
-            if (empty($item['created'])) return false;
+            if (empty($item['created']))
+                return false;
             return $item['status'] === 'approved'
                 && now()->isSameDay(Carbon::parse($item['created']));
         });
 
         $pixToday = $payments->filter(function ($item) {
-            if (empty($item['created'])) return false;
+            if (empty($item['created']))
+                return false;
             return $item['method'] === 'pix'
                 && $item['status'] === 'approved'
                 && now()->isSameDay(Carbon::parse($item['created']));
@@ -203,7 +204,11 @@ class DashboardMercadoPago extends Page
         });
 
         $chargebacks = $payments->filter(function ($item) {
-            return in_array($item['status'], ['charged_back', 'refunded', 'cancelled']);
+            return in_array($item['status'], [
+                'charged_back',
+                'refunded',
+                'cancelled'
+            ]);
         });
 
         $this->stats = [
