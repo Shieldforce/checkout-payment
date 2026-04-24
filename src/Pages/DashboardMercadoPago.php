@@ -42,6 +42,10 @@ class DashboardMercadoPago extends Page
     public string      $date_expiration_to   = '';
     public ?string     $sort                 = 'date_created';
     public ?Collection $transactions         = null;
+    public ?int        $transaction_id       = null;
+
+    // ✅ Busca textual para o autocomplete de Transaction
+    public string $transaction_search = '';
 
     public static function getSlug(): string
     {
@@ -50,6 +54,45 @@ class DashboardMercadoPago extends Page
 
     public function mount(): void
     {
+        $this->loadTransactions();
+        $this->loadData();
+    }
+
+    // ✅ Carrega transactions filtradas pelo nome digitado
+    public function loadTransactions(): void
+    {
+        $query = Transaction::where('type', TypeTransactionEnum::input->value);
+
+        if ($this->transaction_search !== '') {
+            $query->where('name', 'like', '%' . $this->transaction_search . '%');
+        }
+
+        $this->transactions = $query->orderBy('name')->get();
+    }
+
+    // ✅ Reactivo: quando o usuário digita no campo de busca
+    public function updatedTransactionSearch(): void
+    {
+        $this->loadTransactions();
+    }
+
+    // ✅ Seleciona uma transaction pelo autocomplete
+    public function selectTransaction(?int $id, string $name = ''): void
+    {
+        $this->transaction_id     = $id;
+        $this->transaction_search = $name;
+        $this->transactions       = collect(); // fecha o dropdown
+        $this->page               = 1;
+        $this->loadData();
+    }
+
+    // ✅ Limpa a transaction selecionada
+    public function clearTransaction(): void
+    {
+        $this->transaction_id     = null;
+        $this->transaction_search = '';
+        $this->loadTransactions();
+        $this->page = 1;
         $this->loadData();
     }
 
@@ -76,12 +119,15 @@ class DashboardMercadoPago extends Page
 
     public function resetFilters(): void
     {
-        $this->status   = '';
-        $this->external = '';
-        $this->payer    = '';
-        $this->method   = '';
-        $this->page     = 1;
-        $this->sort     = 'date_created';
+        $this->status             = '';
+        $this->external           = '';
+        $this->payer              = '';
+        $this->method             = '';
+        $this->page               = 1;
+        $this->sort               = 'date_created';
+        $this->transaction_id     = null;
+        $this->transaction_search = '';
+        $this->loadTransactions();
         $this->loadData();
     }
 
@@ -89,14 +135,12 @@ class DashboardMercadoPago extends Page
     {
         $total = $this->paging['total'] ?? 0;
 
-        return $total > 0 ? (int)ceil($total / $this->limit) : 1;
+        return $total > 0 ? (int) ceil($total / $this->limit) : 1;
     }
 
     public function loadData(): void
     {
         $offset = ($this->page - 1) * $this->limit;
-
-        $this->transactions = Transaction::where("type", TypeTransactionEnum::input->value)->get();
 
         $filters = array_filter([
             'status'                  => $this->status ?: null,
@@ -132,7 +176,18 @@ class DashboardMercadoPago extends Page
             $filters
         );
 
-        $this->payments = $result['data'] ?? [];
+        $allPayments = $result['data'] ?? [];
+
+        // ✅ Filtra localmente por transaction_id se selecionado
+        if ($this->transaction_id) {
+            $allPayments = array_filter(
+                $allPayments,
+                fn($p) => ($p['transaction_id'] ?? null) == $this->transaction_id
+            );
+            $allPayments = array_values($allPayments);
+        }
+
+        $this->payments = $allPayments;
         $this->paging   = $result['paging'] ?? [];
 
         $payments = collect($this->payments);

@@ -59,7 +59,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
 
             {{-- Transactons --}}
-            <div>
+            {{--<div>
                 <label class="block text-xs text-gray-500 mb-1">Entradas</label>
                 <select
                     wire:model.live="transaction_id"
@@ -85,6 +85,166 @@
                         </option>
                     @endforeach
                 </select>
+            </div>--}}
+            {{-- ✅ AUTOCOMPLETE de Transaction --}}
+            <div class="relative" x-data="{ open: false }" x-on:click.outside="open = false">
+                <label class="block text-xs text-gray-500 mb-1">Entrada (Transaction)</label>
+
+                <div class="relative">
+                    <input
+                        type="text"
+                        wire:model.live.debounce.300ms="transaction_search"
+                        x-on:focus="open = true"
+                        x-on:input="open = true"
+                        placeholder="Buscar por nome..."
+                        autocomplete="off"
+                        class="
+                            w-full
+                            rounded-lg
+                            border
+                            border-gray-300
+                            dark:border-gray-700
+                            dark:bg-gray-800
+                            text-sm
+                            px-3
+                            py-2
+                            pr-8
+                            focus:outline-none
+                            focus:ring-2
+                            focus:ring-primary-500
+                        "
+                    />
+
+                    {{-- Ícone de limpar (aparece quando tem seleção) --}}
+                    @if($transaction_id)
+                        <button
+                            wire:click="clearTransaction"
+                            type="button"
+                            class="
+                                absolute
+                                right-2
+                                top-1/2
+                                -translate-y-1/2
+                                text-gray-400
+                                hover:text-danger-500
+                                transition-colors
+                            "
+                            title="Limpar seleção"
+                        >
+                            <x-heroicon-o-x-mark class="w-4 h-4" />
+                        </button>
+                    @else
+                        <span
+                            class="
+                                absolute
+                                right-2
+                                top-1/2
+                                -translate-y-1/2
+                                text-gray-400
+                                pointer-events-none
+                            "
+                        >
+                            <x-heroicon-o-magnifying-glass class="w-4 h-4" />
+                        </span>
+                    @endif
+                </div>
+
+                {{-- Badge da transaction selecionada --}}
+                @if($transaction_id)
+                    <div class="mt-1">
+                        <span
+                            class="
+                                inline-flex
+                                items-center
+                                gap-1
+                                px-2
+                                py-0.5
+                                rounded-full
+                                text-xs
+                                font-medium
+                                bg-primary-100
+                                text-primary-700
+                                dark:bg-primary-900
+                                dark:text-primary-300
+                            "
+                        >
+                            <x-heroicon-o-check class="w-3 h-3" />
+                            Selecionada
+                        </span>
+                    </div>
+                @endif
+
+                {{-- Dropdown de resultados --}}
+                <div
+                    x-show="open && @js($transactions->isNotEmpty())"
+                    x-transition:enter="transition ease-out duration-100"
+                    x-transition:enter-start="opacity-0 -translate-y-1"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-75"
+                    x-transition:leave-start="opacity-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 -translate-y-1"
+                    class="
+                        absolute
+                        z-50
+                        mt-1
+                        w-full
+                        rounded-lg
+                        border
+                        border-gray-200
+                        dark:border-gray-700
+                        bg-white
+                        dark:bg-gray-800
+                        shadow-lg
+                        max-h-56
+                        overflow-y-auto
+                    "
+                >
+                    {{-- Opção "Todos" --}}
+                    <button
+                        type="button"
+                        wire:click="selectTransaction(null, '')"
+                        x-on:click="open = false"
+                        class="
+                            w-full
+                            text-left
+                            px-3
+                            py-2
+                            text-sm
+                            text-gray-500
+                            hover:bg-gray-50
+                            dark:hover:bg-gray-700
+                            italic
+                            border-b
+                            dark:border-gray-700
+                        "
+                    >
+                        Todos
+                    </button>
+
+                    @foreach($transactions as $transaction)
+                        <button
+                            type="button"
+                            wire:click="selectTransaction({{ $transaction->id }}, '{{ addslashes($transaction->name) }}')"
+                            x-on:click="open = false"
+                            class="
+                                w-full
+                                text-left
+                                px-3
+                                py-2
+                                text-sm
+                                hover:bg-primary-50
+                                dark:hover:bg-primary-900/40
+                                transition-colors
+                                {{ $transaction_id == $transaction->id
+                                    ? 'bg-primary-50 dark:bg-primary-900/40 font-semibold text-primary-700 dark:text-primary-300'
+                                    : 'text-gray-700 dark:text-gray-200'
+                                }}
+                            "
+                        >
+                            {{ $transaction->name }}
+                        </button>
+                    @endforeach
+                </div>
             </div>
 
             {{-- Status --}}
