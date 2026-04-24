@@ -61,6 +61,7 @@ class DashboardMercadoPago extends Page
         $query = Transaction::where('type', TypeTransactionEnum::input->value);
 
         if ($this->transaction_search !== '') {
+            dd($this->transaction_search);
             $query->where('name', 'like', '%' . $this->transaction_search . '%');
         }
 
