@@ -334,7 +334,7 @@ class MercadoPagoService
             $payerEmail = $filters['payer.email'] ?? null;
             unset($filters['payer.email']);
 
-            $transaction_id = $filters['transaction_id'] ?? null;
+            $transactionId = $filters['transaction_id'] ?? null;
             unset($filters['transaction_id']);
 
             $payload = array_filter(
@@ -347,7 +347,7 @@ class MercadoPagoService
 
             // Se só temos filtro de email, precisamos buscar mais registros
             // para compensar o filtro local
-            $fetchLimit = ($payerEmail || $transaction_id) ? min($limit * 5, 200) : $limit;
+            $fetchLimit = ($payerEmail || $transactionId) ? min($limit * 5, 200) : $limit;
 
             $payments = $client->search(
                 request: new MPSearchRequest($fetchLimit, $offset, filters: $payload)
@@ -363,19 +363,19 @@ class MercadoPagoService
                         strtolower($payerEmail)
                     )
                 )->take($limit);
-                $limit = count($results);
-                $total = count($results);
+                $limit   = count($results);
+                $total   = count($results);
             }
 
             // ✅ Adicionar logo abaixo:
-            if ($transaction_id) {
-                $results = $results->filter(function ($p) use ($transaction_id, $limit) {
+            if ($transactionId) {
+                $results = $results->filter(function ($p) use ($transactionId, $limit) {
                     $cc          = CppCheckout::where("uuid", $p->external_reference)->first();
                     $transaction = $cc?->referencable;
-                    return $transaction?->id == $transaction_id;
+                    return $transaction?->id == $transactionId;
                 })->take($limit);
-                $limit = count($results);
-                $total = count($results);
+                $limit   = count($results);
+                $total   = count($results);
             }
 
             $data = [];
