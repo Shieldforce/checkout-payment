@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Shieldforce\CheckoutPayment\Enums\TypeTransactionEnum;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 use Shieldforce\CheckoutPayment\Services\Permissions\CanPageTrait;
@@ -41,11 +41,9 @@ class DashboardMercadoPago extends Page
     public string      $date_expiration_from = '';
     public string      $date_expiration_to   = '';
     public ?string     $sort                 = 'date_created';
-    public ?Collection $transactions         = null;
+    public ?Collection $transactions         = null; // ✅ Illuminate\Support\Collection (base) — aceita Eloquent e collect()
     public ?int        $transaction_id       = null;
-
-    // ✅ Busca textual para o autocomplete de Transaction
-    public string $transaction_search = '';
+    public string      $transaction_search   = '';
 
     public static function getSlug(): string
     {
@@ -58,7 +56,6 @@ class DashboardMercadoPago extends Page
         $this->loadData();
     }
 
-    // ✅ Carrega transactions filtradas pelo nome digitado
     public function loadTransactions(): void
     {
         $query = Transaction::where('type', TypeTransactionEnum::input->value);
@@ -70,13 +67,11 @@ class DashboardMercadoPago extends Page
         $this->transactions = $query->orderBy('name')->get();
     }
 
-    // ✅ Reactivo: quando o usuário digita no campo de busca
     public function updatedTransactionSearch(): void
     {
         $this->loadTransactions();
     }
 
-    // ✅ Seleciona uma transaction pelo autocomplete
     public function selectTransaction(?int $id, string $name = ''): void
     {
         $this->transaction_id     = $id;
@@ -86,7 +81,6 @@ class DashboardMercadoPago extends Page
         $this->loadData();
     }
 
-    // ✅ Limpa a transaction selecionada
     public function clearTransaction(): void
     {
         $this->transaction_id     = null;
@@ -178,13 +172,11 @@ class DashboardMercadoPago extends Page
 
         $allPayments = $result['data'] ?? [];
 
-        // ✅ Filtra localmente por transaction_id se selecionado
         if ($this->transaction_id) {
-            $allPayments = array_filter(
+            $allPayments = array_values(array_filter(
                 $allPayments,
                 fn($p) => ($p['transaction_id'] ?? null) == $this->transaction_id
-            );
-            $allPayments = array_values($allPayments);
+            ));
         }
 
         $this->payments = $allPayments;
@@ -195,19 +187,13 @@ class DashboardMercadoPago extends Page
         $approved = $payments->where('status', 'approved');
 
         $todayApproved = $payments->filter(function ($item) {
-            if (empty($item['created'])) {
-                return false;
-            }
-
+            if (empty($item['created'])) return false;
             return $item['status'] === 'approved'
                 && now()->isSameDay(Carbon::parse($item['created']));
         });
 
         $pixToday = $payments->filter(function ($item) {
-            if (empty($item['created'])) {
-                return false;
-            }
-
+            if (empty($item['created'])) return false;
             return $item['method'] === 'pix'
                 && $item['status'] === 'approved'
                 && now()->isSameDay(Carbon::parse($item['created']));
@@ -219,11 +205,7 @@ class DashboardMercadoPago extends Page
         });
 
         $chargebacks = $payments->filter(function ($item) {
-            return in_array($item['status'], [
-                'charged_back',
-                'refunded',
-                'cancelled',
-            ]);
+            return in_array($item['status'], ['charged_back', 'refunded', 'cancelled']);
         });
 
         $this->stats = [
