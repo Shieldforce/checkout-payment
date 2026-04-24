@@ -172,7 +172,6 @@ class DashboardMercadoPago extends Page
             $allPayments = array_values(array_filter(
                 $allPayments,
                 function ($payment) {
-                    dd($payment);
                     return ($payment['transaction_id'] ?? null) == $this->transaction_id;
                 }
             ));
@@ -180,6 +179,10 @@ class DashboardMercadoPago extends Page
 
         $this->payments = $allPayments;
         $this->paging   = $result['paging'] ?? [];
+
+        if(isset($this->transaction_id)) {
+            dd($this->payments);
+        }
 
         $payments = collect($this->payments);
 
