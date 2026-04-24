@@ -272,7 +272,9 @@
                         <td class="p-3 font-mono text-xs">{{ $payment['id'] }}</td>
                         <td class="p-3">
                             <div>
-                                {{ trim(($payment['first_name'] ?? '') . ' ' . ($payment['last_name'] ?? '')) ?: '-' }}
+                                {{ trim(($payment['document_type'] ?? '-')
+                                    . ': ' . ($payment['document_number'] ?? '')) ?: '-'
+                                }}
                             </div>
                             <div class="text-xs text-gray-400">{{ $payment['payer'] ?? '' }}</div>
                         </td>

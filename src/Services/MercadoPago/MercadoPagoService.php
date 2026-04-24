@@ -364,16 +364,18 @@ class MercadoPagoService
 
             foreach ($results as $payment) {
                 $data[] = [
-                    'id'         => $payment->id ?? null,
-                    'status'     => $payment->status ?? null,
-                    'method'     => $payment->payment_method_id ?? null,
-                    'value'      => $payment->transaction_amount ?? 0,
-                    'external'   => $payment->external_reference ?? null,
-                    'created'    => $payment->date_created ?? null,
-                    'payer'      => $payment->payer->email ?? null,
-                    'first_name' => $payment->payer->first_name ?? null,
-                    'last_name'  => $payment->payer->last_name ?? null,
-                    'due_date'   => $payment->date_of_expiration ?? null,
+                    'id'              => $payment->id ?? null,
+                    'status'          => $payment->status ?? null,
+                    'method'          => $payment->payment_method_id ?? null,
+                    'value'           => $payment->transaction_amount ?? 0,
+                    'external'        => $payment->external_reference ?? null,
+                    'created'         => $payment->date_created ?? null,
+                    'payer'           => $payment->payer->email ?? null,
+                    'first_name'      => $payment->payer->first_name ?? null,
+                    'last_name'       => $payment->payer->last_name ?? null,
+                    'due_date'        => $payment->date_of_expiration ?? null,
+                    'document_number' => $payment->payer->identification->number ?? null,
+                    'document_type'   => $payment->payer->identification->type ?? null,
                 ];
             }
 
