@@ -41,8 +41,8 @@ class ManagerFieldService
                     ->visible()[$nameField] : false;
             })
             ->extraInputAttributes(['x-ref' => "apiKeyInput_{$nameField}"])
-            //->formatStateUsing(fn ($state) => $state ? Crypt::decrypt($state) : null)
-            ->formatStateUsing(function ($state) {
+            ->formatStateUsing(fn ($state) => $state ? Crypt::decrypt($state) : null)
+            /*->formatStateUsing(function ($state) {
                 if (blank($state)) {
                     return $state;
                 }
@@ -52,7 +52,7 @@ class ManagerFieldService
                 } catch (DecryptException $e) {
                     return $state;
                 }
-            })
+            })*/
             ->suffixAction(
                 Action::make('copy')
                     ->icon('heroicon-m-clipboard')
