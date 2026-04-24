@@ -363,6 +363,7 @@ class MercadoPagoService
                         strtolower($payerEmail)
                     )
                 )->take($limit);
+                $limit = count($results);
             }
 
             // ✅ Adicionar logo abaixo:
@@ -372,6 +373,7 @@ class MercadoPagoService
                     $transaction = $cc?->referencable;
                     return $transaction?->id == $transaction_id;
                 })->take($limit);
+                $limit = count($results);
             }
 
             $data = [];
