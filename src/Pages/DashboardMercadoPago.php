@@ -124,7 +124,8 @@ class DashboardMercadoPago extends Page
     public function loadData(): void
     {
         $offset        = ($this->page - 1) * $this->limit;
-        $firstCheckout = $this?->checkouts?->first();
+        $transaction   = Transaction::find($this?->transaction_id);
+        $firstCheckout = $transaction?->checkouts?->first();
 
         $filters = array_filter([
             'status'                  => $this->status ?: null,
