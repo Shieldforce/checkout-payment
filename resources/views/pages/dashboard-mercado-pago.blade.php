@@ -346,7 +346,7 @@
                                         "
                                     >
                                         <x-heroicon-o-arrows-right-left class="w-3 h-3" />
-                                        Transaction #{{ $payment['transaction_id'] }}
+                                        Entrada #{{ $payment['transaction_id'] }}
                                     </a>
                                 @endif
 
@@ -377,7 +377,7 @@
                                         "
                                     >
                                         <x-heroicon-o-shopping-cart class="w-3 h-3" />
-                                        Order #{{ $payment['order_id'] }}
+                                        Pedido #{{ $payment['order_id'] }}
                                     </a>
                                 @endif
 
