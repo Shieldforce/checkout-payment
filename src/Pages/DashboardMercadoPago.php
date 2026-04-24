@@ -127,11 +127,10 @@ class DashboardMercadoPago extends Page
 
         $filters = array_filter([
             'status'                  => $this->status ?: null,
-            'external_reference'      => $this->external ?: null,
+            'external_reference'      => $this->transaction_id ?? $this->external ?: null,
             'payer.email'             => $this->payer ?: null,
             'payment_method_id'       => $this->method ?: null,
             'sort'                    => $this->sort ?: null,
-            'transaction_id'          => $this->transaction_id ?: null,
             'begin_date'              => $this->date_from
                 ? Carbon::parse($this->date_from)->startOfDay()->toIso8601String()
                 : null,

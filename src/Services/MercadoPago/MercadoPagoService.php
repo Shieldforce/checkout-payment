@@ -356,7 +356,7 @@ class MercadoPagoService
             $results = collect($payments->results ?? []);
 
             // Filtra localmente por email se necessário
-            if ($payerEmail) {
+            /*if ($payerEmail) {
                 $results = $results->filter(
                     fn($p) => str_contains(
                         strtolower($p->payer->email ?? ''),
@@ -365,10 +365,10 @@ class MercadoPagoService
                 )->take($limit);
                 $limit   = count($results);
                 $total   = count($results);
-            }
+            }*/
 
             // ✅ Adicionar logo abaixo:
-            if ($transactionId) {
+            /*if ($transactionId) {
                 $results = $results->filter(function ($p) use ($transactionId, $limit) {
                     $cc          = CppCheckout::where("uuid", $p->external_reference)->first();
                     $transaction = $cc?->referencable;
@@ -376,7 +376,7 @@ class MercadoPagoService
                 })->take($limit);
                 $limit   = count($results);
                 $total   = count($results);
-            }
+            }*/
 
             $data = [];
 
