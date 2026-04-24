@@ -41,7 +41,7 @@ class DashboardMercadoPago extends Page
     public string      $date_expiration_from = '';
     public string      $date_expiration_to   = '';
     public ?string     $sort                 = 'date_created';
-    public ?Collection $transactions         = null; // ✅ Illuminate\Support\Collection (base) — aceita Eloquent e collect()
+    public ?Collection $transactions         = null;
     public ?int        $transaction_id       = null;
     public string      $transaction_search   = '';
 
@@ -77,7 +77,6 @@ class DashboardMercadoPago extends Page
         $this->transaction_id     = $id;
         $this->transaction_search = $name;
         $this->transactions       = collect();
-        $this->loadTransactions();
     }
 
     public function clearTransaction(): void
@@ -168,6 +167,11 @@ class DashboardMercadoPago extends Page
         );
 
         $allPayments = $result['data'] ?? [];
+
+        if(isset($this->transaction_id)) {
+            dd($this->transaction_id);
+        }
+
 
         if ($this->transaction_id) {
             $allPayments = array_values(array_filter(
