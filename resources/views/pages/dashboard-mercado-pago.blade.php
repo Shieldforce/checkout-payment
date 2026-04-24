@@ -58,37 +58,9 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
 
-            {{-- Transactons --}}
-            {{--<div>
-                <label class="block text-xs text-gray-500 mb-1">Entradas</label>
-                <select
-                    wire:model.live="transaction_id"
-                    class="
-                        w-full
-                        rounded-lg
-                        border
-                        border-gray-300
-                        dark:border-gray-700
-                        dark:bg-gray-800
-                        text-sm
-                        px-3
-                        py-2
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-primary-500
-                    "
-                >
-                    <option value="">Todos</option>
-                    @foreach($transactions as $transaction)
-                        <option value="{{ $transaction->id ?? '' }}">
-                            {{ $transaction->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>--}}
             {{-- ✅ AUTOCOMPLETE de Transaction --}}
             <div class="relative" x-data="{ open: false }" x-on:click.outside="open = false">
-                <label class="block text-xs text-gray-500 mb-1">Entrada (Transaction)</label>
+                <label class="block text-xs text-gray-500 mb-1">Entrada</label>
 
                 <div class="relative">
                     <input
@@ -122,9 +94,11 @@
                             type="button"
                             class="
                                 absolute
-                                right-2
-                                top-1/2
-                                -translate-y-1/2
+                                inset-y-0
+                                right-0
+                                flex
+                                items-center
+                                px-2
                                 text-gray-400
                                 hover:text-danger-500
                                 transition-colors
@@ -137,9 +111,11 @@
                         <span
                             class="
                                 absolute
-                                right-2
-                                top-1/2
-                                -translate-y-1/2
+                                inset-y-0
+                                right-0
+                                flex
+                                items-center
+                                px-2
                                 text-gray-400
                                 pointer-events-none
                             "
