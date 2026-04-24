@@ -79,13 +79,6 @@ class DashboardMercadoPago extends Page
         $this->transactions       = collect();
     }
 
-    public function clearTransaction(): void
-    {
-        $this->transaction_id     = null;
-        $this->transaction_search = '';
-        $this->loadTransactions();
-    }
-
     public function nextPage(): void
     {
         if ($this->page < $this->getTotalPages()) {

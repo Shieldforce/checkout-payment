@@ -86,43 +86,6 @@
                             focus:ring-primary-500
                         "
                     />
-
-                    {{-- Ícone de limpar (aparece quando tem seleção) --}}
-                    @if($transaction_id)
-                        <button
-                            wire:click="clearTransaction"
-                            type="button"
-                            class="
-                                absolute
-                                inset-y-0
-                                right-0
-                                flex
-                                items-center
-                                px-2
-                                text-gray-400
-                                hover:text-danger-500
-                                transition-colors
-                            "
-                            title="Limpar seleção"
-                        >
-                            <x-heroicon-o-x-mark class="w-4 h-4" />
-                        </button>
-                    @else
-                        <span
-                            class="
-                                absolute
-                                inset-y-0
-                                right-0
-                                flex
-                                items-center
-                                px-2
-                                text-gray-400
-                                pointer-events-none
-                            "
-                        >
-                            <x-heroicon-o-magnifying-glass class="w-4 h-4" />
-                        </span>
-                    @endif
                 </div>
 
                 {{-- Badge da transaction selecionada --}}
