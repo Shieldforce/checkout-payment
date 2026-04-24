@@ -4,35 +4,51 @@
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Recebido Hoje</div>
-            <div class="text-2xl font-bold text-success-600">R$ {{ number_format($stats['today'] ?? 0, 2, ',', '.') }}</div>
+            <div class="text-2xl font-bold text-success-600">
+                R$ {{ number_format($stats['today'] ?? 0, 2, ',', '.') }}
+            </div>
         </div>
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Total Aprovado</div>
-            <div class="text-2xl font-bold text-primary-600">R$ {{ number_format($stats['approved'] ?? 0, 2, ',', '.') }}</div>
+            <div class="text-2xl font-bold text-primary-600">
+                R$ {{ number_format($stats['approved'] ?? 0, 2, ',', '.') }}
+            </div>
         </div>
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Pendentes</div>
-            <div class="text-2xl font-bold text-warning-600">{{ $stats['pending'] ?? 0 }}</div>
+            <div class="text-2xl font-bold text-warning-600">
+                {{ $stats['pending'] ?? 0 }}
+            </div>
         </div>
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Rejeitados</div>
-            <div class="text-2xl font-bold text-danger-600">{{ $stats['rejected'] ?? 0 }}</div>
+            <div class="text-2xl font-bold text-danger-600">
+                {{ $stats['rejected'] ?? 0 }}
+            </div>
         </div>
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Pix Hoje</div>
-            <div class="text-2xl font-bold text-success-600">R$ {{ number_format($stats['pix_today'] ?? 0, 2, ',', '.') }}</div>
+            <div class="text-2xl font-bold text-success-600">
+                R$ {{ number_format($stats['pix_today'] ?? 0, 2, ',', '.') }}
+            </div>
         </div>
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Boletos Pagos</div>
-            <div class="text-2xl font-bold text-info-600">R$ {{ number_format($stats['boleto_paid'] ?? 0, 2, ',', '.') }}</div>
+            <div class="text-2xl font-bold text-info-600">
+                R$ {{ number_format($stats['boleto_paid'] ?? 0, 2, ',', '.') }}
+            </div>
         </div>
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Chargeback / Estorno</div>
-            <div class="text-2xl font-bold text-danger-600">{{ $stats['chargeback'] ?? 0 }}</div>
+            <div class="text-2xl font-bold text-danger-600">
+                {{ $stats['chargeback'] ?? 0 }}
+            </div>
         </div>
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Total Transações</div>
-            <div class="text-2xl font-bold">{{ $stats['total'] ?? 0 }}</div>
+            <div class="text-2xl font-bold">
+                {{ $stats['total'] ?? 0 }}
+            </div>
         </div>
     </div>
 
@@ -45,8 +61,23 @@
             {{-- Status --}}
             <div>
                 <label class="block text-xs text-gray-500 mb-1">Status</label>
-                <select wire:model.live="status"
-                        class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                <select
+                    wire:model.live="status"
+                    class="
+                        w-full
+                        rounded-lg
+                        border
+                        border-gray-300
+                        dark:border-gray-700
+                        dark:bg-gray-800
+                        text-sm
+                        px-3
+                        py-2
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-primary-500
+                    "
+                >
                     <option value="">Todos</option>
                     <option value="approved">Aprovado</option>
                     <option value="pending">Pendente</option>
@@ -59,11 +90,26 @@
                 </select>
             </div>
 
-            {{-- Método --}}
+            {{-- Metodo --}}
             <div>
                 <label class="block text-xs text-gray-500 mb-1">Método de Pagamento</label>
-                <select wire:model.live="method"
-                        class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                <select
+                    wire:model.live="method"
+                    class="
+                        w-full
+                        rounded-lg
+                        border
+                        border-gray-300
+                        dark:border-gray-700
+                        dark:bg-gray-800
+                        text-sm
+                        px-3
+                        py-2
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-primary-500
+                    "
+                >
                     <option value="">Todos</option>
                     <option value="pix">Pix</option>
                     <option value="bolbradesco">Boleto Bradesco</option>
@@ -80,26 +126,71 @@
             {{-- External Reference --}}
             <div>
                 <label class="block text-xs text-gray-500 mb-1">Referência Externa</label>
-                <input type="text"
-                       wire:model.live.debounce.600ms="external"
-                       placeholder="ex: ORDER-12345"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                <input
+                    type="text"
+                    wire:model.live.debounce.600ms="external"
+                    placeholder="ex: ORDER-12345"
+                    class="
+                        w-full
+                        rounded-lg
+                        border
+                        border-gray-300
+                        dark:border-gray-700
+                        dark:bg-gray-800
+                        text-sm
+                        px-3
+                        py-2
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-primary-500
+                    "
+                />
             </div>
 
             {{-- Payer Email --}}
             <div>
                 <label class="block text-xs text-gray-500 mb-1">E-mail do Pagador</label>
-                <input type="text"
-                       wire:model.live.debounce.600ms="payer"
-                       placeholder="email@exemplo.com"
-                       class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" />
+                <input
+                    type="text"
+                    wire:model.live.debounce.600ms="payer"
+                    placeholder="email@exemplo.com"
+                    class="
+                        w-full
+                        rounded-lg
+                        border
+                        border-gray-300
+                        dark:border-gray-700
+                        dark:bg-gray-800
+                        text-sm
+                        px-3
+                        py-2
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-primary-500
+                    "
+                />
             </div>
 
             {{-- Itens por página --}}
             <div>
                 <label class="block text-xs text-gray-500 mb-1">Por Página</label>
-                <select wire:model.live="limit"
-                        class="w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                <select
+                    wire:model.live="limit"
+                    class="
+                        w-full
+                        rounded-lg
+                        border
+                        border-gray-300
+                        dark:border-gray-700
+                        dark:bg-gray-800
+                        text-sm
+                        px-3
+                        py-2
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-primary-500
+                    "
+                >
                     <option value="20">20</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
@@ -111,14 +202,39 @@
         {{-- Ações dos filtros --}}
         <div class="mt-4 flex items-center justify-between">
 
-            <button wire:click="resetFilters"
-                    class="text-xs text-gray-500 hover:text-danger-600 flex items-center gap-1 transition-colors">
+            <button
+                wire:click="resetFilters"
+                class="
+                    text-xs
+                    text-gray-500
+                    hover:text-danger-600
+                    flex
+                    items-center
+                    gap-1
+                    transition-colors
+                "
+            >
                 <x-heroicon-o-x-circle class="w-4 h-4" />
                 Limpar filtros
             </button>
 
-            <button wire:click="applyFilters"
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold transition-colors">
+            <button
+                wire:click="applyFilters"
+                class="
+                    inline-flex
+                    items-center
+                    gap-2
+                    px-4
+                    py-2
+                    rounded-lg
+                    bg-primary-600
+                    hover:bg-primary-700
+                    text-white
+                    text-sm
+                    font-semibold
+                    transition-colors
+                "
+            >
                 <x-heroicon-o-magnifying-glass class="w-4 h-4" />
                 Filtrar
             </button>
@@ -154,26 +270,47 @@
                     <tr class="border-t dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800">
                         <td class="p-3 font-mono text-xs">{{ $payment['id'] }}</td>
                         <td class="p-3">
-                            <div>{{ trim(($payment['first_name'] ?? '') . ' ' . ($payment['last_name'] ?? '')) ?: '-' }}</div>
+                            <div>
+                                {{ trim(($payment['first_name'] ?? '') . ' ' . ($payment['last_name'] ?? '')) ?: '-' }}
+                            </div>
                             <div class="text-xs text-gray-400">{{ $payment['payer'] ?? '' }}</div>
                         </td>
                         <td class="p-3 uppercase text-xs font-semibold">{{ $payment['method'] ?? '-' }}</td>
                         <td class="p-3">
                             @php $status = $payment['status'] ?? '-'; @endphp
-                            <span class="px-2 py-1 rounded text-xs font-medium
-                                @if($status === 'approved') bg-green-100 text-green-700
-                                @elseif($status === 'pending' || $status === 'in_process' || $status === 'authorized') bg-yellow-100 text-yellow-700
-                                @elseif($status === 'rejected') bg-red-100 text-red-700
-                                @elseif(in_array($status, ['cancelled','refunded','charged_back'])) bg-orange-100 text-orange-700
-                                @else bg-gray-100 text-gray-700
-                                @endif">
+                            <span
+                                class="
+                                    px-2
+                                    py-1
+                                    rounded
+                                    text-xs
+                                    font-medium
+                                    @if($status === 'approved')
+                                        bg-green-100 text-green-700
+                                    @elseif($status === 'pending' || $status === 'in_process' || $status === 'authorized')
+                                        bg-yellow-100 text-yellow-700
+                                    @elseif($status === 'rejected')
+                                        bg-red-100 text-red-700
+                                    @elseif(in_array($status, ['cancelled','refunded','charged_back']))
+                                        bg-orange-100 text-orange-700
+                                    @else
+                                        bg-gray-100 text-gray-700
+                                    @endif
+                                "
+                            >
                                 {{ $status }}
                             </span>
                         </td>
-                        <td class="p-3 font-semibold">R$ {{ number_format($payment['value'] ?? 0, 2, ',', '.') }}</td>
-                        <td class="p-3 text-xs font-mono">{{ $payment['external'] ?? '-' }}</td>
+                        <td class="p-3 font-semibold">
+                            R$ {{ number_format($payment['value'] ?? 0, 2, ',', '.') }}
+                        </td>
+                        <td class="p-3 text-xs font-mono">
+                            {{ $payment['external'] ?? '-' }}
+                        </td>
                         <td class="p-3 text-xs">
-                            {{ !empty($payment['created']) ? \Carbon\Carbon::parse($payment['created'])->format('d/m/Y H:i') : '-' }}
+                            {{ !empty($payment['created'])
+                            ? \Carbon\Carbon::parse($payment['created'])->format('d/m/Y H:i')
+                            : '-' }}
                         </td>
                     </tr>
                 @empty
@@ -190,7 +327,7 @@
         {{-- PAGINAÇÃO --}}
         @php
             $total   = $paging['total'] ?? 0;
-            $limit   = $paging['limit'] ?? $limit;
+            $limit   = $paging['limit'] ?? $limit ?? 50;
             $offset  = $paging['offset'] ?? 0;
             $pages   = $limit > 0 ? (int) ceil($total / $limit) : 1;
             $from    = $total > 0 ? $offset + 1 : 0;
@@ -209,14 +346,36 @@
                 <div class="flex items-center gap-1">
 
                     {{-- Primeira --}}
-                    <button wire:click="goToPage(1)" @if($page <= 1) disabled @endif
-                    class="px-2 py-1 rounded text-sm {{ $page <= 1 ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300' }}">
+                    <button
+                        wire:click="goToPage(1)" @if($page <= 1) disabled @endif
+                    class="
+                            px-2
+                            py-1
+                            rounded
+                            text-sm
+                            {{ $page <= 1
+                                ? 'text-gray-300 cursor-not-allowed'
+                                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300'
+                            }}
+                        "
+                    >
                         «
                     </button>
 
                     {{-- Anterior --}}
-                    <button wire:click="prevPage" @if($page <= 1) disabled @endif
-                    class="px-3 py-1 rounded text-sm {{ $page <= 1 ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300' }}">
+                    <button
+                        wire:click="prevPage" @if($page <= 1) disabled @endif
+                    class="
+                            px-3
+                            py-1
+                            rounded
+                            text-sm
+                            {{ $page <= 1
+                                ? 'text-gray-300 cursor-not-allowed'
+                                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300'
+                            }}
+                        "
+                    >
                         ‹ Anterior
                     </button>
 
@@ -233,19 +392,41 @@
                                 {{ $p == $page
                                     ? 'bg-primary-600 text-white font-bold'
                                     : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300' }}">
-                                            {{ $p }}
+                            {{ $p }}
                         </button>
                     @endfor
 
                     {{-- Próxima --}}
-                    <button wire:click="nextPage" @if($page >= $pages) disabled @endif
-                    class="px-3 py-1 rounded text-sm {{ $page >= $pages ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300' }}">
+                    <button
+                        wire:click="nextPage" @if($page >= $pages) disabled @endif
+                        class="
+                            px-3
+                            py-1
+                            rounded
+                            text-sm
+                            {{ $page >= $pages
+                                ? 'text-gray-300 cursor-not-allowed'
+                                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300'
+                            }}
+                        "
+                    >
                         Próxima ›
                     </button>
 
                     {{-- Última --}}
-                    <button wire:click="goToPage({{ $pages }})" @if($page >= $pages) disabled @endif
-                    class="px-2 py-1 rounded text-sm {{ $page >= $pages ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300' }}">
+                    <button
+                        wire:click="goToPage({{ $pages }})" @if($page >= $pages) disabled @endif
+                        class="
+                            px-2
+                            py-1
+                            rounded
+                            text-sm
+                            {{ $page >= $pages
+                                ? 'text-gray-300 cursor-not-allowed'
+                                : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300'
+                            }}
+                        "
+                    >
                         »
                     </button>
 

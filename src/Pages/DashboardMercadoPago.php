@@ -14,45 +14,29 @@ class DashboardMercadoPago extends Page
     use CanPageTrait;
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
-
-    protected static string $view = 'checkout-payment::pages.dashboard-mercado-pago';
-
+    protected static ?string $navigationIcon  = 'heroicon-o-credit-card';
+    protected static string  $view            = 'checkout-payment::pages.dashboard-mercado-pago';
     protected static ?string $navigationLabel = 'Dashboard MP';
+    protected static ?string $title           = 'Dashboard Mercado Pago';
+    protected static ?string $navigationGroup = "Financeiro";
+    protected static ?int    $navigationSort  = 2;
 
-    protected static ?string $title = 'Dashboard Mercado Pago';
-
-    protected static ?int $navigationSort = 2;
-
-    public array $payments = [];
-
-    public array $stats = [];
-
-    public array $paging = [];
-
-    public int $page = 1;
-
-    public int $limit = 50;
-
-    public string $status = '';
-
-    public string $external = '';
-
-    public string $payer = '';
-
-    public string $method = '';
-
-    public string $date_from = '';
-
-    public string $date_to = '';
-
-    public string $date_approved_from = '';
-
-    public string $date_approved_to = '';
-
+    /* VARIÁVEIS */
+    public array  $payments             = [];
+    public array  $stats                = [];
+    public array  $paging               = [];
+    public int    $page                 = 1;
+    public int    $limit                = 50;
+    public string $status               = '';
+    public string $external             = '';
+    public string $payer                = '';
+    public string $method               = '';
+    public string $date_from            = '';
+    public string $date_to              = '';
+    public string $date_approved_from   = '';
+    public string $date_approved_to     = '';
     public string $date_expiration_from = '';
-
-    public string $date_expiration_to = '';
+    public string $date_expiration_to   = '';
 
     public static function getSlug(): string
     {
@@ -87,11 +71,11 @@ class DashboardMercadoPago extends Page
 
     public function resetFilters(): void
     {
-        $this->status               = '';
-        $this->external             = '';
-        $this->payer                = '';
-        $this->method               = '';
-        $this->page                 = 1;
+        $this->status   = '';
+        $this->external = '';
+        $this->payer    = '';
+        $this->method   = '';
+        $this->page     = 1;
         $this->loadData();
     }
 
@@ -99,7 +83,7 @@ class DashboardMercadoPago extends Page
     {
         $total = $this->paging['total'] ?? 0;
 
-        return $total > 0 ? (int) ceil($total / $this->limit) : 1;
+        return $total > 0 ? (int)ceil($total / $this->limit) : 1;
     }
 
     public function loadData(): void
