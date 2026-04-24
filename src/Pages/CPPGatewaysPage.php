@@ -18,7 +18,6 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
@@ -35,10 +34,15 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     protected static string $view = 'checkout-payment::pages.cpp_gateways';
 
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+
     protected static ?string $navigationGroup = 'Gateways';
+
     protected static ?string $label = 'Gateway';
+
     protected static ?string $navigationLabel = 'Gateway';
+
     protected static ?string $slug = 'cpp-gateways';
+
     protected static ?string $title = 'Lista de Gateways';
 
     public function mount(?int $checkoutId = null): void {}
@@ -48,15 +52,12 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         return $table
             ->query($this->getTableQuery())
             ->columns($this->getTableColumns())
-            ->filters(
-                $this->getTableFilters(),
-                layout: FiltersLayout::AboveContentCollapsible
-            )
+            ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn(Action $action) => $action
+                fn (Action $action) => $action
                     ->button()
-                    ->label('Filtrar...')
+                    ->label('Filtrar...'),
             )
             ->bulkActions($this->getTableBulkActions())
             ->actions($this->getTableActions());
@@ -67,7 +68,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         return config()->get('checkout-payment.sidebar_group');
     }
 
-    protected function getTableQuery(): Builder
+    protected function getTableQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return CppGateways::query();
     }
@@ -80,29 +81,34 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
 
             TextColumn::make('name')
                 ->label('Gateway')
-                ->formatStateUsing(
-                    fn($state) => TypeGatewayEnum::from($state)->label()
-                ),
+                ->formatStateUsing(function ($state, $record) {
+                    return TypeGatewayEnum::from($record->name)->label();
+                }),
 
             ToggleColumn::make('active')
                 ->label('Ativo'),
 
             TextColumn::make('created_at')
                 ->label('Criado em')
-                ->since(),
+                ->formatStateUsing(function ($state, $record) {
+                    return $record->created_at->diffForHumans();
+                })
+                ->dateTime(),
         ];
     }
 
     protected function getTableFilters(): array
     {
-        return [
-            SelectFilter::make('active')
-                ->label('Status')
+        $n = [
+            SelectFilter::make('status')
                 ->options([
-                    1 => 'Ativo',
-                    0 => 'Inativo',
+                    'pending' => 'Pending',
+                    'paid' => 'Paid',
+                    'cancelled' => 'Cancelled',
                 ]),
         ];
+
+        return $n;
     }
 
     protected function getTableActions(): array
@@ -111,19 +117,16 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             EditAction::make()
                 ->modelLabel('Editar gateway')
                 ->modalSubmitActionLabel('Salvar')
-                ->mutateRecordDataUsing(function (array $data): array {
-                    $data['field_1'] = $this->safeDecrypt($data['field_1'] ?? null);
-                    $data['field_2'] = $this->safeDecrypt($data['field_2'] ?? null);
-
-                    return $data;
-                })
                 ->form($this->fields())
                 ->action(function (array $data, $record) {
-                    $data = $this->encryptFieldsIfNeeded($data);
+
+                    if (TypeGatewayEnum::from($data['name']) == TypeGatewayEnum::mercado_pago) {
+                        $data['field_1'] = Crypt::encrypt($data['field_1']);
+                        $data['field_2'] = Crypt::encrypt($data['field_2']);
+                    }
 
                     $record->update($data);
                 }),
-
             DeleteAction::make(),
         ];
     }
@@ -136,18 +139,15 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ->modalSubmitActionLabel('Salvar')
                 ->form($this->fields())
                 ->action(function (array $data) {
-                    $data = $this->encryptFieldsIfNeeded($data);
+                    $active = $data['active'];
+                    unset($data['active']);
 
-                    if (!empty($data['active'])) {
-                        CppGateways::where('active', true)->update([
-                            'active' => false,
-                        ]);
+                    if (TypeGatewayEnum::from($data['name']) == TypeGatewayEnum::mercado_pago) {
+                        $data['field_1'] = Crypt::encrypt($data['field_1']);
+                        $data['field_2'] = Crypt::encrypt($data['field_2']);
                     }
 
-                    CppGateways::updateOrCreate(
-                        ['name' => $data['name']],
-                        $data
-                    );
+                    CppGateways::updateOrCreate($data, ['active' => $active]);
                 }),
         ];
     }
@@ -158,42 +158,39 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             Select::make('name')
                 ->label('Gateway')
                 ->live()
-                ->options(
-                    collect(TypeGatewayEnum::cases())
-                        ->mapWithKeys(
-                            fn($case) => [$case->value => $case->label()]
-                        )
-                        ->toArray()
-                )
+                ->options(function () {
+                    return collect(TypeGatewayEnum::cases())
+                        ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
+                        ->toArray();
+                })
                 ->columnSpanFull()
                 ->required(),
 
-            Grid::make()
-                ->schema([
-                    ManagerFieldService::TextInput('field_1'),
-                    ManagerFieldService::TextInput('field_2'),
-                ])
-                ->columns(2),
+            Grid::make()->schema([
 
-            Grid::make()
-                ->schema([
-                    ManagerFieldService::TextInput('field_3'),
-                    ManagerFieldService::TextInput('field_4'),
-                    ManagerFieldService::TextInput('field_5'),
-                ])
-                ->columns(3),
+                ManagerFieldService::TextInput('field_1'),
+                ManagerFieldService::TextInput('field_2'),
 
-            Grid::make()
-                ->schema([
-                    ManagerFieldService::TextInput('field_6'),
-                ])
-                ->columns(3),
+            ])->columns(2),
+            Grid::make()->schema([
+
+                ManagerFieldService::TextInput('field_3'),
+                ManagerFieldService::TextInput('field_4'),
+                ManagerFieldService::TextInput('field_5'),
+
+            ])->columns(3),
+            Grid::make()->schema([
+
+                ManagerFieldService::TextInput('field_6'),
+
+            ])->columns(3),
 
             Toggle::make('active')
                 ->label('Ativo')
                 ->default(true)
-                ->hint('Ao ativar esse gateway, os outros serão desativados.')
+                ->hint('Ao ativar esse gateway, os outro serão desativados.')
                 ->required(),
+
         ];
     }
 
@@ -205,49 +202,5 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
     public static function shouldRegisterNavigation(): bool
     {
         return Auth::check();
-    }
-
-    private function encryptFieldsIfNeeded(array $data): array
-    {
-        if (($data['name'] ?? null) === TypeGatewayEnum::mercado_pago->value) {
-            $data['field_1'] = $this->safeEncrypt($data['field_1'] ?? null);
-            $data['field_2'] = $this->safeEncrypt($data['field_2'] ?? null);
-        }
-
-        if (!empty($data['active'])) {
-            CppGateways::where('active', true)->update([
-                'active' => false,
-            ]);
-        }
-
-        return $data;
-    }
-
-    private function safeEncrypt(?string $value): ?string
-    {
-        if (blank($value)) {
-            return $value;
-        }
-
-        try {
-            Crypt::decryptString($value);
-
-            return $value;
-        } catch (\Throwable $e) {
-            return Crypt::encryptString($value);
-        }
-    }
-
-    private function safeDecrypt(?string $value): ?string
-    {
-        if (blank($value)) {
-            return $value;
-        }
-
-        try {
-            return Crypt::decryptString($value);
-        } catch (\Throwable $e) {
-            return $value;
-        }
     }
 }
