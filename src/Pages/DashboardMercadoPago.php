@@ -77,6 +77,7 @@ class DashboardMercadoPago extends Page
     {
         $this->transaction_id     = $id;
         $this->transaction_search = $name;
+        dd($this->transaction_id, $this->transaction_search);
         $this->transactions       = collect(); // fecha o dropdown
     }
 
