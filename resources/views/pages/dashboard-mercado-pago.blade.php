@@ -58,6 +58,35 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
 
+            {{-- Transactons --}}
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">Entradas</label>
+                <select
+                    wire:model.live="transaction_id"
+                    class="
+                        w-full
+                        rounded-lg
+                        border
+                        border-gray-300
+                        dark:border-gray-700
+                        dark:bg-gray-800
+                        text-sm
+                        px-3
+                        py-2
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-primary-500
+                    "
+                >
+                    <option value="">Todos</option>
+                    @foreach($transactions as $transaction)
+                        <option value="{{ $transaction->id ?? '' }}">
+                            {{ $transaction->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             {{-- Status --}}
             <div>
                 <label class="block text-xs text-gray-500 mb-1">Status</label>
