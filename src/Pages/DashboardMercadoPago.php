@@ -138,6 +138,7 @@ class DashboardMercadoPago extends Page
             'payer.email'             => $this->payer ?: null,
             'payment_method_id'       => $this->method ?: null,
             'sort'                    => $this->sort ?: null,
+            'transaction_id'          => $this->transaction_id ?: null,
             'begin_date'              => $this->date_from
                 ? Carbon::parse($this->date_from)->startOfDay()->toIso8601String()
                 : null,
@@ -168,25 +169,8 @@ class DashboardMercadoPago extends Page
 
         $allPayments = $result['data'] ?? [];
 
-        if ($this->transaction_id) {
-            $allPayments = array_values(array_filter(
-                $allPayments,
-                function ($payment) {
-                    logger([
-                        $payment['transaction_id'] ?? null,
-                        $this->transaction_id
-                    ]);
-                    return ($payment['transaction_id'] ?? null) == $this->transaction_id;
-                }
-            ));
-        }
-
         $this->payments = $allPayments;
         $this->paging   = $result['paging'] ?? [];
-
-        /*if(isset($this->transaction_id)) {
-            dd($this->payments);
-        }*/
 
         $payments = collect($this->payments);
 
