@@ -414,8 +414,8 @@ class MercadoPagoService
                 'data'   => $data,
                 'paging' => [
                     'total'  => $payments->paging->total ?? 0,
-                    'limit'  => $payments->paging->limit ?? $limit,
-                    'offset' => $payments->paging->offset ?? $offset,
+                    'limit'  => $limit ?? $payments->paging->limit,
+                    'offset' => $offset ?? $payments->paging->offset,
                 ],
             ];
 
