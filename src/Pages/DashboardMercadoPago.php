@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
+use Illuminate\Database\Eloquent\Collection;
 use Shieldforce\CheckoutPayment\Enums\TypeTransactionEnum;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 use Shieldforce\CheckoutPayment\Services\Permissions\CanPageTrait;
@@ -24,23 +25,23 @@ class DashboardMercadoPago extends Page
     protected static ?int    $navigationSort  = 2;
 
     /* VARIÁVEIS */
-    public array        $payments             = [];
-    public array        $stats                = [];
-    public array        $paging               = [];
-    public int          $page                 = 1;
-    public int          $limit                = 50;
-    public string       $status               = '';
-    public string       $external             = '';
-    public string       $payer                = '';
-    public string       $method               = '';
-    public string       $date_from            = '';
-    public string       $date_to              = '';
-    public string       $date_approved_from   = '';
-    public string       $date_approved_to     = '';
-    public string       $date_expiration_from = '';
-    public string       $date_expiration_to   = '';
-    public ?string      $sort                 = 'date_created';
-    public ?Transaction $transactions         = null;
+    public array       $payments             = [];
+    public array       $stats                = [];
+    public array       $paging               = [];
+    public int         $page                 = 1;
+    public int         $limit                = 50;
+    public string      $status               = '';
+    public string      $external             = '';
+    public string      $payer                = '';
+    public string      $method               = '';
+    public string      $date_from            = '';
+    public string      $date_to              = '';
+    public string      $date_approved_from   = '';
+    public string      $date_approved_to     = '';
+    public string      $date_expiration_from = '';
+    public string      $date_expiration_to   = '';
+    public ?string     $sort                 = 'date_created';
+    public ?Collection $transactions         = null;
 
     public static function getSlug(): string
     {
