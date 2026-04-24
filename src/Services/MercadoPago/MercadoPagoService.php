@@ -322,9 +322,9 @@ class MercadoPagoService
     }
 
     public function listarPagamentos(
-        int    $limit = 50,
-        int    $offset = 0,
-        array  $filters = [],
+        int   $limit = 50,
+        int   $offset = 0,
+        array $filters = [],
     ): array
     {
         try {
@@ -365,10 +365,10 @@ class MercadoPagoService
             $data = [];
 
             foreach ($results as $payment) {
-                $cc        = CppCheckout::where("uuid", $payment->external_reference)->first();
-                $reference = $cc?->referencable;
-                $order     = $reference?->order;
-                $client    = $order?->client;
+                $cc          = CppCheckout::where("uuid", $payment->external_reference)->first();
+                $transaction = $cc?->referencable;
+                $order       = $transaction?->order;
+                $client      = $order?->client;
 
                 $email           = $payment?->payer?->email;
                 $document_number = $payment?->payer?->identification?->number;
@@ -385,7 +385,7 @@ class MercadoPagoService
                     'status'          => $payment->status ?? null,
                     'method'          => $payment->payment_method_id ?? null,
                     'value'           => $payment->transaction_amount ?? 0,
-                    'external'        => $payment->external_reference ?? null,
+                    'external'        => $payment->external_reference,
                     'created'         => $payment->date_created ?? null,
                     'payer'           => $email ?? null,
                     'first_name'      => $payment->payer->first_name ?? null,
@@ -393,6 +393,8 @@ class MercadoPagoService
                     'due_date'        => $payment->date_of_expiration ?? null,
                     'document_number' => $document_number ?? null,
                     'document_type'   => $document_type ?? null,
+                    'transaction_id'  => $transaction?->id ?? null,
+                    'order_id'        => $order?->id ?? null,
                 ];
             }
 

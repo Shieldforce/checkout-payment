@@ -307,8 +307,81 @@
                         <td class="p-3 font-semibold">
                             R$ {{ number_format($payment['value'] ?? 0, 2, ',', '.') }}
                         </td>
-                        <td class="p-3 text-xs font-mono">
-                            {{ $payment['external'] ?? '-' }}
+                        {{-- ✅ COLUNA REF. EXTERNA com botões Filament --}}
+                        <td class="p-3 font-semibold">
+                            <div class="flex flex-col gap-1">
+
+                                {{-- UUID da referência (exibe apenas se não tiver transaction/order vinculado) --}}
+                                @if(!$payment['transaction_id'] && !$payment['order_id'])
+                                    <span class="font-mono text-xs text-gray-500">
+                                        {{ $payment['external'] ?? '-' }}
+                                    </span>
+                                @endif
+
+                                {{-- Botão: editar Transaction --}}
+                                @if($payment['transaction_id'])
+                                    <a
+                                        href="{{ \App\Filament\Resources\TransactionResource::getUrl(
+                                            'edit',
+                                            ['record' => $payment['transaction_id']]
+                                        ) }}"
+                                        target="_blank"
+                                        class="
+                                            inline-flex
+                                            items-center
+                                            gap-1
+                                            px-2
+                                            py-1
+                                            rounded-md
+                                            text-xs
+                                            font-medium
+                                            bg-primary-50
+                                            text-primary-700
+                                            hover:bg-primary-100
+                                            dark:bg-primary-950
+                                            dark:text-primary-300
+                                            dark:hover:bg-primary-900
+                                            transition-colors
+                                            w-fit
+                                        "
+                                    >
+                                        <x-heroicon-o-arrows-right-left class="w-3 h-3" />
+                                        Transaction #{{ $payment['transaction_id'] }}
+                                    </a>
+                                @endif
+
+                                {{-- Botão: editar Order --}}
+                                @if($payment['order_id'])
+                                    <a
+                                        href="{{ \App\Filament\Resources\OrderResource::getUrl(
+                                            'edit',
+                                            ['record' => $payment['order_id']]
+                                        ) }}"
+                                        target="_blank"
+                                        class="
+                                            inline-flex
+                                            items-center
+                                            gap-1
+                                            px-2
+                                            py-1
+                                            rounded-md
+                                            text-xs
+                                            font-medium
+                                            bg-success-50
+                                            text-success-700
+                                            hover:bg-success-100
+                                            dark:bg-success-950
+                                            dark:text-success-300
+                                            dark:hover:bg-success-900
+                                            transition-colors w-fit
+                                        "
+                                    >
+                                        <x-heroicon-o-shopping-cart class="w-3 h-3" />
+                                        Order #{{ $payment['order_id'] }}
+                                    </a>
+                                @endif
+
+                            </div>
                         </td>
                         <td class="p-3 text-xs">
                             {{ !empty($payment['created'])
