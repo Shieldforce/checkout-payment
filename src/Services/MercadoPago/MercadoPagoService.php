@@ -370,10 +370,12 @@ class MercadoPagoService
                 $order     = $reference?->order;
                 $client    = $order?->client;
 
+                $email           = $payment?->payer?->email;
                 $document_number = $payment?->payer?->identification?->number;
                 $document_type   = $payment?->payer?->identification?->type;
 
                 if (isset($client->id)) {
+                    $email           = $client->email;
                     $document_number = $client->document;
                     $document_type   = $client->type_people == TypePeopleEnum::F->value ? "CPF" : "CNPJ";
                 }
@@ -385,7 +387,7 @@ class MercadoPagoService
                     'value'           => $payment->transaction_amount ?? 0,
                     'external'        => $payment->external_reference ?? null,
                     'created'         => $payment->date_created ?? null,
-                    'payer'           => $payment->payer->email ?? null,
+                    'payer'           => $email ?? null,
                     'first_name'      => $payment->payer->first_name ?? null,
                     'last_name'       => $payment->payer->last_name ?? null,
                     'due_date'        => $payment->date_of_expiration ?? null,
