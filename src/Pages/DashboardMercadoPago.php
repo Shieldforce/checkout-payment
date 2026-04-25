@@ -133,6 +133,7 @@ class DashboardMercadoPago extends Page
             'payer.email'             => $this->payer ?: null,
             'payment_method_id'       => $this->method ?: null,
             'sort'                    => $this->sort ?: null,
+            'criteria'                => 'desc',
             'begin_date'              => $this->date_from
                 ? Carbon::parse($this->date_from)->startOfDay()->toIso8601String()
                 : null,

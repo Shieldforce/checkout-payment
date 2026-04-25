@@ -331,70 +331,34 @@ class MercadoPagoService
             $client = new PaymentClient;
 
             // Remove payer.email do payload — a API não aceita esse filtro
-            $payerEmail = $filters['payer.email'] ?? null;
             unset($filters['payer.email']);
 
-            $transactionId = $filters['transaction_id'] ?? null;
-            unset($filters['transaction_id']);
-
             $payload = array_filter(
-                array_merge([
-                    'sort'     => $filters['sort'],
-                    'criteria' => 'desc'
-                ], $filters),
+                $filters,
                 fn($v) => $v !== null && $v !== ''
             );
 
-            // Se só temos filtro de email, precisamos buscar mais registros
-            // para compensar o filtro local
-            $fetchLimit = ($payerEmail || $transactionId) ? min($limit * 5, 200) : $limit;
-
             $payments = $client->search(
-                request: new MPSearchRequest($fetchLimit, $offset, filters: $payload)
+                request: new MPSearchRequest(
+                    limit: $limit,
+                    offset: $offset,
+                    filters: $payload
+                )
             );
 
             $results = collect($payments->results ?? []);
 
-            // Filtra localmente por email se necessário
-            /*if ($payerEmail) {
-                $results = $results->filter(
-                    fn($p) => str_contains(
-                        strtolower($p->payer->email ?? ''),
-                        strtolower($payerEmail)
-                    )
-                )->take($limit);
-                $limit   = count($results);
-                $total   = count($results);
-            }*/
-
-            // ✅ Adicionar logo abaixo:
-            /*if ($transactionId) {
-                $results = $results->filter(function ($p) use ($transactionId, $limit) {
-                    $cc          = CppCheckout::where("uuid", $p->external_reference)->first();
-                    $transaction = $cc?->referencable;
-                    return $transaction?->id == $transactionId;
-                })->take($limit);
-                $limit   = count($results);
-                $total   = count($results);
-            }*/
-
             $data = [];
 
             foreach ($results as $payment) {
-                $cc          = CppCheckout::where("uuid", $payment->external_reference)->first();
-                $transaction = $cc?->referencable;
-                $order       = $transaction?->order;
-                $client      = $order?->client;
-
-                $email           = $payment?->payer?->email;
-                $document_number = $payment?->payer?->identification?->number;
-                $document_type   = $payment?->payer?->identification?->type;
-
-                if (isset($client->id)) {
-                    $email           = $client->email;
-                    $document_number = $client->document;
-                    $document_type   = $client->type_people == TypePeopleEnum::F->value ? "CPF" : "CNPJ";
-                }
+                $cc              = CppCheckout::where("uuid", $payment->external_reference)->first();
+                $transaction     = $cc?->referencable;
+                $order           = $transaction?->order;
+                $client          = $order?->client;
+                $typePeople      = $client?->type_people == TypePeopleEnum::F->value ? "CPF" : "CNPJ";
+                $email           = $payment?->payer?->email ?? $client->email;
+                $document_number = $payment?->payer?->identification?->number ?? $client->document;
+                $document_type   = $payment?->payer?->identification?->type ?? $typePeople;
 
                 $data[] = [
                     'id'              => $payment->id ?? null,
