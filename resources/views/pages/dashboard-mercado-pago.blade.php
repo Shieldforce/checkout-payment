@@ -2,13 +2,12 @@
 
     {{-- FILTROS --}}
     <div class="rounded-xl bg-white dark:bg-gray-900 shadow p-4 mb-4">
-        <div class="font-semibold text-sm mb-3 text-gray-600 dark:text-gray-300">Filtros</div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
 
             {{-- ✅ AUTOCOMPLETE de Transaction --}}
             <div class="relative" x-data="{ open: false }" x-on:click.outside="open = false">
-                <label class="block text-xs text-gray-500 mb-1">Entrada</label>
+                <label class="block text-xs text-gray-500 mb-1">Entrada (Transações)</label>
 
                 <div class="relative">
                     <input
