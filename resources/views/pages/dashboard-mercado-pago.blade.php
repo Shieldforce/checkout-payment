@@ -2,18 +2,6 @@
 
     {{-- STATS --}}
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-        {{--<div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
-            <div class="text-sm text-gray-500">Recebido Hoje</div>
-            <div class="text-2xl font-bold text-success-600">
-                R$ {{ number_format($stats['today'] ?? 0, 2, ',', '.') }}
-            </div>
-        </div>
-        <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
-            <div class="text-sm text-gray-500">Total Aprovado</div>
-            <div class="text-2xl font-bold text-primary-600">
-                R$ {{ number_format($stats['approved'] ?? 0, 2, ',', '.') }}
-            </div>
-        </div>--}}
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Pendentes</div>
             <div class="text-2xl font-bold text-warning-600">
@@ -26,18 +14,6 @@
                 {{ $stats['rejected'] ?? 0 }}
             </div>
         </div>
-        {{--<div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
-            <div class="text-sm text-gray-500">Pix Hoje</div>
-            <div class="text-2xl font-bold text-success-600">
-                R$ {{ number_format($stats['pix_today'] ?? 0, 2, ',', '.') }}
-            </div>
-        </div>
-        <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
-            <div class="text-sm text-gray-500">Boletos Pagos</div>
-            <div class="text-2xl font-bold text-info-600">
-                R$ {{ number_format($stats['boleto_paid'] ?? 0, 2, ',', '.') }}
-            </div>
-        </div>--}}
         <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
             <div class="text-sm text-gray-500">Chargeback / Estorno</div>
             <div class="text-2xl font-bold text-danger-600">
@@ -186,71 +162,6 @@
                 </div>
             </div>
 
-            {{-- Status --}}
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Status</label>
-                <select
-                    wire:model.live="status"
-                    class="
-                        w-full
-                        rounded-lg
-                        border
-                        border-gray-300
-                        dark:border-gray-700
-                        dark:bg-gray-800
-                        text-sm
-                        px-3
-                        py-2
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-primary-500
-                    "
-                >
-                    <option value="">Todos</option>
-                    <option value="approved">Aprovado</option>
-                    <option value="pending">Pendente</option>
-                    <option value="rejected">Rejeitado</option>
-                    <option value="cancelled">Cancelado</option>
-                    <option value="refunded">Estornado</option>
-                    <option value="charged_back">Chargeback</option>
-                    <option value="in_process">Em processo</option>
-                    <option value="authorized">Autorizado</option>
-                </select>
-            </div>
-
-            {{-- Metodo --}}
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">Método de Pagamento</label>
-                <select
-                    wire:model.live="method"
-                    class="
-                        w-full
-                        rounded-lg
-                        border
-                        border-gray-300
-                        dark:border-gray-700
-                        dark:bg-gray-800
-                        text-sm
-                        px-3
-                        py-2
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-primary-500
-                    "
-                >
-                    <option value="">Todos</option>
-                    <option value="pix">Pix</option>
-                    <option value="bolbradesco">Boleto Bradesco</option>
-                    <option value="boletobancario">Boleto Bancário</option>
-                    <option value="visa">Visa</option>
-                    <option value="master">Mastercard</option>
-                    <option value="amex">Amex</option>
-                    <option value="elo">Elo</option>
-                    <option value="hipercard">Hipercard</option>
-                    <option value="account_money">Saldo MP</option>
-                </select>
-            </div>
-
             {{-- External Reference --}}
             <div>
                 <label class="block text-xs text-gray-500 mb-1">Referência Externa</label>
@@ -258,30 +169,6 @@
                     type="text"
                     wire:model.live.debounce.600ms="external"
                     placeholder="ex: ORDER-12345"
-                    class="
-                        w-full
-                        rounded-lg
-                        border
-                        border-gray-300
-                        dark:border-gray-700
-                        dark:bg-gray-800
-                        text-sm
-                        px-3
-                        py-2
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-primary-500
-                    "
-                />
-            </div>
-
-            {{-- Payer Email --}}
-            <div>
-                <label class="block text-xs text-gray-500 mb-1">E-mail do Pagador</label>
-                <input
-                    type="text"
-                    wire:model.live.debounce.600ms="payer"
-                    placeholder="email@exemplo.com"
                     class="
                         w-full
                         rounded-lg
