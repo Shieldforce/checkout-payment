@@ -24,8 +24,8 @@ class ListCppCheckouts extends ListRecords
                 ->label('Dashboard MP')
                 ->icon('heroicon-o-chart-bar')
                 ->color('success')
-                ->url(fn () => DashboardMercadoPago::getUrl())
-                ->openUrlInNewTab(),
+                ->url(fn () => DashboardMercadoPago::getUrl())/*
+                ->openUrlInNewTab()*/,
 
             Actions\Action::make('runMonthlyBilling')
                 ->label('Rodar Faturamento Mensal')

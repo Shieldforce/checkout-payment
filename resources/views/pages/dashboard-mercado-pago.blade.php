@@ -186,7 +186,7 @@
         </div>
 
         {{-- Ações dos filtros --}}
-        <div class="mt-5 flex items-center justify-between">
+        <div class="mt-6 flex items-center justify-between">
 
             <button
                 wire:click="resetFilters"
