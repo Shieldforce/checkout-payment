@@ -165,50 +165,6 @@ class DashboardMercadoPago extends Page
         $allPayments = $result['data'] ?? [];
 
         $this->payments = $allPayments;
-        $this->paging   = $result['paging'] ?? [];
-
-        $payments = collect($this->payments);
-
-        $approved = $payments->where('status', 'approved');
-
-        $todayApproved = $payments->filter(function ($item) {
-            if (empty($item['created']))
-                return false;
-            return $item['status'] === 'approved'
-                && now()->isSameDay(Carbon::parse($item['created']));
-        });
-
-        $pixToday = $payments->filter(function ($item) {
-            if (empty($item['created']))
-                return false;
-            return $item['method'] === 'pix'
-                && $item['status'] === 'approved'
-                && now()->isSameDay(Carbon::parse($item['created']));
-        });
-
-        $boletoPaid = $payments->filter(function ($item) {
-            return str_contains(($item['method'] ?? ''), 'bol')
-                && $item['status'] === 'approved';
-        });
-
-        $chargebacks = $payments->filter(function ($item) {
-            return in_array($item['status'], [
-                'charged_back',
-                'refunded',
-                'cancelled'
-            ]);
-        });
-
-        $this->stats = [
-            'today'       => $todayApproved->sum('value'),
-            'approved'    => $approved->sum('value'),
-            'pending'     => $payments->where('status', 'pending')->count(),
-            'rejected'    => $payments->where('status', 'rejected')->count(),
-            'pix_today'   => $pixToday->sum('value'),
-            'boleto_paid' => $boletoPaid->sum('value'),
-            'chargeback'  => $chargebacks->count(),
-            'total'       => $this->paging['total'] ?? 0,
-        ];
     }
 
     public function getHeaderActions(): array

@@ -1,33 +1,5 @@
 <x-filament-panels::page>
 
-    {{-- STATS --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-        <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
-            <div class="text-sm text-gray-500">Pendentes</div>
-            <div class="text-2xl font-bold text-warning-600">
-                {{ $stats['pending'] ?? 0 }}
-            </div>
-        </div>
-        <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
-            <div class="text-sm text-gray-500">Rejeitados</div>
-            <div class="text-2xl font-bold text-danger-600">
-                {{ $stats['rejected'] ?? 0 }}
-            </div>
-        </div>
-        <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
-            <div class="text-sm text-gray-500">Chargeback / Estorno</div>
-            <div class="text-2xl font-bold text-danger-600">
-                {{ $stats['chargeback'] ?? 0 }}
-            </div>
-        </div>
-        <div class="rounded-xl bg-white dark:bg-gray-900 p-4 shadow">
-            <div class="text-sm text-gray-500">Total Transações</div>
-            <div class="text-2xl font-bold">
-                {{ $stats['total'] ?? 0 }}
-            </div>
-        </div>
-    </div>
-
     {{-- FILTROS --}}
     <div class="rounded-xl bg-white dark:bg-gray-900 shadow p-4 mb-4">
         <div class="font-semibold text-sm mb-3 text-gray-600 dark:text-gray-300">Filtros</div>
