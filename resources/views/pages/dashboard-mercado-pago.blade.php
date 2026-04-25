@@ -25,7 +25,7 @@
                             dark:border-gray-700
                             dark:bg-gray-800
                             text-sm
-                            px-3
+                            px-4
                             py-2
                             pr-8
                             focus:outline-none
