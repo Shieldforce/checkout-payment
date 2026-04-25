@@ -165,6 +165,7 @@ class DashboardMercadoPago extends Page
         $allPayments = $result['data'] ?? [];
 
         $this->payments = $allPayments;
+        $this->paging   = $result['paging'] ?? [];
     }
 
     public function getHeaderActions(): array
