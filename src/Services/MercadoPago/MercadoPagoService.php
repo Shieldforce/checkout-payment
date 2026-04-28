@@ -35,18 +35,17 @@ class MercadoPagoService
         $external_id,
         $payer_email,
         $payer_first_name,
-    )
-    {
+    ) {
         try {
             $client = new PaymentClient;
 
             $payment = $client->create([
                 'transaction_amount' => $value,
-                'description'        => $description,
-                'payment_method_id'  => 'pix',
+                'description' => $description,
+                'payment_method_id' => 'pix',
                 'external_reference' => $external_id,
-                'payer'              => [
-                    'email'      => $payer_email,
+                'payer' => [
+                    'email' => $payer_email,
                     'first_name' => $payer_first_name,
                 ],
             ]);
@@ -54,25 +53,25 @@ class MercadoPagoService
             $arrayPayment = json_decode(json_encode($payment), true);
 
             return [
-                'id'             => $payment->id ?? null,
+                'id' => $payment->id ?? null,
                 'qr_code_base64' => $payment->point_of_interaction->transaction_data->qr_code_base64 ?? null,
-                'qr_code'        => $payment->point_of_interaction->transaction_data->qr_code ?? null,
-                'status'         => $payment->status ?? null,
-                'data'           => $arrayPayment ?? null,
+                'qr_code' => $payment->point_of_interaction->transaction_data->qr_code ?? null,
+                'status' => $payment->status ?? null,
+                'data' => $arrayPayment ?? null,
             ];
         } catch (MPApiException $e) {
 
             $code = $e->getApiResponse()->getStatusCode();
-            $msg  = $e->getApiResponse()->getContent();
+            $msg = $e->getApiResponse()->getContent();
 
             logger()->error('[Mercado Pago]', [
-                'error'       => $msg,
-                'tag'         => '[Mercado Pago]',
-                'email'       => $payer_email,
-                'valor'       => $value,
-                'code'        => $code,
+                'error' => $msg,
+                'tag' => '[Mercado Pago]',
+                'email' => $payer_email,
+                'valor' => $value,
+                'code' => $code,
                 'external_id' => $external_id,
-                'type'        => 'pix',
+                'type' => 'pix',
             ]);
 
             return [];
@@ -80,16 +79,16 @@ class MercadoPagoService
         } catch (\Throwable $e) {
 
             $code = $e->getCode();
-            $msg  = $e->getMessage();
+            $msg = $e->getMessage();
 
             logger()->error('[Mercado Pago]', [
-                'error'       => $msg,
-                'tag'         => '[Mercado Pago]',
-                'email'       => $payer_email,
-                'valor'       => $value,
-                'code'        => $code,
+                'error' => $msg,
+                'tag' => '[Mercado Pago]',
+                'email' => $payer_email,
+                'valor' => $value,
+                'code' => $code,
                 'external_id' => $external_id,
-                'type'        => 'pix',
+                'type' => 'pix',
             ]);
 
             return [];
@@ -107,31 +106,30 @@ class MercadoPagoService
         $document,
         $document_type,
         $address
-    )
-    {
+    ) {
         try {
             $client = new PaymentClient;
 
             $payment = $client->create([
                 'transaction_amount' => $value,
-                'description'        => $description,
-                'payment_method_id'  => 'bolbradesco',
+                'description' => $description,
+                'payment_method_id' => 'bolbradesco',
                 'external_reference' => $external_id,
-                'payer'              => [
-                    'email'          => $payer_email,
-                    'first_name'     => $payer_first_name,
-                    'last_name'      => $payer_last_name,
+                'payer' => [
+                    'email' => $payer_email,
+                    'first_name' => $payer_first_name,
+                    'last_name' => $payer_last_name,
                     'identification' => [
-                        'type'   => $document_type,
+                        'type' => $document_type,
                         'number' => $document,
                     ],
-                    'address'        => [
-                        'zip_code'      => trim($address['zip_code']),
-                        'city'          => isset($address['city']) ? trim($address['city']) : null,
-                        'street_name'   => isset($address['street_name']) ? trim($address['street_name']) : null,
-                        'street_number' => !empty($address['street_number']) ? trim($address['street_number']) : 's/n',
-                        'neighborhood'  => isset($address['neighborhood']) ? trim($address['neighborhood']) : null,
-                        'federal_unit'  => isset($address['federal_unit']) ? trim($address['federal_unit']) : 'RJ',
+                    'address' => [
+                        'zip_code' => trim($address['zip_code']),
+                        'city' => isset($address['city']) ? trim($address['city']) : null,
+                        'street_name' => isset($address['street_name']) ? trim($address['street_name']) : null,
+                        'street_number' => ! empty($address['street_number']) ? trim($address['street_number']) : 's/n',
+                        'neighborhood' => isset($address['neighborhood']) ? trim($address['neighborhood']) : null,
+                        'federal_unit' => isset($address['federal_unit']) ? trim($address['federal_unit']) : 'RJ',
                     ],
                 ],
                 'date_of_expiration' => $due_date,
@@ -140,51 +138,51 @@ class MercadoPagoService
             $arrayPayment = json_decode(json_encode($payment), true);
 
             return [
-                'id'      => $payment->id ?? null,
+                'id' => $payment->id ?? null,
                 'barcode' => $payment->transaction_details->barcode->content ?? null,
-                'pdf'     => $payment->transaction_details->external_resource_url ?? null,
-                'status'  => $payment->status ?? null,
-                'data'    => $arrayPayment ?? null,
+                'pdf' => $payment->transaction_details->external_resource_url ?? null,
+                'status' => $payment->status ?? null,
+                'data' => $arrayPayment ?? null,
             ];
         } catch (MPApiException $e) {
 
             $code = $e->getApiResponse()->getStatusCode();
-            $msg  = $e->getApiResponse()->getContent();
+            $msg = $e->getApiResponse()->getContent();
 
             logger()->error('[Mercado Pago]', [
-                'error'       => $msg,
-                'tag'         => '[Mercado Pago]',
-                'email'       => $payer_email,
-                'valor'       => $value,
-                'code'        => $code,
+                'error' => $msg,
+                'tag' => '[Mercado Pago]',
+                'email' => $payer_email,
+                'valor' => $value,
+                'code' => $code,
                 'external_id' => $external_id,
-                'type'        => 'boleto',
+                'type' => 'boleto',
             ]);
 
             logger([
-                "boleto" => "error_address",
-                $address ?? null
+                'boleto' => 'error_address',
+                $address ?? null,
             ]);
 
             return [];
         } catch (\Throwable $e) {
 
             $code = $e->getCode();
-            $msg  = $e->getMessage();
+            $msg = $e->getMessage();
 
             logger()->error('[Mercado Pago]', [
-                'error'       => $msg,
-                'tag'         => '[Mercado Pago]',
-                'email'       => $payer_email,
-                'valor'       => $value,
-                'code'        => $code,
+                'error' => $msg,
+                'tag' => '[Mercado Pago]',
+                'email' => $payer_email,
+                'valor' => $value,
+                'code' => $code,
                 'external_id' => $external_id,
-                'type'        => 'boleto',
+                'type' => 'boleto',
             ]);
 
             logger([
-                "boleto" => "error_address",
-                $address ?? null
+                'boleto' => 'error_address',
+                $address ?? null,
             ]);
 
             return [];
@@ -200,19 +198,18 @@ class MercadoPagoService
         $token_card, // token enviado pelo frontend
         $installments,
         $payment_method_id,
-    )
-    {
+    ) {
         try {
             $client = new PaymentClient;
 
             $payment = $client->create([
                 'transaction_amount' => $value,
-                'token'              => $token_card,
-                'description'        => $description,
-                'payment_method_id'  => $payment_method_id,
-                'installments'       => $installments,
-                'payer'              => [
-                    'email'      => $payer_email,
+                'token' => $token_card,
+                'description' => $description,
+                'payment_method_id' => $payment_method_id,
+                'installments' => $installments,
+                'payer' => [
+                    'email' => $payer_email,
                     'first_name' => $payer_first_name,
                 ],
                 'external_reference' => $external_id,
@@ -221,37 +218,37 @@ class MercadoPagoService
             $arrayPayment = json_decode(json_encode($payment), true);
 
             return [
-                'id'     => $payment->id ?? null,
+                'id' => $payment->id ?? null,
                 'status' => $payment->status ?? null,
-                'data'   => $arrayPayment ?? null,
+                'data' => $arrayPayment ?? null,
             ];
         } catch (MPApiException $e) {
             $code = $e->getApiResponse()->getStatusCode();
-            $msg  = $e->getApiResponse()->getContent();
+            $msg = $e->getApiResponse()->getContent();
 
             logger()->error('[Mercado Pago]', [
-                'error'       => $msg,
-                'tag'         => '[Mercado Pago]',
-                'email'       => $payer_email,
-                'valor'       => $value,
-                'code'        => $code,
+                'error' => $msg,
+                'tag' => '[Mercado Pago]',
+                'email' => $payer_email,
+                'valor' => $value,
+                'code' => $code,
                 'external_id' => $external_id,
-                'type'        => 'cartão',
+                'type' => 'cartão',
             ]);
 
             return [];
         } catch (\Throwable $e) {
             $code = $e->getCode();
-            $msg  = $e->getMessage();
+            $msg = $e->getMessage();
 
             logger()->error('[Mercado Pago]', [
-                'error'       => $msg,
-                'tag'         => '[Mercado Pago]',
-                'email'       => $payer_email,
-                'valor'       => $value,
-                'code'        => $code,
+                'error' => $msg,
+                'tag' => '[Mercado Pago]',
+                'email' => $payer_email,
+                'valor' => $value,
+                'code' => $code,
                 'external_id' => $external_id,
-                'type'        => 'cartão',
+                'type' => 'cartão',
             ]);
 
             return [];
@@ -260,7 +257,7 @@ class MercadoPagoService
 
     public function obertPagamento($paymentId)
     {
-        if (!isset($paymentId)) {
+        if (! isset($paymentId)) {
             return null;
         }
 
@@ -271,7 +268,7 @@ class MercadoPagoService
 
     public function buscarPagamentoPorExternalId($externalId)
     {
-        if (!$externalId) {
+        if (! $externalId) {
             return [];
         }
 
@@ -298,10 +295,10 @@ class MercadoPagoService
                 $arrayPayment = json_decode(json_encode($payment), true);
 
                 $result[] = [
-                    'id'     => $payment->id ?? null,
+                    'id' => $payment->id ?? null,
                     'status' => $payment->status ?? null,
                     'method' => $payment->payment_method_id ?? null,
-                    'data'   => $arrayPayment,
+                    'data' => $arrayPayment,
                 ];
             }
 
@@ -309,7 +306,7 @@ class MercadoPagoService
 
         } catch (MPApiException $e) {
             $code = $e->getApiResponse()->getStatusCode();
-            $msg  = $e->getApiResponse()->getContent();
+            $msg = $e->getApiResponse()->getContent();
 
             logger('[Mercado Pago] - Erro ao buscar pagamento por external_id: ' . $msg);
 
@@ -322,11 +319,10 @@ class MercadoPagoService
     }
 
     public function listarPagamentos(
-        int   $limit = 50,
-        int   $offset = 0,
+        int $limit = 50,
+        int $offset = 0,
         array $filters = [],
-    ): array
-    {
+    ): array {
         try {
             $client = new PaymentClient;
 
@@ -335,7 +331,7 @@ class MercadoPagoService
 
             $payload = array_filter(
                 $filters,
-                fn($v) => $v !== null && $v !== ''
+                fn ($v) => $v !== null && $v !== ''
             );
 
             logger($payload);
@@ -353,38 +349,38 @@ class MercadoPagoService
             $data = [];
 
             foreach ($results as $payment) {
-                $cc              = CppCheckout::where("uuid", $payment->external_reference)->first();
-                $transaction     = $cc?->referencable;
-                $order           = $transaction?->order;
-                $client          = $order?->client;
-                $typePeople      = $client?->type_people == TypePeopleEnum::F->value ? "CPF" : "CNPJ";
-                $email           = $payment?->payer?->email ?? $client->email;
+                $cc = CppCheckout::where('uuid', $payment->external_reference)->first();
+                $transaction = $cc?->referencable;
+                $order = $transaction?->order;
+                $client = $order?->client;
+                $typePeople = $client?->type_people == TypePeopleEnum::F->value ? 'CPF' : 'CNPJ';
+                $email = $payment?->payer?->email ?? $client->email;
                 $document_number = $payment?->payer?->identification?->number ?? $client->document;
-                $document_type   = $payment?->payer?->identification?->type ?? $typePeople;
+                $document_type = $payment?->payer?->identification?->type ?? $typePeople;
 
                 $data[] = [
-                    'id'              => $payment->id ?? null,
-                    'status'          => $payment->status ?? null,
-                    'method'          => $payment->payment_method_id ?? null,
-                    'value'           => $payment->transaction_amount ?? 0,
-                    'external'        => $payment->external_reference,
-                    'created'         => $payment->date_created ?? null,
-                    'payer'           => $email ?? null,
-                    'first_name'      => $payment->payer->first_name ?? null,
-                    'last_name'       => $payment->payer->last_name ?? null,
-                    'due_date'        => $payment->date_of_expiration ?? null,
+                    'id' => $payment->id ?? null,
+                    'status' => $payment->status ?? null,
+                    'method' => $payment->payment_method_id ?? null,
+                    'value' => $payment->transaction_amount ?? 0,
+                    'external' => $payment->external_reference,
+                    'created' => $payment->date_created ?? null,
+                    'payer' => $email ?? null,
+                    'first_name' => $payment->payer->first_name ?? null,
+                    'last_name' => $payment->payer->last_name ?? null,
+                    'due_date' => $payment->date_of_expiration ?? null,
                     'document_number' => $document_number ?? null,
-                    'document_type'   => $document_type ?? null,
-                    'transaction_id'  => $transaction?->id ?? null,
-                    'order_id'        => $order?->id ?? null,
+                    'document_type' => $document_type ?? null,
+                    'transaction_id' => $transaction?->id ?? null,
+                    'order_id' => $order?->id ?? null,
                 ];
             }
 
             return [
-                'data'   => $data,
+                'data' => $data,
                 'paging' => [
-                    'total'  => $total ?? $payments->paging->total ?? 0,
-                    'limit'  => $limit ?? $payments->paging->limit,
+                    'total' => $total ?? $payments->paging->total ?? 0,
+                    'limit' => $limit ?? $payments->paging->limit,
                     'offset' => $offset ?? $payments->paging->offset,
                 ],
             ];
@@ -393,11 +389,11 @@ class MercadoPagoService
             logger($e->getMessage());
 
             return [
-                'data'   => [],
+                'data' => [],
                 'paging' => [
-                    'total'  => 0,
-                    'limit'  => $limit,
-                    'offset' => $offset
+                    'total' => 0,
+                    'limit' => $limit,
+                    'offset' => $offset,
                 ],
             ];
         }
