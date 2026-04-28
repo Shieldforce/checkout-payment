@@ -346,6 +346,8 @@ class MercadoPagoService
                 )
             );
 
+            logger($payments);
+
             $results = collect($payments->results ?? []);
 
             $data = [];
