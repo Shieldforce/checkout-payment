@@ -61,10 +61,10 @@ class CppCheckoutResource extends Resource
                             ELSE 4
                         END
                     ', [
-                    StatusCheckoutEnum::criado->value,
-                    StatusCheckoutEnum::pendente->value,
-                    StatusCheckoutEnum::finalizado->value,
-                ]);
+                        StatusCheckoutEnum::criado->value,
+                        StatusCheckoutEnum::pendente->value,
+                        StatusCheckoutEnum::finalizado->value,
+                    ]);
             })
             ->columns([
                 /*TextColumn::make('referencable_id')
@@ -90,7 +90,7 @@ class CppCheckoutResource extends Resource
                     ->description('Métodos liberados')
                     ->formatStateUsing(function ($state) {
                         $array = json_decode($state, true);
-                        $tags  = [];
+                        $tags = [];
                         foreach ($array as $key => $value) {
                             $tags[] = MethodPaymentEnum::from($value)->label();
                         }
@@ -114,13 +114,13 @@ class CppCheckoutResource extends Resource
                     }),
 
                 BadgeColumn::make('status')
-                    ->formatStateUsing(fn($state, $record) => StatusCheckoutEnum::labelEnum($state))
-                    ->color(fn($state, $record) => StatusCheckoutEnum::colorEnum($state))
+                    ->formatStateUsing(fn ($state, $record) => StatusCheckoutEnum::labelEnum($state))
+                    ->color(fn ($state, $record) => StatusCheckoutEnum::colorEnum($state))
                     ->label('Status')
                     ->sortable(),
 
                 BadgeColumn::make('startOnStep')
-                    ->formatStateUsing(fn($state, $record) => TypeStepEnum::from($state)->label())
+                    ->formatStateUsing(fn ($state, $record) => TypeStepEnum::from($state)->label())
                     ->color('success')
                     ->label('Passo Atual')
                     ->sortable(),
@@ -142,7 +142,7 @@ class CppCheckoutResource extends Resource
                             ->toArray()
                     )
                     ->query(function ($query, array $data) {
-                        if (!empty($data['value'])) {
+                        if (! empty($data['value'])) {
                             $query->whereHas('step2', function ($subQuery) use ($data) {
                                 $subQuery->where('document', $data['value']);
                             });
@@ -163,7 +163,7 @@ class CppCheckoutResource extends Resource
                             ->toArray()
                     )
                     ->query(function ($query, array $data) {
-                        if (!empty($data['value'])) {
+                        if (! empty($data['value'])) {
                             $query->whereHas('step2', function ($subQuery) use ($data) {
                                 $subQuery->where('email', $data['value']);
                             });
@@ -184,7 +184,7 @@ class CppCheckoutResource extends Resource
                             ->toArray()
                     )
                     ->query(function ($query, array $data) {
-                        if (!empty($data['value'])) {
+                        if (! empty($data['value'])) {
                             $query->whereHas('step2', function ($subQuery) use ($data) {
                                 $subQuery->where('first_name', $data['value']);
                             });
@@ -219,7 +219,7 @@ class CppCheckoutResource extends Resource
                     ->label('Status')
                     ->options(StatusCheckoutEnum::options())
                     ->query(
-                        fn(Builder $query, array $data) => filled($data['value'])
+                        fn (Builder $query, array $data) => filled($data['value'])
                             ? $query->where('status', $data['value'])
                             : $query
                     ),
@@ -234,7 +234,7 @@ class CppCheckoutResource extends Resource
                     // Tables\Actions\EditAction::make(),
 
                     Tables\Actions\DeleteAction::make()
-                        ->visible(fn($record) => $record->status == StatusCheckoutEnum::criado->value),
+                        ->visible(fn ($record) => $record->status == StatusCheckoutEnum::criado->value),
 
                     Tables\Actions\Action::make('Link de Pagamento')
                         ->icon('heroicon-o-credit-card')
@@ -250,12 +250,12 @@ class CppCheckoutResource extends Resource
                         ->modalSubmitAction(false) // não precisa botão salvar
                         ->modalCancelActionLabel('Fechar')
                         ->modalContent(function (Model $record) {
-                            $mps        = new MercadoPagoService();
+                            $mps = new MercadoPagoService;
                             $pagamentos = $mps->buscarPagamentoPorExternalId($record->uuid);
 
                             logger([
                                 'external' => $record->uuid ?? null,
-                                'return'   => $pagamentos ?? null
+                                'return' => $pagamentos ?? null,
                             ]);
 
                             $approved = collect($pagamentos)
@@ -263,7 +263,7 @@ class CppCheckoutResource extends Resource
 
                             if ($approved) {
                                 $record->update([
-                                    "startOnStep" => TypeStepEnum::finalizado->value,
+                                    'startOnStep' => TypeStepEnum::finalizado->value,
                                 ]);
                             }
 
@@ -272,7 +272,7 @@ class CppCheckoutResource extends Resource
                                     ->persistent()
                                     ->danger()
                                     ->title('Erro!!')
-                                    ->body("Nenhum pagamento encontrado.")
+                                    ->body('Nenhum pagamento encontrado.')
                                     ->send();
 
                                 return view('checkout-payment::partials.empty', [
@@ -281,7 +281,7 @@ class CppCheckoutResource extends Resource
                             }
 
                             return view('checkout-payment::partials.pagamento-mp', [
-                                'pagamentos' => $pagamentos
+                                'pagamentos' => $pagamentos,
                             ]);
                         }),
 
