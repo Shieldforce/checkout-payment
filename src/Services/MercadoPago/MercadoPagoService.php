@@ -321,7 +321,7 @@ class MercadoPagoService
         }
     }
 
-    public function listarPagamentos(
+    /*public function listarPagamentos(
         int   $limit = 50,
         int   $offset = 0,
         array $filters = [],
@@ -402,6 +402,111 @@ class MercadoPagoService
                     'total'  => 0,
                     'limit'  => $limit,
                     'offset' => $offset
+                ],
+            ];
+        }
+    }*/
+
+    public function listarPagamentos(
+        int $limit = 50,
+        int $offset = 0,
+        array $filters = [],
+    ): array {
+        try {
+            $client = new PaymentClient();
+
+            // API não aceita esse filtro no search
+            unset($filters['payer.email']);
+
+            // sort válido para sdk 3.5.1
+            $sort = $filters['sort'] ?? 'id';
+            unset($filters['sort']);
+
+            $payload = array_filter(
+                array_merge([
+                    'sort'     => $sort,
+                    'criteria' => 'desc',
+                ], $filters),
+                fn($v) => $v !== null && $v !== ''
+            );
+
+            logger([
+                'mercado_pago_payload' => $payload,
+                'limit' => $limit,
+                'offset' => $offset,
+            ]);
+
+            $payments = $client->search(
+                request: new MPSearchRequest(
+                    $limit,
+                    $offset,
+                    $payload
+                )
+            );
+
+            $results = collect($payments->results ?? []);
+
+            $data = [];
+
+            foreach ($results as $payment) {
+
+                $cc          = CppCheckout::where('uuid', $payment->external_reference)->first();
+                $transaction = $cc?->referencable;
+                $order       = $transaction?->order;
+                $clientData  = $order?->client;
+
+                $typePeople = $clientData?->type_people == TypePeopleEnum::F->value
+                    ? 'CPF'
+                    : 'CNPJ';
+
+                $email = $payment?->payer?->email
+                    ?? $clientData?->email;
+
+                $documentNumber = $payment?->payer?->identification?->number
+                    ?? $clientData?->document;
+
+                $documentType = $payment?->payer?->identification?->type
+                    ?? $typePeople;
+
+                $data[] = [
+                    'id'              => $payment->id ?? null,
+                    'status'          => $payment->status ?? null,
+                    'method'          => $payment->payment_method_id ?? null,
+                    'value'           => $payment->transaction_amount ?? 0,
+                    'external'        => $payment->external_reference ?? null,
+                    'created'         => $payment->date_created ?? null,
+                    'payer'           => $email,
+                    'first_name'      => $payment->payer->first_name ?? null,
+                    'last_name'       => $payment->payer->last_name ?? null,
+                    'due_date'        => $payment->date_of_expiration ?? null,
+                    'document_number' => $documentNumber,
+                    'document_type'   => $documentType,
+                    'transaction_id'  => $transaction?->id ?? null,
+                    'order_id'        => $order?->id ?? null,
+                ];
+            }
+
+            return [
+                'data' => $data,
+                'paging' => [
+                    'total'  => $payments->paging->total ?? 0,
+                    'limit'  => $payments->paging->limit ?? $limit,
+                    'offset' => $payments->paging->offset ?? $offset,
+                ],
+            ];
+
+        } catch (\Throwable $e) {
+
+            logger([
+                'mercado_pago_error' => $e->getMessage(),
+            ]);
+
+            return [
+                'data' => [],
+                'paging' => [
+                    'total'  => 0,
+                    'limit'  => $limit,
+                    'offset' => $offset,
                 ],
             ];
         }

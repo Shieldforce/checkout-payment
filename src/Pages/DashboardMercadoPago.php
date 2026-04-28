@@ -107,7 +107,7 @@ class DashboardMercadoPago extends Page
         $this->payer              = '';
         $this->method             = '';
         $this->page               = 1;
-        $this->sort               = '';
+        $this->sort               = 'id';
         $this->transaction_id     = null;
         $this->transaction_search = '';
         $this->loadTransactions();
@@ -132,7 +132,7 @@ class DashboardMercadoPago extends Page
             'external_reference'      => $firstCheckout->uuid ?? $this->external ?: null,
             'payer.email'             => $this->payer ?: null,
             'payment_method_id'       => $this->method ?: null,
-            'sort'                    => $this->sort ?: null,
+            'sort'                    => $this->sort ?: 'id',
             'begin_date'              => $this->date_from
                 ? Carbon::parse($this->date_from)->startOfDay()->toIso8601String()
                 : null,
