@@ -346,8 +346,6 @@ class MercadoPagoService
                 )
             );
 
-            logger($payments);
-
             $results = collect($payments->results ?? []);
 
             $data = [];
@@ -391,6 +389,7 @@ class MercadoPagoService
 
         } catch (\Throwable $e) {
             logger($e->getMessage());
+            logger("aqui");
 
             return [
                 'data'   => [],
