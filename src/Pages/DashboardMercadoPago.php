@@ -107,7 +107,7 @@ class DashboardMercadoPago extends Page
         $this->payer              = '';
         $this->method             = '';
         $this->page               = 1;
-        $this->sort               = 'date_created';
+        $this->sort               = '';
         $this->transaction_id     = null;
         $this->transaction_search = '';
         $this->loadTransactions();

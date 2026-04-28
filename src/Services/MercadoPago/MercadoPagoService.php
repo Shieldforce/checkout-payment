@@ -344,7 +344,7 @@ class MercadoPagoService
                 request: new MPSearchRequest(
                     limit: $limit,
                     offset: $offset,
-                    filters: $payload
+                    filters: $payload,
                 )
             );
 
