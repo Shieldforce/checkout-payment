@@ -338,6 +338,8 @@ class MercadoPagoService
                 fn($v) => $v !== null && $v !== ''
             );
 
+            logger($payload);
+
             $payments = $client->search(
                 request: new MPSearchRequest(
                     limit: $limit,
@@ -389,7 +391,6 @@ class MercadoPagoService
 
         } catch (\Throwable $e) {
             logger($e->getMessage());
-            logger("aqui");
 
             return [
                 'data'   => [],
