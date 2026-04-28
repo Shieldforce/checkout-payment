@@ -40,7 +40,7 @@ class DashboardMercadoPago extends Page
     public string      $date_approved_to     = '';
     public string      $date_expiration_from = '';
     public string      $date_expiration_to   = '';
-    public ?string     $sort                 = 'date_created';
+    public ?string     $sort                 = 'id';
     public ?Collection $transactions         = null;
     public ?int        $transaction_id       = null;
     public string      $transaction_search   = '';
@@ -133,7 +133,6 @@ class DashboardMercadoPago extends Page
             'payer.email'             => $this->payer ?: null,
             'payment_method_id'       => $this->method ?: null,
             'sort'                    => $this->sort ?: null,
-            'criteria'                => 'desc',
             'begin_date'              => $this->date_from
                 ? Carbon::parse($this->date_from)->startOfDay()->toIso8601String()
                 : null,

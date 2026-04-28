@@ -334,6 +334,10 @@ class MercadoPagoService
             unset($filters['payer.email']);
 
             $payload = array_filter(
+                array_merge([
+                    'sort'     => $filters['sort'],
+                    'criteria' => 'desc'
+                ], $filters),
                 $filters,
                 fn($v) => $v !== null && $v !== ''
             );
