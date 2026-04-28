@@ -338,8 +338,6 @@ class MercadoPagoService
                 fn($v) => $v !== null && $v !== ''
             );
 
-            logger($payload);
-
             $payments = $client->search(
                 request: new MPSearchRequest(
                     limit: $limit,
