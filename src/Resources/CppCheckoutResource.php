@@ -293,7 +293,9 @@ class CppCheckoutResource extends Resource
                             $mps = new MercadoPagoService;
                             $cancel = $mps->cancelarPagamento($paymentId);
 
-                            logger($cancel);
+                            logger([
+                                "cancel" => $cancel,
+                            ]);
 
                             if ($cancel['success']) {
                                 Notification::make()
