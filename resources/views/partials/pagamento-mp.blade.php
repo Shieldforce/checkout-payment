@@ -54,6 +54,7 @@
                             text-sm
                             font-medium
                         "
+                    style="background: red;color: white;border-radius: 5px;padding: 5px;"
                 >
                     Cancelar
                 </button>

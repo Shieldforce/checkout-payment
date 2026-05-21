@@ -289,15 +289,13 @@ class CppCheckoutResource extends Resource
                         ->hidden()
                         ->requiresConfirmation()
                         ->action(function ($arguments) {
-
                             $paymentId = $arguments;
-
                             $mps = new MercadoPagoService;
-
                             $cancel = $mps->cancelarPagamento($paymentId);
 
-                            if ($cancel['success']) {
+                            logger($cancel);
 
+                            if ($cancel['success']) {
                                 Notification::make()
                                     ->success()
                                     ->title('Pagamento cancelado!')
