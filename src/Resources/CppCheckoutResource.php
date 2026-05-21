@@ -288,10 +288,23 @@ class CppCheckoutResource extends Resource
 
                     Tables\Actions\Action::make('cancelarPagamentoMp')
                         ->hidden()
-                        ->requiresConfirmation()
-                        ->action(function (array $arguments) {
+                        ->action(function (array $arguments, Model $record) {
+
+                            logger([
+                                'arguments' => $arguments,
+                            ]);
 
                             $paymentId = $arguments['payment_id'] ?? null;
+
+                            if (!$paymentId) {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Erro!')
+                                    ->body('Payment ID não enviado.')
+                                    ->send();
+
+                                return;
+                            }
 
                             $mps = new MercadoPagoService;
 
@@ -299,7 +312,7 @@ class CppCheckoutResource extends Resource
 
                             logger([
                                 'payment_id' => $paymentId,
-                                'cancel'     => $cancel,
+                                'cancel' => $cancel,
                             ]);
 
                             if ($cancel['success']) {
@@ -310,8 +323,7 @@ class CppCheckoutResource extends Resource
                                     ->body("Pagamento #{$paymentId} cancelado com sucesso.")
                                     ->send();
 
-                            }
-                            else {
+                            } else {
 
                                 Notification::make()
                                     ->danger()

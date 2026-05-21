@@ -36,21 +36,21 @@
                 >{{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
             </details>
 
+            <br>
             <hr>
+            <br>
 
             @if(!in_array($pagamento['status'], ['approved']))
 
                 <button
                     type="button"
-                    wire:click="
-                        mountTableAction(
+                    wire:click.prevent="
+                        callMountedTableAction(
                             'cancelarPagamentoMp',
-                            '{{ $record->getKey() }}',
                             {
                                 payment_id: '{{ $pagamento['id'] }}'
                             }
-                        );
-                        callMountedTableAction()
+                        )
                     "
                     class="
                         px-4
