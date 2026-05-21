@@ -15,7 +15,7 @@
             </p>
             <p><strong>Método:</strong> {{ $pagamento['method'] }}</p>
 
-            @if(in_array($pagamento['status'], ['pending', 'authorized', 'in_process']))
+            @if(!in_array($pagamento['status'], ['approved']))
 
                 <button
                     type="button"
