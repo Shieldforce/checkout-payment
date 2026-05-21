@@ -44,25 +44,8 @@
 
                 <button
                     type="button"
-                    wire:click.prevent="
-                        callMountedTableAction(
-                            'cancelarPagamentoMp',
-                            {
-                                payment_id: '{{ $pagamento['id'] }}'
-                            }
-                        )
-                    "
-                    class="
-                        px-4
-                        py-2
-                        bg-danger-600
-                        hover:bg-danger-700
-                        text-black
-                        rounded-lg
-                        text-sm
-                        font-medium
-                    "
-                    style="background: red;color: white;border-radius: 5px;padding: 5px;"
+                    wire:click="cancelarPagamentoMp('{{ $pagamento['id'] }}')"
+                    style="background:red;color:white;border-radius:5px;padding:5px;"
                 >
                     Cancelar
                 </button>

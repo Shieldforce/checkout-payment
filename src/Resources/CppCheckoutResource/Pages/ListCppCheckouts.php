@@ -11,6 +11,7 @@ use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Carbon;
 use Shieldforce\CheckoutPayment\Pages\DashboardMercadoPago;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource;
+use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 
 class ListCppCheckouts extends ListRecords
 {
@@ -87,4 +88,34 @@ class ListCppCheckouts extends ListRecords
                 }),
         ];
     }
+
+    public function cancelarPagamentoMp($paymentId): void
+    {
+        $mps = new MercadoPagoService;
+
+        $cancel = $mps->cancelarPagamento($paymentId);
+
+        logger([
+            'payment_id' => $paymentId,
+            'cancel' => $cancel,
+        ]);
+
+        if ($cancel['success']) {
+
+            Notification::make()
+                ->success()
+                ->title('Pagamento cancelado!')
+                ->body("Pagamento #{$paymentId} cancelado com sucesso.")
+                ->send();
+
+        } else {
+
+            Notification::make()
+                ->danger()
+                ->title('Erro ao cancelar!')
+                ->body($cancel['message'] ?? 'Erro desconhecido.')
+                ->send();
+        }
+    }
+
 }

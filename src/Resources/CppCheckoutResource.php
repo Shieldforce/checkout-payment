@@ -286,53 +286,6 @@ class CppCheckoutResource extends Resource
                             ]);
                         }),
 
-                    Tables\Actions\Action::make('cancelarPagamentoMp')
-                        ->hidden()
-                        ->action(function (array $arguments, Model $record) {
-
-                            logger([
-                                'arguments' => $arguments,
-                            ]);
-
-                            $paymentId = $arguments['payment_id'] ?? null;
-
-                            if (!$paymentId) {
-                                Notification::make()
-                                    ->danger()
-                                    ->title('Erro!')
-                                    ->body('Payment ID não enviado.')
-                                    ->send();
-
-                                return;
-                            }
-
-                            $mps = new MercadoPagoService;
-
-                            $cancel = $mps->cancelarPagamento($paymentId);
-
-                            logger([
-                                'payment_id' => $paymentId,
-                                'cancel' => $cancel,
-                            ]);
-
-                            if ($cancel['success']) {
-
-                                Notification::make()
-                                    ->success()
-                                    ->title('Pagamento cancelado!')
-                                    ->body("Pagamento #{$paymentId} cancelado com sucesso.")
-                                    ->send();
-
-                            } else {
-
-                                Notification::make()
-                                    ->danger()
-                                    ->title('Erro ao cancelar!')
-                                    ->body($cancel['message'] ?? 'Erro desconhecido.')
-                                    ->send();
-                            }
-                        }),
-
                 ]),
             ])
             ->bulkActions([
