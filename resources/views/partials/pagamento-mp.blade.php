@@ -15,6 +15,30 @@
             </p>
             <p><strong>Método:</strong> {{ $pagamento['method'] }}</p>
 
+            @if(in_array($pagamento['status'], ['pending', 'authorized', 'in_process']))
+
+                <button
+                    type="button"
+                    wire:click="mountTableAction(
+                            'cancelarPagamentoMp',
+                            '{{ $pagamento['id'] }}'
+                        )"
+                    class="
+                            px-4
+                            py-2
+                            bg-danger-600
+                            hover:bg-danger-700
+                            text-black
+                            rounded-lg
+                            text-sm
+                            font-medium
+                        "
+                >
+                    Cancelar
+                </button>
+
+            @endif
+
             <details class="mt-2">
                 <summary class="cursor-pointer text-sm text-gray-600">
                     Ver JSON completo
