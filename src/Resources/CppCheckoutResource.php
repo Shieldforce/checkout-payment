@@ -90,7 +90,7 @@ class CppCheckoutResource extends Resource
                     ->description('Métodos liberados')
                     ->formatStateUsing(function ($state) {
                         $array = json_decode($state, true);
-                        $tags = [];
+                        $tags  = [];
                         foreach ($array as $key => $value) {
                             $tags[] = MethodPaymentEnum::from($value)->label();
                         }
@@ -114,13 +114,13 @@ class CppCheckoutResource extends Resource
                     }),
 
                 BadgeColumn::make('status')
-                    ->formatStateUsing(fn ($state, $record) => StatusCheckoutEnum::labelEnum($state))
-                    ->color(fn ($state, $record) => StatusCheckoutEnum::colorEnum($state))
+                    ->formatStateUsing(fn($state, $record) => StatusCheckoutEnum::labelEnum($state))
+                    ->color(fn($state, $record) => StatusCheckoutEnum::colorEnum($state))
                     ->label('Status')
                     ->sortable(),
 
                 BadgeColumn::make('startOnStep')
-                    ->formatStateUsing(fn ($state, $record) => TypeStepEnum::from($state)->label())
+                    ->formatStateUsing(fn($state, $record) => TypeStepEnum::from($state)->label())
                     ->color('success')
                     ->label('Passo Atual')
                     ->sortable(),
@@ -142,7 +142,7 @@ class CppCheckoutResource extends Resource
                             ->toArray()
                     )
                     ->query(function ($query, array $data) {
-                        if (! empty($data['value'])) {
+                        if (!empty($data['value'])) {
                             $query->whereHas('step2', function ($subQuery) use ($data) {
                                 $subQuery->where('document', $data['value']);
                             });
@@ -163,7 +163,7 @@ class CppCheckoutResource extends Resource
                             ->toArray()
                     )
                     ->query(function ($query, array $data) {
-                        if (! empty($data['value'])) {
+                        if (!empty($data['value'])) {
                             $query->whereHas('step2', function ($subQuery) use ($data) {
                                 $subQuery->where('email', $data['value']);
                             });
@@ -184,7 +184,7 @@ class CppCheckoutResource extends Resource
                             ->toArray()
                     )
                     ->query(function ($query, array $data) {
-                        if (! empty($data['value'])) {
+                        if (!empty($data['value'])) {
                             $query->whereHas('step2', function ($subQuery) use ($data) {
                                 $subQuery->where('first_name', $data['value']);
                             });
@@ -219,7 +219,7 @@ class CppCheckoutResource extends Resource
                     ->label('Status')
                     ->options(StatusCheckoutEnum::options())
                     ->query(
-                        fn (Builder $query, array $data) => filled($data['value'])
+                        fn(Builder $query, array $data) => filled($data['value'])
                             ? $query->where('status', $data['value'])
                             : $query
                     ),
@@ -234,7 +234,7 @@ class CppCheckoutResource extends Resource
                     // Tables\Actions\EditAction::make(),
 
                     Tables\Actions\DeleteAction::make()
-                        ->visible(fn ($record) => $record->status == StatusCheckoutEnum::criado->value),
+                        ->visible(fn($record) => $record->status == StatusCheckoutEnum::criado->value),
 
                     Tables\Actions\Action::make('Link de Pagamento')
                         ->icon('heroicon-o-credit-card')
@@ -243,11 +243,11 @@ class CppCheckoutResource extends Resource
                         })
                         ->openUrlInNewTab(),
 
-                    Tables\Actions\Action::make('ver_pagamento_mp')
+                    /*Tables\Actions\Action::make('ver_pagamento_mp')
                         ->label('Ver Pagamento MP')
                         ->icon('heroicon-o-magnifying-glass')
                         ->modalHeading('Dados do Pagamento (Mercado Pago)')
-                        ->modalSubmitAction(false) // não precisa botão salvar
+                        ->modalSubmitAction(false)
                         ->modalCancelActionLabel('Fechar')
                         ->modalContent(function (Model $record) {
                             $mps = new MercadoPagoService;
@@ -283,7 +283,84 @@ class CppCheckoutResource extends Resource
                             return view('checkout-payment::partials.pagamento-mp', [
                                 'pagamentos' => $pagamentos,
                             ]);
-                        }),
+                        }),*/
+
+                    Tables\Actions\Action::make('ver_pagamento_mp')
+                        ->label('Ver Pagamento MP')
+                        ->icon('heroicon-o-magnifying-glass')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading('Dados do Pagamento (Mercado Pago)')
+                        ->modalSubmitActionLabel('Cancelar Pagamento')
+                        ->modalCancelActionLabel('Fechar')
+                        ->action(function (Model $record) {
+                            $mps = new MercadoPagoService;
+                            $pagamentos = $mps->buscarPagamentoPorExternalId($record->uuid);
+                            $payment = collect($pagamentos)
+                                ->first(fn($p) => in_array($p['status'], [
+                                    'pending',
+                                    'authorized',
+                                    'in_process',
+                                ])
+                                );
+
+                            if (!$payment) {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Erro!')
+                                    ->body('Nenhum pagamento cancelável encontrado.')
+                                    ->send();
+
+                                return;
+                            }
+
+                            $cancel = $mps->cancelarPagamento($payment['id']);
+
+                            if ($cancel['success']) {
+                                Notification::make()
+                                    ->success()
+                                    ->title('Pagamento cancelado!')
+                                    ->body("Pagamento #{$payment['id']} cancelado.")
+                                    ->send();
+                            }
+                            else {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Erro ao cancelar!')
+                                    ->body($cancel['message'] ?? 'Erro desconhecido.')
+                                    ->send();
+                            }
+
+                        })
+                        ->modalContent(function (Model $record) {
+                            $mps = new MercadoPagoService;
+                            $pagamentos = $mps->buscarPagamentoPorExternalId($record->uuid);
+                            $approved = collect($pagamentos)
+                                ->firstWhere('status', 'approved');
+
+                            if ($approved) {
+                                $record->update([
+                                    'startOnStep' => TypeStepEnum::finalizado->value,
+                                ]);
+                            }
+
+                            if (empty($pagamentos)) {
+                                Notification::make('errors_mp')
+                                    ->persistent()
+                                    ->danger()
+                                    ->title('Erro!!')
+                                    ->body('Nenhum pagamento encontrado.')
+                                    ->send();
+
+                                return view('checkout-payment::partials.empty', [
+                                    'message' => 'Nenhum pagamento encontrado.',
+                                ]);
+                            }
+
+                            return view('checkout-payment::partials.pagamento-mp', [
+                                'pagamentos' => $pagamentos,
+                            ]);
+                        })
 
                 ]),
             ])
