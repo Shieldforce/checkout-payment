@@ -294,7 +294,7 @@ class CppCheckoutResource extends Resource
                             $cancel = $mps->cancelarPagamento($paymentId);
 
                             logger([
-                                "cancel" => $cancel,
+                                'cancel' => $cancel,
                             ]);
 
                             if ($cancel['success']) {
