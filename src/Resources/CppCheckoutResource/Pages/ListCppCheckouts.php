@@ -130,8 +130,8 @@ class ListCppCheckouts extends ListRecords
                 'response_credit_card_data' => null,
                 'request_pix_data'          => null,
                 'response_pix_data'         => null,
-                'request_billet_data'       => null,
-                'response_billet_data'      => null,
+                'request_billet_data'       => json_encode([]),
+                'response_billet_data'      => json_encode([]),
             ]);
 
             Notification::make()
