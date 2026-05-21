@@ -286,8 +286,7 @@ class CppCheckoutResource extends Resource
                         }),
 
                     Tables\Actions\Action::make('cancelarPagamentoMp')
-                        ->label('Cancelar')
-                        ->color('danger')
+                        ->hidden()
                         ->requiresConfirmation()
                         ->action(function ($arguments) {
 

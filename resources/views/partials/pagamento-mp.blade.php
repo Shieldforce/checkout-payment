@@ -15,6 +15,27 @@
             </p>
             <p><strong>Método:</strong> {{ $pagamento['method'] }}</p>
 
+            <details class="mt-2">
+                <summary class="cursor-pointer text-sm text-gray-600">
+                    Ver JSON completo
+                </summary>
+
+                <pre
+                    class="
+                        text-xs
+                        bg-gray-100
+                        p-2
+                        rounded
+                        mt-2
+                        overflow-y-auto
+                        max-h-60
+                        whitespace-pre-wrap
+                        break-words
+                    "
+                    style="overflow-y: scroll;overflow-x: scroll;height: 500px;"
+                >{{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+            </details>
+
             @if(!in_array($pagamento['status'], ['approved']))
 
                 <button
@@ -39,26 +60,6 @@
 
             @endif
 
-            <details class="mt-2">
-                <summary class="cursor-pointer text-sm text-gray-600">
-                    Ver JSON completo
-                </summary>
-
-                <pre
-                    class="
-                        text-xs
-                        bg-gray-100
-                        p-2
-                        rounded
-                        mt-2
-                        overflow-y-auto
-                        max-h-60
-                        whitespace-pre-wrap
-                        break-words
-                    "
-                    style="overflow-y: scroll;overflow-x: scroll;height: 500px;"
-                >{{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
-            </details>
         </div>
     @endforeach
 </div>
