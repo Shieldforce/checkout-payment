@@ -36,6 +36,8 @@
                 >{{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
             </details>
 
+            <hr>
+
             @if(!in_array($pagamento['status'], ['approved']))
 
                 <button
@@ -47,7 +49,8 @@
                             {
                                 payment_id: '{{ $pagamento['id'] }}'
                             }
-                        )
+                        );
+                        callMountedTableAction()
                     "
                     class="
                         px-4
