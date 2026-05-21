@@ -10,6 +10,7 @@ class CppCheckoutStep4 extends Model
 
     protected $fillable = [
         'cpp_checkout_id',
+        'visible',
         'card_number',
         'card_token',
         'installments',
@@ -19,7 +20,6 @@ class CppCheckoutStep4 extends Model
         'base_qrcode',
         'url_qrcode',
         'url_billet',
-        'visible',
         'request_credit_card_data',
         'response_credit_card_data',
         'request_pix_data',

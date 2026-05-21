@@ -40,11 +40,11 @@
             <hr>
             <br>
 
-            @if(!in_array($pagamento['status'], ['approved']))
+            @if(!in_array($pagamento['status'], ['approved', 'cancelled']))
 
                 <button
                     type="button"
-                    wire:click="cancelarPagamentoMp('{{ $pagamento['id'] }}')"
+                    wire:click="cancelarPagamentoMp('{{ $pagamento['id'] }}', '{{ $record->id }}')"
                     style="background:red;color:white;border-radius:5px;padding:5px;"
                 >
                     Cancelar
