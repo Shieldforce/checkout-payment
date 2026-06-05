@@ -845,7 +845,7 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         DB::beginTransaction();
 
-        logger($this->step4->toArray());
+        logger($this->checkout->toArray());
 
         return;
 
