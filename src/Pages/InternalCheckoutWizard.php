@@ -845,9 +845,11 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         DB::beginTransaction();
 
-        try {
+        logger($this->step4->toArray());
 
-            dd($this->step4);
+        return;
+
+        try {
 
             if (
                 isset($this->step4->base_qrcode) &&
