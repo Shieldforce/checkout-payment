@@ -847,6 +847,8 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         try {
 
+            dd($this->step4);
+
             if (
                 isset($this->step4->base_qrcode) &&
                 $method == MethodPaymentEnum::pix->value
