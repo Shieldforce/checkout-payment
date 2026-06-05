@@ -2,9 +2,9 @@
 
 namespace Shieldforce\CheckoutPayment\Services\Sicoob\Auth;
 
-class LoginService
+class LoginSicoobService
 {
-    public function SicoobAuth($dados): array
+    public function auth($dados): array
     {
         $curl = curl_init();
 
