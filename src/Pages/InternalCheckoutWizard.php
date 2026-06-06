@@ -883,9 +883,9 @@ class InternalCheckoutWizard extends Page implements HasForms
 
             if (isset($inserir["inserir"]["resultado"])) {
                 $step4salvar       = $boletoPixSicoob->salvarDadosBoletoPix($this->checkout, $inserir);
-                $this->base_qrcode = $step4salvar->base_qrcode;
-                $this->url_qrcode  = $step4salvar->url_qrcode;
-                $this->url_billet  = $step4salvar->url_billet;
+                $this->base_qrcode = $step4salvar->base_qrcode ?? null;
+                $this->url_qrcode  = $step4salvar->url_qrcode ?? null;
+                $this->url_billet  = $step4salvar->url_billet ?? null;
                 return;
             }
 

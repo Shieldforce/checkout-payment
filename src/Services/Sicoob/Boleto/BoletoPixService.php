@@ -328,6 +328,8 @@ class BoletoPixService
 
     public function salvarDadosBoletoPix(CppCheckout $checkout, $resultado)
     {
+        dd($resultado);
+
         $pdf = null;
 
         $inserir = $resultado["inserir"];
