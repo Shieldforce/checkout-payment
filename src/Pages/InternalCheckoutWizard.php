@@ -878,81 +878,14 @@ class InternalCheckoutWizard extends Page implements HasForms
                 // return;
             }
 
-            $firstGatewaySicoob = CppGateways::where("name", TypeGatewayEnum::sicoob->value)->first();
-            $transaction        = $this?->checkout?->referencable;
+            $boletoPixSicoob = new BoletoPixService();
+            $inserir         = $boletoPixSicoob->boletoPixInserir($this->checkout);
 
-            if (
-                isset($transaction->due_date) &&
-                $transaction->due_date <= Carbon::today()->format("Y-m-d H:i:s")
-            ) {
-                $dias_atraso = Carbon::parse($transaction->due_date)->diffInDays(Carbon::today());
-                if ($dias_atraso > 5) {
-                    $texto1 = "Vencido a " . $dias_atraso . " dias.";
-                    $texto2 = "Valor atualizado";
-                }
-            }
-
-            if (
-                $transaction?->order?->sicoob &&
-                isset($firstGatewaySicoob->id) &&
-                isset($transaction->id)
-            ) {
-
-                $order   = $transaction?->order;
-                $client  = $order->client;
-                $address = $client->addresses->first();
-
-                // Boleto e Pix Sicoob ---
-                $sicoobLogin = new LoginSicoobService();
-                $login       = $sicoobLogin->auth([
-                    "client_id"         => $firstGatewaySicoob->field_2,
-                    "path_certificado"  => storage_path($firstGatewaySicoob->field_5),
-                    "senha_certificado" => $firstGatewaySicoob->field_1,
-                ]);
-
-                $dueDate = Carbon::parse($transaction->due_date)
-                    ->format('Y-m-d');
-
-                $value = number_format($transaction->value, 2, '.', '');
-
-                $payload = [
-                    //config ---
-                    "client_id"              => $firstGatewaySicoob->field_2,
-                    "path_certificado"       => storage_path($firstGatewaySicoob->field_5),
-                    "senha_certificado"      => $firstGatewaySicoob->field_1,
-                    "numero_cliente"         => $firstGatewaySicoob->field_4,
-                    "numero_conta"           => $firstGatewaySicoob->field_6,
-                    "numeroContratoCobranca" => $firstGatewaySicoob->field_3,
-                    //---
-                    "external_reference"     => $transaction->id,
-                    "value"                  => $value,
-                    "due"                    => $dueDate,
-                    "pagador"                => [
-                        "numeroCpfCnpj" => $client->document,
-                        "nome"          => $client->name,
-                        "endereco"      => $address->street . " " . $address->number,
-                        "bairro"        => $address->district,
-                        "cidade"        => $address->city,
-                        "cep"           => $address->zipcode,
-                        "uf"            => $address->state,
-                        "email"         => $client->email,
-                    ],
-                    "beneficiarioFinal"      => [
-                        "numeroCpfCnpj" => "11655954000159",
-                        "nome"          => "Federal Telecom",
-                    ],
-                    "mensagensInstrucao"     => [
-                        $texto1 ?? "Mensalidade Federal Associados",
-                        $texto2 ?? "Multa de 2%, e 0,1% ao dia",
-                        "Dúvidas? Ligue 08006262345",
-                        "Juntos Somos Fortes",
-                    ],
-                ];
-
-                $sicoobBoletoPixService = new BoletoPixService($login["access_token"]);
-                $inserir                = $sicoobBoletoPixService->insert($payload);
-                dd($inserir);
-
+            if (isset($inserir["inserir"]["resultado"])) {
+                $step4salvar       = $boletoPixSicoob->salvarDadosBoletoPix($this->checkout, $inserir);
+                $this->base_qrcode = $step4salvar->base_qrcode;
+                $this->url_qrcode  = $step4salvar->url_qrcode;
+                $this->url_billet  = $step4salvar->url_billet;
                 return;
             }
 
