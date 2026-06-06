@@ -9,6 +9,7 @@ use Endroid\QrCode\Writer\PngWriter;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
@@ -339,7 +340,7 @@ class BoletoPixService
 
         if (!empty($inserir['pdfBoleto'])) {
             $pdfContent = base64_decode($inserir['pdfBoleto']);
-            $path = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
+            $path       = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
             Storage::disk('public')->put($path, $pdfContent);
             $pdf = $path;
         }
@@ -379,15 +380,11 @@ class BoletoPixService
             ]
         );
 
-        dd($up, [
-            'base_qrcode'          => $qrcodeBase64 ?? null,
-            'url_qrcode'           => $inserir['qrCode'] ?? null,
-            'request_pix_data'     => json_encode($payload),
-            'response_pix_data'    => json_encode($inserir),
-            'payment_method_id'    => 'bolbradescox',
-            'url_billet'           => $pdf,
-            'request_billet_data'  => json_encode($payload),
-            'response_billet_data' => json_encode($inserir),
+        $checkout->update([
+            'status'      => StatusCheckoutEnum::pendente->value,
+            'startOnStep' => 5,
         ]);
+
+        return $checkout;
     }
 }
