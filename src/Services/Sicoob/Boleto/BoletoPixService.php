@@ -12,6 +12,8 @@ class BoletoPixService
 
     public function insert($dados)
     {
+        dd($dados);
+
         $payload = [
             "numeroCliente"                   => $dados["numero_cliente"],
             "codigoModalidade"                => 1,
