@@ -916,11 +916,14 @@ class InternalCheckoutWizard extends Page implements HasForms
                 $value = number_format($transaction->value, 2, '.', '');
 
                 $payload = [
+                    //config ---
                     "client_id"              => $firstGatewaySicoob->field_2,
                     "path_certificado"       => storage_path($firstGatewaySicoob->field_5),
                     "senha_certificado"      => $firstGatewaySicoob->field_1,
                     "numero_cliente"         => $firstGatewaySicoob->field_4,
                     "numero_conta"           => $firstGatewaySicoob->field_6,
+                    "numeroContratoCobranca" => $firstGatewaySicoob->field_3,
+                    //---
                     "external_reference"     => $transaction->id,
                     "value"                  => $value,
                     "due"                    => $dueDate,
@@ -944,7 +947,6 @@ class InternalCheckoutWizard extends Page implements HasForms
                         "texto3" => "Dúvidas? Ligue 08006262345",
                         "texto4" => "Juntos Somos Fortes",
                     ],
-                    "numeroContratoCobranca" => $firstGatewaySicoob->field_3
                 ];
 
                 $sicoobBoletoPixService = new BoletoPixService($login["access_token"]);
