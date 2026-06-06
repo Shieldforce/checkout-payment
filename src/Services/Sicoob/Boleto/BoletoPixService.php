@@ -13,92 +13,13 @@ class BoletoPixService
 
     public function insert($dados)
     {
-
-        /*{
-          "numeroCliente": 25546454,
-          "codigoModalidade": 1,
-          "numeroContaCorrente": 123456,
-          "codigoEspecieDocumento": "DM",
-          "dataEmissao": "2025-09-01",
-          "nossoNumero": "0123456789012345678",
-          "seuNumero": "012345678901234567",
-          "identificacaoBoletoEmpresa": "01234567890123456789",
-          "identificacaoEmissaoBoleto": 1,
-          "identificacaoDistribuicaoBoleto": 1,
-          "valor": 156.23,
-          "dataVencimento": "2025-09-25",
-          "dataLimitePagamento": "2025-11-05",
-          "valorAbatimento": 5.57,
-          "tipoDesconto": 1,
-          "dataPrimeiroDesconto": "2025-09-15",
-          "valorPrimeiroDesconto": 22.5,
-          "dataSegundoDesconto": "2025-09-20",
-          "valorSegundoDesconto": 15.5,
-          "dataTerceiroDesconto": "2025-09-24",
-          "valorTerceiroDesconto": 10.5,
-          "tipoMulta": 1,
-          "dataMulta": "2025-11-05",
-          "valorMulta": 5.5,
-          "tipoJurosMora": 1,
-          "dataJurosMora": "2025-11-05",
-          "valorJurosMora": 4.5,
-          "numeroParcela": 1,
-          "aceite": true,
-          "codigoNegativacao": 2,
-          "numeroDiasNegativacao": 60,
-          "codigoProtesto": 1,
-          "numeroDiasProtesto": 30,
-          "pagador": {
-                    "numeroCpfCnpj": "11122233300",
-            "nome": "Nome completo do pagador X",
-            "endereco": "Endereço do pagador X",
-            "bairro": "Bairro do pagador X",
-            "cidade": "Cidade do pagador X",
-            "cep": "00000000",
-            "uf": "OU",
-            "email": "pagador@dominio.com br"
-          },
-          "beneficiarioFinal": {
-                    "numeroCpfCnpj": "11122233300",
-            "nome": "Beneficiário Y"
-          },
-          "mensagensInstrucao": [
-                    "Descrição da Instrução 1",
-                    "Descrição da Instrução 2",
-                    "Descrição da Instrução 3",
-                    "Descrição da Instrução 4",
-                    "Descrição da Instrução 5"
-                ],
-          "gerarPdf": false,
-          "rateioCreditos": [
-            {
-                "numeroBanco": 33,
-              "numeroAgencia": 1,
-              "numeroContaCorrente": "987654",
-              "contaPrincipal": true,
-              "codigoTipoValorRateio": 1,
-              "valorRateio": "100",
-              "codigoTipoCalculoRateio": 1,
-              "numeroCpfCnpjTitular": "11122233300",
-              "nomeTitular": "Nome completo do titular X",
-              "codigoFinalidadeTed": "10",
-              "codigoTipoContaDestinoTed": "CC",
-              "quantidadeDiasFloat": 1,
-              "dataFloatCredito": "2020-12-30"
-            }
-          ],
-          "codigoCadastrarPIX": 1,
-          "numeroContratoCobranca": 1
-        }*/
-
-
         $payload = [
             "numeroCliente"                   => $dados["numero_cliente"],
             "codigoModalidade"                => 1,
             "numeroContaCorrente"             => $dados["numero_conta"],
             "codigoEspecieDocumento"          => "DM",
             "dataEmissao"                     => date("Y-m-d"),
-            "seuNumero"                       => (string) $dados["external_reference"],
+            "seuNumero"                       => (string)$dados["external_reference"],
             "identificacaoEmissaoBoleto"      => 1,
             "identificacaoDistribuicaoBoleto" => 1,
             "valor"                           => $dados["value"],
@@ -156,15 +77,10 @@ class BoletoPixService
             CURLOPT_SSL_VERIFYHOST => 2,
 
             // Debug opcional
-            CURLOPT_VERBOSE => true,
+            CURLOPT_VERBOSE        => true,
         ]);
 
         $response = curl_exec($curl);
-
-        dd([
-            'http_code' => curl_getinfo($curl, CURLINFO_HTTP_CODE),
-            'response' => $response,
-        ]);
 
         if ($response === false) {
             throw new Exception('Erro cURL: ' . curl_error($curl));
