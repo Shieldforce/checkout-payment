@@ -52,8 +52,6 @@ class BoletoPixService
             "numeroContratoCobranca"          => $dados["numeroContratoCobranca"]
         ];
 
-        dd(file_exists($dados["path_certificado"]));
-
         $curl = curl_init();
 
         curl_setopt_array($curl, [
