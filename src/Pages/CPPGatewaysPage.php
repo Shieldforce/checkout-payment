@@ -174,7 +174,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                         ->toArray();
                 })
                 ->columnSpanFull()
-                ->after(function (Get $get, Set $set) {
+                ->afterStateUpdated(function (Get $get, Set $set) {
 
                     $name = $get("name");
 
@@ -213,14 +213,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             Toggle::make('active')
                 ->label('Ativo')
                 ->reactive()
-                ->default(function (Get $get) {
-                    $name = $get("name");
-                    if (isset($name) && $name == TypeGatewayEnum::mercado_pago->value) {
-                        return true;
-                    }
-
-                    return false;
-                })
+                ->disabled(fn(Get $get) => $get('name') === TypeGatewayEnum::mercado_pago->value)
                 ->hint('Ao ativar esse gateway, os outro serão desativados.')
                 ->required(),
 
