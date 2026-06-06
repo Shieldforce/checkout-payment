@@ -878,6 +878,8 @@ class InternalCheckoutWizard extends Page implements HasForms
                 // return;
             }
 
+            dd(\chillerlan\QRCode\QRCode::class);
+
             $boletoPixSicoob = new BoletoPixService();
             $inserir         = $boletoPixSicoob->boletoPixInserir($this->checkout);
 
