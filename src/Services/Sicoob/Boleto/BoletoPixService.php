@@ -64,7 +64,17 @@ class BoletoPixService
             "identificacaoDistribuicaoBoleto" => 1,
             "valor" => 100.00,
             "dataVencimento" => now()->addDays(5)->format('Y-m-d'),
-            "numeroParcela" => 1,
+
+
+            "dataLimitePagamento"             => Carbon::parse($dados["due"])->addDays(60)->format("Y-m-d"),
+            "tipoDesconto"                    => 0,
+            "tipoMulta"                       => 1,
+            "dataMulta"                       => Carbon::parse($dados["due"])->addDays(2)->format("Y-m-d"),
+            "valorMulta"                      => 2,
+            "tipoJurosMora"                   => 1,
+            "dataJurosMora"                   => Carbon::parse($dados["due"])->addDays(3)->format("Y-m-d"),
+            "valorJurosMora"                  => 0.01,
+            "numeroParcela"                   => 1,
 
             "pagador" => [
                 "numeroCpfCnpj" => "47205545000106",
