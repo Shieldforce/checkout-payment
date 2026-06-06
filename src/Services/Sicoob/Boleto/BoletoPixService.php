@@ -36,7 +36,7 @@ class BoletoPixService
             "pagador"                         => [
                 "numeroCpfCnpj" => $dados["pagador"]["numeroCpfCnpj"],
                 "nome"          => $dados["pagador"]["nome"],
-                "endereco"      => Str::upper(Str::ascii($dados["pagador"]["enedereco"])),
+                "endereco"      => Str::upper(Str::ascii($dados["pagador"]["endereco"])),
                 "bairro"        => Str::upper(Str::ascii($dados["pagador"]["bairro"])),
                 "cidade"        => Str::upper(Str::ascii($dados["pagador"]["cidade"])),
                 "cep"           => $dados["pagador"]["cep"],
