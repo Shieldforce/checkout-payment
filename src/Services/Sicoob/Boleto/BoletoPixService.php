@@ -364,7 +364,7 @@ class BoletoPixService
             // Deve começar com: iVBORw0KGgo...
         }
 
-        $up = $checkout->step4()->updateOrCreate(
+       $checkout->step4()->updateOrCreate(
             [
                 'cpp_checkout_id' => $checkout->id,
             ],

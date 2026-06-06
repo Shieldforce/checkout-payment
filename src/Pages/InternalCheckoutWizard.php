@@ -879,8 +879,17 @@ class InternalCheckoutWizard extends Page implements HasForms
                 // return;
             }
 
-            $boletoPixSicoob = new BoletoPixService();
-            $inserir         = $boletoPixSicoob->boletoPixInserir($this->checkout);
+            $transaction = $this->checkout?->referencable;
+            $order       = $transaction?->order;
+
+            if (
+                isset($order->sicoob) &&
+                $method == MethodPaymentEnum::pix->value ||
+                $method == MethodPaymentEnum::billet->value
+            ) {
+                $boletoPixSicoob = new BoletoPixService();
+                $inserir         = $boletoPixSicoob->boletoPixInserir($this->checkout);
+            }
 
             if (isset($inserir["inserir"]["resultado"])) {
                 $step4salvar       = $boletoPixSicoob->salvarDadosBoletoPix($this->checkout, $inserir);
