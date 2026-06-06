@@ -856,7 +856,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 $method == MethodPaymentEnum::pix->value
             ) {
                 $this->base_qrcode = $this->step4->base_qrcode;
-                $this->url_qrcode = $this->step4->url_qrcode;
+                $this->url_qrcode  = $this->step4->url_qrcode;
                 $this->checkout->update([
                     'startOnStep' => 5,
                 ]);
@@ -876,22 +876,26 @@ class InternalCheckoutWizard extends Page implements HasForms
                 // return;
             }
 
-            // Boleto e Pix Sicoob ---
-            /*$sicoobService = new LoginSicoobService();
-            $sicoobService->auth([
-                "client_id"         => "",
-                "path_certificado"  => "",
-                "senha_certificado" => "",
-            ]);*/
-
-            dd($this->checkout->referencable->order);
-
-            $gatewayCreate = new MPCreateLocalService($this->checkout);
+            $gatewayCreate      = new MPCreateLocalService($this->checkout);
             $firstGatewaySicoob = CppGateways::where("name", TypeGatewayEnum::sicoob->value)->first();
 
-            if(isset($firstGatewaySicoob->id)/* && ""*/) {
-                //
+            if (
+                $this?->checkout?->referencable?->order?->sicoob &&
+                isset($firstGatewaySicoob->id)
+            ) {
+                // Boleto e Pix Sicoob ---
+                $sicoobService = new LoginSicoobService();
+                $login = $sicoobService->auth([
+                    "client_id"         => $firstGatewaySicoob->field_2,
+                    "path_certificado"  => storage_path($firstGatewaySicoob->field_5),
+                    "senha_certificado" => $firstGatewaySicoob->field_1,
+                ]);
+
+                dd($login);
+
+                //$returnPix = $gatewayCreate->BoletoEPix();
             }
+            return;
 
             if ($method == MethodPaymentEnum::pix->value) {
                 $returnPix = $gatewayCreate->pix();
