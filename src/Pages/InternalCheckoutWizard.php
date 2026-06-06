@@ -879,6 +879,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 // return;
             }
 
+            // Gerar sicoob ----------
             $transaction = $this->checkout?->referencable;
             $order       = $transaction?->order;
 
@@ -900,6 +901,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 return;
             }
 
+            // Gerar mercado pago ----------
             $gatewayCreate = new MPCreateLocalService($this->checkout);
 
             if ($method == MethodPaymentEnum::pix->value) {
