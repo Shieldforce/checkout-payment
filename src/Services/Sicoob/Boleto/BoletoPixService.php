@@ -34,7 +34,7 @@ class BoletoPixService
             "valorJurosMora"                  => 0.01,
             "numeroParcela"                   => 1,
             "pagador"                         => [
-                "numeroCpfCnpj" => "10142449784",
+                "numeroCpfCnpj" => $dados["pagador"]["numeroCpfCnpj"],
                 "nome"          => $dados["pagador"]["nome"],
                 "endereco"      => Str::upper(Str::ascii($dados["pagador"]["endereco"])),
                 "bairro"        => Str::upper(Str::ascii($dados["pagador"]["bairro"])),
@@ -50,7 +50,7 @@ class BoletoPixService
             "mensagensInstrucao"              => $dados["mensagensInstrucao"],
             "gerarPdf"                        => true,
             "codigoCadastrarPIX"              => 1,
-            "numeroContratoCobranca"          => $dados["numeroContratoCobranca"]
+            "numeroContratoCobranca"          => $dados["numeroContratoCobranca"],
         ];
 
         $curl = curl_init();

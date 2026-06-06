@@ -927,7 +927,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     "pagador"                => [
                         "numeroCpfCnpj" => $client->document,
                         "nome"          => $client->name,
-                        "endereco"      => $address->street,
+                        "endereco"      => $address->street . " " . $address->number,
                         "bairro"        => $address->district,
                         "cidade"        => $address->city,
                         "cep"           => $address->zipcode,
