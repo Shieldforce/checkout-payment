@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\HtmlString;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use ReflectionClass;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
@@ -878,7 +879,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 // return;
             }
 
-            dd(\chillerlan\QRCode\QRCode::class);
+            dd((new ReflectionClass(\chillerlan\QRCode\QROptions::class))->getConstants());
 
             $boletoPixSicoob = new BoletoPixService();
             $inserir         = $boletoPixSicoob->boletoPixInserir($this->checkout);
