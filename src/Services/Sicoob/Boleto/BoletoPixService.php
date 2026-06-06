@@ -49,7 +49,7 @@ class BoletoPixService
             "mensagensInstrucao"              => $dados["mensagensInstrucao"],
             "gerarPdf"                        => true,
             "codigoCadastrarPIX"              => 1,
-            "numeroContratoCobranca"          => $dados["numero_contrato"]
+            "numeroContratoCobranca"          => $dados["numeroContratoCobranca"]
         ];
 
         dd($payload);
