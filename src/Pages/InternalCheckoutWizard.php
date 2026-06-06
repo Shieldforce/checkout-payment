@@ -884,7 +884,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 "senha_certificado" => "",
             ]);*/
 
-            dd($this->checkout->referencable);
+            dd($this->checkout->referencable->order);
 
             $gatewayCreate = new MPCreateLocalService($this->checkout);
             $firstGatewaySicoob = CppGateways::where("name", TypeGatewayEnum::sicoob->value)->first();
