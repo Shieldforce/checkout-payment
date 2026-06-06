@@ -910,14 +910,16 @@ class InternalCheckoutWizard extends Page implements HasForms
                     "senha_certificado" => $firstGatewaySicoob->field_1,
                 ]);
 
-                $dueDate = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->due_date)
+                $dueDate = Carbon::parse($transaction->due_date)
                     ->format('Y-m-d');
+
+                $value = number_format($transaction->value, 2, '.', '');
 
                 $payload = [
                     "numero_cliente"         => $firstGatewaySicoob->field_4,
                     "numero_conta"           => $firstGatewaySicoob->field_6,
                     "external_reference"     => $transaction->id,
-                    "value"                  => $transaction->value,
+                    "value"                  => $value,
                     "due"                    => $dueDate,
                     "pagador"                => [
                         "numeroCpfCnpj" => $client->document,
