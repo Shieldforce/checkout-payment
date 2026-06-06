@@ -339,11 +339,8 @@ class BoletoPixService
 
         if (!empty($inserir['pdfBoleto'])) {
             $pdfContent = base64_decode($inserir['pdfBoleto']);
-
             $path = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
-
             Storage::disk('public')->put($path, $pdfContent);
-
             $pdf = $path;
         }
 
@@ -366,12 +363,12 @@ class BoletoPixService
             // Deve começar com: iVBORw0KGgo...
         }
 
-        return $checkout->step4()->updateOrCreate(
+        $up = $checkout->step4()->updateOrCreate(
             [
                 'cpp_checkout_id' => $checkout->id,
             ],
             [
-                'base_qrcode'          => $qrcodeBase64,
+                'base_qrcode'          => $qrcodeBase64 ?? null,
                 'url_qrcode'           => $inserir['qrCode'] ?? null,
                 'request_pix_data'     => json_encode($payload),
                 'response_pix_data'    => json_encode($inserir),
@@ -381,5 +378,16 @@ class BoletoPixService
                 'response_billet_data' => json_encode($inserir),
             ]
         );
+
+        dd($up, [
+            'base_qrcode'          => $qrcodeBase64 ?? null,
+            'url_qrcode'           => $inserir['qrCode'] ?? null,
+            'request_pix_data'     => json_encode($payload),
+            'response_pix_data'    => json_encode($inserir),
+            'payment_method_id'    => 'bolbradescox',
+            'url_billet'           => $pdf,
+            'request_billet_data'  => json_encode($payload),
+            'response_billet_data' => json_encode($inserir),
+        ]);
     }
 }
