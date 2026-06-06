@@ -3,9 +3,9 @@
 namespace Shieldforce\CheckoutPayment\Services\Sicoob\Boleto;
 
 use Carbon\Carbon;
-use chillerlan\QRCode\Output\QROutputInterface;
-use chillerlan\QRCode\QRCode;
-use chillerlan\QRCode\QROptions;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -329,47 +329,10 @@ class BoletoPixService
         return false;
     }
 
-    /*public function salvarDadosBoletoPix(CppCheckout $checkout, $resultado)
-    {
-        $pdf = null;
-
-        $inserir = $resultado["inserir"]["resultado"];
-        $payload = $resultado["payload"];
-
-        if (!empty($inserir['pdfBoleto'])) {
-            $pdfContent = base64_decode($inserir['pdfBoleto']);
-            $path       = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
-            Storage::disk('public')->put($path, $pdfContent);
-            $pdf = $path;
-        }
-
-        if (!empty($inserir['qrCode'])) {
-            $qrcodeBase64 = base64_encode(
-                (new \chillerlan\QRCode\QRCode())->render($inserir['qrCode'])
-            );
-        }
-
-        return $checkout->step4()->updateOrCreate([
-            'cpp_checkout_id' => $checkout->id,
-        ], [
-            'base_qrcode'          => $qrcodeBase64,
-            'url_qrcode'           => $inserir['qrCode'],
-            'request_pix_data'     => json_encode($payload),
-            'response_pix_data'    => json_encode($inserir),
-            'payment_method_id'    => 'bolbradescox',
-            'url_billet'           => $pdf,
-            'request_billet_data'  => json_encode($payload),
-            'response_billet_data' => json_encode($inserir),
-        ]);
-
-    }*/
-
     public function salvarDadosBoletoPix(CppCheckout $checkout, $resultado)
     {
-        $pdf = null;
+        $pdf          = null;
         $qrcodeBase64 = null;
-
-        dd(\chillerlan\QRCode\QRCode::class);
 
         $inserir = $resultado['inserir']['resultado'];
         $payload = $resultado['payload'];
@@ -384,20 +347,24 @@ class BoletoPixService
             $pdf = $path;
         }
 
-        /*if (!empty($inserir['qrCode'])) {
+        if (!empty($inserir['qrCode'])) {
 
-            $options = new QROptions([
-                'outputType' => QROutputInterface::GDIMAGE_PNG,
-            ]);
+            $qrCode = new QrCode(
+                data: trim($inserir['qrCode'])
+            );
 
-            $png = (new QRCode($options))
-                ->render(trim($inserir['qrCode']));
+            $writer = new PngWriter();
 
-            $qrcodeBase64 = base64_encode($png);
+            $result = $writer->write($qrCode);
 
-            // Debug
-            // dd(substr($qrcodeBase64, 0, 50));
-        }*/
+            $qrcodeBase64 = base64_encode(
+                $result->getString()
+            );
+
+            // Teste:
+            // dd(substr($qrcodeBase64, 0, 30));
+            // Deve começar com: iVBORw0KGgo...
+        }
 
         return $checkout->step4()->updateOrCreate(
             [
