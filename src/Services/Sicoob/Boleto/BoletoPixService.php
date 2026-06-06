@@ -35,7 +35,7 @@ class BoletoPixService
             "numeroParcela"                   => 1,
             "pagador"                         => [
                 "numeroCpfCnpj" => $dados["pagador"]["numeroCpfCnpj"],
-                "nome"          => $dados["pagador"]["nome"],
+                "nome"          => $this->limpaNome($dados["pagador"]["nome"]),
                 "endereco"      => Str::upper(Str::ascii($dados["pagador"]["endereco"])),
                 "bairro"        => Str::upper(Str::ascii($dados["pagador"]["bairro"])),
                 "cidade"        => Str::upper(Str::ascii($dados["pagador"]["cidade"])),
@@ -213,5 +213,16 @@ class BoletoPixService
         curl_close($curl);
 
         return json_decode($response, true) ?? false;
+    }
+
+    private function limpaNome($valor, $limite = 40)
+    {
+        $valor = mb_convert_encoding($valor, 'UTF-8', 'auto');
+        $valor = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $valor);
+        $valor = preg_replace('/[^A-Za-z0-9 ]/', '', $valor);
+        $valor = preg_replace('/\s+/', ' ', $valor);
+        $valor = trim($valor);
+
+        return substr($valor, 0, $limite);
     }
 }
