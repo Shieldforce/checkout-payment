@@ -63,7 +63,7 @@ class BoletoPixService
             CURLOPT_HTTPHEADER     => [
                 'Content-Type: application/json',
                 'Accept: application/json',
-                'Authorization: Bearer ' . $this->token,
+                'Authorization: Bearer a' . $this->token,
                 'client_id: ' . $dados["client_id"],
             ],
 
