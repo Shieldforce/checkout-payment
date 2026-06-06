@@ -20,9 +20,16 @@ class GatewayObserver
 
     public function saved(Model $model): void
     {
-        if ($model->active) {
+        if ($model->active && $model->name == TypeGatewayEnum::mercado_pago->value) {
             CppGateways::where('id', '!=', $model->id)
                 ->where("name", TypeGatewayEnum::mercado_pago->value)
+                ->update([
+                    'active' => 0,
+                ]);
+        }
+
+        if ($model->active && $model->name == TypeGatewayEnum::sicoob->value) {
+            CppGateways::where('id', $model->id)
                 ->update([
                     'active' => 0,
                 ]);

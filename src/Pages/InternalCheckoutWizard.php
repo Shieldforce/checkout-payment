@@ -877,23 +877,28 @@ class InternalCheckoutWizard extends Page implements HasForms
             }
 
             // Boleto e Pix Sicoob ---
-            $sicoobService = new LoginSicoobService();
+            /*$sicoobService = new LoginSicoobService();
             $sicoobService->auth([
                 "client_id"         => "",
                 "path_certificado"  => "",
                 "senha_certificado" => "",
-            ]);
+            ]);*/
 
-            return;
+            dd($this->checkout->referencable);
 
-            $mpCreate = new MPCreateLocalService($this->checkout);
+            $gatewayCreate = new MPCreateLocalService($this->checkout);
+            $firstGatewaySicoob = CppGateways::where("name", TypeGatewayEnum::sicoob->value)->first();
+
+            if(isset($firstGatewaySicoob->id)/* && ""*/) {
+                //
+            }
 
             if ($method == MethodPaymentEnum::pix->value) {
-                $returnPix = $mpCreate->pix();
+                $returnPix = $gatewayCreate->pix();
             }
 
             if ($method == MethodPaymentEnum::billet->value) {
-                $returnBillet = $mpCreate->boleto();
+                $returnBillet = $gatewayCreate->boleto();
             }
 
             if (isset($returnPix['qr_code_base64'])) {
