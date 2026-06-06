@@ -896,6 +896,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 $this->base_qrcode = $step4salvar->base_qrcode ?? null;
                 $this->url_qrcode  = $step4salvar->url_qrcode ?? null;
                 $this->url_billet  = $step4salvar->url_billet ?? null;
+                DB::commit();
                 return;
             }
 
