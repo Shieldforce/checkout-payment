@@ -173,18 +173,20 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ManagerFieldService::TextInput('field_2'),
 
             ])->columns(2),
+
             Grid::make()->schema([
 
                 ManagerFieldService::TextInput('field_3'),
                 ManagerFieldService::TextInput('field_4'),
                 ManagerFieldService::TextInput('field_5'),
 
-            ])->columns(3),
+            ])->columns(2),
+
             Grid::make()->schema([
 
                 ManagerFieldService::TextInput('field_6'),
 
-            ])->columns(3),
+            ])->columns(2),
 
             Toggle::make('active')
                 ->label('Ativo')
