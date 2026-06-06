@@ -330,19 +330,19 @@ class BoletoPixService
     {
         $pdf = null;
 
-        $resultado = $resultado["inserir"];
-        $payload   = $resultado["payload"];
+        $inserir = $resultado["inserir"];
+        $payload = $resultado["payload"];
 
-        if (!empty($resultado['pdfBoleto'])) {
-            $pdfContent = base64_decode($resultado['pdfBoleto']);
-            $path       = 'boletos/' . ($resultado['nossoNumero'] ?? uniqid()) . '.pdf';
+        if (!empty($inserir['pdfBoleto'])) {
+            $pdfContent = base64_decode($inserir['pdfBoleto']);
+            $path       = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
             Storage::disk('public')->put($path, $pdfContent);
             $pdf = $path;
         }
 
-        if (!empty($resultado['qrCode'])) {
+        if (!empty($inserir['qrCode'])) {
             $qrcodeBase64 = base64_encode(
-                (new \chillerlan\QRCode\QRCode())->render($resultado['qrCode'])
+                (new \chillerlan\QRCode\QRCode())->render($inserir['qrCode'])
             );
         }
 
@@ -350,13 +350,13 @@ class BoletoPixService
             'cpp_checkout_id' => $checkout->id,
         ], [
             'base_qrcode'          => $qrcodeBase64,
-            'url_qrcode'           => $resultado['qrCode'],
+            'url_qrcode'           => $inserir['qrCode'],
             'request_pix_data'     => json_encode($payload),
-            'response_pix_data'    => json_encode($resultado),
-            'payment_method_id'    => 'pibolbradescox',
+            'response_pix_data'    => json_encode($inserir),
+            'payment_method_id'    => 'bolbradescox',
             'url_billet'           => $pdf,
             'request_billet_data'  => json_encode($payload),
-            'response_billet_data' => json_encode($resultado),
+            'response_billet_data' => json_encode($inserir),
         ]);
 
     }
