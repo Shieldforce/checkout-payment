@@ -340,9 +340,9 @@ class BoletoPixService
 
         if (!empty($inserir['pdfBoleto'])) {
             $pdfContent = base64_decode($inserir['pdfBoleto']);
-            $path       = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
+            $path = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
             Storage::disk('public')->put($path, $pdfContent);
-            $pdf = $path;
+            $pdf = url(Storage::disk('public')->url($path));
         }
 
         if (!empty($inserir['qrCode'])) {
