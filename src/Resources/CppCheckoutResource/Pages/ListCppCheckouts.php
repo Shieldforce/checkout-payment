@@ -27,8 +27,8 @@ class ListCppCheckouts extends ListRecords
                 ->label('Dashboard MP')
                 ->icon('heroicon-o-chart-bar')
                 ->color('success')
-                ->url(fn() => DashboardMercadoPago::getUrl())
-            /*->openUrlInNewTab()*/,
+                ->url(fn () => DashboardMercadoPago::getUrl())
+            /* ->openUrlInNewTab() */,
 
             Actions\Action::make('runMonthlyBilling')
                 ->label('Rodar Faturamento Mensal')
@@ -60,7 +60,7 @@ class ListCppCheckouts extends ListRecords
                             }
 
                             $days = collect(range(1, $daysInMonth))
-                                ->mapWithKeys(fn($day) => [
+                                ->mapWithKeys(fn ($day) => [
                                     str_pad($day, 2, '0', STR_PAD_LEFT) => str_pad($day, 2, '0', STR_PAD_LEFT),
                                 ])
                                 ->toArray();
@@ -68,7 +68,7 @@ class ListCppCheckouts extends ListRecords
                             // adiciona "Todos os dias" no topo
                             return ['all' => 'Todos os dias'] + $days;
                         })
-                        ->default(fn() => str_pad(now()->day, 2, '0', STR_PAD_LEFT)),
+                        ->default(fn () => str_pad(now()->day, 2, '0', STR_PAD_LEFT)),
                 ])
                 ->modalHeading('Gerar cobranças mensais')
                 ->modalDescription(
@@ -101,7 +101,7 @@ class ListCppCheckouts extends ListRecords
 
         logger([
             'payment_id' => $paymentId,
-            'cancel'     => $cancel,
+            'cancel' => $cancel,
         ]);
 
         if ($cancel['success']) {
@@ -109,28 +109,28 @@ class ListCppCheckouts extends ListRecords
             $checkout = CppCheckout::find($recordId);
 
             $checkout->update([
-                'status'      => StatusCheckoutEnum::criado->value,
+                'status' => StatusCheckoutEnum::criado->value,
                 'startOnStep' => 4,
             ]);
 
             $step4 = $checkout->step4->first();
 
             $step4->update([
-                'card_number'               => null,
-                'card_token'                => null,
-                'installments'              => null,
-                'payment_method_id'         => null,
-                'card_validate'             => null,
-                'card_payer_name'           => null,
-                'base_qrcode'               => null,
-                'url_qrcode'                => null,
-                'url_billet'                => null,
-                'request_credit_card_data'  => null,
+                'card_number' => null,
+                'card_token' => null,
+                'installments' => null,
+                'payment_method_id' => null,
+                'card_validate' => null,
+                'card_payer_name' => null,
+                'base_qrcode' => null,
+                'url_qrcode' => null,
+                'url_billet' => null,
+                'request_credit_card_data' => null,
                 'response_credit_card_data' => null,
-                'request_pix_data'          => null,
-                'response_pix_data'         => null,
-                'request_billet_data'       => json_encode([]),
-                'response_billet_data'      => json_encode([]),
+                'request_pix_data' => null,
+                'response_pix_data' => null,
+                'request_billet_data' => json_encode([]),
+                'response_billet_data' => json_encode([]),
             ]);
 
             Notification::make()
@@ -139,8 +139,7 @@ class ListCppCheckouts extends ListRecords
                 ->body("Pagamento #{$paymentId} cancelado com sucesso.")
                 ->send();
 
-        }
-        else {
+        } else {
 
             Notification::make()
                 ->danger()
