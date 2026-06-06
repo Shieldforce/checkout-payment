@@ -3,6 +3,7 @@
 namespace Shieldforce\CheckoutPayment\Observers;
 
 use Illuminate\Database\Eloquent\Model;
+use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 
 class GatewayObserver
@@ -20,9 +21,11 @@ class GatewayObserver
     public function saved(Model $model): void
     {
         if ($model->active) {
-            CppGateways::where('id', '!=', $model->id)->update([
-                'active' => 0,
-            ]);
+            CppGateways::where('id', '!=', $model->id)
+                ->where("name", TypeGatewayEnum::mercado_pago->value)
+                ->update([
+                    'active' => 0,
+                ]);
         }
     }
 
