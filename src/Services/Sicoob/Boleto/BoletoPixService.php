@@ -13,8 +13,6 @@ class BoletoPixService
 
     public function insert($dados)
     {
-
-        dd($dados);
         $payload = [
             "numeroCliente"                   => $dados["numero_cliente"],
             "codigoModalidade"                => 1,
@@ -24,7 +22,7 @@ class BoletoPixService
             "seuNumero"                       => (string)$dados["external_reference"],
             "identificacaoEmissaoBoleto"      => 1,
             "identificacaoDistribuicaoBoleto" => 1,
-            "valor"                           => $dados["value"],
+            "valor"                           => (float)$dados["value"],
             "dataVencimento"                  => $dados["due"],
             "dataLimitePagamento"             => Carbon::parse($dados["due"])->addDays(60)->format("Y-m-d"),
             "tipoDesconto"                    => 0,
