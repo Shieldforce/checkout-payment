@@ -4,6 +4,7 @@ namespace Shieldforce\CheckoutPayment\Services\Sicoob\Boleto;
 
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Str;
 
 class BoletoPixService
 {
@@ -12,8 +13,6 @@ class BoletoPixService
 
     public function insert($dados)
     {
-        dd($dados);
-
         $payload = [
             "numeroCliente"                   => $dados["numero_cliente"],
             "codigoModalidade"                => 1,
@@ -23,7 +22,7 @@ class BoletoPixService
             "seuNumero"                       => $dados["external_reference"],
             "identificacaoEmissaoBoleto"      => 1,
             "identificacaoDistribuicaoBoleto" => 1,
-            "valor"                           => $dados["value"],
+            "valor"                           => (float)$dados["value"],
             "dataVencimento"                  => $dados["due"],
             "dataLimitePagamento"             => Carbon::parse($dados["due"])->addDays(60)->format("Y-m-d"),
             "tipoDesconto"                    => 0,
@@ -37,11 +36,11 @@ class BoletoPixService
             "pagador"                         => [
                 "numeroCpfCnpj" => $dados["pagador"]["numeroCpfCnpj"],
                 "nome"          => $dados["pagador"]["nome"],
-                "endereco"      => $dados["pagador"]["endereco"],
-                "bairro"        => $dados["pagador"]["bairro"],
-                "cidade"        => $dados["pagador"]["cidade"],
+                "endereco"      => Str::upper(Str::ascii($dados["pagador"]["enedereco"])),
+                "bairro"        => Str::upper(Str::ascii($dados["pagador"]["bairro"])),
+                "cidade"        => Str::upper(Str::ascii($dados["pagador"]["cidade"])),
                 "cep"           => $dados["pagador"]["cep"],
-                "uf"            => $dados["pagador"]["uf"],
+                "uf"            => Str::upper(Str::ascii($dados["pagador"]["uf"])),
                 "email"         => $dados["pagador"]["email"],
             ],
             "beneficiarioFinal"               => [
@@ -53,6 +52,8 @@ class BoletoPixService
             "codigoCadastrarPIX"              => 1,
             "numeroContratoCobranca"          => $dados["numeroContratoCobranca"]
         ];
+
+        dd($payload);
 
         $curl = curl_init();
 
