@@ -3,6 +3,9 @@
 namespace Shieldforce\CheckoutPayment\Services\Sicoob\Boleto;
 
 use Carbon\Carbon;
+use chillerlan\QRCode\Output\QROutputInterface;
+use chillerlan\QRCode\QRCode;
+use chillerlan\QRCode\QROptions;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -366,6 +369,8 @@ class BoletoPixService
         $pdf = null;
         $qrcodeBase64 = null;
 
+        dd(\chillerlan\QRCode\QRCode::class);
+
         $inserir = $resultado['inserir']['resultado'];
         $payload = $resultado['payload'];
 
@@ -379,17 +384,20 @@ class BoletoPixService
             $pdf = $path;
         }
 
-        if (!empty($inserir['qrCode'])) {
+        /*if (!empty($inserir['qrCode'])) {
 
-            $png = (new \chillerlan\QRCode\QRCode())->render(
-                trim($inserir['qrCode'])
-            );
+            $options = new QROptions([
+                'outputType' => QROutputInterface::GDIMAGE_PNG,
+            ]);
+
+            $png = (new QRCode($options))
+                ->render(trim($inserir['qrCode']));
 
             $qrcodeBase64 = base64_encode($png);
 
             // Debug
-            dd(substr($qrcodeBase64, 0, 30));
-        }
+            // dd(substr($qrcodeBase64, 0, 50));
+        }*/
 
         return $checkout->step4()->updateOrCreate(
             [
