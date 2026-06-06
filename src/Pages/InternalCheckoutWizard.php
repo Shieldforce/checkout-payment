@@ -910,8 +910,6 @@ class InternalCheckoutWizard extends Page implements HasForms
                     "senha_certificado" => $firstGatewaySicoob->field_1,
                 ]);
 
-                dd($login);
-
                 $dueDate = Carbon::parse($transaction->due_date)
                     ->format('Y-m-d');
 
