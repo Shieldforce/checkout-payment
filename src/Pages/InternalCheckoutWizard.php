@@ -924,7 +924,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     "numero_conta"           => $firstGatewaySicoob->field_6,
                     "numeroContratoCobranca" => $firstGatewaySicoob->field_3,
                     //---
-                    "external_reference"     => (string)$transaction->id,
+                    "external_reference"     => $transaction->id,
                     "value"                  => $value,
                     "due"                    => $dueDate,
                     "pagador"                => [
