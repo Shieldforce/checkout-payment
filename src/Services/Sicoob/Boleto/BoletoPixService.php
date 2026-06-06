@@ -19,7 +19,7 @@ class BoletoPixService
             "numeroContaCorrente"             => $dados["numero_conta"],
             "codigoEspecieDocumento"          => "DM",
             "dataEmissao"                     => date("Y-m-d"),
-            "seuNumero"                       => $dados["external_reference"],
+            "seuNumero"                       => (string) $dados["external_reference"],
             "identificacaoEmissaoBoleto"      => 1,
             "identificacaoDistribuicaoBoleto" => 1,
             "valor"                           => (float)$dados["value"],
