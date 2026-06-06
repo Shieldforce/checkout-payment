@@ -14,12 +14,12 @@ class BoletoPixService
     public function insert($dados)
     {
         $payload = [
-            "numeroCliente"                   => $dados["numero_cliente"],
+            "numeroCliente"                   => (integer)$dados["numero_cliente"],
             "codigoModalidade"                => 1,
-            "numeroContaCorrente"             => $dados["numero_conta"],
+            "numeroContaCorrente"             => (integer)$dados["numero_conta"],
             "codigoEspecieDocumento"          => "DM",
             "dataEmissao"                     => date("Y-m-d"),
-            "seuNumero"                       => $dados["external_reference"],
+            "seuNumero"                       => (string)$dados["external_reference"],
             "identificacaoEmissaoBoleto"      => 1,
             "identificacaoDistribuicaoBoleto" => 1,
             "valor"                           => $dados["value"],
@@ -34,7 +34,7 @@ class BoletoPixService
             "valorJurosMora"                  => 0.01,
             "numeroParcela"                   => 1,
             "pagador"                         => [
-                "numeroCpfCnpj" => $dados["pagador"]["numeroCpfCnpj"],
+                "numeroCpfCnpj" => (string)$dados["pagador"]["numeroCpfCnpj"],
                 "nome"          => $this->limpaNome($dados["pagador"]["nome"]),
                 "endereco"      => Str::upper(Str::ascii($dados["pagador"]["endereco"])),
                 "bairro"        => Str::upper(Str::ascii($dados["pagador"]["bairro"])),
@@ -44,7 +44,7 @@ class BoletoPixService
                 "email"         => $dados["pagador"]["email"],
             ],
             "beneficiarioFinal"               => [
-                "numeroCpfCnpj" => $dados["beneficiarioFinal"]["numeroCpfCnpj"],
+                "numeroCpfCnpj" => (string)$dados["beneficiarioFinal"]["numeroCpfCnpj"],
                 "nome"          => $dados["beneficiarioFinal"]["nome"],
             ],
             "mensagensInstrucao"              => $dados["mensagensInstrucao"],

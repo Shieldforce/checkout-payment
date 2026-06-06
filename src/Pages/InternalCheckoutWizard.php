@@ -942,10 +942,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                         "nome"          => "Federal Telecom",
                     ],
                     "mensagensInstrucao"     => [
-                        "texto1" => $texto1 ?? "Mensalidade Federal Associados",
-                        "texto2" => $texto2 ?? "Multa de 2%, e 0,1% ao dia",
-                        "texto3" => "Dúvidas? Ligue 08006262345",
-                        "texto4" => "Juntos Somos Fortes",
+                        $texto1 ?? "Mensalidade Federal Associados",
+                        $texto2 ?? "Multa de 2%, e 0,1% ao dia",
+                        "Dúvidas? Ligue 08006262345",
+                        "Juntos Somos Fortes",
                     ],
                 ];
 
