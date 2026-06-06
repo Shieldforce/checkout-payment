@@ -34,7 +34,7 @@ class BoletoPixService
             "valorJurosMora"                  => 0.01,
             "numeroParcela"                   => 1,
             "pagador"                         => [
-                "numeroCpfCnpj" => $dados["pagador"]["numeroCpfCnpj"],
+                "numeroCpfCnpj" => "10142449784",
                 "nome"          => $dados["pagador"]["nome"],
                 "endereco"      => Str::upper(Str::ascii($dados["pagador"]["endereco"])),
                 "bairro"        => Str::upper(Str::ascii($dados["pagador"]["bairro"])),
@@ -63,7 +63,7 @@ class BoletoPixService
             CURLOPT_HTTPHEADER     => [
                 'Content-Type: application/json',
                 'Accept: application/json',
-                'Authorization: Bearer a' . $this->token,
+                'Authorization: Bearer ' . $this->token,
                 'client_id: ' . $dados["client_id"],
             ],
 
