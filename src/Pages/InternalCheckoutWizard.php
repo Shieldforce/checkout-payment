@@ -17,6 +17,7 @@ use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +38,7 @@ use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\BuscarViaCepService;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MPCreateLocalService;
 use Shieldforce\CheckoutPayment\Services\Sicoob\Auth\LoginSicoobService;
+use Shieldforce\CheckoutPayment\Services\Sicoob\Boleto\BoletoPixService;
 use Throwable;
 
 class InternalCheckoutWizard extends Page implements HasForms
@@ -876,26 +878,77 @@ class InternalCheckoutWizard extends Page implements HasForms
                 // return;
             }
 
-            $gatewayCreate      = new MPCreateLocalService($this->checkout);
             $firstGatewaySicoob = CppGateways::where("name", TypeGatewayEnum::sicoob->value)->first();
+            $transaction        = $this?->checkout?->referencable;
 
             if (
-                $this?->checkout?->referencable?->order?->sicoob &&
-                isset($firstGatewaySicoob->id)
+                isset($transaction->due_date) &&
+                $transaction->due_date <= Carbon::today()->format("Y-m-d H:i:s")
             ) {
+                $dias_atraso = Carbon::parse($transaction->due_date)->diffInDays(Carbon::today());
+                if ($dias_atraso > 5) {
+                    $texto1 = "Vencido a " . $dias_atraso . " dias.";
+                    $texto2 = "Valor atualizado";
+                }
+            }
+
+            if (
+                $transaction?->order?->sicoob &&
+                isset($firstGatewaySicoob->id) &&
+                isset($transaction->id)
+            ) {
+
+                $order   = $transaction?->order;
+                $client  = $order->client;
+                $address = $client->addresses->first();
+
                 // Boleto e Pix Sicoob ---
-                $sicoobService = new LoginSicoobService();
-                $login = $sicoobService->auth([
+                $sicoobLogin = new LoginSicoobService();
+                $login       = $sicoobLogin->auth([
                     "client_id"         => $firstGatewaySicoob->field_2,
                     "path_certificado"  => storage_path($firstGatewaySicoob->field_5),
                     "senha_certificado" => $firstGatewaySicoob->field_1,
                 ]);
 
-                dd($login);
+                $dueDate = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->value)->format('Y-m-d');
 
-                //$returnPix = $gatewayCreate->BoletoEPix();
+                $payload = [
+                    "numero_cliente"         => $firstGatewaySicoob->field_4,
+                    "numero_conta"           => $firstGatewaySicoob->field_6,
+                    "external_reference"     => $transaction->id,
+                    "value"                  => $transaction->value,
+                    "due"                    => $dueDate,
+                    "pagador"                => [
+                        "numeroCpfCnpj" => $client->document,
+                        "nome"          => $client->name,
+                        "endereco"      => $address->street,
+                        "bairro"        => $address->district,
+                        "cidade"        => $address->city,
+                        "cep"           => $address->zipcode,
+                        "uf"            => $address->state,
+                        "email"         => $client->email,
+                    ],
+                    "beneficiarioFinal"      => [
+                        "numeroCpfCnpj" => "11655954000159",
+                        "nome"          => "Federal Telecom",
+                    ],
+                    "mensagensInstrucao"     => [
+                        "texto1" => $texto1 ?? "Mensalidade Federal Associados",
+                        "texto2" => $texto2 ?? "Multa de 2%, e 0,1% ao dia",
+                        "texto3" => "Dúvidas? Ligue 08006262345",
+                        "texto4" => "Juntos Somos Fortes",
+                    ],
+                    "numeroContratoCobranca" => $firstGatewaySicoob->field_3
+                ];
+
+                $sicoobBoletoPixService = new BoletoPixService($login["access_token"]);
+                $inserir                = $sicoobBoletoPixService->insert($payload);
+                dd($inserir);
+
+                return;
             }
-            return;
+
+            $gatewayCreate = new MPCreateLocalService($this->checkout);
 
             if ($method == MethodPaymentEnum::pix->value) {
                 $returnPix = $gatewayCreate->pix();

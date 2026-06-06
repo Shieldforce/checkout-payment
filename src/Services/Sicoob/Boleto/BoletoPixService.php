@@ -5,9 +5,12 @@ namespace Shieldforce\CheckoutPayment\Services\Sicoob\Boleto;
 use Carbon\Carbon;
 use Exception;
 
-class BoletoService
+class BoletoPixService
 {
-    public function insert($token, $dados)
+
+    public function __construct(public string $token) {}
+
+    public function insert($dados)
     {
         $payload = [
             "numeroCliente"                   => $dados["numero_cliente"],
@@ -61,7 +64,7 @@ class BoletoService
             CURLOPT_HTTPHEADER     => [
                 'Content-Type: application/json',
                 'Accept: application/json',
-                'Authorization: Bearer ' . $token,
+                'Authorization: Bearer ' . $this->token,
                 'client_id: ' . $dados["client_id"],
             ],
 
@@ -89,7 +92,7 @@ class BoletoService
         return json_decode($response, true) ?? false;
     }
 
-    public function consult($token, $dados): array|bool
+    public function consult($dados): array|bool
     {
 
         $link = "https://api.sicoob.com.br/cobranca-bancaria/v3/boletos";
@@ -105,7 +108,7 @@ class BoletoService
 
             CURLOPT_HTTPHEADER => [
                 'Accept: application/json',
-                'Authorization: Bearer ' . $token,
+                'Authorization: Bearer ' . $this->token,
                 'client_id: ' . $dados['client_id'],
             ],
 
