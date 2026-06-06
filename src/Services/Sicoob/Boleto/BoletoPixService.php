@@ -13,7 +13,7 @@ class BoletoPixService
 
     public function insert($dados)
     {
-        $payload = [
+        /*$payload = [
             "numeroCliente"                   => $dados["numero_cliente"],
             "codigoModalidade"                => 1,
             "numeroContaCorrente"             => $dados["numero_conta"],
@@ -51,6 +51,32 @@ class BoletoPixService
             "gerarPdf"                        => true,
             "codigoCadastrarPIX"              => 1,
             "numeroContratoCobranca"          => $dados["numeroContratoCobranca"],
+        ];*/
+
+        $payload = [
+            "numeroCliente" => "283355",
+            "codigoModalidade" => 1,
+            "numeroContaCorrente" => "103292",
+            "codigoEspecieDocumento" => "DM",
+            "dataEmissao" => now()->format('Y-m-d'),
+            "seuNumero" => "709",
+            "identificacaoEmissaoBoleto" => 1,
+            "identificacaoDistribuicaoBoleto" => 1,
+            "valor" => 100.00,
+            "dataVencimento" => now()->addDays(5)->format('Y-m-d'),
+            "numeroParcela" => 1,
+
+            "pagador" => [
+                "numeroCpfCnpj" => "47205545000106",
+                "nome" => "SHIELD FORCE SOLUCOES",
+                "endereco" => "RUA 41 406",
+                "bairro" => "SANTA LUZIA",
+                "cidade" => "GOIANESIA",
+                "cep" => "76380208",
+                "uf" => "GO",
+            ],
+
+            "numeroContratoCobranca" => "1223414",
         ];
 
         $curl = curl_init();
