@@ -326,7 +326,7 @@ class BoletoPixService
         return false;
     }
 
-    public function salvarDadosBoletoPix(CppCheckout $checkout, $resultado)
+    /*public function salvarDadosBoletoPix(CppCheckout $checkout, $resultado)
     {
         $pdf = null;
 
@@ -359,5 +359,52 @@ class BoletoPixService
             'response_billet_data' => json_encode($inserir),
         ]);
 
+    }*/
+
+    public function salvarDadosBoletoPix(CppCheckout $checkout, $resultado)
+    {
+        $pdf = null;
+        $qrcodeBase64 = null;
+
+        $inserir = $resultado['inserir']['resultado'];
+        $payload = $resultado['payload'];
+
+        if (!empty($inserir['pdfBoleto'])) {
+            $pdfContent = base64_decode($inserir['pdfBoleto']);
+
+            $path = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
+
+            Storage::disk('public')->put($path, $pdfContent);
+
+            $pdf = $path;
+        }
+
+        if (!empty($inserir['qrCode'])) {
+
+            $png = (new \chillerlan\QRCode\QRCode())->render(
+                trim($inserir['qrCode'])
+            );
+
+            $qrcodeBase64 = base64_encode($png);
+
+            // Debug
+            dd(substr($qrcodeBase64, 0, 30));
+        }
+
+        return $checkout->step4()->updateOrCreate(
+            [
+                'cpp_checkout_id' => $checkout->id,
+            ],
+            [
+                'base_qrcode'          => $qrcodeBase64,
+                'url_qrcode'           => $inserir['qrCode'] ?? null,
+                'request_pix_data'     => json_encode($payload),
+                'response_pix_data'    => json_encode($inserir),
+                'payment_method_id'    => 'bolbradescox',
+                'url_billet'           => $pdf,
+                'request_billet_data'  => json_encode($payload),
+                'response_billet_data' => json_encode($inserir),
+            ]
+        );
     }
 }
