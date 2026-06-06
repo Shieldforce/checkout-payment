@@ -82,6 +82,11 @@ class BoletoPixService
 
         $response = curl_exec($curl);
 
+        dd([
+            'http_code' => curl_getinfo($curl, CURLINFO_HTTP_CODE),
+            'response' => $response,
+        ]);
+
         if ($response === false) {
             throw new Exception('Erro cURL: ' . curl_error($curl));
         }
