@@ -49,6 +49,8 @@ class BoletoService
             "numeroContratoCobranca"          => $dados["numero_contrato"]
         ];
 
+        dd($payload);
+
         $curl = curl_init();
 
         curl_setopt_array($curl, [

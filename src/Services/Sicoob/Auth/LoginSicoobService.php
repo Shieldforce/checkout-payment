@@ -2,6 +2,8 @@
 
 namespace Shieldforce\CheckoutPayment\Services\Sicoob\Auth;
 
+use Exception;
+
 class LoginSicoobService
 {
     public function auth($dados): array
@@ -42,7 +44,7 @@ class LoginSicoobService
         $response = curl_exec($curl);
 
         if ($response === false) {
-            throw new \Exception('Erro cURL: ' . curl_error($curl));
+            throw new Exception('Erro cURL: ' . curl_error($curl));
         }
 
         curl_close($curl);

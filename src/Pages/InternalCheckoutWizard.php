@@ -851,7 +851,7 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         try {
 
-            /*if (
+            if (
                 isset($this->step4->base_qrcode) &&
                 $method == MethodPaymentEnum::pix->value
             ) {
@@ -862,9 +862,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ]);
 
                 // return;
-            }*/
+            }
 
-            /*if (
+            if (
                 isset($this->step4->url_billet) &&
                 $method == MethodPaymentEnum::billet->value
             ) {
@@ -874,17 +874,16 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ]);
 
                 // return;
-            }*/
+            }
 
             // Boleto e Pix Sicoob ---
-            /*$sicoobService = new LoginSicoobService();
+            $sicoobService = new LoginSicoobService();
             $sicoobService->auth([
                 "client_id"         => "",
                 "path_certificado"  => "",
                 "senha_certificado" => "",
-            ]);*/
+            ]);
 
-            logger($this->checkout->toArray());
             return;
 
             $mpCreate = new MPCreateLocalService($this->checkout);
