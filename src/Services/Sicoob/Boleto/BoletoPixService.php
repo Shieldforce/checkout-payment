@@ -43,8 +43,8 @@ class BoletoPixService
                 "email"         => $dados["pagador"]["email"],
             ],
             "beneficiarioFinal"               => [
-                "numeroCpfCnpj" => $dados["empresaCnpj"],
-                "nome"          => $dados["empresa"]
+                "numeroCpfCnpj" => $dados["beneficiarioFinal"]["numeroCpfCnpj"],
+                "nome"          => $dados["beneficiarioFinal"]["nome"],
             ],
             "mensagensInstrucao"              => $dados["mensagensInstrucao"],
             "gerarPdf"                        => true,
