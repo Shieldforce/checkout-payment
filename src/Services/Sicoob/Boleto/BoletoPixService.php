@@ -340,7 +340,7 @@ class BoletoPixService
 
         if (!empty($inserir['pdfBoleto'])) {
             $pdfContent = base64_decode($inserir['pdfBoleto']);
-            $path = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
+            $path       = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
             Storage::disk('public')->put($path, $pdfContent);
             $pdf = url(Storage::disk('public')->url($path));
         }
@@ -364,7 +364,7 @@ class BoletoPixService
             // Deve começar com: iVBORw0KGgo...
         }
 
-       $checkout->step4()->updateOrCreate(
+        $checkout->step4()->updateOrCreate(
             [
                 'cpp_checkout_id' => $checkout->id,
             ],
