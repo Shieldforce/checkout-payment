@@ -44,6 +44,14 @@
 
                 <button
                     type="button"
+                    wire:click="atualizarPagamento('{{ $pagamento['id'] }}', '{{ $pagamento['method'] }}', '{{ $record->id }}')"
+                    style="background:orange;color:white;border-radius:5px;padding:5px;"
+                >
+                    Atualizar Status
+                </button>
+
+                <button
+                    type="button"
                     wire:click="cancelarPagamentoMp('{{ $pagamento['id'] }}', '{{ $record->id }}')"
                     style="background:red;color:white;border-radius:5px;padding:5px;"
                 >

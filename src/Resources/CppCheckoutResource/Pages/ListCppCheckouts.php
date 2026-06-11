@@ -93,6 +93,11 @@ class ListCppCheckouts extends ListRecords
         ];
     }
 
+    public function atualizarPagamento($paymentId, $method, $recordId)
+    {
+        dd($paymentId, $method, $recordId);
+    }
+
     public function cancelarPagamentoMp($paymentId, $recordId): void
     {
         $mps = new MercadoPagoService;
