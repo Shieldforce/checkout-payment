@@ -130,12 +130,16 @@ class BoletoPixService
             throw new Exception("Gateway sicoob não existe!");
         }
 
+        $nossoNumero = isset($checkout?->response_pix_data["nossoNumero"])
+            ? $checkout->response_pix_data["nossoNumero"]
+            : null;
+
         $payload = [
             "client_id"         => $firstGatewaySicoob->field_2 ?? null,
             "path_certificado"  => storage_path($firstGatewaySicoob->field_5 ?? ""),
             "senha_certificado" => $firstGatewaySicoob->field_1 ?? null,
             "numero_cliente"    => $firstGatewaySicoob->field_4 ?? null,
-            "nosso_numero"      => $checkout->uuid ?? null,
+            "nosso_numero"      => $nossoNumero ?? null,
             "numero_contrato"   => $firstGatewaySicoob->field_3 ?? null,
         ];
 

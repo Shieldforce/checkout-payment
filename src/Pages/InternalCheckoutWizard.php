@@ -903,6 +903,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ->danger()
                     ->title('Erro ao gerar pixBoleto sicoob!')
                     ->body($msg)
+                    ->persistent()
                     ->send();
                 return;
             }
