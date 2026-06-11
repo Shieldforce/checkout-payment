@@ -142,7 +142,9 @@ class BoletoPixService
 
         $nossoNumero = $responsePixSicoob["nossoNumero"] ?? $responseBilletSicoob["nossoNumero"] ?? null;
 
-        logger($nossoNumero);
+        logger([
+            "nossoNumero" => $nossoNumero ?? "-",
+        ]);
 
         $payload = [
             "client_id"         => $firstGatewaySicoob->field_2 ?? null,
