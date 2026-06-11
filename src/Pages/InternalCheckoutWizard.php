@@ -879,12 +879,6 @@ class InternalCheckoutWizard extends Page implements HasForms
             $transaction = $this->checkout?->referencable;
             $order       = $transaction?->order;
 
-            logger([
-                isset($order->sicoob),
-                $method == MethodPaymentEnum::pix->value,
-                $method == MethodPaymentEnum::billet->value
-            ]);
-
             if (
                 isset($order->sicoob) &&
                 $method == MethodPaymentEnum::pix->value ||
@@ -902,6 +896,10 @@ class InternalCheckoutWizard extends Page implements HasForms
                 DB::commit();
                 return;
             }
+
+            logger($inserir["inserir"]);
+
+            return;
 
             // Gerar mercado pago ----------
             $gatewayCreate = new MPCreateLocalService($this->checkout);
