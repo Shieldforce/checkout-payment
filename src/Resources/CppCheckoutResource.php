@@ -18,6 +18,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
+use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeStepEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep2;
@@ -250,10 +251,7 @@ class CppCheckoutResource extends Resource
                         ->modalSubmitAction(false)
                         ->modalCancelActionLabel('Fechar')
                         ->modalContent(function (Model $record) {
-
-                            logger($record->toArray());
-
-                            if($record->gateway->name == 1) {
+                            if($record->gateway->name == TypeGatewayEnum::mercado_pago->value) {
                                 $mps = new MercadoPagoService;
                                 $pagamentos = $mps->buscarPagamentoPorExternalId($record->uuid);
 
@@ -288,6 +286,10 @@ class CppCheckoutResource extends Resource
                                     'pagamentos' => $pagamentos,
                                     'record' => $record,
                                 ]);
+                            }
+
+                            if($record->gateway->name == TypeGatewayEnum::sicoob->value) {
+                                logger($record->step4->first()->toArray());
                             }
 
                             return view('checkout-payment::partials.empty', [
