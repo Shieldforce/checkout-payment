@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
@@ -116,13 +117,32 @@ class BoletoPixService
         return json_decode($response, true) ?? false;
     }
 
-    public function consult($dados): array|bool
+    public function consult($checkout = null)
     {
 
+        if (!isset($checkout->id)) {
+            throw new Exception("Checkout não existe!");
+        }
+
+        $firstGatewaySicoob = $this->firstGatewaySicoob;
+
+        if (!isset($firstGatewaySicoob->id)) {
+            throw new Exception("Gateway sicoob não existe!");
+        }
+
+        $payload = [
+            "client_id"         => $firstGatewaySicoob->field_2 ?? null,
+            "path_certificado"  => storage_path($firstGatewaySicoob->field_5 ?? ""),
+            "senha_certificado" => $firstGatewaySicoob->field_1 ?? null,
+            "numero_cliente"    => $firstGatewaySicoob->field_4 ?? null,
+            "nosso_numero"      => $checkout->uuid ?? null,
+            "numero_contrato"   => $firstGatewaySicoob->field_3 ?? null,
+        ];
+
         $link = "https://api.sicoob.com.br/cobranca-bancaria/v3/boletos";
-        $link .= "?numeroCliente={$dados['numero_cliente']}";
-        $link .= "&codigoModalidade=1&nossoNumero={$dados['nosso_numero']}";
-        $link .= "&numeroContratoCobranca={$dados['numero_contrato']}";
+        $link .= "?numeroCliente={$payload['numero_cliente']}";
+        $link .= "&codigoModalidade=1&nossoNumero={$payload['nosso_numero']}";
+        $link .= "&numeroContratoCobranca={$payload['numero_contrato']}";
         $curl = curl_init();
 
         curl_setopt_array($curl, [
@@ -133,12 +153,12 @@ class BoletoPixService
             CURLOPT_HTTPHEADER => [
                 'Accept: application/json',
                 'Authorization: Bearer ' . $this->token,
-                'client_id: ' . $dados['client_id'],
+                'client_id: ' . $payload['client_id'],
             ],
 
             CURLOPT_SSLCERTTYPE    => 'P12',
-            CURLOPT_SSLCERT        => $dados["path_certificado"],
-            CURLOPT_SSLCERTPASSWD  => $dados["senha_certificado"],
+            CURLOPT_SSLCERT        => $payload["path_certificado"],
+            CURLOPT_SSLCERTPASSWD  => $payload["senha_certificado"],
 
             // SSL
             CURLOPT_SSL_VERIFYPEER => true,
