@@ -151,9 +151,6 @@ class BoletoPixService
             "numero_contrato"   => $firstGatewaySicoob->field_3 ?? null,
         ];
 
-        logger($payload);
-        return;
-
         $link = "https://api.sicoob.com.br/cobranca-bancaria/v3/boletos";
         $link .= "?numeroCliente={$payload['numero_cliente']}";
         $link .= "&codigoModalidade=1&nossoNumero={$payload['nosso_numero']}";
