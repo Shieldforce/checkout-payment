@@ -17,14 +17,12 @@ use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\HtmlString;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use ReflectionClass;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
@@ -38,7 +36,6 @@ use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\BuscarViaCepService;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MPCreateLocalService;
-use Shieldforce\CheckoutPayment\Services\Sicoob\Auth\LoginSicoobService;
 use Shieldforce\CheckoutPayment\Services\Sicoob\Boleto\BoletoPixService;
 use Throwable;
 
@@ -520,17 +517,12 @@ class InternalCheckoutWizard extends Page implements HasForms
                         )
                         ->required()
                         ->afterStateUpdated(function ($state) {
-
                             match ((int)$state) {
                                 MethodPaymentEnum::credit_card->value => $this->dispatch('init-credit-card'),
-
                                 MethodPaymentEnum::pix->value         => $this->dispatch('init-pix'),
-
                                 MethodPaymentEnum::billet->value      => $this->dispatch('init-billet'),
-
                                 default                               => null,
                             };
-
                         }),
 
                     Grid::make(2)->schema([
@@ -858,25 +850,29 @@ class InternalCheckoutWizard extends Page implements HasForms
                 isset($this->step4->base_qrcode) &&
                 $method == MethodPaymentEnum::pix->value
             ) {
+
+                // atualizar qrcode ---
                 $this->base_qrcode = $this->step4->base_qrcode;
                 $this->url_qrcode  = $this->step4->url_qrcode;
                 $this->checkout->update([
                     'startOnStep' => 5,
                 ]);
 
-                // return;
+                return;
             }
 
             if (
                 isset($this->step4->url_billet) &&
                 $method == MethodPaymentEnum::billet->value
             ) {
+
+                // atualizar boleto ---
                 $this->url_billet = $this->step4->url_billet;
                 $this->checkout->update([
                     'startOnStep' => 5,
                 ]);
 
-                // return;
+                return;
             }
 
             // Gerar sicoob ----------

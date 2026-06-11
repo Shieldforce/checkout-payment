@@ -3,7 +3,6 @@
 namespace Shieldforce\CheckoutPayment\Services\Sicoob\Boleto;
 
 use Carbon\Carbon;
-use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Exception;
@@ -296,7 +295,7 @@ class BoletoPixService
                 "numero_conta"           => $firstGatewaySicoob->field_6,
                 "numeroContratoCobranca" => $firstGatewaySicoob->field_3,
                 //---
-                "external_reference"     => $transaction->id,
+                "external_reference"     => $checkout->uuid,
                 "value"                  => $value,
                 "due"                    => $dueDate,
                 "pagador"                => [
@@ -373,7 +372,7 @@ class BoletoPixService
                 'url_qrcode'           => $inserir['qrCode'] ?? null,
                 'request_pix_data'     => json_encode($payload),
                 'response_pix_data'    => json_encode($inserir),
-                'payment_method_id'    => 'bolbradescox',
+                'payment_method_id'    => 'bolsicoob',
                 'url_billet'           => $pdf,
                 'request_billet_data'  => json_encode($payload),
                 'response_billet_data' => json_encode($inserir),
