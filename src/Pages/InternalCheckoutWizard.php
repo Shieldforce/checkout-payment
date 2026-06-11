@@ -844,12 +844,15 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         DB::beginTransaction();
 
-        logger($this->step4->toArray());
-
         try {
 
+
+            logger(!empty($this->step4->base_qrcode));
+            return;
+
+
             if (
-                isset($this->step4->base_qrcode) &&
+                !empty($this->step4->base_qrcode) &&
                 $method == MethodPaymentEnum::pix->value
             ) {
 
@@ -864,7 +867,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             }
 
             if (
-                isset($this->step4->url_billet) &&
+                !empty($this->step4->url_billet) &&
                 $method == MethodPaymentEnum::billet->value
             ) {
 
