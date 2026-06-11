@@ -130,9 +130,13 @@ class BoletoPixService
             throw new Exception("Gateway sicoob não existe!");
         }
 
-        $nossoNumero = isset($checkout?->response_pix_data["nossoNumero"])
-            ? $checkout->response_pix_data["nossoNumero"]
+        $step4 = $checkout?->step4?->first();
+
+        $nossoNumero = isset($step4->response_pix_data["nossoNumero"])
+            ? $step4->response_pix_data["nossoNumero"]
             : null;
+
+        logger($step4?->response_pix_data);
 
         $payload = [
             "client_id"         => $firstGatewaySicoob->field_2 ?? null,
