@@ -306,7 +306,7 @@ class MercadoPagoService
 
         } catch (MPApiException $e) {
             $code = $e->getApiResponse()->getStatusCode();
-            $msg = $e->getApiResponse()->getContent();
+            $msg = $e->getMessage();
 
             logger('[Mercado Pago] - Erro ao buscar pagamento por external_id: ' . $msg);
 
