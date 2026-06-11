@@ -143,7 +143,7 @@ class BoletoPixService
         $nossoNumero = $responsePixSicoob["nossoNumero"] ?? $responseBilletSicoob["nossoNumero"] ?? null;
 
         logger([
-            "nossoNumero" => $nossoNumero ?? "-",
+            "response_billet_data" => json_decode($step4->response_pix_data, true) ?? "-",
         ]);
 
         $payload = [
