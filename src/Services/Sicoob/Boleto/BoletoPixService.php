@@ -132,20 +132,15 @@ class BoletoPixService
 
         $step4             = $checkout?->step4?->first();
 
-        $responsePixSicoob = isset($step4->response_pix_data["nossoNumero"])
+        $responsePixSicoob = isset(json_decode($step4->response_pix_data, true)["nossoNumero"])
             ? json_decode($step4->response_pix_data, true)
             : null;
 
-        $responseBilletSicoob = isset($step4->response_billet_data["nossoNumero"])
+        $responseBilletSicoob = isset(json_decode($step4->response_billet_data, true)["nossoNumero"])
             ? json_decode($step4->response_billet_data, true)
             : null;
 
         $nossoNumero = $responsePixSicoob["nossoNumero"] ?? $responseBilletSicoob["nossoNumero"] ?? null;
-
-        logger([
-            $responsePixSicoob,
-            $responseBilletSicoob
-        ]);
 
         $payload = [
             "client_id"         => $firstGatewaySicoob->field_2 ?? null,
