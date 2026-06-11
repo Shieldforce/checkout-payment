@@ -844,6 +844,8 @@ class InternalCheckoutWizard extends Page implements HasForms
     {
         DB::beginTransaction();
 
+        logger($this->step4->toArray());
+
         try {
 
             if (
@@ -878,12 +880,6 @@ class InternalCheckoutWizard extends Page implements HasForms
             // Gerar sicoob ----------
             $transaction = $this->checkout?->referencable;
             $order       = $transaction?->order;
-
-            logger([
-                isset($order->sicoob) &&
-                $method == MethodPaymentEnum::pix->value ||
-                $method == MethodPaymentEnum::billet->value
-            ]);
 
             if (
                 isset($order->sicoob) &&
