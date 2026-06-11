@@ -71,6 +71,15 @@ class CppCheckout extends Model
         });
     }
 
+    public function gateway()
+    {
+        return $this->hasOne(
+            CppGateways::class,
+            "id",
+            "cpp_gateway_id"
+        );
+    }
+
     public function step1()
     {
         return $this->hasMany(

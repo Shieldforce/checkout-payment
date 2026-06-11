@@ -244,45 +244,54 @@ class CppCheckoutResource extends Resource
                         ->openUrlInNewTab(),
 
                     Tables\Actions\Action::make('ver_pagamento_mp')
-                        ->label('Ver Pagamento MP')
+                        ->label('Ver Pagamento')
                         ->icon('heroicon-o-magnifying-glass')
-                        ->modalHeading('Dados do Pagamento (Mercado Pago)')
+                        ->modalHeading('Dados do Pagamento')
                         ->modalSubmitAction(false)
                         ->modalCancelActionLabel('Fechar')
                         ->modalContent(function (Model $record) {
-                            $mps = new MercadoPagoService;
-                            $pagamentos = $mps->buscarPagamentoPorExternalId($record->uuid);
 
-                            logger([
-                                'external' => $record->uuid ?? null,
-                                'return' => $pagamentos ?? null,
-                            ]);
+                            logger($record->toArray());
 
-                            $approved = collect($pagamentos)
-                                ->firstWhere('status', 'approved');
+                            if($record->gateway->name == 1) {
+                                $mps = new MercadoPagoService;
+                                $pagamentos = $mps->buscarPagamentoPorExternalId($record->uuid);
 
-                            if ($approved) {
-                                $record->update([
-                                    'startOnStep' => TypeStepEnum::finalizado->value,
+                                logger([
+                                    'external' => $record->uuid ?? null,
+                                    'return' => $pagamentos ?? null,
+                                ]);
+
+                                $approved = collect($pagamentos)
+                                    ->firstWhere('status', 'approved');
+
+                                if ($approved) {
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::finalizado->value,
+                                    ]);
+                                }
+
+                                if (empty($pagamentos)) {
+                                    Notification::make('errors_mp')
+                                        ->persistent()
+                                        ->danger()
+                                        ->title('Erro!!')
+                                        ->body('Nenhum pagamento encontrado.')
+                                        ->send();
+
+                                    return view('checkout-payment::partials.empty', [
+                                        'message' => 'Nenhum pagamento do mercado pago encontrado.',
+                                    ]);
+                                }
+
+                                return view('checkout-payment::partials.pagamento-mp', [
+                                    'pagamentos' => $pagamentos,
+                                    'record' => $record,
                                 ]);
                             }
 
-                            if (empty($pagamentos)) {
-                                Notification::make('errors_mp')
-                                    ->persistent()
-                                    ->danger()
-                                    ->title('Erro!!')
-                                    ->body('Nenhum pagamento encontrado.')
-                                    ->send();
-
-                                return view('checkout-payment::partials.empty', [
-                                    'message' => 'Nenhum pagamento encontrado.',
-                                ]);
-                            }
-
-                            return view('checkout-payment::partials.pagamento-mp', [
-                                'pagamentos' => $pagamentos,
-                                'record' => $record,
+                            return view('checkout-payment::partials.empty', [
+                                'message' => 'Nenhum pagamento do sicoob encontrado.',
                             ]);
                         }),
 

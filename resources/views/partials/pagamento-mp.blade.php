@@ -1,10 +1,12 @@
 <div class="space-y-4">
     @foreach($pagamentos as $pagamento)
-        <div class="p-4 border rounded-lg">
-            <p><strong>ID:</strong> {{ $pagamento['id'] }}</p>
-            <p>
-                <strong>Status:</strong>
-                <span class="
+        {{-- Pagamentos MP --}}
+        @if(isset($pagamento['status']))
+            <div class="p-4 border rounded-lg">
+                <p><strong>ID:</strong> {{ $pagamento['id'] }}</p>
+                <p>
+                    <strong>Status:</strong>
+                    <span class="
                     @if($pagamento['status'] === 'approved') text-green-600
                     @elseif($pagamento['status'] === 'pending') text-yellow-600
                     @else text-red-600
@@ -12,16 +14,16 @@
                 ">
                 {{ $pagamento['status'] }}
                 </span>
-            </p>
-            <p><strong>Método:</strong> {{ $pagamento['method'] }}</p>
+                </p>
+                <p><strong>Método:</strong> {{ $pagamento['method'] }}</p>
 
-            <details class="mt-2">
-                <summary class="cursor-pointer text-sm text-gray-600">
-                    Ver JSON completo
-                </summary>
+                <details class="mt-2">
+                    <summary class="cursor-pointer text-sm text-gray-600">
+                        Ver JSON completo
+                    </summary>
 
-                <pre
-                    class="
+                    <pre
+                        class="
                         text-xs
                         bg-gray-100
                         p-2
@@ -32,34 +34,35 @@
                         whitespace-pre-wrap
                         break-words
                     "
-                    style="overflow-y: scroll;overflow-x: scroll;height: 500px;"
-                >{{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
-            </details>
+                        style="overflow-y: scroll;overflow-x: scroll;height: 500px;"
+                    >{{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+                </details>
 
-            <br>
-            <hr>
-            <br>
+                <br>
+                <hr>
+                <br>
 
-            @if(!in_array($pagamento['status'], ['approved', 'cancelled']))
+                @if(!in_array($pagamento['status'], ['approved', 'cancelled']))
 
-                <button
-                    type="button"
-                    wire:click="atualizarPagamento('{{ $pagamento['id'] }}', '{{ $pagamento['method'] }}', '{{ $record->id }}')"
-                    style="background:orange;color:white;border-radius:5px;padding:5px;"
-                >
-                    Atualizar Status
-                </button>
+                    <button
+                        type="button"
+                        wire:click="atualizarPagamento('{{ $pagamento['id'] }}', '{{ $pagamento['method'] }}', '{{ $record->id }}')"
+                        style="background:orange;color:white;border-radius:5px;padding:5px;"
+                    >
+                        Atualizar Status
+                    </button>
 
-                <button
-                    type="button"
-                    wire:click="cancelarPagamentoMp('{{ $pagamento['id'] }}', '{{ $record->id }}')"
-                    style="background:red;color:white;border-radius:5px;padding:5px;"
-                >
-                    Cancelar
-                </button>
+                    <button
+                        type="button"
+                        wire:click="cancelarPagamentoMp('{{ $pagamento['id'] }}', '{{ $record->id }}')"
+                        style="background:red;color:white;border-radius:5px;padding:5px;"
+                    >
+                        Cancelar
+                    </button>
 
-            @endif
+                @endif
 
-        </div>
+            </div>
+        @endif
     @endforeach
 </div>
