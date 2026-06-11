@@ -846,12 +846,6 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         try {
 
-            $teste = !empty($this->step4->base_qrcode) ? "sim" : "não";
-
-            logger($teste);
-            return;
-
-
             if (
                 !empty($this->step4->base_qrcode) &&
                 $method == MethodPaymentEnum::pix->value
