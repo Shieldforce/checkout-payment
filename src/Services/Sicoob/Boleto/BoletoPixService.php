@@ -144,6 +144,7 @@ class BoletoPixService
 
         logger([
             "nossoNumero" => json_decode($step4->response_pix_data, true)["nossoNumero"] ?? "-",
+            "firstGatewaySicoob" => $firstGatewaySicoob->toArray()
         ]);
 
         $payload = [
