@@ -897,9 +897,15 @@ class InternalCheckoutWizard extends Page implements HasForms
                 return;
             }
 
-            logger($inserir["inserir"]);
-
-            return;
+            if(isset($inserir["inserir"]["mensagens"][0]["mensagem"])) {
+                $msg = $inserir["inserir"]["mensagens"][0]["mensagem"] ?? "Erro desconhecido.";
+                Notification::make()
+                    ->danger()
+                    ->title('Erro ao gerar pixBoleto sicoob!')
+                    ->body($msg)
+                    ->send();
+                return;
+            }
 
             // Gerar mercado pago ----------
             $gatewayCreate = new MPCreateLocalService($this->checkout);
