@@ -886,6 +886,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             ) {
                 $boletoPixSicoob = new BoletoPixService();
                 $inserir         = $boletoPixSicoob->boletoPixInserir($this->checkout);
+                logger($inserir);
             }
 
             if (isset($inserir["inserir"]["resultado"])) {

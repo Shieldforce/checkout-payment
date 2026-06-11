@@ -142,8 +142,6 @@ class BoletoPixService
 
         $nossoNumero = $responsePixSicoob["nossoNumero"] ?? $responseBilletSicoob["nossoNumero"] ?? null;
 
-        logger($step4?->response_pix_data);
-
         $payload = [
             "client_id"         => $firstGatewaySicoob->field_2 ?? null,
             "path_certificado"  => storage_path($firstGatewaySicoob->field_5 ?? ""),
