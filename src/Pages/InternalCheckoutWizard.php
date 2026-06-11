@@ -879,6 +879,12 @@ class InternalCheckoutWizard extends Page implements HasForms
             $transaction = $this->checkout?->referencable;
             $order       = $transaction?->order;
 
+            logger([
+                isset($order->sicoob),
+                $method == MethodPaymentEnum::pix->value,
+                $method == MethodPaymentEnum::billet->value
+            ]);
+
             if (
                 isset($order->sicoob) &&
                 $method == MethodPaymentEnum::pix->value ||
