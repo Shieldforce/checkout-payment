@@ -142,11 +142,6 @@ class BoletoPixService
 
         $nossoNumero = $responsePixSicoob["nossoNumero"] ?? $responseBilletSicoob["nossoNumero"] ?? null;
 
-        logger([
-            "nossoNumero" => json_decode($step4->response_pix_data, true)["nossoNumero"] ?? "-",
-            "firstGatewaySicoob" => $firstGatewaySicoob->toArray()
-        ]);
-
         $payload = [
             "client_id"         => $firstGatewaySicoob->field_2 ?? null,
             "path_certificado"  => storage_path($firstGatewaySicoob->field_5 ?? ""),
@@ -155,6 +150,9 @@ class BoletoPixService
             "nosso_numero"      => $nossoNumero ?? null,
             "numero_contrato"   => $firstGatewaySicoob->field_3 ?? null,
         ];
+
+        logger($payload);
+        return;
 
         $link = "https://api.sicoob.com.br/cobranca-bancaria/v3/boletos";
         $link .= "?numeroCliente={$payload['numero_cliente']}";
