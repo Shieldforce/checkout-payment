@@ -846,8 +846,9 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         try {
 
+            $teste = !empty($this->step4->base_qrcode) ? "sim" : "não";
 
-            logger(!empty($this->step4->base_qrcode));
+            logger($teste);
             return;
 
 
