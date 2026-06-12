@@ -886,7 +886,6 @@ class InternalCheckoutWizard extends Page implements HasForms
             ) {
                 $boletoPixSicoob = new BoletoPixService();
                 $inserir         = $boletoPixSicoob->boletoPixInserir($this->checkout);
-                logger($inserir);
             }
 
             if (isset($inserir["inserir"]["resultado"])) {
@@ -898,7 +897,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 return;
             }
 
-            if(isset($inserir["inserir"]["mensagens"][0]["mensagem"])) {
+            if (isset($inserir["inserir"]["mensagens"][0]["mensagem"])) {
                 $msg = $inserir["inserir"]["mensagens"][0]["mensagem"] ?? "Erro desconhecido.";
                 Notification::make()
                     ->danger()

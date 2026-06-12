@@ -292,7 +292,8 @@ class CppCheckoutResource extends Resource
                             if ($record->gateway->name == TypeGatewayEnum::sicoob->value) {
                                 $boletoPixSicoob = new BoletoPixService();
                                 $consultar       = $boletoPixSicoob->consult($record);
-                                logger($consultar);
+                                $status          = $consultar["resultado"]["situacaoBoleto"] ?? null;
+                                logger($consultar, $status);
                             }
 
                             return view('checkout-payment::partials.empty', [
