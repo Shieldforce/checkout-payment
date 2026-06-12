@@ -298,11 +298,14 @@ class CppCheckoutResource extends Resource
                                 $status          = $consultar["resultado"]["situacaoBoleto"] ?? null;
                             }
 
+                            $pagamentos = [];
+
                             if (isset($status) && $status == "Liquidado") {
                                 $record->update([
                                     'startOnStep' => TypeStepEnum::finalizado->value,
                                     'status'      => StatusCheckoutEnum::finalizado->value,
                                 ]);
+                                $pagamentos = [$consultar["resultado"]];
                             }
 
                             if (isset($status) && $status == "Baixado") {
@@ -310,12 +313,21 @@ class CppCheckoutResource extends Resource
                                     'startOnStep' => TypeStepEnum::finalizado->value,
                                     'status'      => StatusCheckoutEnum::baixado->value,
                                 ]);
+                                $pagamentos = [$consultar["resultado"]];
                             }
 
                             if (isset($status) && $status == "Em Aberto") {
                                 $record->update([
                                     'startOnStep' => TypeStepEnum::pagamento->value,
                                     'status'      => StatusCheckoutEnum::pendente->value,
+                                ]);
+                                $pagamentos = [$consultar["resultado"]];
+                            }
+
+                            if (count($pagamentos) > 0) {
+                                return view('checkout-payment::partials.pagamento-sicoob', [
+                                    'pagamentos' => $pagamentos,
+                                    'record'     => $record,
                                 ]);
                             }
 
