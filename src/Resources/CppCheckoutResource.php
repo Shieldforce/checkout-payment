@@ -314,7 +314,7 @@ class CppCheckoutResource extends Resource
 
                             if (isset($status) && $status == "Em Aberto") {
                                 $record->update([
-                                    'startOnStep' => TypeStepEnum::finalizado->value,
+                                    'startOnStep' => TypeStepEnum::pagamento->value,
                                     'status'      => StatusCheckoutEnum::pendente->value,
                                 ]);
                             }
