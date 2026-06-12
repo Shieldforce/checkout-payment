@@ -256,17 +256,20 @@ class CppCheckoutResource extends Resource
                                 $mps        = new MercadoPagoService;
                                 $pagamentos = $mps->buscarPagamentoPorExternalId($record->uuid);
 
-                                logger([
-                                    'external' => $record->uuid ?? null,
-                                    'return'   => $pagamentos ?? null,
-                                ]);
-
                                 $approved = collect($pagamentos)
                                     ->firstWhere('status', 'approved');
 
                                 if ($approved) {
                                     $record->update([
                                         'startOnStep' => TypeStepEnum::finalizado->value,
+                                        'status'      => StatusCheckoutEnum::finalizado->value,
+                                    ]);
+                                }
+
+                                if (!$approved) {
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::finalizado->value,
+                                        'status'      => StatusCheckoutEnum::pendente->value,
                                     ]);
                                 }
 
@@ -293,8 +296,26 @@ class CppCheckoutResource extends Resource
                                 $boletoPixSicoob = new BoletoPixService();
                                 $consultar       = $boletoPixSicoob->consult($record);
                                 $status          = $consultar["resultado"]["situacaoBoleto"] ?? null;
-                                logger([
-                                    $consultar, $status
+                            }
+
+                            if (isset($status) && $status == "Liquidado") {
+                                $record->update([
+                                    'startOnStep' => TypeStepEnum::finalizado->value,
+                                    'status'      => StatusCheckoutEnum::finalizado->value,
+                                ]);
+                            }
+
+                            if (isset($status) && $status == "Baixado") {
+                                $record->update([
+                                    'startOnStep' => TypeStepEnum::finalizado->value,
+                                    'status'      => StatusCheckoutEnum::baixado->value,
+                                ]);
+                            }
+
+                            if (isset($status) && $status == "Em Aberto") {
+                                $record->update([
+                                    'startOnStep' => TypeStepEnum::finalizado->value,
+                                    'status'      => StatusCheckoutEnum::pendente->value,
                                 ]);
                             }
 
