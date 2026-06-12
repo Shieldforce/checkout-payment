@@ -293,7 +293,9 @@ class CppCheckoutResource extends Resource
                                 $boletoPixSicoob = new BoletoPixService();
                                 $consultar       = $boletoPixSicoob->consult($record);
                                 $status          = $consultar["resultado"]["situacaoBoleto"] ?? null;
-                                logger($consultar, $status);
+                                logger([
+                                    $consultar, $status
+                                ]);
                             }
 
                             return view('checkout-payment::partials.empty', [
