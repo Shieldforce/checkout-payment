@@ -114,8 +114,8 @@ class ListCppCheckouts extends ListRecords
             $checkout = CppCheckout::find($recordId);
 
             $checkout->update([
-                'status'      => StatusCheckoutEnum::criado->value,
-                'startOnStep' => 4,
+                'status'      => StatusCheckoutEnum::cancelado->value,
+                'startOnStep' => 5,
             ]);
 
             $step4 = $checkout->step4->first();
