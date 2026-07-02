@@ -249,6 +249,7 @@ class CppCheckoutResource extends Resource
                         ->label('Ver Pagamento MP')
                         ->icon('heroicon-o-magnifying-glass')
                         ->modalHeading('Dados do Pagamento MP')
+                        ->visible(fn($record) => $record->gateway->name == TypeGatewayEnum::mercado_pago->value)
                         ->modalSubmitAction(false)
                         ->modalCancelActionLabel('Fechar')
                         ->modalContent(function (Model $record) {
@@ -301,6 +302,7 @@ class CppCheckoutResource extends Resource
                         ->label('Ver Pagamento Sicoob')
                         ->icon('heroicon-o-magnifying-glass')
                         ->modalHeading('Dados do Pagamento Sicoob')
+                        ->visible(fn($record) => $record->gateway->name == TypeGatewayEnum::sicoob->value)
                         ->modalSubmitAction(false)
                         ->modalCancelActionLabel('Fechar')
                         ->modalContent(function (Model $record) {
