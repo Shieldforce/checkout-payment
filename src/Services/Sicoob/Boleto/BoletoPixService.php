@@ -130,7 +130,7 @@ class BoletoPixService
             throw new Exception("Gateway sicoob não existe!");
         }
 
-        $step4             = $checkout?->step4?->first();
+        $step4 = $checkout?->step4?->first();
 
         $responsePixSicoob = isset(json_decode($step4->response_pix_data, true)["nossoNumero"])
             ? json_decode($step4->response_pix_data, true)
@@ -412,8 +412,9 @@ class BoletoPixService
         );
 
         $checkout->update([
-            'status'      => StatusCheckoutEnum::pendente->value,
-            'startOnStep' => 5,
+            'status'         => StatusCheckoutEnum::pendente->value,
+            'startOnStep'    => 5,
+            'cpp_gateway_id' => $this->firstGatewaySicoob->id,
         ]);
 
         return $checkout;
