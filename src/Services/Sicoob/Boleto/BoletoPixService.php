@@ -16,93 +16,94 @@ use Shieldforce\CheckoutPayment\Services\Sicoob\Auth\LoginSicoobService;
 
 class BoletoPixService
 {
+    public ?string $token = null;
 
-    public ?string     $token = null;
     public CppGateways $firstGatewaySicoob;
-    public array       $login;
+
+    public array $login;
 
     public function __construct()
     {
-        $this->firstGatewaySicoob = CppGateways::where("name", TypeGatewayEnum::sicoob->value)->first();
+        $this->firstGatewaySicoob = CppGateways::where('name', TypeGatewayEnum::sicoob->value)->first();
 
         // Boleto e Pix Sicoob ---
-        $sicoobLogin = new LoginSicoobService();
+        $sicoobLogin = new LoginSicoobService;
         $this->login = $sicoobLogin->auth([
-            "client_id"         => $this->firstGatewaySicoob->field_2,
-            "path_certificado"  => storage_path($this->firstGatewaySicoob->field_5),
-            "senha_certificado" => $this->firstGatewaySicoob->field_1,
+            'client_id' => $this->firstGatewaySicoob->field_2,
+            'path_certificado' => storage_path($this->firstGatewaySicoob->field_5),
+            'senha_certificado' => $this->firstGatewaySicoob->field_1,
         ]);
 
-        $this->token = $this->login["access_token"] ?? null;
+        $this->token = $this->login['access_token'] ?? null;
     }
 
     public function insert($dados)
     {
         $payload = [
-            "numeroCliente"                   => (integer)$dados["numero_cliente"],
-            "codigoModalidade"                => 1,
-            "numeroContaCorrente"             => (integer)$dados["numero_conta"],
-            "codigoEspecieDocumento"          => "DM",
-            "dataEmissao"                     => date("Y-m-d"),
-            "seuNumero"                       => (string)$dados["external_reference"],
-            "identificacaoEmissaoBoleto"      => 1,
-            "identificacaoDistribuicaoBoleto" => 1,
-            "valor"                           => $dados["value"],
-            "dataVencimento"                  => $dados["due"],
-            "dataLimitePagamento"             => Carbon::parse($dados["due"])->addDays(60)->format("Y-m-d"),
-            "tipoDesconto"                    => 0,
-            "tipoMulta"                       => 1,
-            "dataMulta"                       => Carbon::parse($dados["due"])->addDays(2)->format("Y-m-d"),
-            "valorMulta"                      => 2,
-            "tipoJurosMora"                   => 1,
-            "dataJurosMora"                   => Carbon::parse($dados["due"])->addDays(3)->format("Y-m-d"),
-            "valorJurosMora"                  => 0.01,
-            "numeroParcela"                   => 1,
-            "pagador"                         => [
-                "numeroCpfCnpj" => (string)$dados["pagador"]["numeroCpfCnpj"],
-                "nome"          => $this->limpaNome($dados["pagador"]["nome"]),
-                "endereco"      => Str::upper(Str::ascii($dados["pagador"]["endereco"])),
-                "bairro"        => Str::upper(Str::ascii($dados["pagador"]["bairro"])),
-                "cidade"        => Str::upper(Str::ascii($dados["pagador"]["cidade"])),
-                "cep"           => $dados["pagador"]["cep"],
-                "uf"            => Str::upper(Str::ascii($dados["pagador"]["uf"])),
-                "email"         => $dados["pagador"]["email"],
+            'numeroCliente' => (int) $dados['numero_cliente'],
+            'codigoModalidade' => 1,
+            'numeroContaCorrente' => (int) $dados['numero_conta'],
+            'codigoEspecieDocumento' => 'DM',
+            'dataEmissao' => date('Y-m-d'),
+            'seuNumero' => (string) $dados['external_reference'],
+            'identificacaoEmissaoBoleto' => 1,
+            'identificacaoDistribuicaoBoleto' => 1,
+            'valor' => $dados['value'],
+            'dataVencimento' => $dados['due'],
+            'dataLimitePagamento' => Carbon::parse($dados['due'])->addDays(60)->format('Y-m-d'),
+            'tipoDesconto' => 0,
+            'tipoMulta' => 1,
+            'dataMulta' => Carbon::parse($dados['due'])->addDays(2)->format('Y-m-d'),
+            'valorMulta' => 2,
+            'tipoJurosMora' => 1,
+            'dataJurosMora' => Carbon::parse($dados['due'])->addDays(3)->format('Y-m-d'),
+            'valorJurosMora' => 0.01,
+            'numeroParcela' => 1,
+            'pagador' => [
+                'numeroCpfCnpj' => (string) $dados['pagador']['numeroCpfCnpj'],
+                'nome' => $this->limpaNome($dados['pagador']['nome']),
+                'endereco' => Str::upper(Str::ascii($dados['pagador']['endereco'])),
+                'bairro' => Str::upper(Str::ascii($dados['pagador']['bairro'])),
+                'cidade' => Str::upper(Str::ascii($dados['pagador']['cidade'])),
+                'cep' => $dados['pagador']['cep'],
+                'uf' => Str::upper(Str::ascii($dados['pagador']['uf'])),
+                'email' => $dados['pagador']['email'],
             ],
-            "beneficiarioFinal"               => [
-                "numeroCpfCnpj" => (string)$dados["beneficiarioFinal"]["numeroCpfCnpj"],
-                "nome"          => $dados["beneficiarioFinal"]["nome"],
+            'beneficiarioFinal' => [
+                'numeroCpfCnpj' => (string) $dados['beneficiarioFinal']['numeroCpfCnpj'],
+                'nome' => $dados['beneficiarioFinal']['nome'],
             ],
-            "mensagensInstrucao"              => $dados["mensagensInstrucao"],
-            "gerarPdf"                        => true,
-            "codigoCadastrarPIX"              => 1,
-            "numeroContratoCobranca"          => $dados["numeroContratoCobranca"],
+            'mensagensInstrucao' => $dados['mensagensInstrucao'],
+            'gerarPdf' => true,
+            'codigoCadastrarPIX' => 1,
+            'numeroContratoCobranca' => $dados['numeroContratoCobranca'],
         ];
 
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL            => 'https://api.sicoob.com.br/cobranca-bancaria/v3/boletos',
+            CURLOPT_URL => 'https://api.sicoob.com.br/cobranca-bancaria/v3/boletos',
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST           => true,
-            CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_UNICODE),
-            CURLOPT_HTTPHEADER     => [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
+            CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
                 'Accept: application/json',
                 'Authorization: Bearer ' . $this->token,
-                'client_id: ' . $dados["client_id"],
+                'client_id: ' . $dados['client_id'],
             ],
 
             // 🔐 Certificado
-            CURLOPT_SSLCERTTYPE    => 'P12',
-            CURLOPT_SSLCERT        => $dados["path_certificado"],
-            CURLOPT_SSLCERTPASSWD  => $dados["senha_certificado"],
+            CURLOPT_SSLCERTTYPE => 'P12',
+            CURLOPT_SSLCERT => $dados['path_certificado'],
+            CURLOPT_SSLCERTPASSWD => $dados['senha_certificado'],
 
             // SSL
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
 
             // Debug opcional
-            CURLOPT_VERBOSE        => true,
+            CURLOPT_VERBOSE => true,
         ]);
 
         $response = curl_exec($curl);
@@ -119,47 +120,47 @@ class BoletoPixService
     public function consult($checkout = null)
     {
 
-        if (!isset($checkout->id)) {
-            throw new Exception("Checkout não existe!");
+        if (! isset($checkout->id)) {
+            throw new Exception('Checkout não existe!');
         }
 
         $firstGatewaySicoob = $this->firstGatewaySicoob;
 
-        if (!isset($firstGatewaySicoob->id)) {
-            throw new Exception("Gateway sicoob não existe!");
+        if (! isset($firstGatewaySicoob->id)) {
+            throw new Exception('Gateway sicoob não existe!');
         }
 
         $step4 = $checkout?->step4?->first();
 
-        $responsePixSicoob = isset(json_decode($step4->response_pix_data, true)["nossoNumero"])
+        $responsePixSicoob = isset(json_decode($step4->response_pix_data, true)['nossoNumero'])
             ? json_decode($step4->response_pix_data, true)
             : null;
 
-        $responseBilletSicoob = isset(json_decode($step4->response_billet_data, true)["nossoNumero"])
+        $responseBilletSicoob = isset(json_decode($step4->response_billet_data, true)['nossoNumero'])
             ? json_decode($step4->response_billet_data, true)
             : null;
 
-        $nossoNumero = $responsePixSicoob["nossoNumero"] ?? $responseBilletSicoob["nossoNumero"] ?? null;
+        $nossoNumero = $responsePixSicoob['nossoNumero'] ?? $responseBilletSicoob['nossoNumero'] ?? null;
 
         $payload = [
-            "client_id"         => $firstGatewaySicoob->field_2 ?? null,
-            "path_certificado"  => storage_path($firstGatewaySicoob->field_5 ?? ""),
-            "senha_certificado" => $firstGatewaySicoob->field_1 ?? null,
-            "numero_cliente"    => $firstGatewaySicoob->field_4 ?? null,
-            "nosso_numero"      => $nossoNumero ?? null,
-            "numero_contrato"   => $firstGatewaySicoob->field_3 ?? null,
+            'client_id' => $firstGatewaySicoob->field_2 ?? null,
+            'path_certificado' => storage_path($firstGatewaySicoob->field_5 ?? ''),
+            'senha_certificado' => $firstGatewaySicoob->field_1 ?? null,
+            'numero_cliente' => $firstGatewaySicoob->field_4 ?? null,
+            'nosso_numero' => $nossoNumero ?? null,
+            'numero_contrato' => $firstGatewaySicoob->field_3 ?? null,
         ];
 
-        $link = "https://api.sicoob.com.br/cobranca-bancaria/v3/boletos";
+        $link = 'https://api.sicoob.com.br/cobranca-bancaria/v3/boletos';
         $link .= "?numeroCliente={$payload['numero_cliente']}";
         $link .= "&codigoModalidade=1&nossoNumero={$payload['nosso_numero']}";
         $link .= "&numeroContratoCobranca={$payload['numero_contrato']}";
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL            => $link,
+            CURLOPT_URL => $link,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CUSTOMREQUEST  => 'GET',
+            CURLOPT_CUSTOMREQUEST => 'GET',
 
             CURLOPT_HTTPHEADER => [
                 'Accept: application/json',
@@ -167,9 +168,9 @@ class BoletoPixService
                 'client_id: ' . $payload['client_id'],
             ],
 
-            CURLOPT_SSLCERTTYPE    => 'P12',
-            CURLOPT_SSLCERT        => $payload["path_certificado"],
-            CURLOPT_SSLCERTPASSWD  => $payload["senha_certificado"],
+            CURLOPT_SSLCERTTYPE => 'P12',
+            CURLOPT_SSLCERT => $payload['path_certificado'],
+            CURLOPT_SSLCERTPASSWD => $payload['senha_certificado'],
 
             // SSL
             CURLOPT_SSL_VERIFYPEER => true,
@@ -190,63 +191,63 @@ class BoletoPixService
     public function update($nossoNumero, $dados)
     {
         $payload = [
-            "numeroCliente"                   => $dados["numero_cliente"],
-            "codigoModalidade"                => 1,
-            "numeroContaCorrente"             => $dados["numero_conta"],
-            "codigoEspecieDocumento"          => "DM",
-            "dataEmissao"                     => date("Y-m-d"),
-            "seuNumero"                       => $dados["external_reference"],
-            "identificacaoEmissaoBoleto"      => 1,
-            "identificacaoDistribuicaoBoleto" => 1,
-            "valor"                           => $dados["value"],
-            "dataVencimento"                  => $dados["due"],
-            "dataLimitePagamento"             => Carbon::parse($dados["due"])->addDays(60)->format("Y-m-d"),
-            "tipoDesconto"                    => 0,
-            "tipoMulta"                       => 1,
-            "dataMulta"                       => Carbon::parse($dados["due"])->addDays(2)->format("Y-m-d"),
-            "valorMulta"                      => 2,
-            "tipoJurosMora"                   => 1,
-            "dataJurosMora"                   => Carbon::parse($dados["due"])->addDays(3)->format("Y-m-d"),
-            "valorJurosMora"                  => 0.01,
-            "numeroParcela"                   => 1,
-            "pagador"                         => [
-                "numeroCpfCnpj" => $dados["pagador"]["numeroCpfCnpj"],
-                "nome"          => $dados["pagador"]["nome"],
-                "endereco"      => $dados["pagador"]["endereco"],
-                "bairro"        => $dados["pagador"]["bairro"],
-                "cidade"        => $dados["pagador"]["cidade"],
-                "cep"           => $dados["pagador"]["cep"],
-                "uf"            => $dados["pagador"]["uf"],
-                "email"         => $dados["pagador"]["email"],
+            'numeroCliente' => $dados['numero_cliente'],
+            'codigoModalidade' => 1,
+            'numeroContaCorrente' => $dados['numero_conta'],
+            'codigoEspecieDocumento' => 'DM',
+            'dataEmissao' => date('Y-m-d'),
+            'seuNumero' => $dados['external_reference'],
+            'identificacaoEmissaoBoleto' => 1,
+            'identificacaoDistribuicaoBoleto' => 1,
+            'valor' => $dados['value'],
+            'dataVencimento' => $dados['due'],
+            'dataLimitePagamento' => Carbon::parse($dados['due'])->addDays(60)->format('Y-m-d'),
+            'tipoDesconto' => 0,
+            'tipoMulta' => 1,
+            'dataMulta' => Carbon::parse($dados['due'])->addDays(2)->format('Y-m-d'),
+            'valorMulta' => 2,
+            'tipoJurosMora' => 1,
+            'dataJurosMora' => Carbon::parse($dados['due'])->addDays(3)->format('Y-m-d'),
+            'valorJurosMora' => 0.01,
+            'numeroParcela' => 1,
+            'pagador' => [
+                'numeroCpfCnpj' => $dados['pagador']['numeroCpfCnpj'],
+                'nome' => $dados['pagador']['nome'],
+                'endereco' => $dados['pagador']['endereco'],
+                'bairro' => $dados['pagador']['bairro'],
+                'cidade' => $dados['pagador']['cidade'],
+                'cep' => $dados['pagador']['cep'],
+                'uf' => $dados['pagador']['uf'],
+                'email' => $dados['pagador']['email'],
             ],
-            "beneficiarioFinal"               => [
-                "numeroCpfCnpj" => $dados["empresaCnpj"],
-                "nome"          => $dados["empresa"]
+            'beneficiarioFinal' => [
+                'numeroCpfCnpj' => $dados['empresaCnpj'],
+                'nome' => $dados['empresa'],
             ],
-            "mensagensInstrucao"              => $dados["mensagensInstrucao"],
-            "gerarPdf"                        => true,
-            "codigoCadastrarPIX"              => 1,
-            "numeroContratoCobranca"          => $dados["numero_contrato"]
+            'mensagensInstrucao' => $dados['mensagensInstrucao'],
+            'gerarPdf' => true,
+            'codigoCadastrarPIX' => 1,
+            'numeroContratoCobranca' => $dados['numero_contrato'],
         ];
 
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL            => "https://api.sicoob.com.br/cobranca-bancaria/v3/boletos/{$nossoNumero}",
+            CURLOPT_URL => "https://api.sicoob.com.br/cobranca-bancaria/v3/boletos/{$nossoNumero}",
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST           => true,
-            CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_UNICODE),
-            CURLOPT_HTTPHEADER     => [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
+            CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json',
                 'Accept: application/json',
                 'Authorization: Bearer ' . $this->token,
-                'client_id: ' . $dados["client_id"],
+                'client_id: ' . $dados['client_id'],
             ],
 
             // 🔐 Certificado
-            CURLOPT_SSLCERTTYPE    => 'P12',
-            CURLOPT_SSLCERT        => $dados["path_certificado"],
-            CURLOPT_SSLCERTPASSWD  => $dados["senha_certificado"],
+            CURLOPT_SSLCERTTYPE => 'P12',
+            CURLOPT_SSLCERT => $dados['path_certificado'],
+            CURLOPT_SSLCERTPASSWD => $dados['senha_certificado'],
 
             // SSL
             CURLOPT_SSL_VERIFYPEER => true,
@@ -280,25 +281,25 @@ class BoletoPixService
 
     public function boletoPixInserir($checkout = null)
     {
-        if (!isset($checkout->id)) {
-            throw new Exception("Checkout não existe!");
+        if (! isset($checkout->id)) {
+            throw new Exception('Checkout não existe!');
         }
 
         $firstGatewaySicoob = $this->firstGatewaySicoob;
-        $transaction        = $checkout?->referencable;
+        $transaction = $checkout?->referencable;
 
-        if (!isset($firstGatewaySicoob->id)) {
-            throw new Exception("Gateway sicoob não existe!");
+        if (! isset($firstGatewaySicoob->id)) {
+            throw new Exception('Gateway sicoob não existe!');
         }
 
         if (
             isset($transaction->due_date) &&
-            $transaction->due_date <= Carbon::today()->format("Y-m-d H:i:s")
+            $transaction->due_date <= Carbon::today()->format('Y-m-d H:i:s')
         ) {
             $dias_atraso = Carbon::parse($transaction->due_date)->diffInDays(Carbon::today());
             if ($dias_atraso > 5) {
-                $texto1 = "Vencido a " . $dias_atraso . " dias.";
-                $texto2 = "Valor atualizado";
+                $texto1 = 'Vencido a ' . $dias_atraso . ' dias.';
+                $texto2 = 'Valor atualizado';
             }
         }
 
@@ -308,8 +309,8 @@ class BoletoPixService
             isset($transaction->id)
         ) {
 
-            $order   = $transaction?->order;
-            $client  = $order->client;
+            $order = $transaction?->order;
+            $client = $order->client;
             $address = $client->addresses->first();
 
             $dueDate = Carbon::parse($transaction->due_date)
@@ -318,42 +319,42 @@ class BoletoPixService
             $value = number_format($transaction->value, 2, '.', '');
 
             $payload = [
-                //config ---
-                "client_id"              => $firstGatewaySicoob->field_2,
-                "path_certificado"       => storage_path($firstGatewaySicoob->field_5),
-                "senha_certificado"      => $firstGatewaySicoob->field_1,
-                "numero_cliente"         => $firstGatewaySicoob->field_4,
-                "numero_conta"           => $firstGatewaySicoob->field_6,
-                "numeroContratoCobranca" => $firstGatewaySicoob->field_3,
-                //---
-                "external_reference"     => $checkout->uuid,
-                "value"                  => $value,
-                "due"                    => $dueDate,
-                "pagador"                => [
-                    "numeroCpfCnpj" => $client->document,
-                    "nome"          => $client->name,
-                    "endereco"      => $address->street . " " . $address->number,
-                    "bairro"        => $address->district,
-                    "cidade"        => $address->city,
-                    "cep"           => $address->zipcode,
-                    "uf"            => $address->state,
-                    "email"         => $client->email,
+                // config ---
+                'client_id' => $firstGatewaySicoob->field_2,
+                'path_certificado' => storage_path($firstGatewaySicoob->field_5),
+                'senha_certificado' => $firstGatewaySicoob->field_1,
+                'numero_cliente' => $firstGatewaySicoob->field_4,
+                'numero_conta' => $firstGatewaySicoob->field_6,
+                'numeroContratoCobranca' => $firstGatewaySicoob->field_3,
+                // ---
+                'external_reference' => $checkout->uuid,
+                'value' => $value,
+                'due' => $dueDate,
+                'pagador' => [
+                    'numeroCpfCnpj' => $client->document,
+                    'nome' => $client->name,
+                    'endereco' => $address->street . ' ' . $address->number,
+                    'bairro' => $address->district,
+                    'cidade' => $address->city,
+                    'cep' => $address->zipcode,
+                    'uf' => $address->state,
+                    'email' => $client->email,
                 ],
-                "beneficiarioFinal"      => [
-                    "numeroCpfCnpj" => "11655954000159",
-                    "nome"          => "Federal Telecom",
+                'beneficiarioFinal' => [
+                    'numeroCpfCnpj' => '11655954000159',
+                    'nome' => 'Federal Telecom',
                 ],
-                "mensagensInstrucao"     => [
-                    $texto1 ?? "Mensalidade Federal Associados",
-                    $texto2 ?? "Multa de 2%, e 0,1% ao dia",
-                    "Dúvidas? Ligue 08006262345",
-                    "Juntos Somos Fortes",
+                'mensagensInstrucao' => [
+                    $texto1 ?? 'Mensalidade Federal Associados',
+                    $texto2 ?? 'Multa de 2%, e 0,1% ao dia',
+                    'Dúvidas? Ligue 08006262345',
+                    'Juntos Somos Fortes',
                 ],
             ];
 
             return [
-                "inserir" => $this->insert($payload),
-                "payload" => $payload,
+                'inserir' => $this->insert($payload),
+                'payload' => $payload,
             ];
         }
 
@@ -362,26 +363,26 @@ class BoletoPixService
 
     public function salvarDadosBoletoPix(CppCheckout $checkout, $resultado)
     {
-        $pdf          = null;
+        $pdf = null;
         $qrcodeBase64 = null;
 
         $inserir = $resultado['inserir']['resultado'];
         $payload = $resultado['payload'];
 
-        if (!empty($inserir['pdfBoleto'])) {
+        if (! empty($inserir['pdfBoleto'])) {
             $pdfContent = base64_decode($inserir['pdfBoleto']);
-            $path       = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
+            $path = 'boletos/' . ($inserir['nossoNumero'] ?? uniqid()) . '.pdf';
             Storage::disk('public')->put($path, $pdfContent);
             $pdf = url(Storage::disk('public')->url($path));
         }
 
-        if (!empty($inserir['qrCode'])) {
+        if (! empty($inserir['qrCode'])) {
 
             $qrCode = new QrCode(
                 data: trim($inserir['qrCode'])
             );
 
-            $writer = new PngWriter();
+            $writer = new PngWriter;
 
             $result = $writer->write($qrCode);
 
@@ -399,20 +400,20 @@ class BoletoPixService
                 'cpp_checkout_id' => $checkout->id,
             ],
             [
-                'base_qrcode'          => $qrcodeBase64 ?? null,
-                'url_qrcode'           => $inserir['qrCode'] ?? null,
-                'request_pix_data'     => json_encode($payload),
-                'response_pix_data'    => json_encode($inserir),
-                'payment_method_id'    => 'bolsicoob',
-                'url_billet'           => $pdf,
-                'request_billet_data'  => json_encode($payload),
+                'base_qrcode' => $qrcodeBase64 ?? null,
+                'url_qrcode' => $inserir['qrCode'] ?? null,
+                'request_pix_data' => json_encode($payload),
+                'response_pix_data' => json_encode($inserir),
+                'payment_method_id' => 'bolsicoob',
+                'url_billet' => $pdf,
+                'request_billet_data' => json_encode($payload),
                 'response_billet_data' => json_encode($inserir),
             ]
         );
 
         $checkout->update([
-            'status'         => StatusCheckoutEnum::pendente->value,
-            'startOnStep'    => 5,
+            'status' => StatusCheckoutEnum::pendente->value,
+            'startOnStep' => 5,
             'cpp_gateway_id' => $this->firstGatewaySicoob->id,
         ]);
 
