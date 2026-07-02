@@ -21,7 +21,6 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
@@ -59,7 +58,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             ->filters($this->getTableFilters(), layout: FiltersLayout::AboveContentCollapsible)
             ->filtersFormColumns(3)
             ->filtersTriggerAction(
-                fn(Action $action) => $action
+                fn (Action $action) => $action
                     ->button()
                     ->label('Filtrar...'),
             )
@@ -106,8 +105,8 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
         $n = [
             SelectFilter::make('status')
                 ->options([
-                    'pending'   => 'Pending',
-                    'paid'      => 'Paid',
+                    'pending' => 'Pending',
+                    'paid' => 'Paid',
                     'cancelled' => 'Cancelled',
                 ]),
         ];
@@ -154,7 +153,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                     if (TypeGatewayEnum::from($data['name']) == TypeGatewayEnum::sicoob) {
                         $data['field_1'] = Crypt::encrypt($data['field_1']);
                         $data['field_2'] = Crypt::encrypt($data['field_2']);
-                        $active          = false;
+                        $active = false;
                     }
 
                     CppGateways::updateOrCreate($data, ['active' => $active]);
@@ -170,20 +169,20 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
                 ->live()
                 ->options(function () {
                     return collect(TypeGatewayEnum::cases())
-                        ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+                        ->mapWithKeys(fn ($case) => [$case->value => $case->label()])
                         ->toArray();
                 })
                 ->columnSpanFull()
                 ->afterStateUpdated(function (Get $get, Set $set) {
 
-                    $name = $get("name");
+                    $name = $get('name');
 
                     if (isset($name) && $name == TypeGatewayEnum::mercado_pago->value) {
-                        $set("active", true);
+                        $set('active', true);
                     }
 
                     if (isset($name) && $name == TypeGatewayEnum::sicoob->value) {
-                        $set("active", false);
+                        $set('active', false);
                     }
 
                 })
@@ -213,7 +212,7 @@ class CPPGatewaysPage extends Page implements HasForms, HasTable
             Toggle::make('active')
                 ->label('Ativo')
                 ->reactive()
-                ->disabled(fn(Get $get) => $get('name') === TypeGatewayEnum::mercado_pago->value)
+                ->disabled(fn (Get $get) => $get('name') === TypeGatewayEnum::mercado_pago->value)
                 ->hint('Ao ativar esse gateway, os outro serão desativados.')
                 ->required(),
 
