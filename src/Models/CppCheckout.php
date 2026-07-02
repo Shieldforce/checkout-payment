@@ -75,8 +75,8 @@ class CppCheckout extends Model
     {
         return $this->hasOne(
             CppGateways::class,
-            "id",
-            "cpp_gateway_id"
+            'id',
+            'cpp_gateway_id'
         );
     }
 
