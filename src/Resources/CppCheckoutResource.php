@@ -246,9 +246,9 @@ class CppCheckoutResource extends Resource
                         ->openUrlInNewTab(),
 
                     Tables\Actions\Action::make('ver_pagamento_mp')
-                        ->label('Ver Pagamento')
+                        ->label('Ver Pagamento MP')
                         ->icon('heroicon-o-magnifying-glass')
-                        ->modalHeading('Dados do Pagamento')
+                        ->modalHeading('Dados do Pagamento MP')
                         ->modalSubmitAction(false)
                         ->modalCancelActionLabel('Fechar')
                         ->modalContent(function (Model $record) {
@@ -292,43 +292,56 @@ class CppCheckoutResource extends Resource
                                 ]);
                             }
 
+                            return view('checkout-payment::partials.empty', [
+                                'message' => 'Nenhum pagamento do sicoob encontrado.',
+                            ]);
+                        }),
+
+                    Tables\Actions\Action::make('ver_pagamento_sicoob')
+                        ->label('Ver Pagamento Sicoob')
+                        ->icon('heroicon-o-magnifying-glass')
+                        ->modalHeading('Dados do Pagamento Sicoob')
+                        ->modalSubmitAction(false)
+                        ->modalCancelActionLabel('Fechar')
+                        ->modalContent(function (Model $record) {
+
                             if ($record->gateway->name == TypeGatewayEnum::sicoob->value) {
                                 $boletoPixSicoob = new BoletoPixService();
                                 $consultar       = $boletoPixSicoob->consult($record);
                                 $status          = $consultar["resultado"]["situacaoBoleto"] ?? null;
-                            }
 
-                            $pagamentos = [];
+                                $pagamentos = [];
 
-                            if (isset($status) && $status == "Liquidado") {
-                                $record->update([
-                                    'startOnStep' => TypeStepEnum::finalizado->value,
-                                    'status'      => StatusCheckoutEnum::finalizado->value,
-                                ]);
-                                $pagamentos = [$consultar["resultado"]];
-                            }
+                                if (isset($status) && $status == "Liquidado") {
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::finalizado->value,
+                                        'status'      => StatusCheckoutEnum::finalizado->value,
+                                    ]);
+                                    $pagamentos = [$consultar["resultado"]];
+                                }
 
-                            if (isset($status) && $status == "Baixado") {
-                                $record->update([
-                                    'startOnStep' => TypeStepEnum::finalizado->value,
-                                    'status'      => StatusCheckoutEnum::baixado->value,
-                                ]);
-                                $pagamentos = [$consultar["resultado"]];
-                            }
+                                if (isset($status) && $status == "Baixado") {
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::finalizado->value,
+                                        'status'      => StatusCheckoutEnum::baixado->value,
+                                    ]);
+                                    $pagamentos = [$consultar["resultado"]];
+                                }
 
-                            if (isset($status) && $status == "Em Aberto") {
-                                $record->update([
-                                    'startOnStep' => TypeStepEnum::pagamento->value,
-                                    'status'      => StatusCheckoutEnum::pendente->value,
-                                ]);
-                                $pagamentos = [$consultar["resultado"]];
-                            }
+                                if (isset($status) && $status == "Em Aberto") {
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::pagamento->value,
+                                        'status'      => StatusCheckoutEnum::pendente->value,
+                                    ]);
+                                    $pagamentos = [$consultar["resultado"]];
+                                }
 
-                            if (count($pagamentos) > 0) {
-                                return view('checkout-payment::partials.pagamento-sicoob', [
-                                    'pagamentos' => $pagamentos,
-                                    'record'     => $record,
-                                ]);
+                                if (count($pagamentos) > 0) {
+                                    return view('checkout-payment::partials.pagamento-sicoob', [
+                                        'pagamentos' => $pagamentos,
+                                        'record'     => $record,
+                                    ]);
+                                }
                             }
 
                             return view('checkout-payment::partials.empty', [
