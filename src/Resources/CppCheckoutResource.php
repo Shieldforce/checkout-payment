@@ -264,6 +264,10 @@ class CppCheckoutResource extends Resource
                                         'startOnStep' => TypeStepEnum::finalizado->value,
                                         'status'      => StatusCheckoutEnum::finalizado->value,
                                     ]);
+                                    return view('checkout-payment::partials.pagamento-mp', [
+                                        'pagamentos' => $pagamentos,
+                                        'record'     => $record,
+                                    ]);
                                 }
 
                                 $cancelled = collect($pagamentos)
@@ -273,6 +277,10 @@ class CppCheckoutResource extends Resource
                                     $record->update([
                                         'startOnStep' => TypeStepEnum::finalizado->value,
                                         'status'      => StatusCheckoutEnum::cancelado->value,
+                                    ]);
+                                    return view('checkout-payment::partials.pagamento-mp', [
+                                        'pagamentos' => $pagamentos,
+                                        'record'     => $record,
                                     ]);
                                 }
 
@@ -284,6 +292,10 @@ class CppCheckoutResource extends Resource
                                         'startOnStep' => TypeStepEnum::finalizado->value,
                                         'status'      => StatusCheckoutEnum::rejeitado->value,
                                     ]);
+                                    return view('checkout-payment::partials.pagamento-mp', [
+                                        'pagamentos' => $pagamentos,
+                                        'record'     => $record,
+                                    ]);
                                 }
 
                                 $refunded = collect($pagamentos)
@@ -294,14 +306,11 @@ class CppCheckoutResource extends Resource
                                         'startOnStep' => TypeStepEnum::finalizado->value,
                                         'status'      => StatusCheckoutEnum::refunded->value,
                                     ]);
-                                }
-
-                                /*if (!$approved) {
-                                    $record->update([
-                                        'startOnStep' => TypeStepEnum::finalizado->value,
-                                        'status'      => StatusCheckoutEnum::pendente->value,
+                                    return view('checkout-payment::partials.pagamento-mp', [
+                                        'pagamentos' => $pagamentos,
+                                        'record'     => $record,
                                     ]);
-                                }*/
+                                }
 
                                 if (empty($pagamentos)) {
                                     Notification::make('errors_mp')
@@ -315,11 +324,6 @@ class CppCheckoutResource extends Resource
                                         'message' => 'Nenhum pagamento do mercado pago encontrado.',
                                     ]);
                                 }
-
-                                return view('checkout-payment::partials.pagamento-mp', [
-                                    'pagamentos' => $pagamentos,
-                                    'record'     => $record,
-                                ]);
                             }
 
                             return view('checkout-payment::partials.empty', [
