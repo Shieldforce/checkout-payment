@@ -429,7 +429,7 @@ class MountCheckoutStepsService
     {
         $checkout = $checkout ?? $this->cppCheckout;
 
-        $step4 = $checkout?->step4()?->first();
+        $step4 = $checkout?->step4?->first();
 
         if (isset($step4->payment_method_id) && $step4->payment_method_id == "bolsicoob") {
             // Implementar a criação de boleto sicoob
@@ -447,6 +447,8 @@ class MountCheckoutStepsService
     public function criarPix(?CppCheckout $checkout = null, $criar = false)
     {
         $checkout = $checkout ?? $this->cppCheckout;
+
+        $step4 = $checkout?->step4?->first();
 
         if (isset($step4->payment_method_id) && $step4->payment_method_id == "bolsicoob") {
             // Implementar a criação de boleto sicoob
