@@ -14,6 +14,7 @@ use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Pages\DashboardMercadoPago;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
+use Shieldforce\CheckoutPayment\Services\Sicoob\Boleto\BoletoPixService;
 
 class ListCppCheckouts extends ListRecords
 {
@@ -96,6 +97,19 @@ class ListCppCheckouts extends ListRecords
     public function atualizarPagamento($paymentId, $method, $recordId)
     {
         dd($paymentId, $method, $recordId);
+    }
+
+    public function cancelarBoleto($nossoNumero): void
+    {
+        $sicoob   = new BoletoPixService();
+        $checkout = CppCheckout::where("uuid", $nossoNumero)->firstOrFail();
+        $baixa    = $sicoob->baixa($checkout);
+
+        Notification::make()
+            ->success()
+            ->title('Pagamento cancelado!')
+            ->body("Pagamento #{$checkout->uuid} cancelado com sucesso.")
+            ->send();
     }
 
     public function cancelarPagamentoMp($paymentId, $recordId): void

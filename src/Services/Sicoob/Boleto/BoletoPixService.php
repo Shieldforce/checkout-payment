@@ -267,6 +267,66 @@ class BoletoPixService
         return json_decode($response, true) ?? false;
     }
 
+    public function baixa($checkout = null)
+    {
+        if (!isset($checkout->id)) {
+            return false;
+        }
+
+        $payload = [
+            'numeroCliente'    => $firstGatewaySicoob->field_4 ?? null,
+            'codigoModalidade' => 1,
+        ];
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL            => "https://api.sicoob.com.br/cobranca-bancaria/v3/boletos/{$checkout->uuid}/baixar",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => json_encode($payload),
+
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Accept: application/json',
+                'Authorization: Bearer ' . $this->token,
+                'client_id: ' . $firstGatewaySicoob->field_2,
+            ],
+
+            CURLOPT_SSLCERTTYPE   => 'P12',
+            CURLOPT_SSLCERT       => storage_path($firstGatewaySicoob->field_5 ?? ""),
+            CURLOPT_SSLCERTPASSWD => $firstGatewaySicoob->field_1,
+
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
+        ]);
+
+        $response = curl_exec($curl);
+
+        if ($response === false) {
+            throw new Exception('Erro cURL: ' . curl_error($curl));
+        }
+
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        curl_close($curl);
+
+        // A API retorna 204 quando deu certo
+        if ($httpCode === 204) {
+            return [
+                'success' => true,
+                'status'  => 204,
+                'message' => 'Boleto baixado com sucesso.',
+            ];
+        }
+
+        return [
+            'success'  => false,
+            'status'   => $httpCode,
+            'response' => json_decode($response, true),
+        ];
+    }
+
     private function limpaNome($valor, $limite = 40)
     {
         $valor = mb_convert_encoding($valor, 'UTF-8', 'auto');
