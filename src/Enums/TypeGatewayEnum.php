@@ -5,13 +5,13 @@ namespace Shieldforce\CheckoutPayment\Enums;
 enum TypeGatewayEnum: int
 {
     case mercado_pago = 1;
-    case sicoob       = 2;
+    case sicoob = 2;
 
     public function label(): string
     {
         return match ($this) {
             self::mercado_pago => 'Mercado Pago',
-            self::sicoob       => 'Sicoob',
+            self::sicoob => 'Sicoob',
         };
     }
 
@@ -26,7 +26,7 @@ enum TypeGatewayEnum: int
                 'field_5' => 'TOKEN5',
                 'field_6' => 'TOKEN6',
             ],
-            self::sicoob       => [
+            self::sicoob => [
                 'field_1' => 'senha_certificado',
                 'field_2' => 'client_id',
                 'field_3' => 'numero_contrato',
@@ -48,7 +48,7 @@ enum TypeGatewayEnum: int
                 'field_5' => false,
                 'field_6' => false,
             ],
-            self::sicoob       => [
+            self::sicoob => [
                 'field_1' => true,
                 'field_2' => true,
                 'field_3' => true,
@@ -70,7 +70,7 @@ enum TypeGatewayEnum: int
                 'field_5' => false,
                 'field_6' => false,
             ],
-            self::sicoob       => [
+            self::sicoob => [
                 'field_1' => true,
                 'field_2' => true,
                 'field_3' => true,
@@ -92,7 +92,7 @@ enum TypeGatewayEnum: int
                 'field_5' => false,
                 'field_6' => false,
             ],
-            self::sicoob       => [
+            self::sicoob => [
                 'field_1' => true,
                 'field_2' => true,
                 'field_3' => true,
@@ -114,7 +114,7 @@ enum TypeGatewayEnum: int
                 'field_5' => 30,
                 'field_6' => 30,
             ],
-            self::sicoob       => [
+            self::sicoob => [
                 'field_1' => 30,
                 'field_2' => 30,
                 'field_3' => 30,
@@ -136,7 +136,7 @@ enum TypeGatewayEnum: int
                 'field_5' => '-',
                 'field_6' => '-',
             ],
-            self::sicoob       => [
+            self::sicoob => [
                 'field_1' => 'senha_certificado',
                 'field_2' => 'client_id',
                 'field_3' => 'numero_contrato',
@@ -158,7 +158,7 @@ enum TypeGatewayEnum: int
                 'field_5' => '-',
                 'field_6' => '-',
             ],
-            self::sicoob       => [
+            self::sicoob => [
                 'field_1' => 'senha_certificado',
                 'field_2' => 'client_id',
                 'field_3' => 'numero_contrato',
