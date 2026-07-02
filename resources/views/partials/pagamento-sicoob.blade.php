@@ -1,69 +1,93 @@
 <div class="space-y-4">
     @foreach($pagamentos as $pagamento)
-        @dd($pagamento);
-        {{-- Pagamentos MP --}}
-        {{--@if(isset($pagamento['status']))
-            <div class="p-4 border rounded-lg">
-                <p><strong>ID:</strong> {{ $pagamento['id'] }}</p>
-                <p>
-                    <strong>Status:</strong>
-                    <span class="
-                    @if($pagamento['status'] === 'approved') text-green-600
-                    @elseif($pagamento['status'] === 'pending') text-yellow-600
-                    @else text-red-600
+
+        <div class="p-4 border rounded-lg">
+
+            <p><strong>Nosso Número:</strong> {{ $pagamento['nossoNumero'] }}</p>
+
+            <p><strong>Seu Número:</strong> {{ $pagamento['seuNumero'] }}</p>
+
+            <p>
+                <strong>Status:</strong>
+
+                <span class="
+                    @if($pagamento['situacaoBoleto'] === 'Em Aberto')
+                        text-yellow-600
+                    @elseif($pagamento['situacaoBoleto'] === 'Liquidado')
+                        text-green-600
+                    @elseif($pagamento['situacaoBoleto'] === 'Baixado')
+                        text-red-600
+                    @else
+                        text-gray-600
                     @endif
                 ">
-                {{ $pagamento['status'] }}
+                    {{ $pagamento['situacaoBoleto'] }}
                 </span>
-                </p>
-                <p><strong>Método:</strong> {{ $pagamento['method'] }}</p>
+            </p>
 
-                <details class="mt-2">
-                    <summary class="cursor-pointer text-sm text-gray-600">
-                        Ver JSON completo
-                    </summary>
+            <p><strong>Valor:</strong> R$ {{ number_format($pagamento['valor'], 2, ',', '.') }}</p>
 
-                    <pre
-                        class="
-                        text-xs
-                        bg-gray-100
-                        p-2
-                        rounded
-                        mt-2
-                        overflow-y-auto
-                        max-h-60
-                        whitespace-pre-wrap
-                        break-words
-                    "
-                        style="overflow-y: scroll;overflow-x: scroll;height: 500px;"
-                    >{{ json_encode($pagamento['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
-                </details>
+            <p><strong>Emissão:</strong> {{ \Carbon\Carbon::parse($pagamento['dataEmissao'])->format('d/m/Y') }}</p>
 
-                <br>
-                <hr>
-                <br>
+            <p><strong>Vencimento:</strong> {{ \Carbon\Carbon::parse($pagamento['dataVencimento'])->format('d/m/Y') }}</p>
 
-                @if(!in_array($pagamento['status'], ['approved', 'cancelled']))
+            <p><strong>Linha Digitável:</strong></p>
 
-                    <button
-                        type="button"
-                        wire:click="atualizarPagamento('{{ $pagamento['id'] }}', '{{ $pagamento['method'] }}', '{{ $record->id }}')"
-                        style="background:orange;color:white;border-radius:5px;padding:5px;"
-                    >
-                        Atualizar Status
-                    </button>
-
-                    <button
-                        type="button"
-                        wire:click="cancelarPagamentoMp('{{ $pagamento['id'] }}', '{{ $record->id }}')"
-                        style="background:red;color:white;border-radius:5px;padding:5px;"
-                    >
-                        Cancelar
-                    </button>
-
-                @endif
-
+            <div class="bg-gray-100 p-2 rounded break-all text-xs">
+                {{ $pagamento['linhaDigitavel'] }}
             </div>
-        @endif--}}
+
+            @if(!empty($pagamento['codigoBarras']))
+                <p class="mt-2"><strong>Código de Barras:</strong></p>
+
+                <div class="bg-gray-100 p-2 rounded break-all text-xs">
+                    {{ $pagamento['codigoBarras'] }}
+                </div>
+            @endif
+
+            @if(!empty($pagamento['qrCode']))
+                <p class="mt-2"><strong>PIX Copia e Cola:</strong></p>
+
+                <textarea
+                    readonly
+                    class="w-full text-xs rounded border p-2"
+                    rows="5"
+                >{{ $pagamento['qrCode'] }}</textarea>
+            @endif
+
+            <details class="mt-4">
+                <summary class="cursor-pointer text-sm text-gray-600">
+                    Ver JSON completo
+                </summary>
+
+                <pre
+                    class="text-xs bg-gray-100 p-2 rounded mt-2 overflow-auto max-h-96 whitespace-pre-wrap break-words"
+                >{{ json_encode($pagamento, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+            </details>
+
+            <hr class="my-4">
+
+            @if($pagamento['situacaoBoleto'] === 'Em Aberto')
+
+                <button
+                    type="button"
+                    wire:click="consultarBoleto('{{ $pagamento['nossoNumero'] }}', '{{ $record->id }}')"
+                    style="background:orange;color:white;border-radius:5px;padding:5px;"
+                >
+                    Atualizar Status
+                </button>
+
+                <button
+                    type="button"
+                    wire:click="cancelarBoleto('{{ $pagamento['nossoNumero'] }}', '{{ $record->id }}')"
+                    style="background:red;color:white;border-radius:5px;padding:5px;"
+                >
+                    Cancelar Boleto
+                </button>
+
+            @endif
+
+        </div>
+
     @endforeach
 </div>
