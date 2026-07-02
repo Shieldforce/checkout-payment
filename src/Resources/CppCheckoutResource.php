@@ -294,7 +294,7 @@ class CppCheckoutResource extends Resource
                             }
 
                             return view('checkout-payment::partials.empty', [
-                                'message' => 'Nenhum pagamento do sicoob encontrado.',
+                                'message' => 'Nenhum pagamento do MP encontrado.',
                             ]);
                         }),
 
