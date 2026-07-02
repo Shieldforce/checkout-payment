@@ -22,7 +22,7 @@ class GatewayObserver
     {
         if ($model->active && $model->name == TypeGatewayEnum::mercado_pago->value) {
             CppGateways::where('id', '!=', $model->id)
-                ->where("name", TypeGatewayEnum::mercado_pago->value)
+                ->where('name', TypeGatewayEnum::mercado_pago->value)
                 ->update([
                     'active' => 0,
                 ]);
