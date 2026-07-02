@@ -437,7 +437,7 @@ class CppCheckoutResource extends Resource
 
                             if (isset($status) && $status == "Em Aberto") {
                                 $record->update([
-                                    'startOnStep' => TypeStepEnum::pagamento->value,
+                                    'startOnStep' => TypeStepEnum::finalizado->value,
                                     'status'      => StatusCheckoutEnum::pendente->value,
                                 ]);
                                 $pagamentos = [$consultar["resultado"]];

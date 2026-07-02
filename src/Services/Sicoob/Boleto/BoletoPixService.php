@@ -307,24 +307,9 @@ class BoletoPixService
             throw new Exception('Erro cURL: ' . curl_error($curl));
         }
 
-        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
         curl_close($curl);
 
-        // A API retorna 204 quando deu certo
-        if ($httpCode === 204) {
-            return [
-                'success' => true,
-                'status'  => 204,
-                'message' => 'Boleto baixado com sucesso.',
-            ];
-        }
-
-        return [
-            'success'  => false,
-            'status'   => $httpCode,
-            'response' => json_decode($response, true),
-        ];
+        return json_decode($response, true) ?? false;
     }
 
     private function limpaNome($valor, $limite = 40)
