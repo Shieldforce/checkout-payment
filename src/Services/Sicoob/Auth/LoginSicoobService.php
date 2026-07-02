@@ -11,30 +11,30 @@ class LoginSicoobService
         $curl = curl_init();
 
         $payload = [
-            "client_id"         => $dados['client_id'],
-            "path_certificado"  => $dados['path_certificado'],
-            "senha_certificado" => $dados['senha_certificado'],
+            'client_id' => $dados['client_id'],
+            'path_certificado' => $dados['path_certificado'],
+            'senha_certificado' => $dados['senha_certificado'],
         ];
 
-        $url = "https://auth.sicoob.com.br/auth/realms/cooperado/protocol/openid-connect/token";
+        $url = 'https://auth.sicoob.com.br/auth/realms/cooperado/protocol/openid-connect/token';
 
         curl_setopt_array($curl, [
-            CURLOPT_URL            => $url,
+            CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST           => true,
-            CURLOPT_POSTFIELDS     => http_build_query([
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query([
                 'grant_type' => 'client_credentials',
-                'client_id'  => $payload["client_id"],
-                'scope'      => 'boletos_inclusao boletos_consulta boletos_alteracao',
+                'client_id' => $payload['client_id'],
+                'scope' => 'boletos_inclusao boletos_consulta boletos_alteracao',
             ]),
-            CURLOPT_HTTPHEADER     => [
+            CURLOPT_HTTPHEADER => [
                 'Content-Type: application/x-www-form-urlencoded',
             ],
 
             // 🔐 CERTIFICADO DIGITAL
-            CURLOPT_SSLCERTTYPE    => 'P12',
-            CURLOPT_SSLCERT        => $payload["path_certificado"],
-            CURLOPT_SSLCERTPASSWD  => $payload["senha_certificado"],
+            CURLOPT_SSLCERTTYPE => 'P12',
+            CURLOPT_SSLCERT => $payload['path_certificado'],
+            CURLOPT_SSLCERTPASSWD => $payload['senha_certificado'],
 
             // ⚠️ IMPORTANTE (ambiente real)
             CURLOPT_SSL_VERIFYPEER => true,
