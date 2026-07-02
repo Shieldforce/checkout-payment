@@ -99,6 +99,15 @@ class ListCppCheckouts extends ListRecords
         dd($paymentId, $method, $recordId);
     }
 
+    public function consultarBoleto($nossoNumero)
+    {
+        Notification::make()
+            ->success()
+            ->title('Pagamento atualizado!')
+            ->body("Pagamento #{$nossoNumero} atualizado com sucesso.")
+            ->send();
+    }
+
     public function cancelarBoleto($nossoNumero): void
     {
         $sicoob   = new BoletoPixService();
