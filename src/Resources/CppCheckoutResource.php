@@ -245,7 +245,7 @@ class CppCheckoutResource extends Resource
                         })
                         ->openUrlInNewTab(),
 
-                    Tables\Actions\Action::make('ver_pagamento_mp')
+                    /*Tables\Actions\Action::make('ver_pagamento_mp')
                         ->label('Ver Pagamento MP')
                         ->icon('heroicon-o-magnifying-glass')
                         ->modalHeading('Dados do Pagamento MP')
@@ -294,6 +294,84 @@ class CppCheckoutResource extends Resource
 
                             return view('checkout-payment::partials.empty', [
                                 'message' => 'Nenhum pagamento do MP encontrado.',
+                            ]);
+                        }),*/
+
+                    Tables\Actions\Action::make('ver_pagamento_mp')
+                        ->label('Ver Pagamento MP')
+                        ->icon('heroicon-o-magnifying-glass')
+                        ->modalHeading('Dados do Pagamento MP')
+                        ->modalSubmitAction(false)
+                        ->modalCancelActionLabel('Fechar')
+                        ->modalContent(function (Model $record) {
+
+                            if ($record->gateway->name !== TypeGatewayEnum::mercado_pago->value) {
+                                return view('checkout-payment::partials.empty', [
+                                    'message' => 'Nenhum pagamento do Mercado Pago encontrado.',
+                                ]);
+                            }
+
+                            $mps = new MercadoPagoService;
+                            $pagamentos = $mps->buscarPagamentoPorExternalId($record->uuid);
+
+                            if (empty($pagamentos)) {
+                                Notification::make('errors_mp')
+                                    ->persistent()
+                                    ->danger()
+                                    ->title('Erro!')
+                                    ->body('Nenhum pagamento encontrado.')
+                                    ->send();
+
+                                return view('checkout-payment::partials.empty', [
+                                    'message' => 'Nenhum pagamento do Mercado Pago encontrado.',
+                                ]);
+                            }
+
+                            // Pega o pagamento mais recente
+                            $pagamento = collect($pagamentos)
+                                ->sortByDesc(fn ($item) => $item['date_created'] ?? $item['id'] ?? 0)
+                                ->first();
+
+                            switch ($pagamento['status']) {
+
+                                // Pagamento concluído
+                                case 'approved':
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::finalizado->value,
+                                        'status'      => StatusCheckoutEnum::finalizado->value,
+                                    ]);
+                                    break;
+
+                                // Ainda aguardando definição
+                                case 'pending':
+                                case 'in_process':
+                                case 'authorized':
+                                    $record->update([
+                                        'status' => StatusCheckoutEnum::pendente->value,
+                                    ]);
+                                    break;
+
+                                // Pagamentos cancelados/rejeitados
+                                case 'cancelled':
+                                case 'rejected':
+                                case 'refunded':
+                                case 'charged_back':
+                                    $record->update([
+                                        'status' => StatusCheckoutEnum::cancelado->value,
+                                    ]);
+                                    break;
+
+                                // Qualquer outro status desconhecido
+                                default:
+                                    $record->update([
+                                        'status' => StatusCheckoutEnum::pendente->value,
+                                    ]);
+                                    break;
+                            }
+
+                            return view('checkout-payment::partials.pagamento-mp', [
+                                'pagamentos' => $pagamentos,
+                                'record'     => $record,
                             ]);
                         }),
 
