@@ -12,6 +12,7 @@ enum StatusCheckoutEnum: int
     case rejeitado  = 6;
     case baixado    = 7;
     case cancelado  = 8;
+    case refunded   = 9;
     case erro       = 999;
 
     public function label(): string
@@ -25,6 +26,7 @@ enum StatusCheckoutEnum: int
             self::rejeitado  => 'Rejeitado',
             self::baixado    => 'Baixado',
             self::cancelado  => 'Cancelado',
+            self::refunded   => 'Devolvido',
             self::erro       => 'Erro',
         };
     }
@@ -40,6 +42,7 @@ enum StatusCheckoutEnum: int
             self::rejeitado  => 'danger',
             self::baixado    => 'danger',
             self::cancelado  => 'danger',
+            self::refunded   => 'danger',
             self::erro       => 'danger',
         };
     }
@@ -55,6 +58,7 @@ enum StatusCheckoutEnum: int
             self::rejeitado->value  => self::rejeitado->label(),
             self::baixado->value    => self::baixado->label(),
             self::cancelado->value  => self::cancelado->label(),
+            self::refunded->value   => self::refunded->label(),
             self::erro->value       => self::erro->label(),
         };
     }
@@ -70,6 +74,7 @@ enum StatusCheckoutEnum: int
             self::rejeitado->value  => self::rejeitado->color(),
             self::baixado->value    => self::baixado->color(),
             self::cancelado->value  => self::cancelado->color(),
+            self::refunded->value   => self::refunded->color(),
             self::erro->value       => self::erro->color(),
         };
     }

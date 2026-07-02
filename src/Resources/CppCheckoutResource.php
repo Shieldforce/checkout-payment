@@ -245,7 +245,7 @@ class CppCheckoutResource extends Resource
                         })
                         ->openUrlInNewTab(),
 
-                    /*Tables\Actions\Action::make('ver_pagamento_mp')
+                    Tables\Actions\Action::make('ver_pagamento_mp')
                         ->label('Ver Pagamento MP')
                         ->icon('heroicon-o-magnifying-glass')
                         ->modalHeading('Dados do Pagamento MP')
@@ -266,12 +266,42 @@ class CppCheckoutResource extends Resource
                                     ]);
                                 }
 
-                                if (!$approved) {
+                                $cancelled = collect($pagamentos)
+                                    ->firstWhere('status', 'cancelled');
+
+                                if ($cancelled) {
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::finalizado->value,
+                                        'status'      => StatusCheckoutEnum::cancelado->value,
+                                    ]);
+                                }
+
+                                $rejected = collect($pagamentos)
+                                    ->firstWhere('status', 'rejected');
+
+                                if ($rejected) {
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::finalizado->value,
+                                        'status'      => StatusCheckoutEnum::rejeitado->value,
+                                    ]);
+                                }
+
+                                $refunded = collect($pagamentos)
+                                    ->firstWhere('status', 'refunded');
+
+                                if ($refunded) {
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::finalizado->value,
+                                        'status'      => StatusCheckoutEnum::refunded->value,
+                                    ]);
+                                }
+
+                                /*if (!$approved) {
                                     $record->update([
                                         'startOnStep' => TypeStepEnum::finalizado->value,
                                         'status'      => StatusCheckoutEnum::pendente->value,
                                     ]);
-                                }
+                                }*/
 
                                 if (empty($pagamentos)) {
                                     Notification::make('errors_mp')
@@ -295,9 +325,9 @@ class CppCheckoutResource extends Resource
                             return view('checkout-payment::partials.empty', [
                                 'message' => 'Nenhum pagamento do MP encontrado.',
                             ]);
-                        }),*/
+                        }),
 
-                    Tables\Actions\Action::make('ver_pagamento_mp')
+                    /*Tables\Actions\Action::make('ver_pagamento_mp')
                         ->label('Ver Pagamento MP')
                         ->icon('heroicon-o-magnifying-glass')
                         ->modalHeading('Dados do Pagamento MP')
@@ -373,7 +403,7 @@ class CppCheckoutResource extends Resource
                                 'pagamentos' => $pagamentos,
                                 'record'     => $record,
                             ]);
-                        }),
+                        }),*/
 
                     Tables\Actions\Action::make('ver_pagamento_sicoob')
                         ->label('Ver Pagamento Sicoob')
