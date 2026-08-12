@@ -855,7 +855,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                     'startOnStep' => 5,
                 ]);
 
-                // return;
+                DB::commit();
+
+                return;
             }
 
             if (
@@ -869,7 +871,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                     'startOnStep' => 5,
                 ]);
 
-                // return;
+                DB::commit();
+
+                return;
             }
 
             // Gerar sicoob ----------
@@ -878,8 +882,10 @@ class InternalCheckoutWizard extends Page implements HasForms
 
             if (
                 isset($order->sicoob) &&
-                $method == MethodPaymentEnum::pix->value ||
-                $method == MethodPaymentEnum::billet->value
+                (
+                    $method == MethodPaymentEnum::pix->value ||
+                    $method == MethodPaymentEnum::billet->value
+                )
             ) {
                 $boletoPixSicoob = new BoletoPixService;
                 $inserir = $boletoPixSicoob->boletoPixInserir($this->checkout);

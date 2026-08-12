@@ -35,6 +35,8 @@
     @foreach ($opcoes as $opcao)
         <div
             wire:click="$set('method_checked', '{{ $opcao['id'] }}')"
+            wire:loading.class="pointer-events-none opacity-50"
+            wire:target="method_checked"
             @click="selecionado = {{ $opcao['id'] }};"
             :class="selecionado == @js($opcao['id'])
                 ? 'bg-primary-500 text-white dark:bg-primary-600 dark:text-white shadow-lg ring-2 ring-primary-400 border-transparent'
