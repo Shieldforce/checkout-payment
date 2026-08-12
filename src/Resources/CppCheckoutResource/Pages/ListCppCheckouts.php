@@ -10,6 +10,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Carbon;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
+use Shieldforce\CheckoutPayment\Enums\TypeStepEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Pages\DashboardMercadoPago;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource;
@@ -99,13 +100,53 @@ class ListCppCheckouts extends ListRecords
         dd($paymentId, $method, $recordId);
     }
 
-    public function consultarBoleto($nossoNumero)
+    public function consultarBoleto($nossoNumero, $recordId): void
     {
-        Notification::make()
-            ->success()
-            ->title('Pagamento atualizado!')
-            ->body("Pagamento #{$nossoNumero} atualizado com sucesso.")
-            ->send();
+        $checkout = CppCheckout::find($recordId);
+
+        if (! $checkout) {
+            Notification::make()
+                ->danger()
+                ->title('Erro ao atualizar status')
+                ->body('Checkout não encontrado.')
+                ->send();
+
+            return;
+        }
+
+        try {
+            $sicoob = new BoletoPixService;
+            $consultar = $sicoob->consult($checkout);
+            $status = $consultar['resultado']['situacaoBoleto'] ?? null;
+
+            match ($status) {
+                'Liquidado' => $checkout->update([
+                    'startOnStep' => TypeStepEnum::finalizado->value,
+                    'status' => StatusCheckoutEnum::finalizado->value,
+                ]),
+                'Baixado' => $checkout->update([
+                    'startOnStep' => TypeStepEnum::finalizado->value,
+                    'status' => StatusCheckoutEnum::baixado->value,
+                ]),
+                'Em Aberto' => $checkout->update([
+                    'startOnStep' => TypeStepEnum::finalizado->value,
+                    'status' => StatusCheckoutEnum::pendente->value,
+                ]),
+                default => null,
+            };
+
+            Notification::make()
+                ->success()
+                ->title('Status consultado!')
+                ->body("Pagamento #{$nossoNumero}: " . ($status ?? 'status desconhecido'))
+                ->send();
+        } catch (\Throwable $e) {
+            Notification::make()
+                ->danger()
+                ->title('Erro ao atualizar status')
+                ->body($e->getMessage())
+                ->send();
+        }
     }
 
     public function cancelarBoleto($nossoNumero): void
