@@ -274,6 +274,28 @@ class BoletoPixService
             return false;
         }
 
+        $firstGatewaySicoob = $this->firstGatewaySicoob;
+
+        if (! isset($firstGatewaySicoob->id)) {
+            throw new Exception('Gateway sicoob não existe!');
+        }
+
+        $step4 = $checkout?->step4?->first();
+
+        $responsePixSicoob = isset(json_decode($step4->response_pix_data, true)['nossoNumero'])
+            ? json_decode($step4->response_pix_data, true)
+            : null;
+
+        $responseBilletSicoob = isset(json_decode($step4->response_billet_data, true)['nossoNumero'])
+            ? json_decode($step4->response_billet_data, true)
+            : null;
+
+        $nossoNumero = $responsePixSicoob['nossoNumero'] ?? $responseBilletSicoob['nossoNumero'] ?? null;
+
+        if (! $nossoNumero) {
+            throw new Exception('Nosso Número não encontrado para este checkout!');
+        }
+
         $payload = [
             'numeroCliente' => $firstGatewaySicoob->field_4 ?? null,
             'codigoModalidade' => 1,
@@ -282,7 +304,7 @@ class BoletoPixService
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => "https://api.sicoob.com.br/cobranca-bancaria/v3/boletos/{$checkout->uuid}/baixar",
+            CURLOPT_URL => "https://api.sicoob.com.br/cobranca-bancaria/v3/boletos/{$nossoNumero}/baixar",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => json_encode($payload),

@@ -149,17 +149,51 @@ class ListCppCheckouts extends ListRecords
         }
     }
 
-    public function cancelarBoleto($nossoNumero): void
+    public function cancelarBoleto($nossoNumero, $recordId): void
     {
-        $sicoob = new BoletoPixService;
-        $checkout = CppCheckout::where('uuid', $nossoNumero)->firstOrFail();
-        $baixa = $sicoob->baixa($checkout);
+        $checkout = CppCheckout::find($recordId);
 
-        Notification::make()
-            ->success()
-            ->title('Pagamento cancelado!')
-            ->body("Pagamento #{$checkout->uuid} cancelado com sucesso.")
-            ->send();
+        if (! $checkout) {
+            Notification::make()
+                ->danger()
+                ->title('Erro ao cancelar boleto')
+                ->body('Checkout não encontrado.')
+                ->send();
+
+            return;
+        }
+
+        try {
+            $sicoob = new BoletoPixService;
+            $baixa = $sicoob->baixa($checkout);
+
+            if (! $baixa || isset($baixa['mensagens'])) {
+                Notification::make()
+                    ->danger()
+                    ->title('Erro ao cancelar boleto')
+                    ->body($baixa['mensagens'][0]['mensagem'] ?? 'Não foi possível cancelar o boleto.')
+                    ->send();
+
+                return;
+            }
+
+            $checkout->update([
+                'startOnStep' => TypeStepEnum::finalizado->value,
+                'status' => StatusCheckoutEnum::baixado->value,
+            ]);
+
+            Notification::make()
+                ->success()
+                ->title('Pagamento cancelado!')
+                ->body("Pagamento #{$nossoNumero} cancelado com sucesso.")
+                ->send();
+        } catch (\Throwable $e) {
+            Notification::make()
+                ->danger()
+                ->title('Erro ao cancelar boleto')
+                ->body($e->getMessage())
+                ->send();
+        }
     }
 
     public function cancelarPagamentoMp($paymentId, $recordId): void
