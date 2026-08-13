@@ -2,6 +2,7 @@
 
 namespace Shieldforce\CheckoutPayment\Pages;
 
+use Carbon\Carbon;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
@@ -35,6 +36,7 @@ use Shieldforce\CheckoutPayment\Models\CppCheckoutStep3;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep4;
 use Shieldforce\CheckoutPayment\Models\CppGateways;
 use Shieldforce\CheckoutPayment\Services\BuscarViaCepService;
+use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MPCreateLocalService;
 use Shieldforce\CheckoutPayment\Services\Sicoob\Boleto\BoletoPixService;
 use Throwable;
@@ -847,33 +849,63 @@ class InternalCheckoutWizard extends Page implements HasForms
                 ! empty($this->step4->base_qrcode) &&
                 $method == MethodPaymentEnum::pix->value
             ) {
+                $cachedPixRequest = json_decode($this->step4->request_pix_data ?? '[]', true);
+                $pixDataUnchanged = isset($cachedPixRequest['value'])
+                    && abs((float) $cachedPixRequest['value'] - (float) $this->total_price) < 0.01;
 
-                // atualizar qrcode ---
-                $this->base_qrcode = $this->step4->base_qrcode;
-                $this->url_qrcode = $this->step4->url_qrcode;
-                $this->checkout->update([
-                    'startOnStep' => 5,
-                ]);
+                if ($pixDataUnchanged) {
+                    // atualizar qrcode ---
+                    $this->base_qrcode = $this->step4->base_qrcode;
+                    $this->url_qrcode = $this->step4->url_qrcode;
+                    $this->checkout->update([
+                        'startOnStep' => 5,
+                    ]);
 
-                DB::commit();
+                    DB::commit();
 
-                return;
+                    return;
+                }
+
+                // valor foi alterado desde que o pix foi gerado: cancela o antigo no MP para gerar um novo
+                $oldPixId = json_decode($this->step4->response_pix_data ?? '[]', true)['id'] ?? null;
+                if ($oldPixId) {
+                    (new MercadoPagoService)->cancelarPagamento($oldPixId);
+                }
             }
 
             if (
                 ! empty($this->step4->url_billet) &&
                 $method == MethodPaymentEnum::billet->value
             ) {
+                $cachedBilletRequest = json_decode($this->step4->request_billet_data ?? '[]', true);
+                $cachedDueDate = isset($cachedBilletRequest['due_date'])
+                    ? Carbon::parse($cachedBilletRequest['due_date'])->format('Y-m-d')
+                    : null;
+                $currentDueDate = $this->checkout->due_date
+                    ? Carbon::parse($this->checkout->due_date)->format('Y-m-d')
+                    : null;
 
-                // atualizar boleto ---
-                $this->url_billet = $this->step4->url_billet;
-                $this->checkout->update([
-                    'startOnStep' => 5,
-                ]);
+                $billetDataUnchanged = isset($cachedBilletRequest['value'])
+                    && abs((float) $cachedBilletRequest['value'] - (float) $this->total_price) < 0.01
+                    && $cachedDueDate === $currentDueDate;
 
-                DB::commit();
+                if ($billetDataUnchanged) {
+                    // atualizar boleto ---
+                    $this->url_billet = $this->step4->url_billet;
+                    $this->checkout->update([
+                        'startOnStep' => 5,
+                    ]);
 
-                return;
+                    DB::commit();
+
+                    return;
+                }
+
+                // valor/vencimento foram alterados desde que o boleto foi gerado: cancela o antigo no MP para gerar um novo
+                $oldBilletId = json_decode($this->step4->response_billet_data ?? '[]', true)['id'] ?? null;
+                if ($oldBilletId) {
+                    (new MercadoPagoService)->cancelarPagamento($oldBilletId);
+                }
             }
 
             // Gerar sicoob ----------

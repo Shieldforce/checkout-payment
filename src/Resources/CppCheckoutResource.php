@@ -256,66 +256,6 @@ class CppCheckoutResource extends Resource
                                 $mps = new MercadoPagoService;
                                 $pagamentos = $mps->buscarPagamentoPorExternalId($record->uuid);
 
-                                $approved = collect($pagamentos)
-                                    ->firstWhere('status', 'approved');
-
-                                if ($approved) {
-                                    $record->update([
-                                        'startOnStep' => TypeStepEnum::finalizado->value,
-                                        'status' => StatusCheckoutEnum::finalizado->value,
-                                    ]);
-
-                                    return view('checkout-payment::partials.pagamento-mp', [
-                                        'pagamentos' => $pagamentos,
-                                        'record' => $record,
-                                    ]);
-                                }
-
-                                $cancelled = collect($pagamentos)
-                                    ->firstWhere('status', 'cancelled');
-
-                                if ($cancelled) {
-                                    $record->update([
-                                        'startOnStep' => TypeStepEnum::finalizado->value,
-                                        'status' => StatusCheckoutEnum::cancelado->value,
-                                    ]);
-
-                                    return view('checkout-payment::partials.pagamento-mp', [
-                                        'pagamentos' => $pagamentos,
-                                        'record' => $record,
-                                    ]);
-                                }
-
-                                $rejected = collect($pagamentos)
-                                    ->firstWhere('status', 'rejected');
-
-                                if ($rejected) {
-                                    $record->update([
-                                        'startOnStep' => TypeStepEnum::finalizado->value,
-                                        'status' => StatusCheckoutEnum::rejeitado->value,
-                                    ]);
-
-                                    return view('checkout-payment::partials.pagamento-mp', [
-                                        'pagamentos' => $pagamentos,
-                                        'record' => $record,
-                                    ]);
-                                }
-
-                                $refunded = collect($pagamentos)
-                                    ->firstWhere('status', 'refunded');
-
-                                if ($refunded) {
-                                    $record->update([
-                                        'startOnStep' => TypeStepEnum::finalizado->value,
-                                        'status' => StatusCheckoutEnum::refunded->value,
-                                    ]);
-
-                                    return view('checkout-payment::partials.pagamento-mp', [
-                                        'pagamentos' => $pagamentos,
-                                        'record' => $record,
-                                    ]);
-                                }
-
                                 if (empty($pagamentos)) {
                                     Notification::make('errors_mp')
                                         ->persistent()
@@ -328,6 +268,32 @@ class CppCheckoutResource extends Resource
                                         'message' => 'Nenhum pagamento do mercado pago encontrado.',
                                     ]);
                                 }
+
+                                // status finais do MP que refletem no status do checkout, em ordem de prioridade.
+                                // pagamentos ainda em aberto (pending, in_process, authorized, etc.) não
+                                // atualizam o checkout, mas continuam sendo exibidos no modal abaixo.
+                                $statusParaCheckout = [
+                                    'approved' => StatusCheckoutEnum::finalizado->value,
+                                    'cancelled' => StatusCheckoutEnum::cancelado->value,
+                                    'rejected' => StatusCheckoutEnum::rejeitado->value,
+                                    'refunded' => StatusCheckoutEnum::refunded->value,
+                                ];
+
+                                foreach ($statusParaCheckout as $statusMp => $statusCheckout) {
+                                    if (collect($pagamentos)->firstWhere('status', $statusMp)) {
+                                        $record->update([
+                                            'startOnStep' => TypeStepEnum::finalizado->value,
+                                            'status' => $statusCheckout,
+                                        ]);
+
+                                        break;
+                                    }
+                                }
+
+                                return view('checkout-payment::partials.pagamento-mp', [
+                                    'pagamentos' => $pagamentos,
+                                    'record' => $record,
+                                ]);
                             }
 
                             return view('checkout-payment::partials.empty', [
