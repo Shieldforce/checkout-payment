@@ -5,6 +5,7 @@ namespace Shieldforce\CheckoutPayment\Services;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Get;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Crypt;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 
@@ -46,7 +47,7 @@ class ManagerFieldService
                     ->icon('heroicon-m-clipboard')
                     ->tooltip('Copiar')
                     ->action(
-                        fn ($state) => \Filament\Notifications\Notification::make()
+                        fn ($state) => Notification::make()
                             ->title('Copiado!')
                             ->body('A chave foi copiada para a área de transferência.')
                             ->success()

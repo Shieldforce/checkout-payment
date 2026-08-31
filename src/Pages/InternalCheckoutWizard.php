@@ -13,6 +13,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Support\Facades\Auth;
@@ -245,7 +246,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ]);
                 })
                 ->schema([
-                    \Filament\Forms\Components\View::make(
+                    View::make(
                         'checkout-payment::checkout.cart-products'
                     ),
                 ]),
@@ -763,7 +764,7 @@ class InternalCheckoutWizard extends Page implements HasForms
         string $body = '',
         string $status = 'info'
     ): void {
-        \Filament\Notifications\Notification::make()
+        Notification::make()
             ->title($title ?? 'titulo')
             ->body($body ?? 'corpo')
             ->seconds(30)
