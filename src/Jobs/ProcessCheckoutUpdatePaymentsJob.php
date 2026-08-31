@@ -38,7 +38,7 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
         );
 
         $updateData = [
-            'return_gateway' => $payments,
+            'return_gateway' => json_encode($payments),
         ];
 
         // 1. Procura um aprovado (não importa a ordem, qualquer aprovado já finaliza)
