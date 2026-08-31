@@ -411,8 +411,17 @@ class CppCheckoutResource extends Resource
                         ->modalCancelActionLabel('Fechar')
                         ->modalContent(function (Model $record) {
 
-                            $boletoPixSicoob = new BoletoPixService;
-                            $consultar = $boletoPixSicoob->consult($record);
+                            try {
+                                $boletoPixSicoob = new BoletoPixService;
+                                $consultar = $boletoPixSicoob->consult($record);
+                            } catch (\Throwable $e) {
+                                return view('checkout-payment::partials.empty', [
+                                    'message' => 'Não foi possível consultar o Sicoob.',
+                                    'erro' => ['message' => $e->getMessage(), 'code' => null],
+                                    'recordId' => $record->id,
+                                ]);
+                            }
+
                             $status = $consultar['resultado']['situacaoBoleto'] ?? null;
 
                             $pagamentos = [];

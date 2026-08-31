@@ -132,11 +132,15 @@ class BoletoPixService
 
         $step4 = $checkout?->step4?->first();
 
-        $responsePixSicoob = isset(json_decode($step4->response_pix_data, true)['nossoNumero'])
+        if (! $step4) {
+            throw new Exception('Nenhum boleto ou pix foi gerado para este checkout ainda.');
+        }
+
+        $responsePixSicoob = isset(json_decode($step4->response_pix_data ?? 'null', true)['nossoNumero'])
             ? json_decode($step4->response_pix_data, true)
             : null;
 
-        $responseBilletSicoob = isset(json_decode($step4->response_billet_data, true)['nossoNumero'])
+        $responseBilletSicoob = isset(json_decode($step4->response_billet_data ?? 'null', true)['nossoNumero'])
             ? json_decode($step4->response_billet_data, true)
             : null;
 
@@ -282,11 +286,15 @@ class BoletoPixService
 
         $step4 = $checkout?->step4?->first();
 
-        $responsePixSicoob = isset(json_decode($step4->response_pix_data, true)['nossoNumero'])
+        if (! $step4) {
+            throw new Exception('Nenhum boleto ou pix foi gerado para este checkout ainda.');
+        }
+
+        $responsePixSicoob = isset(json_decode($step4->response_pix_data ?? 'null', true)['nossoNumero'])
             ? json_decode($step4->response_pix_data, true)
             : null;
 
-        $responseBilletSicoob = isset(json_decode($step4->response_billet_data, true)['nossoNumero'])
+        $responseBilletSicoob = isset(json_decode($step4->response_billet_data ?? 'null', true)['nossoNumero'])
             ? json_decode($step4->response_billet_data, true)
             : null;
 
