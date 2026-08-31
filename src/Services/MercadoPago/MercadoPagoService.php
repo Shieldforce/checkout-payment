@@ -328,6 +328,35 @@ class MercadoPagoService
         }
     }
 
+    /**
+     * Confirma ao vivo se existe pagamento aprovado pra esse external_id. Diferente de
+     * buscarPagamentoPorExternalId(), NÃO engole exceção — deixa subir pra quem chama poder
+     * distinguir "sem pagamento" (false) de "não deu pra confirmar agora" (exception), usado
+     * pra travar edição/exclusão de cobrança já paga com segurança.
+     */
+    public function pagamentoAprovado(string $externalId): bool
+    {
+        $client = new PaymentClient;
+
+        $payments = $client->search(
+            request: new MPSearchRequest(
+                50,
+                0,
+                filters: [
+                    'external_reference' => $externalId,
+                ]
+            )
+        );
+
+        foreach ($payments->results ?? [] as $payment) {
+            if (($payment->status ?? null) === 'approved') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function listarPagamentos(
         int $limit = 50,
         int $offset = 0,

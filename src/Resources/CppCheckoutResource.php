@@ -8,6 +8,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Support\Exceptions\Halt;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -26,6 +27,7 @@ use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep2;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource\Pages\ListCppCheckouts;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
+use Shieldforce\CheckoutPayment\Services\PaymentVerificationService;
 use Shieldforce\CheckoutPayment\Services\Permissions\CanTrait;
 use Shieldforce\CheckoutPayment\Services\Sicoob\Boleto\BoletoPixService;
 
@@ -252,7 +254,32 @@ class CppCheckoutResource extends Resource
                         ->visible(
                             fn ($record) => Auth::user()?->hasAnyRoles('Administrator')
                                 && $record->status == StatusCheckoutEnum::criado->value
-                        ),
+                        )
+                        ->before(function (Model $record) {
+                            try {
+                                $paid = (new PaymentVerificationService)->checkoutHasConfirmedPayment($record);
+                            } catch (\Throwable $e) {
+                                Notification::make()
+                                    ->title('Não foi possível confirmar o pagamento agora')
+                                    ->body('Não deu pra consultar o gateway pra confirmar se essa cobrança já foi paga. Tente novamente em instantes.')
+                                    ->danger()
+                                    ->persistent()
+                                    ->send();
+
+                                throw new Halt;
+                            }
+
+                            if ($paid) {
+                                Notification::make()
+                                    ->title('Essa cobrança já foi paga')
+                                    ->body('Cobranças já pagas (confirmadas no gateway) não podem ser excluídas.')
+                                    ->danger()
+                                    ->persistent()
+                                    ->send();
+
+                                throw new Halt;
+                            }
+                        }),
 
                     Tables\Actions\Action::make('editar_fatura')
                         ->label('Editar Fatura')
