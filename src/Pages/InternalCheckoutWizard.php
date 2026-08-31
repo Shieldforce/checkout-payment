@@ -162,7 +162,13 @@ class InternalCheckoutWizard extends Page implements HasForms
         if ($cppCheckoutUuid) {
             $this->checkout = CppCheckout::where('uuid', $cppCheckoutUuid)->first();
 
-            $this->attempts = json_decode($this->checkout->return_gateway ?? '[]', true);
+            $mpAttempts = json_decode($this->checkout->return_gateway ?? '[]', true) ?? [];
+            $sicoobAttempts = $this->normalizeSicoobAttempts($this->checkout);
+
+            $this->attempts = collect(array_merge($mpAttempts, $sicoobAttempts))
+                ->sortByDesc(fn ($attempt) => $attempt['data']['date_created'] ?? null)
+                ->values()
+                ->all();
 
             $this->method_checked = $this->checkout->method_checked ?? null;
             $this->paymentMethods = $this?->checkout?->methods
@@ -838,6 +844,29 @@ class InternalCheckoutWizard extends Page implements HasForms
         $this->statusCheckout = $this->checkout->status;
     }
 
+    /**
+     * Converte o histórico de boletos/pix do Sicoob pro mesmo formato usado pelas
+     * tentativas do Mercado Pago, pra aparecerem juntas em "Histórico de Tentativas de Pagamento".
+     */
+    private function normalizeSicoobAttempts(CppCheckout $checkout): array
+    {
+        return $checkout->sicoobAttempts()
+            ->get()
+            ->map(function ($attempt) {
+                return [
+                    'method' => 'bolsicoob',
+                    'status' => 'pending',
+                    'data' => [
+                        'date_created' => optional($attempt->created_at)->toIso8601String(),
+                        'transaction_details' => [
+                            'external_resource_url' => $attempt->url_billet,
+                        ],
+                    ],
+                ];
+            })
+            ->all();
+    }
+
     #[On('method-checked-change')]
     public function methodCheckedChange($method): void
     {
@@ -878,8 +907,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                 $method == MethodPaymentEnum::billet->value
             ) {
                 $cachedBilletRequest = json_decode($this->step4->request_billet_data ?? '[]', true);
-                $cachedDueDate = isset($cachedBilletRequest['due_date'])
-                    ? Carbon::parse($cachedBilletRequest['due_date'])->format('Y-m-d')
+                // MP guarda o vencimento em 'due_date' e o Sicoob em 'due' -> sem isso a checagem
+                // sempre dava "mudou" pro Sicoob e gerava um boleto novo a cada re-seleção do método.
+                $cachedDueDateRaw = $cachedBilletRequest['due_date'] ?? $cachedBilletRequest['due'] ?? null;
+                $cachedDueDate = $cachedDueDateRaw
+                    ? Carbon::parse($cachedDueDateRaw)->format('Y-m-d')
                     : null;
                 $currentDueDate = $this->checkout->due_date
                     ? Carbon::parse($this->checkout->due_date)->format('Y-m-d')

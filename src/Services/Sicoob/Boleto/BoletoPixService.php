@@ -486,6 +486,19 @@ class BoletoPixService
             ]
         );
 
+        // Cada geração vira uma linha nova aqui (diferente do step4, que é sobrescrito)
+        // pra manter o histórico completo de boletos/pix já emitidos por esse checkout.
+        $checkout->sicoobAttempts()->create([
+            'nosso_numero' => $inserir['nossoNumero'] ?? null,
+            'payment_method_id' => 'bolsicoob',
+            'value' => $payload['value'] ?? null,
+            'due_date' => $payload['due'] ?? null,
+            'url_billet' => $pdf,
+            'url_qrcode' => $inserir['qrCode'] ?? null,
+            'request_data' => json_encode($payload),
+            'response_data' => json_encode($inserir),
+        ]);
+
         $checkout->update([
             'status' => StatusCheckoutEnum::pendente->value,
             'startOnStep' => 5,

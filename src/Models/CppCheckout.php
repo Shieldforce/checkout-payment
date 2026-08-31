@@ -116,6 +116,15 @@ class CppCheckout extends Model
         );
     }
 
+    public function sicoobAttempts()
+    {
+        return $this->hasMany(
+            CppCheckoutSicoobAttempt::class,
+            'cpp_checkout_id',
+            'id',
+        )->latest();
+    }
+
     public function referencable()
     {
         return $this->morphTo();

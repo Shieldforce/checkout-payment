@@ -164,7 +164,14 @@
                 <tr>
                     <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">{{ $i+1 }}</td>
                     <td class="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
-                        {{ ucfirst($attempt['method'] ?? '-') }}
+                        @php
+                            $methodLabel = match(strtolower($attempt['method'] ?? '')) {
+                                'bolbradesco' => 'Boleto',
+                                'bolsicoob' => 'Boleto/Pix (Sicoob)',
+                                default => ucfirst($attempt['method'] ?? '-'),
+                            };
+                        @endphp
+                        {{ $methodLabel }}
                     </td>
                     <td class="px-6 py-4 text-sm">
                                 <span class="px-3 py-1 rounded-full text-xs font-semibold
@@ -196,7 +203,7 @@
                         @elseif(
                             $this->checkout->status != $statusFinalizado &&
                             isset($attempt["data"]["transaction_details"]["external_resource_url"]) &&
-                            in_array(strtolower($attempt['method']), ['bolbradesco'])
+                            in_array(strtolower($attempt['method']), ['bolbradesco', 'bolsicoob'])
                         )
                             <a
                                 href="{{ $attempt["data"]["transaction_details"]["external_resource_url"] }}"
