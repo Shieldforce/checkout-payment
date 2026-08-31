@@ -132,18 +132,21 @@ class ProcessBillingCreditCardJob implements ShouldQueue
         }
 
         if (
-            isset($return['status']) &&
-            $return['status'] != 'approved' &&
-            $return['status'] != 'pending' &&
-            $return['status'] != 'rejected'
+            ! isset($return['status']) ||
+            (
+                $return['status'] != 'approved' &&
+                $return['status'] != 'pending' &&
+                $return['status'] != 'rejected'
+            )
         ) {
             $this->checkout->update([
                 'status' => StatusCheckoutEnum::erro->value,
+                'method_checked' => null,
             ]);
 
             $this->checkout->notify(new CheckoutStatusUpdated(
                 status: 'error',
-                message: 'Erro ao processar o pagamento',
+                message: 'Erro ao processar o pagamento: ' . ($return['message'] ?? 'motivo desconhecido, tente novamente.'),
                 corporateName: env('APP_NAME') ?? 'Empresa',
             ));
         }

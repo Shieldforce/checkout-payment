@@ -120,4 +120,53 @@ class CppCheckout extends Model
     {
         return $this->morphTo();
     }
+
+    /**
+     * Erro da última tentativa de geração de pagamento (MP ou Sicoob) para o
+     * método atualmente selecionado neste checkout, quando houver.
+     */
+    public function lastGenerationError(): ?array
+    {
+        $step4 = $this->step4()->first();
+
+        if (! $step4) {
+            return null;
+        }
+
+        $field = match ((int) $this->method_checked) {
+            MethodPaymentEnum::pix->value => 'response_pix_data',
+            MethodPaymentEnum::billet->value => 'response_billet_data',
+            MethodPaymentEnum::credit_card->value, MethodPaymentEnum::debit_card->value => 'response_credit_card_data',
+            default => null,
+        };
+
+        if (! $field) {
+            return null;
+        }
+
+        $response = json_decode($step4->{$field} ?? 'null', true);
+
+        if (isset($response['error'])) {
+            return [
+                'message' => $response['message'] ?? 'Erro desconhecido ao gerar o pagamento.',
+                'code' => $response['code'] ?? null,
+            ];
+        }
+
+        if (isset($response['mensagens'][0]['mensagem'])) {
+            return [
+                'message' => $response['mensagens'][0]['mensagem'],
+                'code' => $response['mensagens'][0]['codigo'] ?? null,
+            ];
+        }
+
+        if (empty($response)) {
+            return [
+                'message' => 'Nenhuma tentativa de geração encontrada para o método de pagamento selecionado.',
+                'code' => null,
+            ];
+        }
+
+        return null;
+    }
 }

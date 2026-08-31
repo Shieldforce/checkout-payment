@@ -974,6 +974,24 @@ class InternalCheckoutWizard extends Page implements HasForms
                 $this->url_billet = $pdf;
             }
 
+            // A geração do Pix ou do boleto falhou na operadora: avisa o cliente com o motivo real
+            // em vez de deixar a tela esperando para sempre, e libera para tentar outro método.
+            if (isset($returnPix['error']) || isset($returnBillet['error'])) {
+                $erro = $returnPix['error'] ?? false ? $returnPix : $returnBillet;
+
+                $this->checkout->update(['method_checked' => null]);
+
+                $this->showNotification(
+                    title: 'Não foi possível gerar o pagamento',
+                    body: $erro['message'] ?? 'Erro desconhecido ao gerar o pagamento. Tente novamente.',
+                    status: 'danger',
+                );
+
+                DB::commit();
+
+                return;
+            }
+
             DB::commit();
 
         } catch (Throwable $e) {

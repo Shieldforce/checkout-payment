@@ -288,6 +288,8 @@ class CppCheckoutResource extends Resource
 
                                     return view('checkout-payment::partials.empty', [
                                         'message' => 'Nenhum pagamento do mercado pago encontrado.',
+                                        'erro' => $record->lastGenerationError(),
+                                        'recordId' => $record->id,
                                     ]);
                                 }
 
@@ -448,6 +450,8 @@ class CppCheckoutResource extends Resource
 
                             return view('checkout-payment::partials.empty', [
                                 'message' => 'Nenhum pagamento do sicoob encontrado.',
+                                'erro' => $record->lastGenerationError(),
+                                'recordId' => $record->id,
                             ]);
                         }),
 

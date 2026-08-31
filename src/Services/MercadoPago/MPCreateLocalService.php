@@ -32,8 +32,15 @@ class MPCreateLocalService
         $this->step2 = $checkout?->step2()?->first();
         $this->step3 = $checkout?->step3()?->first();
 
-        $this->dateOfExpiration = Carbon::createFromFormat('Y-m-d', $checkout->due_date)
-            ->format("Y-m-d\TH:i:s") . '.000-04:00';
+        // O Mercado Pago recusa gerar boleto com vencimento no passado (fatura já vencida),
+        // então quando isso acontece usamos uma data futura só para a expiração do boleto,
+        // mantendo o due_date original da fatura como referência interna.
+        $originalDueDate = Carbon::createFromFormat('Y-m-d', $checkout->due_date)->startOfDay();
+        $expirationDate = $originalDueDate->isPast()
+            ? Carbon::today()->addDays(5)
+            : $originalDueDate;
+
+        $this->dateOfExpiration = $expirationDate->format("Y-m-d\TH:i:s") . '.000-04:00';
 
         if (! isset($this->step1->id) || ! isset($this->step2->id) || ! isset($this->step3->id)) {
             throw new CheckoutPaymentException('Etapa 1,2 e 3 são necessárias para gerar boleto!');

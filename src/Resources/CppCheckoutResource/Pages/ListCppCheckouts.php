@@ -9,12 +9,15 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Carbon;
+use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
+use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeStepEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Pages\DashboardMercadoPago;
 use Shieldforce\CheckoutPayment\Resources\CppCheckoutResource;
 use Shieldforce\CheckoutPayment\Services\MercadoPago\MercadoPagoService;
+use Shieldforce\CheckoutPayment\Services\MercadoPago\MPCreateLocalService;
 use Shieldforce\CheckoutPayment\Services\Sicoob\Boleto\BoletoPixService;
 
 class ListCppCheckouts extends ListRecords
@@ -98,6 +101,109 @@ class ListCppCheckouts extends ListRecords
     public function atualizarPagamento($paymentId, $method, $recordId)
     {
         dd($paymentId, $method, $recordId);
+    }
+
+    public function tentarNovamente($recordId): void
+    {
+        $checkout = CppCheckout::find($recordId);
+
+        if (! $checkout) {
+            Notification::make()
+                ->danger()
+                ->title('Erro ao tentar novamente')
+                ->body('Checkout não encontrado.')
+                ->send();
+
+            return;
+        }
+
+        try {
+            if ($checkout->gateway?->name === TypeGatewayEnum::sicoob->value) {
+                $this->tentarNovamenteSicoob($checkout);
+
+                return;
+            }
+
+            $this->tentarNovamenteMercadoPago($checkout);
+        } catch (\Throwable $e) {
+            Notification::make()
+                ->danger()
+                ->title('Erro ao tentar novamente')
+                ->body($e->getMessage())
+                ->send();
+        }
+    }
+
+    private function tentarNovamenteMercadoPago(CppCheckout $checkout): void
+    {
+        if ((int) $checkout->method_checked === MethodPaymentEnum::credit_card->value) {
+            Notification::make()
+                ->warning()
+                ->title('Não é possível tentar novamente por aqui')
+                ->body('Pagamento no cartão precisa ser refeito pelo cliente na tela de checkout.')
+                ->send();
+
+            return;
+        }
+
+        $mpCreate = new MPCreateLocalService($checkout);
+
+        $return = match ((int) $checkout->method_checked) {
+            MethodPaymentEnum::pix->value => $mpCreate->pix(),
+            MethodPaymentEnum::billet->value => $mpCreate->boleto(),
+            default => null,
+        };
+
+        if ($return === null) {
+            Notification::make()
+                ->warning()
+                ->title('Método de pagamento não identificado para este checkout.')
+                ->send();
+
+            return;
+        }
+
+        if (isset($return['error'])) {
+            Notification::make()
+                ->danger()
+                ->title('Falha ao gerar novamente')
+                ->body($return['message'] ?? 'Erro desconhecido.')
+                ->send();
+
+            return;
+        }
+
+        Notification::make()
+            ->success()
+            ->title('Gerado com sucesso!')
+            ->body('Atualize a página para ver o novo boleto/pix.')
+            ->send();
+    }
+
+    private function tentarNovamenteSicoob(CppCheckout $checkout): void
+    {
+        $boletoPixSicoob = new BoletoPixService;
+        $inserir = $boletoPixSicoob->boletoPixInserir($checkout);
+
+        if (isset($inserir['inserir']['resultado'])) {
+            $boletoPixSicoob->salvarDadosBoletoPix($checkout, $inserir);
+
+            Notification::make()
+                ->success()
+                ->title('Gerado com sucesso!')
+                ->body('Atualize a página para ver o novo boleto/pix.')
+                ->send();
+
+            return;
+        }
+
+        $msg = $inserir['inserir']['mensagens'][0]['mensagem'] ?? 'Erro desconhecido.';
+
+        Notification::make()
+            ->danger()
+            ->title('Falha ao gerar novamente')
+            ->body($msg)
+            ->send();
     }
 
     public function consultarBoleto($nossoNumero, $recordId): void

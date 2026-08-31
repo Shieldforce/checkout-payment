@@ -29,6 +29,16 @@ class MercadoPagoService
         }
     }
 
+    private function friendlyErrorMessage(?string $rawMessage): string
+    {
+        $decoded = json_decode($rawMessage ?? '', true);
+
+        return $decoded['cause'][0]['description']
+            ?? $decoded['message']
+            ?? $rawMessage
+            ?? 'Erro desconhecido ao comunicar com o Mercado Pago.';
+    }
+
     public function gerarPagamentoPix(
         $value,
         $description,
@@ -74,7 +84,7 @@ class MercadoPagoService
                 'type' => 'pix',
             ]);
 
-            return [];
+            return ['error' => true, 'message' => $this->friendlyErrorMessage($msg), 'code' => $code];
 
         } catch (\Throwable $e) {
 
@@ -91,7 +101,7 @@ class MercadoPagoService
                 'type' => 'pix',
             ]);
 
-            return [];
+            return ['error' => true, 'message' => $this->friendlyErrorMessage($msg), 'code' => $code];
         }
     }
 
@@ -164,7 +174,7 @@ class MercadoPagoService
                 $address ?? null,
             ]);
 
-            return [];
+            return ['error' => true, 'message' => $this->friendlyErrorMessage($msg), 'code' => $code];
         } catch (\Throwable $e) {
 
             $code = $e->getCode();
@@ -185,7 +195,7 @@ class MercadoPagoService
                 $address ?? null,
             ]);
 
-            return [];
+            return ['error' => true, 'message' => $this->friendlyErrorMessage($msg), 'code' => $code];
         }
     }
 
@@ -236,7 +246,7 @@ class MercadoPagoService
                 'type' => 'cartão',
             ]);
 
-            return [];
+            return ['error' => true, 'message' => $this->friendlyErrorMessage($msg), 'code' => $code];
         } catch (\Throwable $e) {
             $code = $e->getCode();
             $msg = $e->getMessage();
@@ -251,7 +261,7 @@ class MercadoPagoService
                 'type' => 'cartão',
             ]);
 
-            return [];
+            return ['error' => true, 'message' => $this->friendlyErrorMessage($msg), 'code' => $code];
         }
     }
 
