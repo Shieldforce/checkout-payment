@@ -2,6 +2,8 @@
 
 namespace Shieldforce\CheckoutPayment\Resources;
 
+use App\Filament\Resources\TransactionResource;
+use App\Models\Transaction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -86,6 +88,17 @@ class CppCheckoutResource extends Resource
 
                         return $first ? $first->first_name . ' ' . $first->last_name : '-';
                     }),
+
+                TextColumn::make('referencable_id')
+                    ->label('ID Fatura')
+                    ->url(function (Model $record) {
+                        if ($record->referencable_type !== Transaction::class) {
+                            return null;
+                        }
+
+                        return TransactionResource::getUrl('edit', ['record' => $record->referencable_id]);
+                    })
+                    ->openUrlInNewTab(),
 
                 TextColumn::make('methods')
                     ->label('Métodos/Pag')
@@ -237,6 +250,15 @@ class CppCheckoutResource extends Resource
 
                     Tables\Actions\DeleteAction::make()
                         ->visible(fn ($record) => $record->status == StatusCheckoutEnum::criado->value),
+
+                    Tables\Actions\Action::make('editar_fatura')
+                        ->label('Editar Fatura')
+                        ->icon('heroicon-o-pencil')
+                        ->visible(fn (Model $record) => $record->referencable_type === Transaction::class)
+                        ->url(function (Model $record) {
+                            return TransactionResource::getUrl('edit', ['record' => $record->referencable_id]);
+                        })
+                        ->openUrlInNewTab(),
 
                     Tables\Actions\Action::make('Link de Pagamento')
                         ->icon('heroicon-o-credit-card')
