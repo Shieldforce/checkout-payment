@@ -29,6 +29,7 @@ use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
 use Shieldforce\CheckoutPayment\Jobs\ProcessBillingCreditCardJob;
+use Shieldforce\CheckoutPayment\Jobs\ProcessCheckoutUpdatePaymentsJob;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep1;
 use Shieldforce\CheckoutPayment\Models\CppCheckoutStep2;
@@ -161,6 +162,14 @@ class InternalCheckoutWizard extends Page implements HasForms
 
         if ($cppCheckoutUuid) {
             $this->checkout = CppCheckout::where('uuid', $cppCheckoutUuid)->first();
+
+            // Consulta o MP ao vivo em vez de confiar só no que ficou salvo (que só é
+            // atualizado por job/webhook), pra tela sempre mostrar o status real na hora.
+            try {
+                (new ProcessCheckoutUpdatePaymentsJob($this->checkout))->handle();
+            } catch (Throwable $e) {
+                logger('[Mercado Pago] - Erro ao atualizar tentativas ao abrir o checkout: ' . $e->getMessage());
+            }
 
             $mpAttempts = json_decode($this->checkout->return_gateway ?? '[]', true) ?? [];
             $sicoobAttempts = $this->normalizeSicoobAttempts($this->checkout);
@@ -847,15 +856,43 @@ class InternalCheckoutWizard extends Page implements HasForms
     /**
      * Converte o histórico de boletos/pix do Sicoob pro mesmo formato usado pelas
      * tentativas do Mercado Pago, pra aparecerem juntas em "Histórico de Tentativas de Pagamento".
+     * Consulta o status de cada um ao vivo no Sicoob (o Sicoob não tem uma busca única por
+     * checkout, então precisa ir tentativa por tentativa usando o nosso número salvo).
      */
     private function normalizeSicoobAttempts(CppCheckout $checkout): array
     {
-        return $checkout->sicoobAttempts()
-            ->get()
-            ->map(function ($attempt) {
+        $attempts = $checkout->sicoobAttempts()->get();
+
+        $sicoob = null;
+        if ($attempts->isNotEmpty()) {
+            try {
+                $sicoob = new BoletoPixService;
+            } catch (Throwable $e) {
+                logger('[Sicoob] - Erro ao autenticar pra consultar tentativas: ' . $e->getMessage());
+            }
+        }
+
+        return $attempts
+            ->map(function ($attempt) use ($sicoob) {
+                $status = 'pending';
+
+                if ($sicoob && $attempt->nosso_numero) {
+                    try {
+                        $situacao = $sicoob->consultByNossoNumero($attempt->nosso_numero)['resultado']['situacaoBoleto'] ?? null;
+
+                        $status = match ($situacao) {
+                            'Liquidado' => 'approved',
+                            'Baixado' => 'rejected',
+                            default => 'pending',
+                        };
+                    } catch (Throwable $e) {
+                        logger("[Sicoob] - Erro ao consultar nosso número {$attempt->nosso_numero}: " . $e->getMessage());
+                    }
+                }
+
                 return [
                     'method' => 'bolsicoob',
-                    'status' => 'pending',
+                    'status' => $status,
                     'data' => [
                         'date_created' => optional($attempt->created_at)->toIso8601String(),
                         'transaction_details' => [
