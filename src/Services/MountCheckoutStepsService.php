@@ -435,7 +435,7 @@ class MountCheckoutStepsService
         }
 
         if ($criar && isset($checkout->id)) {
-            $mpCreate = new MPCreateLocalService($checkout);
+            $mpCreate = new MPCreateLocalService($checkout, origin: 'automatic');
             $mpCreate->boleto();
         }
 
@@ -454,7 +454,7 @@ class MountCheckoutStepsService
         }
 
         if ($criar && isset($checkout->id)) {
-            $mpCreate = new MPCreateLocalService($checkout);
+            $mpCreate = new MPCreateLocalService($checkout, origin: 'automatic');
             $mpCreate->pix();
         }
 

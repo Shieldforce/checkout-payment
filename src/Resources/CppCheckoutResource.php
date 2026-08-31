@@ -249,7 +249,10 @@ class CppCheckoutResource extends Resource
                     // Tables\Actions\EditAction::make(),
 
                     Tables\Actions\DeleteAction::make()
-                        ->visible(fn ($record) => $record->status == StatusCheckoutEnum::criado->value),
+                        ->visible(
+                            fn ($record) => Auth::user()?->hasAnyRoles('Administrator')
+                                && $record->status == StatusCheckoutEnum::criado->value
+                        ),
 
                     Tables\Actions\Action::make('editar_fatura')
                         ->label('Editar Fatura')
@@ -266,6 +269,16 @@ class CppCheckoutResource extends Resource
                             return "/admin/checkout/{$record->uuid}";
                         })
                         ->openUrlInNewTab(),
+
+                    Tables\Actions\Action::make('historico_cobranca')
+                        ->label('Histórico de Cobrança')
+                        ->icon('heroicon-o-clock')
+                        ->modalHeading('Histórico de Cobrança')
+                        ->modalSubmitAction(false)
+                        ->modalCancelActionLabel('Fechar')
+                        ->modalContent(fn (Model $record) => view('checkout-payment::partials.billing-history', [
+                            'logs' => $record->billingLogs,
+                        ])),
 
                     Tables\Actions\Action::make('ver_pagamento_mp')
                         ->label('Ver Pagamento MP')

@@ -152,6 +152,7 @@ class CheckoutPaymentServiceProvider extends PackageServiceProvider
             '5_create_cpp_checkout_step_3_table',
             '6_create_cpp_checkout_step_4_table',
             '7_create_cpp_checkout_sicoob_attempts_table',
+            '8_create_cpp_checkout_billing_logs_table',
         ];
     }
 

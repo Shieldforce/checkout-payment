@@ -146,7 +146,7 @@ class ListCppCheckouts extends ListRecords
             return;
         }
 
-        $mpCreate = new MPCreateLocalService($checkout);
+        $mpCreate = new MPCreateLocalService($checkout, origin: 'manual');
 
         $return = match ((int) $checkout->method_checked) {
             MethodPaymentEnum::pix->value => $mpCreate->pix(),

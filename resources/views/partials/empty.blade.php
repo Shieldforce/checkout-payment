@@ -18,6 +18,7 @@
                 <button
                     type="button"
                     wire:click="tentarNovamente('{{ $recordId }}')"
+                    wire:confirm="Se já existir uma cobrança ativa pra esse checkout, ela será cancelada e substituída por uma nova. Confirma?"
                     wire:loading.attr="disabled"
                     style="background:#16a34a;color:white;border-radius:5px;padding:8px 16px;"
                 >

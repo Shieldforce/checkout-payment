@@ -125,6 +125,15 @@ class CppCheckout extends Model
         )->latest();
     }
 
+    public function billingLogs()
+    {
+        return $this->hasMany(
+            CppCheckoutBillingLog::class,
+            'cpp_checkout_id',
+            'id',
+        )->latest();
+    }
+
     public function referencable()
     {
         return $this->morphTo();

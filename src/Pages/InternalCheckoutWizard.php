@@ -1015,7 +1015,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             }
 
             // Gerar mercado pago ----------
-            $gatewayCreate = new MPCreateLocalService($this->checkout);
+            $gatewayCreate = new MPCreateLocalService($this->checkout, origin: 'manual');
 
             if ($method == MethodPaymentEnum::pix->value) {
                 $returnPix = $gatewayCreate->pix();

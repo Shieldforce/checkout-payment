@@ -21,16 +21,24 @@ class MPCreateLocalService
 
     public $step3;
 
+    public $step4;
+
     public $dateOfExpiration;
 
     public $totalPrice;
 
-    public function __construct(public CppCheckout $checkout)
+    /**
+     * @param  string  $origin  'manual' (ação explícita de um usuário no painel) ou
+     *                          'automatic' (disparado por um observer/job, sem clique direto).
+     *                          Usado só para auditoria em cpp_checkout_billing_logs.
+     */
+    public function __construct(public CppCheckout $checkout, public string $origin = 'manual')
     {
         $this->mp = new MercadoPagoService;
         $this->step1 = $checkout?->step1()?->first();
         $this->step2 = $checkout?->step2()?->first();
         $this->step3 = $checkout?->step3()?->first();
+        $this->step4 = $checkout?->step4()?->first();
 
         // O Mercado Pago recusa gerar boleto com vencimento no passado (fatura já vencida),
         // então quando isso acontece usamos uma data futura só para a expiração do boleto,
@@ -78,6 +86,21 @@ class MPCreateLocalService
 
     public function boleto()
     {
+        if (! empty($this->step4?->url_billet) && $this->billetUnchanged()) {
+            $this->logAttempt('boleto', 'reused');
+
+            return json_decode($this->step4->response_billet_data ?? '[]', true) ?: ['pdf' => $this->step4->url_billet];
+        }
+
+        $wasActive = ! empty($this->step4?->url_billet);
+
+        if ($wasActive) {
+            $oldPaymentId = json_decode($this->step4->response_billet_data ?? '[]', true)['id'] ?? null;
+            if ($oldPaymentId) {
+                $this->mp->cancelarPagamento($oldPaymentId);
+            }
+        }
+
         $return = $this->mp->gerarPagamentoBoleto(
             value: $this->data['value'],
             description: 'Pagamento via Boleto',
@@ -115,6 +138,8 @@ class MPCreateLocalService
                 'status' => StatusCheckoutEnum::pendente->value,
                 'startOnStep' => 5,
             ]);
+
+            $this->logAttempt('boleto', $wasActive ? 'regenerated' : 'generated', $return['id'] ?? null);
         }
 
         if (! isset($return['transaction_details']['external_resource_url'])) {
@@ -134,6 +159,21 @@ class MPCreateLocalService
 
     public function pix()
     {
+        if (! empty($this->step4?->base_qrcode) && $this->pixUnchanged()) {
+            $this->logAttempt('pix', 'reused');
+
+            return json_decode($this->step4->response_pix_data ?? '[]', true) ?: ['qr_code_base64' => $this->step4->base_qrcode];
+        }
+
+        $wasActive = ! empty($this->step4?->base_qrcode);
+
+        if ($wasActive) {
+            $oldPaymentId = json_decode($this->step4->response_pix_data ?? '[]', true)['id'] ?? null;
+            if ($oldPaymentId) {
+                $this->mp->cancelarPagamento($oldPaymentId);
+            }
+        }
+
         $return = $this->mp->gerarPagamentoPix(
             value: $this->data['value'],
             description: 'Pagamento via Pix',
@@ -160,6 +200,8 @@ class MPCreateLocalService
                 'status' => StatusCheckoutEnum::pendente->value,
                 'startOnStep' => 5,
             ]);
+
+            $this->logAttempt('pix', $wasActive ? 'regenerated' : 'generated', $return['id'] ?? null);
         }
 
         if (! isset($return['qr_code_base64'])) {
@@ -175,5 +217,40 @@ class MPCreateLocalService
         }
 
         return $return;
+    }
+
+    /**
+     * Compara o boleto já salvo em step4 com o valor/vencimento que seria gerado agora.
+     * Usa a mesma representação de due_date (dateOfExpiration) dos dois lados para não
+     * disparar falso positivo por causa do ajuste de "vencimento no passado" do construtor.
+     */
+    private function billetUnchanged(): bool
+    {
+        $cached = json_decode($this->step4?->request_billet_data ?? '[]', true);
+
+        return isset($cached['value'], $cached['due_date'])
+            && abs((float) $cached['value'] - (float) $this->data['value']) < 0.01
+            && $cached['due_date'] === $this->data['due_date'];
+    }
+
+    private function pixUnchanged(): bool
+    {
+        $cached = json_decode($this->step4?->request_pix_data ?? '[]', true);
+
+        return isset($cached['value'])
+            && abs((float) $cached['value'] - (float) $this->data['value']) < 0.01;
+    }
+
+    private function logAttempt(string $type, string $action, ?string $mpPaymentId = null): void
+    {
+        $this->checkout->billingLogs()->create([
+            'type' => $type,
+            'action' => $action,
+            'origin' => $this->origin,
+            'user_id' => auth()->id(),
+            'value' => $this->data['value'] ?? null,
+            'due_date' => $this->checkout->due_date,
+            'mp_payment_id' => $mpPaymentId,
+        ]);
     }
 }
