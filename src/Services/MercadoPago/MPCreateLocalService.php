@@ -3,6 +3,7 @@
 namespace Shieldforce\CheckoutPayment\Services\MercadoPago;
 
 use Carbon\Carbon;
+use Filament\Notifications\Notification;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
 use Shieldforce\CheckoutPayment\Enums\TypePeopleEnum;
 use Shieldforce\CheckoutPayment\Errors\CheckoutPaymentException;
@@ -94,6 +95,15 @@ class MPCreateLocalService
 
         $wasActive = ! empty($this->step4?->url_billet);
 
+        if ($wasActive && $this->origin === 'automatic') {
+            // Valor/vencimento mudaram, mas isso foi disparado sem um usuário confirmando a
+            // troca (ex: salvar a transação de novo) — não cancela um boleto ativo sozinho.
+            $this->logAttempt('boleto', 'skipped_change_detected');
+            $this->notifyChangeDetected('boleto');
+
+            return json_decode($this->step4->response_billet_data ?? '[]', true) ?: ['pdf' => $this->step4->url_billet];
+        }
+
         if ($wasActive) {
             $oldPaymentId = json_decode($this->step4->response_billet_data ?? '[]', true)['id'] ?? null;
             if ($oldPaymentId) {
@@ -166,6 +176,15 @@ class MPCreateLocalService
         }
 
         $wasActive = ! empty($this->step4?->base_qrcode);
+
+        if ($wasActive && $this->origin === 'automatic') {
+            // Valor mudou, mas isso foi disparado sem um usuário confirmando a troca (ex:
+            // salvar a transação de novo) — não cancela um pix ativo sozinho.
+            $this->logAttempt('pix', 'skipped_change_detected');
+            $this->notifyChangeDetected('pix');
+
+            return json_decode($this->step4->response_pix_data ?? '[]', true) ?: ['qr_code_base64' => $this->step4->base_qrcode];
+        }
 
         if ($wasActive) {
             $oldPaymentId = json_decode($this->step4->response_pix_data ?? '[]', true)['id'] ?? null;
@@ -252,5 +271,19 @@ class MPCreateLocalService
             'due_date' => $this->checkout->due_date,
             'mp_payment_id' => $mpPaymentId,
         ]);
+    }
+
+    private function notifyChangeDetected(string $type): void
+    {
+        Notification::make()
+            ->title('Valor ou vencimento mudou, mas a cobrança ativa foi mantida')
+            ->body(
+                'O ' . ($type === 'pix' ? 'pix' : 'boleto') . ' já gerado pra esse checkout não foi'
+                . ' cancelado automaticamente. Pra substituir por um novo valor/vencimento, gere'
+                . ' manualmente pela tela de checkout ou pelo botão "Tentar Gerar Novamente".'
+            )
+            ->warning()
+            ->persistent()
+            ->send();
     }
 }

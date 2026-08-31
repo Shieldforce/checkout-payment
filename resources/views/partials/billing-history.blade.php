@@ -9,6 +9,7 @@
                 <span class="
                     @if($log->action === 'generated') text-green-600
                     @elseif($log->action === 'regenerated') text-yellow-600
+                    @elseif($log->action === 'skipped_change_detected') text-red-600
                     @else text-gray-500
                     @endif
                 ">
@@ -16,6 +17,7 @@
                         'generated' => 'gerado',
                         'regenerated' => 'regerado, substituiu o anterior',
                         'reused' => 'reaproveitado, já existia igual',
+                        'skipped_change_detected' => 'valor/vencimento mudou, mas manteve o ativo (precisa gerar manual)',
                         default => $log->action,
                     } }})
                 </span>
