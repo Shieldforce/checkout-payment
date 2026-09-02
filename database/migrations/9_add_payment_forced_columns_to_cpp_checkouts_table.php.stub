@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::table('cpp_checkouts', function (Blueprint $table) {
+            $table->boolean('payment_forced')->default(false)->after('status');
+            $table->timestamp('payment_forced_at')->nullable()->after('payment_forced');
+            $table->unsignedBigInteger('payment_forced_by_user_id')->nullable()->after('payment_forced_at');
+            $table->string('payment_forced_by_user_name')->nullable()->after('payment_forced_by_user_id');
+            $table->longText('payment_forced_description')->nullable()->after('payment_forced_by_user_name');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('cpp_checkouts', function (Blueprint $table) {
+            $table->dropColumn([
+                'payment_forced',
+                'payment_forced_at',
+                'payment_forced_by_user_id',
+                'payment_forced_by_user_name',
+                'payment_forced_description',
+            ]);
+        });
+    }
+};

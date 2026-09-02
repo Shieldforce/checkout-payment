@@ -28,12 +28,19 @@ class CppCheckout extends Model
         'url',
         'text_button_submit',
         'color_button_submit',
+        'payment_forced',
+        'payment_forced_at',
+        'payment_forced_by_user_id',
+        'payment_forced_by_user_name',
+        'payment_forced_description',
     ];
 
     protected $guarded = [];
 
     protected $casts = [
         'methods' => 'array',
+        'payment_forced' => 'boolean',
+        'payment_forced_at' => 'datetime',
     ];
 
     protected $attributes = [
@@ -132,6 +139,25 @@ class CppCheckout extends Model
             'cpp_checkout_id',
             'id',
         )->latest();
+    }
+
+    public function forcedPaymentReceipts()
+    {
+        return $this->hasMany(
+            CppCheckoutForcedPaymentReceipt::class,
+            'cpp_checkout_id',
+            'id',
+        );
+    }
+
+    /**
+     * Um admin marcou essa cobrança como paga "na mão" (fora do fluxo normal do gateway),
+     * anexando descrição e comprovante. Nenhum processo automático que consulta o gateway
+     * pode reverter status/passo atual enquanto isso for true.
+     */
+    public function isPaymentForced(): bool
+    {
+        return (bool) $this->payment_forced;
     }
 
     public function referencable()

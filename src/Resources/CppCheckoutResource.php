@@ -5,6 +5,8 @@ namespace Shieldforce\CheckoutPayment\Resources;
 use App\Filament\Resources\TransactionResource;
 use App\Models\Transaction;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
@@ -19,8 +21,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Enums\StatusCheckoutEnum;
+use Shieldforce\CheckoutPayment\Enums\StatusTransactionEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeGatewayEnum;
 use Shieldforce\CheckoutPayment\Enums\TypeStepEnum;
 use Shieldforce\CheckoutPayment\Models\CppCheckout;
@@ -131,8 +136,13 @@ class CppCheckoutResource extends Resource
                     }),
 
                 BadgeColumn::make('status')
-                    ->formatStateUsing(fn ($state, $record) => StatusCheckoutEnum::labelEnum($state))
-                    ->color(fn ($state, $record) => StatusCheckoutEnum::colorEnum($state))
+                    ->formatStateUsing(function ($state, $record) {
+                        $label = StatusCheckoutEnum::labelEnum($state);
+
+                        return $record->payment_forced ? "{$label} (Pagamento Forçado)" : $label;
+                    })
+                    ->color(fn ($state, $record) => $record->payment_forced ? 'warning' : StatusCheckoutEnum::colorEnum($state))
+                    ->icon(fn ($state, $record) => $record->payment_forced ? 'heroicon-o-shield-exclamation' : null)
                     ->label('Status')
                     ->sortable(),
 
@@ -281,6 +291,94 @@ class CppCheckoutResource extends Resource
                             }
                         }),
 
+                    Tables\Actions\Action::make('informar_pagamento')
+                        ->label(fn (Model $record) => self::informarPagamentoLabel($record))
+                        ->icon('heroicon-o-banknotes')
+                        ->color(fn (Model $record) => $record->payment_forced ? 'warning' : 'success')
+                        ->modalHeading(fn (Model $record) => self::informarPagamentoLabel($record))
+                        ->modalDescription(
+                            'Marca essa cobrança (e a fatura vinculada, quando houver) como paga manualmente. '
+                            . 'Nenhuma consulta automática ao gateway vai reverter esse status depois.'
+                        )
+                        ->modalSubmitActionLabel('Salvar')
+                        ->form(fn (Model $record) => [
+                            RichEditor::make('payment_forced_description')
+                                ->label('Descrição')
+                                ->helperText('Explique como/quando o pagamento foi confirmado (obrigatório).')
+                                ->required()
+                                ->default($record->payment_forced_description),
+
+                            FileUpload::make('receipts')
+                                ->label('Comprovante(s)')
+                                ->helperText('PDF ou imagem. Pelo menos um arquivo é obrigatório.')
+                                ->multiple()
+                                ->acceptedFileTypes([
+                                    'application/pdf',
+                                    'image/png',
+                                    'image/jpeg',
+                                    'image/jpg',
+                                    'image/webp',
+                                ])
+                                ->directory("checkout-payment/forced-payment-receipts/{$record->id}")
+                                ->default($record->forcedPaymentReceipts()->pluck('path')->toArray())
+                                ->required(),
+                        ])
+                        ->action(function (array $data, Model $record) {
+                            $user = Auth::user();
+                            $disk = Storage::disk(config('filament.default_filesystem_disk', 'public'));
+                            $keptPaths = $data['receipts'] ?? [];
+
+                            DB::transaction(function () use ($record, $data, $user, $disk, $keptPaths) {
+                                $record->update([
+                                    'status' => StatusCheckoutEnum::finalizado->value,
+                                    'startOnStep' => TypeStepEnum::finalizado->value,
+                                    'payment_forced' => true,
+                                    'payment_forced_at' => now(),
+                                    'payment_forced_by_user_id' => $user?->id,
+                                    'payment_forced_by_user_name' => $user?->name,
+                                    'payment_forced_description' => $data['payment_forced_description'],
+                                ]);
+
+                                $record->forcedPaymentReceipts()
+                                    ->whereNotIn('path', $keptPaths)
+                                    ->get()
+                                    ->each(function ($receipt) use ($disk) {
+                                        $disk->delete($receipt->path);
+                                        $receipt->delete();
+                                    });
+
+                                $existingPaths = $record->forcedPaymentReceipts()->pluck('path')->toArray();
+
+                                foreach ($keptPaths as $path) {
+                                    if (in_array($path, $existingPaths, true)) {
+                                        continue;
+                                    }
+
+                                    $record->forcedPaymentReceipts()->create([
+                                        'path' => $path,
+                                        'origin_name' => basename($path),
+                                        'extension' => pathinfo($path, PATHINFO_EXTENSION),
+                                        'mime' => $disk->exists($path) ? $disk->mimeType($path) : null,
+                                        'size' => $disk->exists($path) ? $disk->size($path) : null,
+                                    ]);
+                                }
+
+                                if ($record->referencable_type === Transaction::class && $record->referencable) {
+                                    $record->referencable->update([
+                                        'paid' => true,
+                                        'status' => StatusTransactionEnum::PAGO->value,
+                                        'payment_forced' => true,
+                                        'payment_forced_at' => now(),
+                                    ]);
+                                }
+                            });
+
+                            Notification::make()
+                                ->title('Pagamento informado com sucesso!')
+                                ->success()
+                                ->send();
+                        }),
+
                     Tables\Actions\Action::make('editar_fatura')
                         ->label('Editar Fatura')
                         ->icon('heroicon-o-pencil')
@@ -343,14 +441,16 @@ class CppCheckoutResource extends Resource
                                     'refunded' => StatusCheckoutEnum::refunded->value,
                                 ];
 
-                                foreach ($statusParaCheckout as $statusMp => $statusCheckout) {
-                                    if (collect($pagamentos)->firstWhere('status', $statusMp)) {
-                                        $record->update([
-                                            'startOnStep' => TypeStepEnum::finalizado->value,
-                                            'status' => $statusCheckout,
-                                        ]);
+                                if (! $record->isPaymentForced()) {
+                                    foreach ($statusParaCheckout as $statusMp => $statusCheckout) {
+                                        if (collect($pagamentos)->firstWhere('status', $statusMp)) {
+                                            $record->update([
+                                                'startOnStep' => TypeStepEnum::finalizado->value,
+                                                'status' => $statusCheckout,
+                                            ]);
 
-                                        break;
+                                            break;
+                                        }
                                     }
                                 }
 
@@ -467,26 +567,32 @@ class CppCheckoutResource extends Resource
                             $pagamentos = [];
 
                             if (isset($status) && $status == 'Liquidado') {
-                                $record->update([
-                                    'startOnStep' => TypeStepEnum::finalizado->value,
-                                    'status' => StatusCheckoutEnum::finalizado->value,
-                                ]);
+                                if (! $record->isPaymentForced()) {
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::finalizado->value,
+                                        'status' => StatusCheckoutEnum::finalizado->value,
+                                    ]);
+                                }
                                 $pagamentos = [$consultar['resultado']];
                             }
 
                             if (isset($status) && $status == 'Baixado') {
-                                $record->update([
-                                    'startOnStep' => TypeStepEnum::finalizado->value,
-                                    'status' => StatusCheckoutEnum::baixado->value,
-                                ]);
+                                if (! $record->isPaymentForced()) {
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::finalizado->value,
+                                        'status' => StatusCheckoutEnum::baixado->value,
+                                    ]);
+                                }
                                 $pagamentos = [$consultar['resultado']];
                             }
 
                             if (isset($status) && $status == 'Em Aberto') {
-                                $record->update([
-                                    'startOnStep' => TypeStepEnum::finalizado->value,
-                                    'status' => StatusCheckoutEnum::pendente->value,
-                                ]);
+                                if (! $record->isPaymentForced()) {
+                                    $record->update([
+                                        'startOnStep' => TypeStepEnum::finalizado->value,
+                                        'status' => StatusCheckoutEnum::pendente->value,
+                                    ]);
+                                }
                                 $pagamentos = [$consultar['resultado']];
                             }
 
@@ -511,6 +617,11 @@ class CppCheckoutResource extends Resource
                     // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function informarPagamentoLabel(Model $record): string
+    {
+        return $record->payment_forced ? 'Editar Pagamento Informado' : 'Informar Pagamento';
     }
 
     public static function getRelations(): array

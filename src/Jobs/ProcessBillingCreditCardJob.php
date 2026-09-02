@@ -42,6 +42,11 @@ class ProcessBillingCreditCardJob implements ShouldQueue
     public function creditCard()
     {
         $this->checkout = $this?->step4?->ccpCheckout;
+
+        if ($this->checkout?->isPaymentForced()) {
+            return;
+        }
+
         $mp = new MercadoPagoService;
         $step2 = $this->checkout?->step2()?->first();
         $step4 = $this->checkout?->step4()?->first();

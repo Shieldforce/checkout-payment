@@ -29,6 +29,15 @@ class ProcessCheckoutUpdatePaymentsJob implements ShouldQueue
     {
         logger("ProcessCheckoutUpdatePaymentsJob, checkout uuid: {$this->checkout->uuid} - " . now());
 
+        if ($this->checkout->refresh()->isPaymentForced()) {
+            logger(
+                "ProcessCheckoutUpdatePaymentsJob, checkout uuid: {$this->checkout->uuid} - "
+                . 'ignorado, pagamento forçado manualmente.'
+            );
+
+            return;
+        }
+
         $payments = $this->mp->buscarPagamentoPorExternalId($this->checkout->uuid);
 
         $paymentsArray = is_array($payments) ? $payments : json_decode($payments, true);

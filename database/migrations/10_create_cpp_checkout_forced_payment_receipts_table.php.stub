@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::create('cpp_checkout_forced_payment_receipts', function (Blueprint $table) {
+            $table->id();
+
+            $table->unsignedBigInteger('cpp_checkout_id');
+            $table->foreign('cpp_checkout_id')
+                ->references('id')
+                ->on('cpp_checkouts')
+                ->cascadeOnDelete();
+
+            $table->text('path');
+            $table->string('origin_name')->nullable();
+            $table->string('extension')->nullable();
+            $table->string('mime')->nullable();
+            $table->unsignedBigInteger('size')->nullable();
+
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('cpp_checkout_forced_payment_receipts');
+    }
+};
