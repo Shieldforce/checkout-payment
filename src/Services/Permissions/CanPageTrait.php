@@ -9,7 +9,7 @@ trait CanPageTrait
     public static function canAccess(): bool
     {
         return Gate::allows(
-            "filament.admin.pages." . static::getSlug()
+            'filament.admin.pages.' . static::getSlug()
         );
     }
 }
