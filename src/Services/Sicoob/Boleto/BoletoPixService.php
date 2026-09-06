@@ -442,7 +442,7 @@ class BoletoPixService
                 'mensagensInstrucao' => [
                     $texto1 ?? 'Mensalidade Federal Associados',
                     $texto2 ?? 'Multa de 2%, e 0,1% ao dia',
-                    'Dúvidas? Ligue 08006262345',
+                    'Dúvidas? Ligue 08008882629',
                     'Juntos Somos Fortes',
                 ],
             ];
