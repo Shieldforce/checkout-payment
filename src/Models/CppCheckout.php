@@ -23,6 +23,7 @@ class CppCheckout extends Model
         'total_price',
         'due_date',
         'status',
+        'last_payment_error',
         'return_gateway',
         'startOnStep',
         'url',

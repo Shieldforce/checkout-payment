@@ -147,9 +147,18 @@ class MPCreateLocalService
             $this->checkout->update([
                 'status' => StatusCheckoutEnum::pendente->value,
                 'startOnStep' => 5,
+                'last_payment_error' => null,
             ]);
 
             $this->logAttempt('boleto', $wasActive ? 'regenerated' : 'generated', $return['id'] ?? null);
+        } else {
+            // A MP aceitou a requisição mas não devolveu link de boleto (ex: pagamento
+            // recusado por regra de negócio, sem lançar exception) -> sem isso o operador
+            // via só "Aguardando Pagamento..." pra sempre, sem saber o motivo real.
+            $this->checkout->update([
+                'last_payment_error' => '[Mercado Pago] Boleto não gerado. Status retornado: '
+                    . ($return['status'] ?? 'desconhecido'),
+            ]);
         }
 
         if (! isset($return['transaction_details']['external_resource_url'])) {
@@ -218,9 +227,18 @@ class MPCreateLocalService
             $this->checkout->update([
                 'status' => StatusCheckoutEnum::pendente->value,
                 'startOnStep' => 5,
+                'last_payment_error' => null,
             ]);
 
             $this->logAttempt('pix', $wasActive ? 'regenerated' : 'generated', $return['id'] ?? null);
+        } else {
+            // A MP aceitou a requisição mas não devolveu QR code (ex: pagamento recusado por
+            // regra de negócio, sem lançar exception) -> sem isso o operador via só "Aguardando
+            // Pagamento..." pra sempre, sem saber o motivo real.
+            $this->checkout->update([
+                'last_payment_error' => '[Mercado Pago] Pix não gerado. Status retornado: '
+                    . ($return['status'] ?? 'desconhecido'),
+            ]);
         }
 
         if (! isset($return['qr_code_base64'])) {

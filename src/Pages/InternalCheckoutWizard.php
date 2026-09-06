@@ -925,6 +925,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     $this->url_qrcode = $this->step4->url_qrcode;
                     $this->checkout->update([
                         'startOnStep' => 5,
+                        'last_payment_error' => null,
                     ]);
 
                     DB::commit();
@@ -963,6 +964,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                     $this->url_billet = $this->step4->url_billet;
                     $this->checkout->update([
                         'startOnStep' => 5,
+                        'last_payment_error' => null,
                     ]);
 
                     DB::commit();
@@ -997,6 +999,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                 $this->base_qrcode = $step4salvar->base_qrcode ?? null;
                 $this->url_qrcode = $step4salvar->url_qrcode ?? null;
                 $this->url_billet = $step4salvar->url_billet ?? null;
+                $this->checkout->update(['last_payment_error' => null]);
                 DB::commit();
 
                 return;
@@ -1004,12 +1007,20 @@ class InternalCheckoutWizard extends Page implements HasForms
 
             if (isset($inserir['inserir']['mensagens'][0]['mensagem'])) {
                 $msg = $inserir['inserir']['mensagens'][0]['mensagem'] ?? 'Erro desconhecido.';
+
+                $this->checkout->update([
+                    'method_checked' => null,
+                    'last_payment_error' => "[Sicoob] {$msg}",
+                ]);
+
                 Notification::make()
                     ->danger()
                     ->title('Erro ao gerar pixBoleto sicoob!')
                     ->body($msg)
                     ->persistent()
                     ->send();
+
+                DB::commit();
 
                 return;
             }
@@ -1047,12 +1058,16 @@ class InternalCheckoutWizard extends Page implements HasForms
             // em vez de deixar a tela esperando para sempre, e libera para tentar outro método.
             if (isset($returnPix['error']) || isset($returnBillet['error'])) {
                 $erro = $returnPix['error'] ?? false ? $returnPix : $returnBillet;
+                $msg = $erro['message'] ?? 'Erro desconhecido ao gerar o pagamento. Tente novamente.';
 
-                $this->checkout->update(['method_checked' => null]);
+                $this->checkout->update([
+                    'method_checked' => null,
+                    'last_payment_error' => "[Mercado Pago] {$msg}",
+                ]);
 
                 $this->showNotification(
                     title: 'Não foi possível gerar o pagamento',
-                    body: $erro['message'] ?? 'Erro desconhecido ao gerar o pagamento. Tente novamente.',
+                    body: $msg,
                     status: 'danger',
                 );
 
@@ -1073,7 +1088,14 @@ class InternalCheckoutWizard extends Page implements HasForms
 
             $this->checkout->update([
                 'method_checked' => null,
+                'last_payment_error' => $e->getMessage(),
             ]);
+
+            $this->showNotification(
+                title: 'Não foi possível gerar o pagamento',
+                body: 'Ocorreu um erro inesperado ao gerar o pagamento. Tente novamente ou escolha outro método.',
+                status: 'danger',
+            );
         }
     }
 

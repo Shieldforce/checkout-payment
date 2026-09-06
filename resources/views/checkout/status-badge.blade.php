@@ -81,6 +81,17 @@
                 {{ $statusText }}
             </span>
         </div>
+
+        @if($this->checkout->last_payment_error)
+            <div class="mt-4 p-4 rounded-lg bg-red-50 border border-red-200 dark:bg-red-900/30 dark:border-red-700">
+                <p class="text-sm font-semibold text-red-700 dark:text-red-200">
+                    Não foi possível gerar o pagamento
+                </p>
+                <p class="text-sm text-red-600 dark:text-red-300 mt-1">
+                    {{ $this->checkout->last_payment_error }}
+                </p>
+            </div>
+        @endif
     </div>
 
     {{-- Atualização automática --}}
