@@ -92,6 +92,35 @@
                 </p>
             </div>
         @endif
+
+        {{--
+            Mostra o boleto/pix já gerado mesmo sem registro no histórico de tentativas
+            (checkouts antigos, de antes da tabela cpp_checkout_sicoob_attempts existir,
+            nunca aparecem lá mas têm o link salvo em step4 normalmente).
+        --}}
+        @if($this->checkout->status != $statusFinalizado && ($this->step4?->url_billet ?? null))
+            <div class="mt-4">
+                <a
+                    href="{{ $this->step4->url_billet }}"
+                    target="_blank"
+                    class="inline-block px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 transition"
+                    style="background: darkblue;color: white;padding: 10px;border-radius: 5px;"
+                >
+                    Ver boleto gerado
+                </a>
+            </div>
+        @elseif($this->checkout->status != $statusFinalizado && ($this->step4?->url_qrcode ?? null))
+            <div class="mt-4">
+                <a
+                    href="{{ $this->step4->url_qrcode }}"
+                    target="_blank"
+                    class="inline-block px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 transition"
+                    style="background: darkblue;color: white;padding: 10px;border-radius: 5px;"
+                >
+                    Ver Pix gerado
+                </a>
+            </div>
+        @endif
     </div>
 
     {{-- Atualização automática --}}
