@@ -982,7 +982,7 @@ class InternalCheckoutWizard extends Page implements HasForms
             $order = $transaction?->order;
 
             if (
-                isset($order->sicoob) &&
+                $order?->sicoob &&
                 (
                     $method == MethodPaymentEnum::pix->value ||
                     $method == MethodPaymentEnum::billet->value
