@@ -155,6 +155,7 @@ class CheckoutPaymentServiceProvider extends PackageServiceProvider
             '8_create_cpp_checkout_billing_logs_table',
             '9_add_payment_forced_columns_to_cpp_checkouts_table',
             '10_create_cpp_checkout_forced_payment_receipts_table',
+            '11_add_last_payment_error_to_cpp_checkouts_table',
         ];
     }
 
