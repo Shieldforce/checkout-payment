@@ -282,7 +282,7 @@ class InternalCheckoutWizard extends Page implements HasForms
                         ['cpp_checkout_id' => $this->checkout->id],
                         [
                             'people_type' => $get('people_type'),
-                            'document' => $get('document'),
+                            'document' => preg_replace('/\D/', '', (string) $get('document')),
                             'phone_number' => $get('phone_number'),
                             'first_name' => $get('first_name'),
                             'last_name' => $get('last_name'),

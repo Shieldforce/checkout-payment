@@ -2,6 +2,7 @@
 
 namespace Shieldforce\CheckoutPayment\Resources;
 
+use App\Filament\Resources\OrderResource;
 use App\Filament\Resources\TransactionResource;
 use App\Models\Transaction;
 use Filament\Forms\Components\DatePicker;
@@ -63,6 +64,7 @@ class CppCheckoutResource extends Resource
         return $table
             ->modifyQueryUsing(function (Builder $query) {
                 return $query
+                    ->with(method_exists(Transaction::class, 'order') ? ['referencable.order'] : ['referencable'])
                     ->orderBy('due_date', 'desc')
                     ->orderByRaw('
                         CASE status
@@ -104,6 +106,29 @@ class CppCheckoutResource extends Resource
                         }
 
                         return TransactionResource::getUrl('edit', ['record' => $record->referencable_id]);
+                    })
+                    ->openUrlInNewTab(),
+
+                TextColumn::make('order')
+                    ->label('Número do Pedido')
+                    ->visible(fn () => class_exists(OrderResource::class) && method_exists(Transaction::class, 'order'))
+                    ->getStateUsing(function (Model $record) {
+                        if ($record->referencable_type !== Transaction::class) {
+                            return null;
+                        }
+
+                        return $record->referencable?->order?->id;
+                    })
+                    ->url(function (Model $record) {
+                        if ($record->referencable_type !== Transaction::class || ! class_exists(OrderResource::class)) {
+                            return null;
+                        }
+
+                        $orderId = $record->referencable?->order?->id;
+
+                        return $orderId
+                            ? OrderResource::getUrl('edit', ['record' => $orderId])
+                            : null;
                     })
                     ->openUrlInNewTab(),
 
@@ -159,19 +184,24 @@ class CppCheckoutResource extends Resource
                     ->label('CPF/CNPJ')
                     ->searchable()
                     ->optionsLimit(5)
-                    ->options(
-                        CppCheckoutStep2::query()
+                    ->options(function () {
+                        return CppCheckoutStep2::query()
                             ->whereNotNull('document')
-                            ->select('document')
-                            ->distinct()
-                            ->orderBy('document')
-                            ->pluck('document', 'document')
-                            ->toArray()
-                    )
+                            ->pluck('document')
+                            ->map(fn ($document) => preg_replace('/\D/', '', (string) $document))
+                            ->filter()
+                            ->unique()
+                            ->sort()
+                            ->mapWithKeys(fn ($document) => [$document => $document])
+                            ->toArray();
+                    })
                     ->query(function ($query, array $data) {
                         if (! empty($data['value'])) {
                             $query->whereHas('step2', function ($subQuery) use ($data) {
-                                $subQuery->where('document', $data['value']);
+                                $subQuery->whereRaw(
+                                    "REPLACE(REPLACE(REPLACE(document, '.', ''), '-', ''), '/', '') = ?",
+                                    [$data['value']]
+                                );
                             });
                         }
                     }),
@@ -198,22 +228,25 @@ class CppCheckoutResource extends Resource
                     }),
 
                 SelectFilter::make('first_name')
-                    ->label('Primeiro Nome')
+                    ->label('Nome')
                     ->searchable()
                     ->optionsLimit(5)
                     ->options(
                         CppCheckoutStep2::query()
                             ->whereNotNull('first_name')
-                            ->select('first_name')
+                            ->selectRaw("TRIM(CONCAT(first_name, ' ', COALESCE(last_name, ''))) as full_name")
                             ->distinct()
-                            ->orderBy('first_name')
-                            ->pluck('first_name', 'first_name')
+                            ->orderBy('full_name')
+                            ->pluck('full_name', 'full_name')
                             ->toArray()
                     )
                     ->query(function ($query, array $data) {
                         if (! empty($data['value'])) {
                             $query->whereHas('step2', function ($subQuery) use ($data) {
-                                $subQuery->where('first_name', $data['value']);
+                                $subQuery->whereRaw(
+                                    "TRIM(CONCAT(first_name, ' ', COALESCE(last_name, ''))) = ?",
+                                    [$data['value']]
+                                );
                             });
                         }
                     }),
