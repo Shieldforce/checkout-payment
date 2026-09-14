@@ -277,12 +277,21 @@ class CppCheckoutResource extends Resource
 
                 SelectFilter::make('status')
                     ->label('Status')
-                    ->options(StatusCheckoutEnum::options())
-                    ->query(
-                        fn (Builder $query, array $data) => filled($data['value'])
-                            ? $query->where('status', $data['value'])
-                            : $query
-                    ),
+                    ->options([
+                        ...StatusCheckoutEnum::options(),
+                        'payment_forced' => 'Finalizado (Pagamento Forçado)',
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        if (! filled($data['value'])) {
+                            return $query;
+                        }
+
+                        if ($data['value'] === 'payment_forced') {
+                            return $query->where('payment_forced', true);
+                        }
+
+                        return $query->where('status', $data['value']);
+                    }),
 
             ], Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->headerActions([
