@@ -29,14 +29,30 @@ class MercadoPagoService
         }
     }
 
-    private function friendlyErrorMessage(?string $rawMessage): string
+    // A SDK devolve o corpo do erro já decodificado (array); exceções genéricas trazem string.
+    private function friendlyErrorMessage(array | string | null $rawMessage): string
     {
-        $decoded = json_decode($rawMessage ?? '', true);
+        $decoded = is_array($rawMessage) ? $rawMessage : json_decode($rawMessage ?? '', true);
 
-        return $decoded['cause'][0]['description']
-            ?? $decoded['message']
-            ?? $rawMessage
-            ?? 'Erro desconhecido ao comunicar com o Mercado Pago.';
+        if (! is_array($decoded)) {
+            return filled($rawMessage) ? $rawMessage : 'Erro desconhecido ao comunicar com o Mercado Pago.';
+        }
+
+        // 7521: boleto registrado exige endereço completo do pagador
+        if (($decoded['cause'][0]['code'] ?? null) == 7521) {
+            return 'Endereço do pagador incompleto: para gerar boleto o Mercado Pago exige CEP, rua, número, '
+                . 'bairro, cidade e UF válidos. Corrija o endereço no cadastro e tente novamente.';
+        }
+
+        $message = $decoded['cause'][0]['description'] ?? null;
+
+        if (blank($message)) {
+            $message = $decoded['message'] ?? null;
+        }
+
+        return filled($message) && is_string($message)
+            ? $message
+            : 'Erro desconhecido ao comunicar com o Mercado Pago.';
     }
 
     public function gerarPagamentoPix(
