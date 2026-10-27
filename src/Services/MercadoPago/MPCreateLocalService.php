@@ -159,6 +159,10 @@ class MPCreateLocalService
                 'last_payment_error' => '[Mercado Pago] Boleto não gerado. Status retornado: '
                     . ($return['status'] ?? 'desconhecido'),
             ]);
+
+            // O boleto anterior (se havia) já foi cancelado acima -> sem limpar o link, o checkout
+            // seguia reaproveitando o boleto cancelado mesmo depois de corrigido o motivo do erro.
+            $this->checkout->step4()->update(['url_billet' => null]);
         }
 
         if (! isset($return['transaction_details']['external_resource_url'])) {
@@ -239,6 +243,9 @@ class MPCreateLocalService
                 'last_payment_error' => '[Mercado Pago] Pix não gerado. Status retornado: '
                     . ($return['status'] ?? 'desconhecido'),
             ]);
+
+            // O pix anterior (se havia) já foi cancelado acima -> não deixa o QR code dele ser reaproveitado.
+            $this->checkout->step4()->update(['base_qrcode' => null, 'url_qrcode' => null]);
         }
 
         if (! isset($return['qr_code_base64'])) {
@@ -264,8 +271,11 @@ class MPCreateLocalService
     private function billetUnchanged(): bool
     {
         $cached = json_decode($this->step4?->request_billet_data ?? '[]', true);
+        $lastResponse = json_decode($this->step4?->response_billet_data ?? '[]', true);
 
-        return isset($cached['value'], $cached['due_date'])
+        // Última tentativa falhou -> o pedido salvo é o que deu erro, não o do boleto ativo.
+        return empty($lastResponse['error'])
+            && isset($cached['value'], $cached['due_date'])
             && abs((float) $cached['value'] - (float) $this->data['value']) < 0.01
             && $cached['due_date'] === $this->data['due_date'];
     }
@@ -273,8 +283,10 @@ class MPCreateLocalService
     private function pixUnchanged(): bool
     {
         $cached = json_decode($this->step4?->request_pix_data ?? '[]', true);
+        $lastResponse = json_decode($this->step4?->response_pix_data ?? '[]', true);
 
-        return isset($cached['value'])
+        return empty($lastResponse['error'])
+            && isset($cached['value'])
             && abs((float) $cached['value'] - (float) $this->data['value']) < 0.01;
     }
 

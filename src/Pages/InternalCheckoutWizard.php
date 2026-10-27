@@ -916,7 +916,9 @@ class InternalCheckoutWizard extends Page implements HasForms
                 $method == MethodPaymentEnum::pix->value
             ) {
                 $cachedPixRequest = json_decode($this->step4->request_pix_data ?? '[]', true);
-                $pixDataUnchanged = isset($cachedPixRequest['value'])
+                $lastPixResponse = json_decode($this->step4->response_pix_data ?? '[]', true);
+                $pixDataUnchanged = empty($lastPixResponse['error'])
+                    && isset($cachedPixRequest['value'])
                     && abs((float) $cachedPixRequest['value'] - (float) $this->total_price) < 0.01;
 
                 if ($pixDataUnchanged) {
@@ -955,7 +957,11 @@ class InternalCheckoutWizard extends Page implements HasForms
                     ? Carbon::parse($this->checkout->due_date)->format('Y-m-d')
                     : null;
 
-                $billetDataUnchanged = isset($cachedBilletRequest['value'])
+                // Se a última tentativa deu erro, o pedido salvo é o que falhou (e o url_billet ainda
+                // pode ser de um boleto já cancelado) -> nunca reaproveita, gera de novo.
+                $lastBilletResponse = json_decode($this->step4->response_billet_data ?? '[]', true);
+                $billetDataUnchanged = empty($lastBilletResponse['error'])
+                    && isset($cachedBilletRequest['value'])
                     && abs((float) $cachedBilletRequest['value'] - (float) $this->total_price) < 0.01
                     && $cachedDueDate === $currentDueDate;
 
